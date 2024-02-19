@@ -1,7 +1,7 @@
 | Key | Value |
 | --- | --- |
 | Date: | 20/02/2024 |
-| Time: | 16:45-17:45 |
+| Time: | 15:45-16:45 |
 | Location: | Drebbelweg cubicle 14 |
 | Chair | Nick de Boer |
 | Minute Taker | Teim |
