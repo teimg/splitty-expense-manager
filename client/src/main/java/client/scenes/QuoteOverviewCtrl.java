@@ -54,9 +54,12 @@ public class QuoteOverviewCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
-        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
+        colFirstName.setCellValueFactory(
+                q -> new SimpleStringProperty(q.getValue().getPerson().getFirstName()));
+        colLastName.setCellValueFactory(
+                q -> new SimpleStringProperty(q.getValue().getPerson().getLastName()));
+        colQuote.setCellValueFactory(
+                q -> new SimpleStringProperty(q.getValue().getQuote()));
     }
 
     public void addQuote() {
