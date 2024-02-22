@@ -31,17 +31,17 @@ import server.database.QuoteRepository;
 
 public class TestQuoteRepository implements QuoteRepository {
 
-    public final List<Quote> quotes = new ArrayList<>();
-    public final List<String> calledMethods = new ArrayList<>();
+    private final List<Quote> quotes = new ArrayList<>();
+    private final List<String> calledMethods = new ArrayList<>();
 
     private void call(String name) {
-        calledMethods.add(name);
+        getCalledMethods().add(name);
     }
 
     @Override
     public List<Quote> findAll() {
-        calledMethods.add("findAll");
-        return quotes;
+        getCalledMethods().add("findAll");
+        return getQuotes();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     private Optional<Quote> find(Long id) {
-        return quotes.stream().filter(q -> q.id == id).findFirst();
+        return getQuotes().stream().filter(q -> q.getId() == id).findFirst();
     }
 
     @Override
@@ -141,8 +141,8 @@ public class TestQuoteRepository implements QuoteRepository {
     @Override
     public <S extends Quote> S save(S entity) {
         call("save");
-        entity.id = (long) quotes.size();
-        quotes.add(entity);
+        entity.setId((long) getQuotes().size());
+        getQuotes().add(entity);
         return entity;
     }
 
@@ -160,7 +160,7 @@ public class TestQuoteRepository implements QuoteRepository {
 
     @Override
     public long count() {
-        return quotes.size();
+        return getQuotes().size();
     }
 
     @Override
@@ -218,8 +218,17 @@ public class TestQuoteRepository implements QuoteRepository {
     }
 
     @Override
-    public <S extends Quote, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Quote, R> R findBy(Example<S> example,
+                                         Function<FetchableFluentQuery<S>, R> queryFunction) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public List<Quote> getQuotes() {
+        return quotes;
+    }
+
+    public List<String> getCalledMethods() {
+        return calledMethods;
     }
 }
