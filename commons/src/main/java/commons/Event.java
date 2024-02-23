@@ -129,9 +129,8 @@ public class Event {
 
         Event event = (Event) o;
 
-        if (id != event.id) return false;
-        if (!Objects.equals(name, event.name)) return false;
-        if (!Objects.equals(inviteCode, event.inviteCode)) return false;
+        if (id != event.id || !Objects.equals(name, event.name)
+                || !Objects.equals(inviteCode, event.inviteCode)) return false;
         if (!Objects.equals(participants, event.participants)) return false;
         if (!Objects.equals(creationDate, event.creationDate)) return false;
         return Objects.equals(lastActivity, event.lastActivity);
