@@ -47,6 +47,7 @@ public class Main extends Application {
                 "client", "scenes", "StatisticsScreen.fxml");
 
 
+
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, add, stats);
     }

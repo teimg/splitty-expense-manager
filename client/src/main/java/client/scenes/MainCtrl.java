@@ -34,7 +34,7 @@ public class MainCtrl {
     private Scene stat;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair<StatisticsScreenCtrl, Parent> stats) {
+                           Pair<AddQuoteCtrl, Parent> add) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
@@ -57,7 +57,7 @@ public class MainCtrl {
 
     public void showAdd() {
         primaryStage.setTitle("Stats");
-        primaryStage.setScene(stat);
+        primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 }
