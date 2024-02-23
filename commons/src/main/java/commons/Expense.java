@@ -28,7 +28,8 @@ public class Expense {
      * @param payer    the participant who paid for the expense
      * @param debtors  the list of participants who owe a share of the expense
      */
-    public Expense(int id, Event event, String purchase, double amount, Participant payer, List<Participant> debtors) {
+    public Expense(int id, Event event, String purchase, double amount,
+                   Participant payer, List<Participant> debtors) {
         this.id = id;
         this.event = event;
         this.purchase = purchase;

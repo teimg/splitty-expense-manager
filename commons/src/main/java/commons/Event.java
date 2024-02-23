@@ -19,7 +19,8 @@ public class Event {
      * @param creationDate
      * @param lastActivity
      */
-    public Event(int id, String name, String inviteCode, List<Participant> participants, Date creationDate, Date lastActivity) {
+    public Event(int id, String name, String inviteCode,
+                 List<Participant> participants, Date creationDate, Date lastActivity) {
         this.id = id;
         this.name = name;
         this.inviteCode = inviteCode;
