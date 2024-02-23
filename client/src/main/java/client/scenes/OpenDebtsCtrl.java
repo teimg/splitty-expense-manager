@@ -68,7 +68,8 @@ public class OpenDebtsCtrl implements Initializable {
     }
 
     /**
-     * Handling button events of the mark received functionality. Will remove it from the open debts.
+     * Handling button events of the mark received functionality.
+     * Will remove it from the open debts.
      * @param debtNumber - int to gauge which debt we are modifying.
      */
     public void handleReceivedButton(int debtNumber) {
