@@ -18,7 +18,7 @@ public class BankAccount {
     public BankAccount(int id, int userId, String iBAN, String bIC, double balance) {
         this.id = id;
         this.userId = userId;
-        this.IBAN = IBAN;
+        this.iBAN = iBAN;
         this.bIC = bIC;
         this.balance = balance;
     }
