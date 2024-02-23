@@ -3,20 +3,17 @@ package commons;
 
 public class Participant {
     private int id;
-    private String firstName;
-    private String lastName;
+    private String name;
     private BankAccount bankAccount;
 
     /**
      *
      * @param id
-     * @param firstName
-     * @param lastName
+     * @param name
      */
-    public Participant(int id, String firstName, String lastName) {
+    public Participant(int id, String name) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
     }
 
 }

@@ -9,10 +9,10 @@ public class ExpenseTest {
     @Test
     public void testExpenseConstructorAndGetters() {
 
-        Participant payer = new Participant(1, "John", "Doe");
+        Participant payer = new Participant(1, "John");
         List<Participant> debtors = Arrays.asList(
-                new Participant(2, "Jane", "Doe"),
-                new Participant(3, "Alice", "Smith")
+                new Participant(2, "Jane"),
+                new Participant(3, "Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
         Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors);
@@ -27,10 +27,10 @@ public class ExpenseTest {
 
     @Test
     public void testExpenseEquals() {
-        Participant payer = new Participant(1, "John", "Doe");
+        Participant payer = new Participant(1, "John");
         List<Participant> debtors = Arrays.asList(
-                new Participant(2, "Jane", "Doe"),
-                new Participant(3, "Alice", "Smith")
+                new Participant(2, "Jane"),
+                new Participant(3, "Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
         Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors);
@@ -43,10 +43,10 @@ public class ExpenseTest {
 
     @Test
     public void testExpenseHashCode() {
-        Participant payer = new Participant(1, "John", "Doe");
+        Participant payer = new Participant(1, "John");
         List<Participant> debtors = Arrays.asList(
-                new Participant(2, "Jane", "Doe"),
-                new Participant(3, "Alice", "Smith")
+                new Participant(2, "Jane"),
+                new Participant(3, "Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
         Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors);
@@ -57,10 +57,10 @@ public class ExpenseTest {
 
     @Test
     public void testExpenseToString() {
-        Participant payer = new Participant(1, "John", "Doe");
+        Participant payer = new Participant(1, "John");
         List<Participant> debtors = Arrays.asList(
-                new Participant(2, "Jane", "Doe"),
-                new Participant(3, "Alice", "Smith")
+                new Participant(2, "Jane"),
+                new Participant(3, "Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
         Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors);
