@@ -50,7 +50,7 @@ public class MainCtrl {
     }
 
     public void showAdd() {
-        primaryStage.setTitle("Stats");
+        primaryStage.setTitle("Quotes: Add Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
