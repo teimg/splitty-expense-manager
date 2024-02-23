@@ -17,14 +17,14 @@ public interface IServerUserCommunicator {
      * @param lastName user's last name
      * @return the new Participant
      */
-    public Participant registerParticipant(String firstName, String lastName);
+    Participant registerParticipant(String firstName, String lastName);
 
     /**
      * Gets an existing Participant by id.
      * @param id Participant unique id
      * @return the corresponding Participant
      */
-    public Participant getParticipant(int id);
+    Participant getParticipant(int id);
 
     /**
      * Creates a new Event with a specified name. The name does not have to be unique.
@@ -32,14 +32,14 @@ public interface IServerUserCommunicator {
      * @param creator the creator Participant should be added automatically
      * @return the created Event
      */
-    public Event registerEvent(String name, Participant creator);
+    Event registerEvent(String name, Participant creator);
 
     /**
      * Gets an existing Event by id.
      * @param id Event unique id
      * @return the corresponding Event
      */
-    public Event getEvent(int id);
+    Event getEvent(int id);
 
     /**
      * Makes a Participant join an Event by its invite code.
@@ -47,7 +47,7 @@ public interface IServerUserCommunicator {
      * @param toJoin the Participant to join the Event
      * @return the Event that was joined
      */
-    public Event joinEvent(String inviteCode, Participant toJoin);
+    Event joinEvent(String inviteCode, Participant toJoin);
 
     /**
      * Adds a made expense to an Event.
@@ -58,7 +58,7 @@ public interface IServerUserCommunicator {
      * @param debtors the Participants who have accrued debt with this expense
      * @return the created Expense
      */
-    public Expense addExpense(Event event, String purchase, double amount, Participant payer,
+    Expense addExpense(Event event, String purchase, double amount, Participant payer,
                               List<Participant> debtors);
 
     /**
@@ -66,5 +66,5 @@ public interface IServerUserCommunicator {
      * @param event the Event to query Expenses for
      * @return the List of Expenses
      */
-    public List<Expense> getExpenses(Event event);
+    List<Expense> getExpenses(Event event);
 }
