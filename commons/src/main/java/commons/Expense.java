@@ -1,3 +1,7 @@
+package commons;
+
+import commons.Event;
+import commons.Participant;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +37,53 @@ public class Expense {
         this.debtors = debtors;
     }
 
-    // Getters and setters are omitted for brevity
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public String getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(String purchase) {
+        this.purchase = purchase;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Participant getPayer() {
+        return payer;
+    }
+
+    public void setPayer(Participant payer) {
+        this.payer = payer;
+    }
+
+    public List<Participant> getDebtors() {
+        return debtors;
+    }
+
+    public void setDebtors(List<Participant> debtors) {
+        this.debtors = debtors;
+    }
 
     @Override
     public boolean equals(Object o) {
