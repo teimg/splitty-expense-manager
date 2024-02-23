@@ -154,8 +154,8 @@ public class DummyServerUserCommunicator implements IServerUserCommunicator {
     @Override
     public Expense addExpense(Event event, String purchase, double amount, Participant payer,
                               List<Participant> debtors) {
-        operationsLog.add("addExpense %s %s %s %s %s"
-                .formatted(event.toString(), purchase, amount, payer.toString(), debtors.toString()));
+        operationsLog.add("addExpense %s %s %s %s %s".formatted(
+                event.toString(), purchase, amount, payer.toString(), debtors.toString()));
         return addExpenseOutput;
     }
 
