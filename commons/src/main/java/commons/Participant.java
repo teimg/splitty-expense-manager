@@ -1,19 +1,46 @@
 package commons;
 
 
+import jakarta.persistence.*;
+
+@Entity
 public class Participant {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String name;
+    @Embedded
     private BankAccount bankAccount;
 
-    /**
-     *
-     * @param id
-     * @param name
-     */
-    public Participant(int id, String name) {
-        this.id = id;
+    public Participant(String name) {
         this.name = name;
     }
 
+    public Participant() {
+
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
 }

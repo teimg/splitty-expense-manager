@@ -1,26 +1,18 @@
 package commons;
 
-public class BankAccount {
-    private int id;
-    private int userId;
-    private String iBAN;
-    private String bIC;
-    private double balance;
+import jakarta.persistence.Embeddable;
 
-    /**
-     *
-     * @param id
-     * @param userId
-     * @param iBAN
-     * @param bIC
-     * @param balance
-     */
-    public BankAccount(int id, int userId, String iBAN, String bIC, double balance) {
-        this.id = id;
-        this.userId = userId;
-        this.iBAN = iBAN;
-        this.bIC = bIC;
-        this.balance = balance;
+@Embeddable
+public class BankAccount {
+    private String iban;
+    private String bic;
+
+    public BankAccount() {
+
     }
 
+    public BankAccount(String iban, String bic) {
+        this.iban = iban;
+        this.bic = bic;
+    }
 }
