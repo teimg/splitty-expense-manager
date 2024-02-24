@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartScreenCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
       <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -44,20 +45,15 @@
                      <children>
                         <AnchorPane prefHeight="374.0" prefWidth="450.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="9.0" text="EVENT TITLE">
-                                 <font>
-                                    <Font name="System Bold" size="20.0" />
-                                 </font>
-                              </Label>
-                              <Button layoutX="350.0" layoutY="14.0" mnemonicParsing="false" text="Send Invites" />
+                              <ListView fx:id="expensesList" layoutX="32.0" layoutY="186.0" prefHeight="200.0" prefWidth="393.0" />
+                              <Button layoutX="350.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSendInvites" text="Send Invites" />
                               <Label layoutX="14.0" layoutY="44.0" text="Participants">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <TextFlow layoutX="14.0" layoutY="70.0" prefHeight="40.0" prefWidth="421.0" />
-                              <Button layoutX="115.0" layoutY="44.0" mnemonicParsing="false" text="Remove" />
-                              <Button layoutX="184.0" layoutY="44.0" mnemonicParsing="false" text="Add" />
+                              <Button layoutX="115.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleRemoveParticipant" text="Remove" />
+                              <Button layoutX="184.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleAddParticipant" text="Add" />
                               <Label layoutX="14.0" layoutY="110.0" text="Expenses">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
@@ -69,11 +65,16 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="16.0" layoutY="136.0" mnemonicParsing="false" text="Add Expense" />
-                              <AnchorPane layoutX="-1.0" layoutY="185.0" prefHeight="188.0" prefWidth="450.0" />
-                              <RadioButton layoutX="170.0" layoutY="177.0" mnemonicParsing="false" text="From NAME" />
-                              <RadioButton layoutX="280.0" layoutY="177.0" mnemonicParsing="false" text="Including NAME" />
-                              <RadioButton fx:id="expenseSelectorAll" layoutX="60.0" layoutY="177.0" mnemonicParsing="false" text="All" />
+                              <Button layoutX="16.0" layoutY="136.0" mnemonicParsing="false" onAction="#handleAddExpense" text="Add Expense" />
+                              <RadioButton fx:id="expenseSelectorFrom" layoutX="170.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleExpenseVisibilityChange" text="From NAME" />
+                              <RadioButton fx:id="expenseSelectorIncluding" layoutX="280.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleExpenseVisibilityChange" text="Including NAME" />
+                              <RadioButton fx:id="expenseSelectorAll" layoutX="60.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleExpenseVisibilityChange" text="All" />
+                              <Text fx:id="eventTitle" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EVENT TITLE">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="participantsList" layoutX="22.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARTICIPANTS" wrappingWidth="406.80339431762695" />
                            </children></AnchorPane>
                      </children>
                   </VBox>
