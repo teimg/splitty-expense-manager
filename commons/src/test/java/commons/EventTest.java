@@ -16,7 +16,7 @@ public class EventTest {
 
     @BeforeEach
     public void setUp() {
-        Participant participant1 = new Participant(1, "Tester", "Fester");
+        Participant participant1 = new Participant("Tester Fester");
         this.participants = new ArrayList<>();
         participants.add(participant1);
         this.firstEvent = new Event(1, "Test", "InviteCode", participants,
