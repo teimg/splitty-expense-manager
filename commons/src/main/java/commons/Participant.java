@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
+/**
+ * The Participant class represents a person
+ * that is involved in an event
+ */
 @Entity
 public class Participant {
     @Id
@@ -14,10 +18,17 @@ public class Participant {
     @Embedded
     private BankAccount bankAccount;
 
+    /**
+     * Constructs a participant with a given name
+     * @param name represents how the participant is called
+     */
     public Participant(String name) {
         this.name = name;
     }
 
+    /**
+     * The no-arg constructor is needed for the persistence framework
+     */
     public Participant() {
 
     }

@@ -4,15 +4,28 @@ import jakarta.persistence.Embeddable;
 
 import java.util.Objects;
 
+/**
+ * The BankAccount class is used to store
+ * the bank details of a participant
+ */
 @Embeddable
 public class BankAccount {
     private String iban;
     private String bic;
 
+    /**
+     * The no-arg constructor is needed for the persistence framework
+     */
     public BankAccount() {
 
     }
 
+    /**
+     * Constructs a new bank account with the specified details
+     *
+     * @param iban international bank account number
+     * @param bic bank identification code
+     */
     public BankAccount(String iban, String bic) {
         this.iban = iban;
         this.bic = bic;
