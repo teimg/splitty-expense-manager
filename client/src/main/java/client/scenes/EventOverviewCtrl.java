@@ -43,8 +43,11 @@ public class EventOverviewCtrl implements Initializable {
                 @Override
                 public void updateItem(Expense expense, boolean empty) {
                     super.updateItem(expense, empty);
-                    if (empty) setText(null);
-
+                    if (empty) {
+                        setText(null);
+                        return;
+                    }
+                    setText(expense.toString());
                 }
             };
         }
