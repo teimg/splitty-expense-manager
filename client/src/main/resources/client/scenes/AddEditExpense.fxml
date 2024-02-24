@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddEditExpenseCtrl">
+    <children>
+        <MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+            <children>
+                <HBox maxHeight="100.0" VBox.vgrow="ALWAYS" />
+                <HBox VBox.vgrow="ALWAYS">
+                    <children>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <AnchorPane prefHeight="374.0" prefWidth="600.0">
+                           <children>
+                               <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
+                                   <Label layoutX="47.0" layoutY="60.0" style="-fx-font-weight: bold;" text="add/Edit  Expenses">
+                                    <font>
+                                       <Font size="30.0" />
+                                    </font>
+                                   </Label>
+                                 <Separator prefWidth="200.0" />
+                                   <HBox layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
+                                       <children>
+                                           <Label prefHeight="18.0" prefWidth="353.0" text="Who paid?">
+                                          <HBox.margin>
+                                             <Insets />
+                                          </HBox.margin>
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font></Label>
+                                           <ComboBox fx:id="whoPaidField" editable="true" prefHeight="26.0" prefWidth="380.0" />
+                                       </children>
+                                    <VBox.margin>
+                                       <Insets bottom="10.0" top="10.0" />
+                                    </VBox.margin>
+                                   </HBox>
+                                   <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
+                                       <children>
+                                           <Label prefHeight="18.0" prefWidth="353.0" text="What for?">
+                                               <HBox.margin>
+                                                   <Insets />
+                                               </HBox.margin>
+                                               <font>
+                                                   <Font size="16.0" />
+                                               </font></Label>
+                                       <TextField fx:id="decsriptionField" prefHeight="26.0" prefWidth="380.0">
+                                          <HBox.margin>
+                                             <Insets />
+                                          </HBox.margin></TextField>
+                                       </children>
+                                    <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                   </HBox>
+                                   <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
+                                       <children>
+                                           <Label prefHeight="22.0" prefWidth="218.0" text="How much?">
+                                               <HBox.margin>
+                                                   <Insets />
+                                               </HBox.margin>
+                                               <font>
+                                                   <Font size="16.0" />
+                                               </font></Label>
+                                           <TextField fx:id="priceField" prefHeight="26.0" prefWidth="113.0" />
+                                           <ComboBox fx:id="currencyField" editable="true" prefHeight="26.0" prefWidth="84.0" promptText="EUR">
+                                          <HBox.margin>
+                                             <Insets left="50.0" />
+                                          </HBox.margin></ComboBox>
+                                       </children>
+                                    <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                   </HBox>
+                                   <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
+                                       <children>
+                                           <Label prefHeight="18.0" prefWidth="353.0" text="When?">
+                                               <HBox.margin>
+                                                   <Insets />
+                                               </HBox.margin>
+                                               <font>
+                                                   <Font size="16.0" />
+                                               </font></Label>
+                                           <DatePicker fx:id="dateField" prefHeight="26.0" prefWidth="380.0" />
+                                       </children>
+                                    <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                   </HBox>
+                                   <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
+                                       <children>
+                                           <Label prefHeight="22.0" prefWidth="471.0" text="How to split?">
+                                               <HBox.margin>
+                                                   <Insets />
+                                               </HBox.margin>
+                                               <font>
+                                                   <Font size="16.0" />
+                                               </font></Label>
+                                       </children>
+                                   </HBox>
+                                 <CheckBox fx:id="evenlyCheckbox" mnemonicParsing="false" prefHeight="22.0" prefWidth="542.0" text="Split Evenly" />
+                                 <CheckBox fx:id="someCheckbox" mnemonicParsing="false" text="Only some people" />
+                                 <ScrollPane prefHeight="83.0" prefWidth="404.0">
+                                    <VBox.margin>
+                                       <Insets bottom="10.0" left="40.0" top="3.0" />
+                                    </VBox.margin>
+                                    <content>
+                                       <VBox prefHeight="79.0" prefWidth="403.0">
+                                          <children>
+                                          </children>
+                                       </VBox>
+                                    </content>
+                                 </ScrollPane>
+                                   <HBox layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
+                                       <children>
+                                           <Label prefHeight="18.0" prefWidth="353.0" text="expense type">
+                                               <HBox.margin>
+                                                   <Insets />
+                                               </HBox.margin>
+                                               <font>
+                                                   <Font size="16.0" />
+                                               </font></Label>
+                                           <ComboBox fx:id="tagField" editable="true" prefHeight="26.0" prefWidth="380.0" />
+                                       </children>
+                                    <VBox.margin>
+                                       <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                   </HBox>
+                                   <HBox alignment="TOP_RIGHT" layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
+                                    <children>
+                                       <Button fx:id="abortButton" mnemonicParsing="false" text="Abort">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font></Button>
+                                       <Separator prefHeight="0.0" prefWidth="33.0" />
+                                       <Button fx:id="addButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Add">
+                                          <font>
+                                             <Font size="16.0" />
+                                          </font></Button>
+                                    </children>
+                                   </HBox>
+                               </VBox>
+                           </children>
+                                </AnchorPane>
+                            </children>
+                        </VBox>
+                        <HBox HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+                <HBox maxHeight="100.0" VBox.vgrow="ALWAYS" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
