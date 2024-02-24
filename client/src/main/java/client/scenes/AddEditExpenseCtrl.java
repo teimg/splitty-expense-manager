@@ -71,25 +71,50 @@ public class AddEditExpenseCtrl  implements Initializable {
         }
     }
 
+
+    /**
+     * Bring the checkboxes to there starting state (should be more advanced when editing becomes an option)
+     */
     public void initCheckbox(){
         evenlyCheckbox.setSelected(true);
         someCheckbox.setSelected(false);
         evenlyCheckbox.setAllowIndeterminate(false);
         someCheckbox.setAllowIndeterminate(false);
         innerCheckboxes.setDisable(true);
+    }
 
+    /**
+     * Toggles the someCheckbox
+     *
+     */
+    public void someCheckboxToggle(){
+        if(someCheckbox.isSelected()){
+            evenlyCheckbox.setSelected(false);
+            innerCheckboxes.setDisable(false);
+            return;
+        }
+        evenlyCheckbox.setSelected(true);
+        innerCheckboxes.setDisable(true);
 
     }
 
-    public void checkboxToggle(){
+    /**
+     * Toggles the ven checkbox
+     */
+    public void evenlyCheckboxToggle(){
         if(evenlyCheckbox.isSelected()){
-            evenlyCheckbox.setSelected(false);
-            someCheckbox.setSelected(true);
+            someCheckbox.setSelected(false);
+            innerCheckboxes.setDisable(true);
             return;
         }
+        someCheckbox.setSelected(true);
+        innerCheckboxes.setDisable(false);
+    }
 
-        evenlyCheckbox.setSelected(true);
-        someCheckbox.setSelected(false);
+    /**
+     * create the final expanse
+     */
+    public void createExpense(){
 
     }
 }

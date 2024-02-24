@@ -133,8 +133,8 @@
                                                </font></Label>
                                        </children>
                                    </HBox>
-                                 <CheckBox fx:id="evenlyCheckbox" mnemonicParsing="false" onAction="#checkboxToggle" prefHeight="22.0" prefWidth="542.0" text="Split Evenly" />
-                                 <CheckBox fx:id="someCheckbox" mnemonicParsing="false" onAction="#checkboxToggle" text="Only some people" />
+                                 <CheckBox fx:id="evenlyCheckbox" mnemonicParsing="false" onAction="#evenlyCheckboxToggle" prefHeight="22.0" prefWidth="542.0" text="Split Evenly" />
+                                 <CheckBox fx:id="someCheckbox" mnemonicParsing="false" onAction="#someCheckboxToggle" text="Only some people" />
                                  <ScrollPane hbarPolicy="NEVER" prefHeight="83.0" prefWidth="404.0" vbarPolicy="ALWAYS">
                                     <VBox.margin>
                                        <Insets bottom="10.0" left="40.0" top="3.0" />
