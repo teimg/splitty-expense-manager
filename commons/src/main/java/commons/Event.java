@@ -1,6 +1,5 @@
 package commons;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -15,7 +14,6 @@ public class Event {
     private String inviteCode;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonIgnoreProperties("event")
     private List<Participant> participants;
     private Date creationDate;
     private Date lastActivity;
