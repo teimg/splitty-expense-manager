@@ -1,11 +1,21 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
 import java.util.*;
 
+@Entity
 public class Event {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     private String inviteCode;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("event")
     private List<Participant> participants;
     private Date creationDate;
     private Date lastActivity;
