@@ -15,7 +15,7 @@ public class Event {
     private String inviteCode;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("event")
+//    @JsonIgnoreProperties("event")
     private List<Participant> participants;
     private Date creationDate;
     private Date lastActivity;
