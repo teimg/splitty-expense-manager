@@ -73,7 +73,7 @@
                               <AnchorPane layoutX="-1.0" layoutY="185.0" prefHeight="188.0" prefWidth="450.0" />
                               <RadioButton layoutX="170.0" layoutY="177.0" mnemonicParsing="false" text="From NAME" />
                               <RadioButton layoutX="280.0" layoutY="177.0" mnemonicParsing="false" text="Including NAME" />
-                              <RadioButton layoutX="60.0" layoutY="177.0" mnemonicParsing="false" text="All" />
+                              <RadioButton fx:id="expenseSelectorAll" layoutX="60.0" layoutY="177.0" mnemonicParsing="false" text="All" />
                            </children></AnchorPane>
                      </children>
                   </VBox>
