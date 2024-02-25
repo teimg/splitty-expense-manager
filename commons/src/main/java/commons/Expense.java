@@ -1,7 +1,9 @@
 package commons;
 
-import commons.Event;
-import commons.Participant;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,8 +12,11 @@ import java.util.Objects;
  * The Expense class represents an expense record associated with an event.
  * It contains details about a specific purchase, the amount, the payer, and a list of debtors.
  */
+@Entity
 public class Expense {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private Event event;
     private String purchase;
     private double amount;
@@ -38,11 +43,11 @@ public class Expense {
         this.debtors = debtors;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
