@@ -27,6 +27,7 @@ class DebtorSelectorTest {
         participants.add(new Participant("Trien"));
 
         ds = new DebtorSelector(participants);
+        ds.setAllSelected(false);
     }
 
     @Test

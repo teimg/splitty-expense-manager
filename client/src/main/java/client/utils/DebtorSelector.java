@@ -12,6 +12,8 @@ import java.util.Set;
 
 public class DebtorSelector {
 
+    private boolean allSelected;
+
     private List<Participant> participants;
     private Set<Participant> debitors;
 
@@ -21,6 +23,7 @@ public class DebtorSelector {
     public DebtorSelector(List<Participant> participants) {
         this.participants = participants;
         this.debitors = new HashSet<>();
+        this.allSelected = true;
     }
 
     /**
@@ -77,8 +80,19 @@ public class DebtorSelector {
     }
 
     public List<Participant> getDebitors(){
-
+        if(allSelected){
+            return participants;
+        }
         return new ArrayList<>(debitors);
+
+    }
+
+    public boolean isAllSelected() {
+        return allSelected;
+    }
+
+    public void setAllSelected(boolean allSelected) {
+        this.allSelected = allSelected;
     }
 
 

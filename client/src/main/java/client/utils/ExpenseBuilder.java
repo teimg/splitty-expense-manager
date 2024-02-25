@@ -102,11 +102,16 @@ public class ExpenseBuilder {
         final StringBuilder sb = new StringBuilder("ExpenseBuilder{");
         sb.append("id=").append(id);
         sb.append(", event=").append(event);
+        sb.append(", payer=").append(payer);
         sb.append(", purchase='").append(purchase).append('\'');
         sb.append(", amount=").append(amount);
-        sb.append(", payer=").append(payer);
-        sb.append(", debtors=").append(debtors);
         sb.append(", date=").append(date);
+        sb.append("\ndebtors: \n");
+
+        for (Participant x : debtors){
+            sb.append(x.getName()).append("\n");
+        }
+
         sb.append('}');
         return sb.toString();
     }

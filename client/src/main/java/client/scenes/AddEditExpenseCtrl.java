@@ -1,8 +1,9 @@
 package client.scenes;
 
+import client.utils.DebtorSelector;
 import client.utils.ExpenseBuilder;
-import com.sun.scenario.animation.shared.FiniteClipEnvelope;
 import commons.Expense;
+import commons.Participant;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -11,13 +12,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.checkerframework.checker.units.qual.C;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddEditExpenseCtrl  implements Initializable {
@@ -57,28 +58,63 @@ public class AddEditExpenseCtrl  implements Initializable {
 
     private ExpenseBuilder expenseBuilder;
 
+    private DebtorSelector debtorSelector;
+
     private class Innercheckbox{
         private  CheckBox checkBox;
 
-        public Innercheckbox(String name, VBox parent) {
+        public Innercheckbox(String name, VBox parent, DebtorSelector debtorSelector) {
             this.checkBox = new CheckBox(name);
             this.checkBox.setPadding(new Insets(5, 0, 0, 0));
             parent.getChildren().add(this.checkBox);
+
+            this.checkBox.setOnAction( e->{
+                if(this.checkBox.isSelected()){
+                    debtorSelector.add(this.checkBox.getText());
+                }else {
+                    debtorSelector.remove(this.checkBox.getText());
+                }
+            });
         }
 
+    }
+
+    /**
+     * I have no idea where to put this since backend communication and getting events I just put it here for now
+     * @return dummy participant list
+     */
+
+    public List<Participant> getDummyParticipants(){
+
+        List<Participant> res = new ArrayList<>();
+        res.add(new Participant("Henk"));
+        res.add(new Participant("Piet"));
+        res.add(new Participant("Joost"));
+        res.add(new Participant("Barry"));
+        res.add(new Participant("Joe"));
+        res.add(new Participant("Jan"));
+        res.add(new Participant("Abel"));
+        res.add(new Participant("Pietje"));
+        res.add(new Participant("Trien"));
+
+        return res;
     }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         expenseBuilder = new ExpenseBuilder();
+        List<Participant> dummyParticipants = getDummyParticipants();
+        debtorSelector = new DebtorSelector(dummyParticipants);
 
         initCheckbox();
         initCurrency();
         initDateField();
 
-        for (int i = 0; i < 10; i++) {
-            new Innercheckbox("test " + i, innerCheckboxes);
+
+        for (int i = 0; i < dummyParticipants.size(); i++) {
+
+            new Innercheckbox(dummyParticipants.get(i).getName(), innerCheckboxes, debtorSelector);
 
         }
     }
@@ -109,6 +145,7 @@ public class AddEditExpenseCtrl  implements Initializable {
         evenlyCheckbox.setAllowIndeterminate(false);
         someCheckbox.setAllowIndeterminate(false);
         innerCheckboxes.setDisable(true);
+        debtorSelector.setAllSelected(true);
     }
 
     /**
@@ -120,10 +157,12 @@ public class AddEditExpenseCtrl  implements Initializable {
         if(someCheckbox.isSelected()){
             evenlyCheckbox.setSelected(false);
             innerCheckboxes.setDisable(false);
+            debtorSelector.setAllSelected(false);
             return;
         }
         evenlyCheckbox.setSelected(true);
         innerCheckboxes.setDisable(true);
+        debtorSelector.setAllSelected(true);
 
     }
 
@@ -135,10 +174,13 @@ public class AddEditExpenseCtrl  implements Initializable {
         if(evenlyCheckbox.isSelected()){
             someCheckbox.setSelected(false);
             innerCheckboxes.setDisable(true);
+            debtorSelector.setAllSelected(true);
             return;
         }
         someCheckbox.setSelected(true);
         innerCheckboxes.setDisable(false);
+        debtorSelector.setAllSelected(false);
+
     }
 
     public void addButtonPressed(){
@@ -197,6 +239,7 @@ public class AddEditExpenseCtrl  implements Initializable {
         expenseBuilder.setPurchase(decsriptionField.getText());
         expenseBuilder.setDate(getDateFieldValue());
         expenseBuilder.setAmount(getPriceFieldValue());
+        expenseBuilder.setDebtors(debtorSelector.getDebitors());
 
         System.out.println(expenseBuilder.toString());
         return expenseBuilder.build();
