@@ -19,7 +19,7 @@ public class Participant {
     @Embedded
     private BankAccount bankAccount;
     @ManyToOne(fetch = FetchType.EAGER)
-    private List<Event> events;
+    private Event event;
 
     /**
      * Constructs a participant with a given name
