@@ -3,6 +3,7 @@ package commons;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -17,6 +18,8 @@ public class Participant {
     private String name;
     @Embedded
     private BankAccount bankAccount;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private List<Event> events;
 
     /**
      * Constructs a participant with a given name
