@@ -4,6 +4,7 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,15 +13,19 @@ public class ExpenseBuilder {
     private int id;
     private Event event;
     private String purchase;
-    private double amount;
+    private long amount;
     private Participant payer;
     private List<Participant> debtors;
+
+    private LocalDate date;
 
     public ExpenseBuilder() {
     }
 
     public Expense build(){
-        return  new Expense(id, event, purchase, amount, payer, debtors);
+        double expenseAmount = amount / 100.0;
+
+        return  new Expense(id, event, purchase, expenseAmount, payer, debtors);
     }
 
     public int getId() {
@@ -35,7 +40,7 @@ public class ExpenseBuilder {
         return purchase;
     }
 
-    public double getAmount() {
+    public long getAmount() {
         return amount;
     }
 
@@ -59,7 +64,7 @@ public class ExpenseBuilder {
         this.purchase = purchase;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 
@@ -71,22 +76,29 @@ public class ExpenseBuilder {
         this.debtors = debtors;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExpenseBuilder that = (ExpenseBuilder) o;
-        return getId() == that.getId() && Double.compare(getAmount(), that.getAmount()) == 0 && Objects.equals(getEvent(), that.getEvent()) && Objects.equals(getPurchase(), that.getPurchase()) && Objects.equals(getPayer(), that.getPayer()) && Objects.equals(getDebtors(), that.getDebtors());
+        return getId() == that.getId() && getAmount() == that.getAmount() && Objects.equals(getEvent(), that.getEvent()) && Objects.equals(getPurchase(), that.getPurchase()) && Objects.equals(getPayer(), that.getPayer()) && Objects.equals(getDebtors(), that.getDebtors()) && Objects.equals(getDate(), that.getDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEvent(), getPurchase(), getAmount(), getPayer(), getDebtors());
+        return Objects.hash(getId(), getEvent(), getPurchase(), getAmount(), getPayer(), getDebtors(), getDate());
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         final StringBuilder sb = new StringBuilder("ExpenseBuilder{");
         sb.append("id=").append(id);
         sb.append(", event=").append(event);
@@ -94,6 +106,7 @@ public class ExpenseBuilder {
         sb.append(", amount=").append(amount);
         sb.append(", payer=").append(payer);
         sb.append(", debtors=").append(debtors);
+        sb.append(", date=").append(date);
         sb.append('}');
         return sb.toString();
     }

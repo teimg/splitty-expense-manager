@@ -16,6 +16,8 @@ import javafx.scene.layout.VBox;
 import org.checkerframework.checker.units.qual.C;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 
 public class AddEditExpenseCtrl  implements Initializable {
@@ -73,12 +75,24 @@ public class AddEditExpenseCtrl  implements Initializable {
 
         initCheckbox();
         initCurrency();
+        initDateField();
 
         for (int i = 0; i < 10; i++) {
             new Innercheckbox("test " + i, innerCheckboxes);
 
         }
     }
+
+    public void initDateField(){
+        // to disable manuel editing, this way a date can never be invalid hopefully
+        dateField.getEditor().setEditable(false);
+        dateField.getEditor().setDisable(true);
+        dateField.getEditor().setOpacity(1);;
+
+
+        dateField.setValue(LocalDate.now());
+    }
+
 
     public void initCurrency(){
         currencyField.setValue("EUR");
@@ -128,7 +142,50 @@ public class AddEditExpenseCtrl  implements Initializable {
     }
 
     public void addButtonPressed(){
-        System.out.println();
+        createExpense();
+    }
+
+    /**
+     * get the value of the priceField
+     *
+     * @return the amount in euro cents right now
+     */
+    private long getPriceFieldValue() {
+
+        // Code should be moved to a different class so it can be tested
+
+        long res = 0;
+        String value = priceField.getText();
+        value = value.replaceAll("[^.,0-9]", "");
+        String[] values = value.split(",|\\.");
+
+        try{
+            res += Long.parseLong(values[0]) * 100;
+
+            if(values.length >= 2){
+                res += Long.parseLong(values[1]);
+            }
+
+        }catch (NumberFormatException e){
+            res = 0;
+        }
+
+        return res;
+    }
+
+    /**
+     * Get the value in date field
+     * @return the Date set in the date field
+     */
+
+    public LocalDate getDateFieldValue(){
+        try{
+            return  dateField.getValue();
+
+        }catch (DateTimeParseException e){
+            // Not a very nice solution, but will work for now
+            return LocalDate.now();
+        }
     }
 
     /**
@@ -138,8 +195,12 @@ public class AddEditExpenseCtrl  implements Initializable {
      */
     public Expense createExpense(){
         expenseBuilder.setPurchase(decsriptionField.getText());
+        expenseBuilder.setDate(getDateFieldValue());
+        expenseBuilder.setAmount(getPriceFieldValue());
 
         System.out.println(expenseBuilder.toString());
         return expenseBuilder.build();
     }
+
+
 }
