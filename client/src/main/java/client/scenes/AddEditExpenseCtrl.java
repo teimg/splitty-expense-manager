@@ -1,5 +1,8 @@
 package client.scenes;
 
+import client.utils.ExpenseBuilder;
+import com.sun.scenario.animation.shared.FiniteClipEnvelope;
+import commons.Expense;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -50,6 +53,8 @@ public class AddEditExpenseCtrl  implements Initializable {
     @FXML
     private ComboBox<String> whoPaidField;
 
+    private ExpenseBuilder expenseBuilder;
+
     private class Innercheckbox{
         private  CheckBox checkBox;
 
@@ -59,16 +64,25 @@ public class AddEditExpenseCtrl  implements Initializable {
             parent.getChildren().add(this.checkBox);
         }
 
-
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        expenseBuilder = new ExpenseBuilder();
+
         initCheckbox();
+        initCurrency();
+
         for (int i = 0; i < 10; i++) {
             new Innercheckbox("test " + i, innerCheckboxes);
 
         }
+    }
+
+    public void initCurrency(){
+        currencyField.setValue("EUR");
+        currencyField.getItems().add("EUR");
     }
 
 
@@ -84,6 +98,7 @@ public class AddEditExpenseCtrl  implements Initializable {
     }
 
     /**
+     * Event Triggered
      * Toggles the someCheckbox
      *
      */
@@ -99,6 +114,7 @@ public class AddEditExpenseCtrl  implements Initializable {
     }
 
     /**
+     * Event triggered
      * Toggles the ven checkbox
      */
     public void evenlyCheckboxToggle(){
@@ -111,10 +127,19 @@ public class AddEditExpenseCtrl  implements Initializable {
         innerCheckboxes.setDisable(false);
     }
 
-    /**
-     * create the final expanse
-     */
-    public void createExpense(){
+    public void addButtonPressed(){
+        System.out.println();
+    }
 
+    /**
+     * create the final expense
+     *
+     * @return an expense
+     */
+    public Expense createExpense(){
+        expenseBuilder.setPurchase(decsriptionField.getText());
+
+        System.out.println(expenseBuilder.toString());
+        return expenseBuilder.build();
     }
 }
