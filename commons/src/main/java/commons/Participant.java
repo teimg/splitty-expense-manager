@@ -17,6 +17,8 @@ public class Participant {
     private String name;
     @Embedded
     private BankAccount bankAccount;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Event event;
 
     /**
      * Constructs a participant with a given name

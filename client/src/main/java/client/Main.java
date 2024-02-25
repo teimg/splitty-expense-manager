@@ -19,12 +19,11 @@ import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
+import client.scenes.*;
 import com.google.inject.Injector;
 
-import client.scenes.AddQuoteCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.QuoteOverviewCtrl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -43,9 +42,30 @@ public class Main extends Application {
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
 
+        var addExpense = FXML.load(AddEditExpenseCtrl.class,
+                "client", "scenes", "AddEditExpense.fxml");
+        var invitation = FXML.load(InvitationCtrl.class,
+                "client", "scenes", "Invitation.fxml");
+        var openDebts = FXML.load(OpenDebtsCtrl.class,
+                "client", "scenes", "OpenDebtsScreen.fxml");
+        var startScreen = FXML.load(StartScreenCtrl.class,
+                "client", "scenes", "StartScreen.fxml");
+        var statistics = FXML.load(StatisticsScreenCtrl.class,
+                "client", "scenes", "StatisticsScreen.fxml");
 
+        HashMap<String, Object> sceneMap = new HashMap<>();
 
+        sceneMap.put("QuoteOverviewCtrl", overview);
+        sceneMap.put("AddQuoteCtrl", add);
+
+        sceneMap.put("AddEditExpenseCtrl", addExpense);
+        sceneMap.put("InvitationCtrl", invitation);
+        sceneMap.put("OpenDebtsCtrl", openDebts);
+        sceneMap.put("StartScreenCtrl", startScreen);
+        sceneMap.put("StatisticsScreenCtrl", statistics);
+        
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add);
+
+        mainCtrl.initialize(primaryStage, sceneMap);
     }
 }
