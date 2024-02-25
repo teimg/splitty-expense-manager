@@ -33,9 +33,9 @@
 - Presentation of the current app to TA  (2 min)
 
 
-- **Agenda - item 1**: Review of previous meetings action points (2min)
+- **Agenda - item 1**: Review of previous meetings action points (2 min)
 
-- **Agenda - item 2**: Code of Conduct last comments before submission (3min)
+- **Agenda - item 2**: Code of Conduct last comments before submission (3 min)
 
 - **Agenda - item 3**: Discussion on last week's work - Feedback: what went well and what didn't go well? (10 min)
 
