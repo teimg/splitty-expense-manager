@@ -78,4 +78,14 @@ public class Participant {
         result = 31 * result + (bankAccount != null ? bankAccount.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Participant{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", bankAccount=").append(bankAccount);
+        sb.append('}');
+        return sb.toString();
+    }
 }
