@@ -20,6 +20,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.HashMap;
+
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -30,11 +32,27 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                           Pair<AddQuoteCtrl, Parent> add) {
+    @SuppressWarnings("unchecked")
+    public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+
+        Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
+                sceneMap.get("QuoteOverviewCtrl");
+        Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
+                sceneMap.get("AddQuoteCtrl");
+        Pair<InvitationCtrl, Parent> addEdit = (Pair<InvitationCtrl, Parent>)
+                sceneMap.get("AddEditExpenseCtrl");
+        Pair<InvitationCtrl, Parent> invite = (Pair<InvitationCtrl, Parent>)
+                sceneMap.get("InvitationCtrl");
+        Pair<OpenDebtsCtrl, Parent> openDebt = (Pair<OpenDebtsCtrl, Parent>)
+                sceneMap.get("OpenDebtsCtrl");
+        Pair<StartScreenCtrl, Parent> start = (Pair<StartScreenCtrl, Parent>)
+                sceneMap.get("StartScreenCtrl");
+        Pair<StatisticsScreenCtrl, Parent> stats = (Pair<StatisticsScreenCtrl, Parent>)
+                sceneMap.get("StatisticsScreenCtrl");
+
+        this.overviewCtrl = over.getKey();
+        this.overview = new Scene(over.getValue());
 
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
