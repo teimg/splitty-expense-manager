@@ -39,7 +39,7 @@ public class AddEditExpenseCtrl  implements Initializable {
     private DatePicker dateField;
 
     @FXML
-    private TextField decsriptionField;
+    private TextField descriptionField;
 
     @FXML
     private CheckBox evenlyCheckbox;
