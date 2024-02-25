@@ -59,6 +59,14 @@ public class Participant {
         this.bankAccount = bankAccount;
     }
 
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
