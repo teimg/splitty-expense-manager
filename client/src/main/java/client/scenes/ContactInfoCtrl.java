@@ -8,10 +8,10 @@ import javafx.scene.control.TextField;
 public class ContactInfoCtrl {
 
     @FXML
-    private TextField BICField;
+    private TextField bicField;
 
     @FXML
-    private TextField IBANField;
+    private TextField ibanField;
 
     @FXML
     private Button abortButton;

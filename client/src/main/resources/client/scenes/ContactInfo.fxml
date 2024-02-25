@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ContactInfo">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ContactInfoCtrl">
     <children>
         <MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0">
             <menus>
@@ -80,7 +80,7 @@
                                                 <Font size="16.0" />
                                             </font>
                                         </Label>
-                                        <TextField fx:id="IBANField" prefHeight="26.0" prefWidth="254.0" />
+                                        <TextField fx:id="ibanField" prefHeight="26.0" prefWidth="254.0" />
                                     </children>
                                     <VBox.margin>
                                         <Insets bottom="10.0" />
@@ -92,7 +92,7 @@
                                                 <Font size="16.0" />
                                             </font>
                                         </Label>
-                                        <TextField fx:id="BICField" prefHeight="26.0" prefWidth="254.0" />
+                                        <TextField fx:id="bicField" prefHeight="26.0" prefWidth="254.0" />
                                     </children>
                                     <VBox.margin>
                                         <Insets bottom="10.0" />
