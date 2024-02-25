@@ -63,6 +63,13 @@ public class AddEditExpenseCtrl  implements Initializable {
     private class Innercheckbox{
         private  CheckBox checkBox;
 
+        /**
+         *
+         * @param name label used for checkbox should
+         *             equal name of participant
+         * @param parent ref to the parent vbox
+         * @param debtorSelector ref to the debtselector object
+         */
         public Innercheckbox(String name, VBox parent, DebtorSelector debtorSelector) {
             this.checkBox = new CheckBox(name);
             this.checkBox.setPadding(new Insets(5, 0, 0, 0));
@@ -80,7 +87,8 @@ public class AddEditExpenseCtrl  implements Initializable {
     }
 
     /**
-     * I have no idea where to put this since backend communication and getting events I just put it here for now
+     * I have no idea where to put this since
+     * backend communication and getting events I just put it here for now
      * @return dummy participant list
      */
 
@@ -101,6 +109,16 @@ public class AddEditExpenseCtrl  implements Initializable {
     }
 
 
+    /**
+     *
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         expenseBuilder = new ExpenseBuilder();
@@ -119,6 +137,10 @@ public class AddEditExpenseCtrl  implements Initializable {
         }
     }
 
+    /**
+     * init date field
+     */
+
     public void initDateField(){
         // to disable manuel editing, this way a date can never be invalid hopefully
         dateField.getEditor().setEditable(false);
@@ -130,6 +152,11 @@ public class AddEditExpenseCtrl  implements Initializable {
     }
 
 
+    /**
+     * init the currency field
+     * should become more advanced if we want to add the exentison
+     */
+
     public void initCurrency(){
         currencyField.setValue("EUR");
         currencyField.getItems().add("EUR");
@@ -137,7 +164,8 @@ public class AddEditExpenseCtrl  implements Initializable {
 
 
     /**
-     * Bring the checkboxes to there starting state (should be more advanced when editing becomes an option)
+     * Bring the checkboxes to there starting state
+     * (should be more advanced when editing becomes an option)
      */
     public void initCheckbox(){
         evenlyCheckbox.setSelected(true);

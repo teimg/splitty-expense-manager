@@ -89,12 +89,19 @@ public class ExpenseBuilder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExpenseBuilder that = (ExpenseBuilder) o;
-        return getId() == that.getId() && getAmount() == that.getAmount() && Objects.equals(getEvent(), that.getEvent()) && Objects.equals(getPurchase(), that.getPurchase()) && Objects.equals(getPayer(), that.getPayer()) && Objects.equals(getDebtors(), that.getDebtors()) && Objects.equals(getDate(), that.getDate());
+        return getId() == that.getId() && getAmount() == that.getAmount()
+            && Objects.equals(getEvent(), that.getEvent())
+            && Objects.equals(getPurchase(), that.getPurchase())
+            && Objects.equals(getPayer(), that.getPayer())
+            && Objects.equals(getDebtors(), that.getDebtors())
+            && Objects.equals(getDate(), that.getDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEvent(), getPurchase(), getAmount(), getPayer(), getDebtors(), getDate());
+        return Objects.hash(getId(), getEvent(),
+            getPurchase(), getAmount(),
+            getPayer(), getDebtors(), getDate());
     }
 
     @Override

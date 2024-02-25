@@ -2,8 +2,6 @@ package client.utils;
 
 
 import commons.Participant;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +16,8 @@ public class DebtorSelector {
     private Set<Participant> debitors;
 
     /**
-     * Creates debtor selector for the add/edit Expenses
+     * Creates an object that helps manage the checkboxes
+     * @param participants all participants of the event this expense belongs to
      */
     public DebtorSelector(List<Participant> participants) {
         this.participants = participants;
