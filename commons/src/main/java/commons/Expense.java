@@ -14,11 +14,14 @@ public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @ManyToOne
+    private Event event;
     private String purchase;
     private double amount;
     @ManyToOne
     private Participant payer;
-//    private List<Participant> debtors;
+    @ManyToMany
+    private List<Participant> debtors;
 
     /**
      * Constructs a new Expense with the specified details.
@@ -33,10 +36,11 @@ public class Expense {
     public Expense(int id, Event event, String purchase, double amount,
                    Participant payer, List<Participant> debtors) {
         this.id = id;
+        this.event = event;
         this.purchase = purchase;
         this.amount = amount;
         this.payer = payer;
-//        this.debtors = debtors;
+        this.debtors = debtors;
     }
 
     public long getId() {
@@ -48,7 +52,11 @@ public class Expense {
     }
 
     public Event getEvent() {
-        return payer.getEvent();
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public String getPurchase() {
@@ -75,13 +83,13 @@ public class Expense {
         this.payer = payer;
     }
 
-//    public List<Participant> getDebtors() {
-//        return debtors;
-//    }
+    public List<Participant> getDebtors() {
+        return debtors;
+    }
 
-//    public void setDebtors(List<Participant> debtors) {
-//        this.debtors = debtors;
-//    }
+    public void setDebtors(List<Participant> debtors) {
+        this.debtors = debtors;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -90,24 +98,26 @@ public class Expense {
         Expense expense = (Expense) o;
         return id == expense.id &&
                 Double.compare(expense.amount, amount) == 0 &&
+                Objects.equals(event, expense.event) &&
                 Objects.equals(purchase, expense.purchase) &&
-                Objects.equals(payer, expense.payer);
-//                Objects.equals(debtors, expense.debtors);
+                Objects.equals(payer, expense.payer) &&
+                Objects.equals(debtors, expense.debtors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, purchase, amount, payer/*, debtors*/);
+        return Objects.hash(id, event, purchase, amount, payer, debtors);
     }
 
     @Override
     public String toString() {
         return "Expense{" +
                 "id=" + id +
+                ", event=" + event +
                 ", purchase='" + purchase + '\'' +
                 ", amount=" + amount +
                 ", payer=" + payer +
-//                ", debtors=" + debtors +
+                ", debtors=" + debtors +
                 '}';
     }
 }
