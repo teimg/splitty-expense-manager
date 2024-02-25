@@ -53,6 +53,9 @@ public class Main extends Application {
         var statistics = FXML.load(StatisticsScreenCtrl.class,
                 "client", "scenes", "StatisticsScreen.fxml");
 
+        var contactInfo = FXML.load(StatisticsScreenCtrl.class,
+            "client", "scenes", "ContactInfo.fxml");
+
         HashMap<String, Object> sceneMap = new HashMap<>();
 
         sceneMap.put("QuoteOverviewCtrl", overview);
@@ -63,6 +66,7 @@ public class Main extends Application {
         sceneMap.put("OpenDebtsCtrl", openDebts);
         sceneMap.put("StartScreenCtrl", startScreen);
         sceneMap.put("StatisticsScreenCtrl", statistics);
+        sceneMap.put("ContactInfoCtrl", contactInfo);
         
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
