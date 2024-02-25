@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartScreenCtrl">
    <children>
       <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,9 +25,15 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" text="Navigate Scenes (Temporary)">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="quoteOverview" mnemonicParsing="false" onAction="#showQuoteOverview" text="Quote Overview" />
+                  <MenuItem fx:id="addQuote" mnemonicParsing="false" onAction="#showAddQuote" text="Add Quote" />
+                  <MenuItem fx:id="addExpense" mnemonicParsing="false" onAction="#showAddEditExpense" text="Add Expense" />
+                  <MenuItem fx:id="invitation" mnemonicParsing="false" onAction="#showInvitations" text="Invitation" />
+                  <MenuItem fx:id="openDebts" mnemonicParsing="false" onAction="#showOpenDebts" text="Open Debts" />
+                  <MenuItem fx:id="statistics" mnemonicParsing="false" onAction="#showStatistics" text="Statistics" />
+                  <MenuItem fx:id="eventOverview" mnemonicParsing="false" onAction="#showEventOverview" text="Event Overview" />
             </items>
           </Menu>
         </menus>
