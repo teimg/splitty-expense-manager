@@ -5,58 +5,80 @@ import commons.Participant;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class DebtorSelector {
 
+    private List<Participant> participants;
     private Set<Participant> debitors;
 
     /**
      * Creates debtor selector for the add/edit Expenses
      */
-    public DebtorSelector() {
+    public DebtorSelector(List<Participant> participants) {
+        this.participants = participants;
+        this.debitors = new HashSet<>();
     }
 
+    /**
+     * get the participant from list of participant
+     * @param participantName name of participant
+     * @return participant
+     */
+
+    private Participant getParticipant(String participantName){
+
+        for(Participant x : participants){
+            if(x.getName().equals(participantName)){
+                return  x;
+            }
+        }
+
+        throw new  IllegalArgumentException();
+    }
 
     /**
      * Add one participant to the debitors list
-     * @param participant
+     * @param participant participants name that needs to be added to debitors list
      */
-    public void add(Participant participant){
+    public void add(String participant){
         if(participant == null){
             return;
         }
-        debitors.add(participant);
+        debitors.add(getParticipant(participant));
     }
 
     /**
-     * All particepatns get added to debitors list
-     * @param participants that get added to the list
+     * Add all particapents to
      */
-    public void addAll(List<Participant> participants){
-        if (participants == null){
-            return;
-        }
-        debitors.addAll(participants);
+    public void addAll(){
+        this.debitors.addAll(participants);
     }
 
     /**
      * removes a participant
      * @param participant that gets unchecked in the add menu
      */
-    public void remove(Participant participant){
-        debitors.remove(participant);
+    public void remove(String participant){
+        if(participant == null){
+            return;
+        }
+        debitors.remove(getParticipant(participant));
     }
 
     /**
-     *
-     * @param participants that need to be removed (if they all get removed at once)
+     * Removes all debitors
      */
-    public void removeAll(List<Participant> participants){
-        for (Participant x : participants){
-            participants.remove(x);
-        }
+    public void removeAll(){
+        this.debitors = new HashSet<Participant>();
+    }
+
+    public List<Participant> getDebitors(){
+
+        return new ArrayList<>(debitors);
     }
 
 
