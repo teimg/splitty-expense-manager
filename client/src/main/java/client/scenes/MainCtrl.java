@@ -143,7 +143,7 @@ public class MainCtrl {
     }
 
     public void showContactInfo(){
-        primaryStage.setTitle("Statistics");
+        primaryStage.setTitle("Contact Information");
         primaryStage.setScene(contactInfo);
     }
 
