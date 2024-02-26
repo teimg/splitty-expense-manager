@@ -72,6 +72,9 @@ public class StartScreenCtrl {
     public void showStatistics(ActionEvent actionEvent) {
         mainCtrl.showStatistics();
     }
+    public void showContactInfo(ActionEvent actionEvent) {
+        mainCtrl.showContactInfo();
+    }
 
     public void showEventOverview(ActionEvent actionEvent) {
         // TODO: Fix event overview then this can be implemented

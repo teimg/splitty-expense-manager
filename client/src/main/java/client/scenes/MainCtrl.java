@@ -47,6 +47,10 @@ public class MainCtrl {
     private StatisticsScreenCtrl statisticsScreenCtrl;
     private Scene statistics;
 
+    private ContactInfoCtrl contactInfoCtrl;
+    private Scene contactInfo;
+
+
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
@@ -65,6 +69,8 @@ public class MainCtrl {
                 sceneMap.get("StartScreenCtrl");
         Pair<StatisticsScreenCtrl, Parent> stats = (Pair<StatisticsScreenCtrl, Parent>)
                 sceneMap.get("StatisticsScreenCtrl");
+        Pair<ContactInfoCtrl, Parent>  contactInfo = (Pair<ContactInfoCtrl, Parent>)
+            sceneMap.get("ContactInfoCtrl");
 
         this.overviewCtrl = over.getKey();
         this.overview = new Scene(over.getValue());
@@ -86,6 +92,9 @@ public class MainCtrl {
 
         this.statisticsScreenCtrl = stats.getKey();
         this.statistics = new Scene(stats.getValue());
+
+        this.contactInfoCtrl = contactInfo.getKey();
+        this.contactInfo = new Scene(contactInfo.getValue());
 
         showStartScreen();
         primaryStage.show();
@@ -131,6 +140,11 @@ public class MainCtrl {
     public void showStatistics() {
         primaryStage.setTitle("Statistics");
         primaryStage.setScene(statistics);
+    }
+
+    public void showContactInfo(){
+        primaryStage.setTitle("Statistics");
+        primaryStage.setScene(contactInfo);
     }
 
 
