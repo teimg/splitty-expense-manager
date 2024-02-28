@@ -30,5 +30,26 @@ public class ExpenseController {
         return repo.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Expense> getExpenseById(@PathVariable long id) {
+        Optional<Expense> expense = repo.findById(id);
+        return expense.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Expense> updateExpense(@PathVariable long id, @RequestBody Expense expenseDetails) {
+        Optional<Expense> expenseData = repo.findById(id);
+        if (expenseData.isPresent()) {
+            Expense expense = expenseData.get();
+            expense.setEvent(expenseDetails.getEvent());
+            expense.setPurchase(expenseDetails.getPurchase());
+            expense.setAmount(expenseDetails.getAmount());
+            expense.setPayer(expenseDetails.getPayer());
+            expense.setDebtors(expenseDetails.getDebtors());
+            Expense updatedExpense = repo.save(expense);
+            return ResponseEntity.ok(updatedExpense);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
