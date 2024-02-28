@@ -21,9 +21,9 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Language">
             <items>
-                <MenuItem mnemonicParsing="false" text="English" />
-                <MenuItem mnemonicParsing="false" text="Dutch" />
-                <MenuItem mnemonicParsing="false" text="French" />
+                <MenuItem fx:id="englishButton" mnemonicParsing="false" onAction="#setEnglish" text="English" />
+                <MenuItem fx:id="dutchButton" mnemonicParsing="false" onAction="#setDutch" text="Dutch" />
+                <MenuItem fx:id="frenchButton" mnemonicParsing="false" onAction="#setFrench" text="French" />
             </items>
         </Menu>
     </menus>

@@ -10,6 +10,15 @@ import javafx.scene.control.TextField;
 public class MenuBarCtrl {
 
     @FXML
+    private MenuItem englishButton;
+
+    @FXML
+    private MenuItem dutchButton;
+
+    @FXML
+    private MenuItem frenchButton;
+
+    @FXML
     private MenuItem quoteOverview;
 
     @FXML
@@ -81,4 +90,13 @@ public class MenuBarCtrl {
         // TODO: Fix event overview then this can be implemented
     }
 
+    // TODO: Decide on implementation of languages (where to store it - probably in main controller)
+    public void setEnglish(ActionEvent actionEvent) {
+    }
+
+    public void setDutch(ActionEvent actionEvent) {
+    }
+
+    public void setFrench(ActionEvent actionEvent) {
+    }
 }
