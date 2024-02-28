@@ -4,11 +4,14 @@ import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
 public class StartScreenCtrl {
 
+    @FXML
+    private MenuBar menuBar;
     @FXML
     private MenuItem quoteOverview;
 

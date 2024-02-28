@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.util.Pair;
 
 import java.net.URL;
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class StatisticsScreenCtrl implements Initializable {
+
+    @FXML
+    private MenuBar menuBar;
 
     @FXML
     private PieChart pieChart;
