@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 public class MenuBarCtrl {
 
     @FXML
+    private MenuItem startScreen;
+
+    @FXML
     private MenuItem englishButton;
 
     @FXML
@@ -64,6 +67,10 @@ public class MenuBarCtrl {
 
     public void showAddQuote(ActionEvent actionEvent) {
         mainCtrl.showAdd();
+    }
+
+    public void showStartScreen(ActionEvent actionEvent) {
+        mainCtrl.showStartScreen();
     }
 
     public void showAddEditExpense(ActionEvent actionEvent) {

@@ -11,6 +11,7 @@
             <items>
                 <MenuItem fx:id="quoteOverview" mnemonicParsing="false" onAction="#showQuoteOverview" text="Quote Overview" />
                 <MenuItem fx:id="addQuote" mnemonicParsing="false" onAction="#showAddQuote" text="Add Quote" />
+                <MenuItem fx:id="startScreen" mnemonicParsing="false" onAction="#showStartScreen" text="Start Screen" />
                 <MenuItem fx:id="addExpense" mnemonicParsing="false" onAction="#showAddEditExpense" text="Add Expense" />
                 <MenuItem fx:id="invitation" mnemonicParsing="false" onAction="#showInvitations" text="Invitation" />
                 <MenuItem fx:id="openDebts" mnemonicParsing="false" onAction="#showOpenDebts" text="Open Debts" />
