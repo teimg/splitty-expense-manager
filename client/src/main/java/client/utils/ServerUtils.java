@@ -32,7 +32,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
-    private static final String SERVER = "http://localhost:8080/";
+    private static final String SERVER = new ClientConfiguration().getServer();
 
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {
         var url = new URI("http://localhost:8080/api/quotes").toURL();
