@@ -7,7 +7,6 @@ import server.database.ExpenseRepository;
 import commons.Expense;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,8 +37,7 @@ public class ExpenseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense>
-    updateExpense(@PathVariable long id, @RequestBody Expense expenseDetails) {
+    public ResponseEntity<Expense> updateExpense(@PathVariable long id, @RequestBody Expense expenseDetails) {
         Optional<Expense> expenseData = repo.findById(id);
         if (expenseData.isPresent()) {
             Expense expense = expenseData.get();
@@ -62,51 +60,4 @@ public class ExpenseController {
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-    @GetMapping("/filter")
-    public ResponseEntity<List<Expense>> getExpensesByCriteria(
-            @RequestParam(value = "eventId", required = false) Long eventId) {
-        List<Expense> expenses;
-        if (eventId != null) {
-            expenses = repo.findByEventId(eventId);
-        } else {
-            expenses = repo.findAll();
-        }
-        return ResponseEntity.ok(expenses);
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<Expense>
-    partialUpdateExpense(@PathVariable long id, @RequestBody Map<String, Object> updates) {
-        Optional<Expense> expenseData = repo.findById(id);
-        if (expenseData.isPresent()) {
-            Expense expense = expenseData.get();
-            updates.forEach((key, value) -> {
-                switch (key) {
-                    case "event":
-                        // Assuming Event is passed by ID or another simple identifier
-                        // You need to fetch the Event entity and set it here
-                        break;
-                    case "purchase":
-                        expense.setPurchase((String) value);
-                        break;
-                    case "amount":
-                        expense.setAmount((Double) value);
-                        break;
-                    case "payer":
-                        // Similar to "event", fetch and set the payer Participant entity
-                        break;
-                    case "debtors":
-                        // Handle updating the list of debtors appropriately
-                        break;
-                    // Add more case statements as needed
-                }
-            });
-            Expense updatedExpense = repo.save(expense);
-            return ResponseEntity.ok(updatedExpense);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }
