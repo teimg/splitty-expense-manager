@@ -4,14 +4,23 @@ import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
-public class StartScreenCtrl {
+public class MenuBarCtrl {
 
     @FXML
-    private MenuBar menuBar;
+    private MenuItem startScreen;
+
+    @FXML
+    private MenuItem englishButton;
+
+    @FXML
+    private MenuItem dutchButton;
+
+    @FXML
+    private MenuItem frenchButton;
+
     @FXML
     private MenuItem quoteOverview;
 
@@ -48,7 +57,7 @@ public class StartScreenCtrl {
     private final MainCtrl mainCtrl;
 
     @Inject
-    public StartScreenCtrl(MainCtrl mainCtrl) {
+    public MenuBarCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
 
@@ -58,6 +67,10 @@ public class StartScreenCtrl {
 
     public void showAddQuote(ActionEvent actionEvent) {
         mainCtrl.showAdd();
+    }
+
+    public void showStartScreen(ActionEvent actionEvent) {
+        mainCtrl.showStartScreen();
     }
 
     public void showAddEditExpense(ActionEvent actionEvent) {
@@ -75,11 +88,22 @@ public class StartScreenCtrl {
     public void showStatistics(ActionEvent actionEvent) {
         mainCtrl.showStatistics();
     }
+
     public void showContactInfo(ActionEvent actionEvent) {
         mainCtrl.showContactInfo();
     }
 
     public void showEventOverview(ActionEvent actionEvent) {
         // TODO: Fix event overview then this can be implemented
+    }
+
+    // TODO: Decide on implementation of languages (where to store it - probably in main controller)
+    public void setEnglish(ActionEvent actionEvent) {
+    }
+
+    public void setDutch(ActionEvent actionEvent) {
+    }
+
+    public void setFrench(ActionEvent actionEvent) {
     }
 }

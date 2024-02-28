@@ -27,6 +27,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -37,6 +38,8 @@ public class QuoteOverviewCtrl implements Initializable {
 
     private ObservableList<Quote> data;
 
+    @FXML
+    private MenuBar menuBar;
     @FXML
     private TableView<Quote> table;
     @FXML
