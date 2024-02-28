@@ -60,10 +60,12 @@ public class ExpenseController {
      * Updates an existing expense with new details.
      * @param id the ID of the expense to update
      * @param expenseDetails the new details to update the expense with
-     * @return the updated expense if the operation was successful, or a {@link ResponseEntity} with not found status
+     * @return the updated expense if the operation was successful,
+     * or a {@link ResponseEntity} with not found status
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable long id, @RequestBody Expense expenseDetails) {
+    public ResponseEntity<Expense>
+    updateExpense(@PathVariable long id, @RequestBody Expense expenseDetails) {
         Optional<Expense> expenseData = repo.findById(id);
         if (expenseData.isPresent()) {
             Expense expense = expenseData.get();
@@ -113,10 +115,12 @@ public class ExpenseController {
      * Performs a partial update on an expense, updating only specified fields.
      * @param id the ID of the expense to update
      * @param updates a map of the fields to update and their new values
-     * @return the updated expense if found and updated, or a {@link ResponseEntity} with not found status
+     * @return the updated expense if found and updated,
+     * or a {@link ResponseEntity} with not found status
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Expense> partialUpdateExpense(@PathVariable long id, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<Expense>
+    partialUpdateExpense(@PathVariable long id, @RequestBody Map<String, Object> updates) {
         Optional<Expense> expenseData = repo.findById(id);
         if (expenseData.isPresent()) {
             Expense expense = expenseData.get();
