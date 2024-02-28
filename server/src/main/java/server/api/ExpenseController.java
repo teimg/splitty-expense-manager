@@ -15,11 +15,20 @@ public class ExpenseController {
     @Autowired
     private final ExpenseRepository repo;
 
-    /**
-     * constructor for expense controller
-     * @param repo expense repository
-     */
+    @Autowired
     public ExpenseController(ExpenseRepository repo) {
         this.repo = repo;
     }
+
+    @PostMapping
+    public Expense createExpense(@RequestBody Expense expense) {
+        return repo.save(expense);
+    }
+
+    @GetMapping
+    public List<Expense> getAllExpenses() {
+        return repo.findAll();
+    }
+
+
 }
