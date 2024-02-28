@@ -52,4 +52,12 @@ public class ExpenseController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteExpense(@PathVariable long id) {
+        return repo.findById(id).map(expense -> {
+            repo.deleteById(id);
+            return ResponseEntity.ok().build();
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
