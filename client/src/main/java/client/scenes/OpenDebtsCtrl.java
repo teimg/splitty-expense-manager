@@ -2,10 +2,7 @@ package client.scenes;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,6 +31,9 @@ public class OpenDebtsCtrl implements Initializable {
         public DebtEntry() {}
 
     }
+
+    @FXML
+    private MenuBar menuBar;
 
     @FXML
     private Label noDebtMessage;

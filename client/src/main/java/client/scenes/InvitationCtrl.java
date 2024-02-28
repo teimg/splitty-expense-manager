@@ -2,6 +2,7 @@ package client.scenes;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 
@@ -9,6 +10,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InvitationCtrl implements Initializable {
+
+    @FXML
+    private MenuBar menuBar;
+
     @FXML
     private Text eventTitle;
 

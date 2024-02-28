@@ -7,11 +7,7 @@ import commons.Participant;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -22,6 +18,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddEditExpenseCtrl  implements Initializable {
+
+    @FXML
+    private MenuBar menuBar;
 
     @FXML
     private Button abortButton;
