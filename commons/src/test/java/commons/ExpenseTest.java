@@ -2,6 +2,9 @@ package commons;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 public class ExpenseTest {
@@ -15,7 +18,7 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
+        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
 
         assertEquals(1, expense.getId());
         assertEquals(event, expense.getEvent());
@@ -33,10 +36,10 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 6, 7));
-        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors,new Date(2024, 6, 7));
-        Expense expense3 = new Expense(2, event, "Pizza", 30.0, payer, debtors, new Date(2024, 6, 7));
-        Expense expense4 = new Expense(2, event, "Pizza", 30.0, payer, debtors, new Date(2024, 6, 8));
+        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
+        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors,LocalDate.of(2024, Month.APRIL, 1));
+        Expense expense3 = new Expense(2, event, "Pizza", 30.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
+        Expense expense4 = new Expense(2, event, "Pizza", 30.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 2));
 
         assertEquals(expense1, expense2);
         assertNotEquals(expense1, expense3);
@@ -51,8 +54,8 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
-        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
+        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
+        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
 
         assertEquals(expense1.hashCode(), expense2.hashCode());
     }
@@ -65,7 +68,7 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
+        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
         String expenseString = expense.toString();
         assertTrue(expenseString.contains("Cake"));
         assertTrue(expenseString.contains("50.0"));

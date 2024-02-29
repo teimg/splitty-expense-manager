@@ -18,7 +18,7 @@ public class ExpenseBuilder {
     private Participant payer;
     private List<Participant> debtors;
 
-    private Date date;
+    private LocalDate date;
 
     public ExpenseBuilder() {
     }
@@ -26,7 +26,7 @@ public class ExpenseBuilder {
     public Expense build(){
         double expenseAmount = amount / 100.0;
 
-        return  new Expense(id, event, purchase, expenseAmount, payer, debtors, new Date());
+        return  new Expense(id, event, purchase, expenseAmount, payer, debtors, date);
     }
 
     public int getId() {
@@ -77,11 +77,11 @@ public class ExpenseBuilder {
         this.debtors = debtors;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

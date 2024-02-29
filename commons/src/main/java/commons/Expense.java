@@ -2,6 +2,7 @@ package commons;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Expense {
     private Participant payer;
     @ManyToMany
     private List<Participant> debtors;
-    private Date date;
+    private LocalDate date;
 
     /**
      * Constructs a new Expense with the specified details.
@@ -37,7 +38,7 @@ public class Expense {
      * @param debtors  the list of participants who owe a share of the expense
      */
     public Expense(int id, Event event, String purchase, double amount,
-                   Participant payer, List<Participant> debtors, Date date) {
+                   Participant payer, List<Participant> debtors, LocalDate date) {
         this.id = id;
         this.event = event;
         this.purchase = purchase;
@@ -93,6 +94,14 @@ public class Expense {
 
     public void setDebtors(List<Participant> debtors) {
         this.debtors = debtors;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override
