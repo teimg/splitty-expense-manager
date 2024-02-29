@@ -111,6 +111,7 @@ public class MainCtrl {
 
     public void showOverview() {
         currentCtrl = overviewCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
@@ -118,6 +119,7 @@ public class MainCtrl {
 
     public void showAdd() {
         currentCtrl = addCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Quotes: Add Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
@@ -130,36 +132,42 @@ public class MainCtrl {
 
     public void showAddEditExpense() {
         currentCtrl = addEditExpenseCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addEdit);
     }
 
     public void showInvitation() {
         currentCtrl = invitationCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
     }
 
     public void showOpenDebts() {
         currentCtrl = openDebtsCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Open Debts");
         primaryStage.setScene(openDebts);
     }
 
     public void showStartScreen() {
         currentCtrl = startScreenCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Start Screen");
         primaryStage.setScene(start);
     }
 
     public void showStatistics() {
         currentCtrl = statisticsScreenCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Statistics");
         primaryStage.setScene(statistics);
     }
 
     public void showContactInfo(){
         currentCtrl = contactInfoCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Contact Information");
         primaryStage.setScene(contactInfo);
     }

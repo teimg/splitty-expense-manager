@@ -3,35 +3,21 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class StartScreenCtrl implements LanguageSwitch {
 
     @FXML
+    private Label createNewEventLabel;
+
+    @FXML
+    private Label joinEventLabel;
+
+    @FXML
+    private Label recentlyViewedEventsLabel;
+
+    @FXML
     private MenuBar menuBar;
-    @FXML
-    private MenuItem quoteOverview;
-
-    @FXML
-    private MenuItem addQuote;
-
-    @FXML
-    private MenuItem invitation;
-
-    @FXML
-    private MenuItem openDebts;
-
-    @FXML
-    private MenuItem statistics;
-
-    @FXML
-    private MenuItem eventOverview;
-
-    @FXML
-    private MenuItem addExpense;
 
     @FXML
     private TextField newEventField;
@@ -54,6 +40,19 @@ public class StartScreenCtrl implements LanguageSwitch {
 
     @Override
     public void setLanguage() {
-
+        createNewEventLabel.setText(mainCtrl.translator.getTranslation(
+                "StartScreen.Create-New-Event-label"));
+        joinEventLabel.setText(mainCtrl.translator.getTranslation(
+                "StartScreen.Join-Event-label"
+        ));
+        recentlyViewedEventsLabel.setText(mainCtrl.translator.getTranslation(
+                "StartScreen.Recently-Viewed-label"
+        ));
+        createEventButton.setText(mainCtrl.translator.getTranslation(
+                "StartScreen.Create-Event-Button"
+        ));
+        joinEventButton.setText(mainCtrl.translator.getTranslation(
+                "StartScreen.Join-Event-Button"
+        ));
     }
 }

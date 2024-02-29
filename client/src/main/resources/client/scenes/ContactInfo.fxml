@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ContactInfoCtrl">
     <children>
-        <fx:include fx:id="menuBar" source="MenuBar.fxml"/>
+        <fx:include fx:id="menuBar" source="MenuBar.fxml" />
         <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
             <children>
                 <HBox maxHeight="100.0" VBox.vgrow="ALWAYS" />
@@ -21,7 +21,7 @@
                         <HBox HBox.hgrow="ALWAYS" />
                         <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <Label layoutX="67.0" layoutY="59.0" prefHeight="29.0" prefWidth="478.0" style="-fx-font-weight: bold;" text="Add/Edit contact details">
+                                <Label fx:id="titleLabel" layoutX="67.0" layoutY="59.0" prefHeight="29.0" prefWidth="478.0" style="-fx-font-weight: bold;" text="Add/Edit contact details">
                                     <font>
                                         <Font size="20.0" />
                                     </font>
@@ -30,7 +30,7 @@
                            </VBox.margin></Label>
                                 <HBox prefHeight="26.0" prefWidth="480.0">
                                     <children>
-                                        <Label prefHeight="22.0" prefWidth="287.0" text="Name">
+                                        <Label fx:id="nameLabel" prefHeight="22.0" prefWidth="287.0" text="Name">
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
@@ -42,7 +42,7 @@
                            </VBox.margin></HBox>
                                 <HBox prefHeight="26.0" prefWidth="480.0">
                                     <children>
-                                        <Label prefHeight="22.0" prefWidth="287.0" text="Email">
+                                        <Label fx:id="emailLabel" prefHeight="22.0" prefWidth="287.0" text="Email">
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
@@ -54,7 +54,7 @@
                                     </VBox.margin></HBox>
                                 <HBox prefHeight="26.0" prefWidth="480.0">
                                     <children>
-                                        <Label prefHeight="22.0" prefWidth="287.0" text="IBAN">
+                                        <Label fx:id="ibanLabel" prefHeight="22.0" prefWidth="287.0" text="IBAN">
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
@@ -66,7 +66,7 @@
                                     </VBox.margin></HBox>
                                 <HBox prefHeight="26.0" prefWidth="480.0">
                                     <children>
-                                        <Label prefHeight="22.0" prefWidth="287.0" text="BIC">
+                                        <Label fx:id="bicLabel" prefHeight="22.0" prefWidth="287.0" text="BIC">
                                             <font>
                                                 <Font size="16.0" />
                                             </font>
