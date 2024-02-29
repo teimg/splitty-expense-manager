@@ -48,6 +48,10 @@ public class Popup extends Dialog<String> {
     private int width;
     private int height;
 
+    /**
+     * Init label of dialog
+     */
+
     private void initLabel(){
 
         Image image = new Image("file:client/src/main/resources/client/icons/error.png", true);
@@ -64,6 +68,9 @@ public class Popup extends Dialog<String> {
         this.label.setGraphicTextGap(20);
     }
 
+    /**
+     * Init dialog pane
+     */
     private void initDialogPane(){
         this.dialogPane = new DialogPane();
         this.dialogPane.setContent(label);
@@ -78,6 +85,9 @@ public class Popup extends Dialog<String> {
         this.setDialogPane(dialogPane);
     }
 
+    /**
+     * Init dialog popu
+     */
     private void initPopup(){
         this.setResizable(false);
         this.setResult("");
@@ -89,6 +99,12 @@ public class Popup extends Dialog<String> {
     }
 
 
+    /**
+     * Create a popup object extneding from Dialog
+     * call popup.show() to show the Dialog/popup
+     * @param msg the string to be displayed in the dialog
+     * @param type The type of dialog is either Popup.TYPE.ERROR or Popup.TYPE.INFO
+     */
     public Popup(String msg, Popup.TYPE type) {
         this.type = type;
         this.msg = msg;
