@@ -1,7 +1,8 @@
 package commons;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -10,6 +11,10 @@ import java.util.Objects;
  * The Participant class represents a person
  * that is involved in an event
  */
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Participant {
     @Id
@@ -18,7 +23,6 @@ public class Participant {
     private String name;
     @OneToOne
     private BankAccount bankAccount;
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
 
