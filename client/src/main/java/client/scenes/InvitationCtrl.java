@@ -1,8 +1,10 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
@@ -11,6 +13,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InvitationCtrl implements Initializable, LanguageSwitch {
+
+    @FXML
+    private Text inviteLabel;
+
+    @FXML
+    private Button sendInviteButton;
 
     @FXML
     private MenuBar menuBar;
@@ -23,6 +31,13 @@ public class InvitationCtrl implements Initializable, LanguageSwitch {
 
     @FXML
     private TextArea addressesArea;
+
+    private final MainCtrl mainCtrl;
+
+    @Inject
+    public InvitationCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * Called to initialize a controller after its root element has been
@@ -53,6 +68,11 @@ public class InvitationCtrl implements Initializable, LanguageSwitch {
 
     @Override
     public void setLanguage() {
-
+        inviteMessage.setText(mainCtrl.getTranslator().getTranslation(
+                "Invitation.Invite-Message-label"));
+        inviteLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "Invitation.Invite-label"));
+        sendInviteButton.setText(mainCtrl.getTranslator().getTranslation(
+                "Invitation.Send-Invite-Button"));
     }
 }
