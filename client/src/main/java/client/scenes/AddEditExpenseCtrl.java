@@ -59,7 +59,7 @@ public class AddEditExpenseCtrl  implements Initializable {
 
     private DebtorSelector debtorSelector;
 
-    private class Innercheckbox{
+    private static class Innercheckbox{
         private  CheckBox checkBox;
 
         /**

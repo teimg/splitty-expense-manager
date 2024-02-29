@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,18 +43,6 @@ public class MenuBarCtrl {
     @FXML
     private MenuItem addExpense;
 
-    @FXML
-    private TextField newEventField;
-
-    @FXML
-    private TextField joinEventField;
-
-    @FXML
-    private Button createEventButton;
-
-    @FXML
-    private Button joinEventButton;
-
     private final MainCtrl mainCtrl;
 
     @Inject
@@ -93,17 +82,17 @@ public class MenuBarCtrl {
         mainCtrl.showContactInfo();
     }
 
-    public void showEventOverview(ActionEvent actionEvent) {
-        // TODO: Fix event overview then this can be implemented
-    }
+    public void showEventOverview(ActionEvent actionEvent) {}
 
-    // TODO: Decide on implementation of languages (where to store it - probably in main controller)
     public void setEnglish(ActionEvent actionEvent) {
+        mainCtrl.updateLanguage("english");
     }
 
     public void setDutch(ActionEvent actionEvent) {
+        mainCtrl.updateLanguage("dutch");
     }
 
     public void setFrench(ActionEvent actionEvent) {
+        mainCtrl.updateLanguage("french");
     }
 }

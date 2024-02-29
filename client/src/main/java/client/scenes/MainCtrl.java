@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+import client.language.LanguageSwitch;
+import client.language.Translator;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 public class MainCtrl {
 
     private Stage primaryStage;
+    public Translator translator;
 
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
@@ -44,16 +47,20 @@ public class MainCtrl {
     private StartScreenCtrl startScreenCtrl;
     private Scene start;
 
-    private StatisticsScreenCtrl statisticsScreenCtrl;
+    public StatisticsScreenCtrl statisticsScreenCtrl;
     private Scene statistics;
 
     private ContactInfoCtrl contactInfoCtrl;
     private Scene contactInfo;
 
+    private LanguageSwitch currentCtrl;
+
 
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
+
+        this.translator = new Translator("english");
 
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
                 sceneMap.get("QuoteOverviewCtrl");
@@ -95,6 +102,8 @@ public class MainCtrl {
 
         this.contactInfoCtrl = contactInfo.getKey();
         this.contactInfo = new Scene(contactInfo.getValue());
+
+        this.currentCtrl = startScreenCtrl;
 
         showStartScreen();
         primaryStage.show();
@@ -138,6 +147,7 @@ public class MainCtrl {
     }
 
     public void showStatistics() {
+        currentCtrl = statisticsScreenCtrl;
         primaryStage.setTitle("Statistics");
         primaryStage.setScene(statistics);
     }
@@ -147,5 +157,9 @@ public class MainCtrl {
         primaryStage.setScene(contactInfo);
     }
 
+    public void updateLanguage(String s) {
+        translator.setCurrentLanguage(s);
+        currentCtrl.setLanguage();
+    }
 
 }

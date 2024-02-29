@@ -1,14 +1,14 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import com.google.inject.Inject;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
-public class StartScreenCtrl {
+public class StartScreenCtrl implements LanguageSwitch {
 
     @FXML
     private MenuBar menuBar;
@@ -52,34 +52,8 @@ public class StartScreenCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void showQuoteOverview(ActionEvent actionEvent) {
-        mainCtrl.showOverview();
-    }
+    @Override
+    public void setLanguage() {
 
-    public void showAddQuote(ActionEvent actionEvent) {
-        mainCtrl.showAdd();
-    }
-
-    public void showAddEditExpense(ActionEvent actionEvent) {
-        mainCtrl.showAddEditExpense();
-    }
-
-    public void showInvitations(ActionEvent actionEvent) {
-        mainCtrl.showInvitation();
-    }
-
-    public void showOpenDebts(ActionEvent actionEvent) {
-        mainCtrl.showOpenDebts();
-    }
-
-    public void showStatistics(ActionEvent actionEvent) {
-        mainCtrl.showStatistics();
-    }
-    public void showContactInfo(ActionEvent actionEvent) {
-        mainCtrl.showContactInfo();
-    }
-
-    public void showEventOverview(ActionEvent actionEvent) {
-        // TODO: Fix event overview then this can be implemented
     }
 }
