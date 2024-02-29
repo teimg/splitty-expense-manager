@@ -110,12 +110,14 @@ public class MainCtrl {
     }
 
     public void showOverview() {
+        currentCtrl = overviewCtrl;
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
 
     public void showAdd() {
+        currentCtrl = addCtrl;
         primaryStage.setTitle("Quotes: Add Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
@@ -127,21 +129,25 @@ public class MainCtrl {
      */
 
     public void showAddEditExpense() {
+        currentCtrl = addEditExpenseCtrl;
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addEdit);
     }
 
     public void showInvitation() {
+        currentCtrl = invitationCtrl;
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
     }
 
     public void showOpenDebts() {
+        currentCtrl = openDebtsCtrl;
         primaryStage.setTitle("Open Debts");
         primaryStage.setScene(openDebts);
     }
 
     public void showStartScreen() {
+        currentCtrl = startScreenCtrl;
         primaryStage.setTitle("Start Screen");
         primaryStage.setScene(start);
     }
@@ -153,6 +159,7 @@ public class MainCtrl {
     }
 
     public void showContactInfo(){
+        currentCtrl = contactInfoCtrl;
         primaryStage.setTitle("Contact Information");
         primaryStage.setScene(contactInfo);
     }

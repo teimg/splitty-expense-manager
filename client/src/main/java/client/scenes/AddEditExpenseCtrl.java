@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import client.utils.DebtorSelector;
 import client.utils.ExpenseBuilder;
 import commons.Expense;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddEditExpenseCtrl  implements Initializable {
+public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
 
     @FXML
     private MenuBar menuBar;
@@ -58,6 +59,11 @@ public class AddEditExpenseCtrl  implements Initializable {
     private ExpenseBuilder expenseBuilder;
 
     private DebtorSelector debtorSelector;
+
+    @Override
+    public void setLanguage() {
+
+    }
 
     private static class Innercheckbox{
         private  CheckBox checkBox;

@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuBar;
@@ -9,7 +10,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InvitationCtrl implements Initializable {
+public class InvitationCtrl implements Initializable, LanguageSwitch {
 
     @FXML
     private MenuBar menuBar;
@@ -49,4 +50,9 @@ public class InvitationCtrl implements Initializable {
      * Called on press of the Send Invites button.
      */
     public void handleSendInvites() {}
+
+    @Override
+    public void setLanguage() {
+
+    }
 }

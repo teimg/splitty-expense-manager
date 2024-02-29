@@ -1,12 +1,13 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 
-public class ContactInfoCtrl {
+public class ContactInfoCtrl implements LanguageSwitch {
 
     @FXML
     private MenuBar menuBar;
@@ -39,4 +40,8 @@ public class ContactInfoCtrl {
 
     }
 
+    @Override
+    public void setLanguage() {
+
+    }
 }

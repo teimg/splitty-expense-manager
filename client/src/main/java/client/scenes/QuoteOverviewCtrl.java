@@ -18,6 +18,7 @@ package client.scenes;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -31,7 +32,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class QuoteOverviewCtrl implements Initializable {
+public class QuoteOverviewCtrl implements Initializable, LanguageSwitch {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -73,5 +74,10 @@ public class QuoteOverviewCtrl implements Initializable {
         var quotes = server.getQuotes();
         data = FXCollections.observableList(quotes);
         table.setItems(data);
+    }
+
+    @Override
+    public void setLanguage() {
+
     }
 }

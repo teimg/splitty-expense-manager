@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -9,7 +10,12 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class OpenDebtsCtrl implements Initializable {
+public class OpenDebtsCtrl implements Initializable, LanguageSwitch {
+
+    @Override
+    public void setLanguage() {
+
+    }
 
     private static class DebtEntry {
 

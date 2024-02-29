@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -28,7 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
-public class AddQuoteCtrl {
+public class AddQuoteCtrl implements LanguageSwitch {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -96,5 +97,10 @@ public class AddQuoteCtrl {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void setLanguage() {
+
     }
 }
