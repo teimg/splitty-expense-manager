@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import server.database.ParticipantRepository;
 
 @RestController
-@RequestMapping("/api/participant")
+@RequestMapping("/api/participants")
 public class ParticipantController {
     private final ParticipantRepository repo;
 
@@ -16,6 +16,8 @@ public class ParticipantController {
     public ParticipantController(ParticipantRepository repo) {
         this.repo = repo;
     }
+
+
 
 
 }
