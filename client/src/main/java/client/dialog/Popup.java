@@ -53,7 +53,7 @@ public class Popup extends Dialog<String> {
 
     private void initLabel(){
 
-        Image image = new Image("file:client/src/main/resources/client/icons/error.png", true);
+        Image image = type.getImage();
 
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(imageSize);
