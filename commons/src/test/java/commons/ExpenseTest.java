@@ -15,7 +15,7 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors);
+        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
 
         assertEquals(1, expense.getId());
         assertEquals(event, expense.getEvent());
@@ -33,12 +33,14 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors);
-        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors);
-        Expense expense3 = new Expense(2, event, "Pizza", 30.0, payer, debtors);
+        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 6, 7));
+        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors,new Date(2024, 6, 7));
+        Expense expense3 = new Expense(2, event, "Pizza", 30.0, payer, debtors, new Date(2024, 6, 7));
+        Expense expense4 = new Expense(2, event, "Pizza", 30.0, payer, debtors, new Date(2024, 6, 8));
 
         assertEquals(expense1, expense2);
         assertNotEquals(expense1, expense3);
+        assertNotEquals(expense3, expense4);
     }
 
     @Test
@@ -49,8 +51,8 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors);
-        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors);
+        Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
+        Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
 
         assertEquals(expense1.hashCode(), expense2.hashCode());
     }
@@ -63,7 +65,7 @@ public class ExpenseTest {
                 new Participant("Alice")
         );
         Event event = new Event(1, "Birthday Party", "INV123", debtors,new Date(), new Date());
-        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors);
+        Expense expense = new Expense(1, event, "Cake", 50.0, payer, debtors, new Date(2024, 1, 7));
         String expenseString = expense.toString();
         assertTrue(expenseString.contains("Cake"));
         assertTrue(expenseString.contains("50.0"));
