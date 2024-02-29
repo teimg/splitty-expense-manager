@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
+import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
@@ -11,7 +13,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class StatisticsScreenCtrl implements Initializable {
+public class StatisticsScreenCtrl implements Initializable, LanguageSwitch {
+
+
+    @FXML
+    private Label statisticsLabel;
 
     @FXML
     private MenuBar menuBar;
@@ -21,6 +27,13 @@ public class StatisticsScreenCtrl implements Initializable {
 
     @FXML
     private Label totalCostLabel;
+
+    private final MainCtrl mainCtrl;
+
+    @Inject
+    public StatisticsScreenCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * Called to initialize a controller after its root element has been
@@ -73,4 +86,15 @@ public class StatisticsScreenCtrl implements Initializable {
         }
 
     }
+
+    @Override
+    public void setLanguage() {
+        statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Title-label"));
+        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Total-Cost-label"));
+        pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.PieChart-Title"));
+    }
+
 }

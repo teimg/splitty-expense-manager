@@ -15,10 +15,11 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    @Embedded
+    @OneToOne
     private BankAccount bankAccount;
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
+    private String email;
 
     /**
      * Constructs a participant with a given name
@@ -26,6 +27,11 @@ public class Participant {
      */
     public Participant(String name) {
         this.name = name;
+    }
+
+    public Participant(String name, String email) {
+        this.name = name;
+        this.email = email;
     }
 
     /**
@@ -65,6 +71,14 @@ public class Participant {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

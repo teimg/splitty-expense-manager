@@ -22,7 +22,7 @@ public class BankAccountController {
         return repo.findAll();
     }
 
-    @GetMapping(path = {"{/personId}"})
+    @GetMapping(path = {"/personId"})
     public ResponseEntity<BankAccount> getById(@PathVariable("personId") long id) {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();

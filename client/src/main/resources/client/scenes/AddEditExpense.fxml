@@ -16,7 +16,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AddEditExpenseCtrl">
     <children>
-        <fx:include fx:id="menuBar" source="MenuBar.fxml"/>
+        <fx:include fx:id="menuBar" source="MenuBar.fxml" />
         <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
             <children>
                 <HBox maxHeight="100.0" VBox.vgrow="ALWAYS" />
@@ -28,7 +28,7 @@
                                 <AnchorPane prefHeight="374.0" prefWidth="600.0">
                            <children>
                                <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
-                                   <Label layoutX="47.0" layoutY="60.0" style="-fx-font-weight: bold;" text="add/Edit  Expenses">
+                                   <Label fx:id="titleLabel" layoutX="47.0" layoutY="60.0" style="-fx-font-weight: bold;" text="add/Edit  Expenses">
                                     <font>
                                        <Font size="30.0" />
                                     </font>
@@ -36,7 +36,7 @@
                                  <Separator prefWidth="200.0" />
                                    <HBox layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
                                        <children>
-                                           <Label prefHeight="18.0" prefWidth="353.0" text="Who paid?">
+                                           <Label fx:id="whoPaidLabel" prefHeight="18.0" prefWidth="353.0" text="Who paid?">
                                           <HBox.margin>
                                              <Insets />
                                           </HBox.margin>
@@ -51,14 +51,14 @@
                                    </HBox>
                                    <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
                                        <children>
-                                           <Label prefHeight="18.0" prefWidth="353.0" text="What for?">
+                                           <Label fx:id="whatForLabel" prefHeight="18.0" prefWidth="353.0" text="What for?">
                                                <HBox.margin>
                                                    <Insets />
                                                </HBox.margin>
                                                <font>
                                                    <Font size="16.0" />
                                                </font></Label>
-                                       <TextField fx:id="decsriptionField" prefHeight="26.0" prefWidth="380.0">
+                                       <TextField fx:id="descriptionField" prefHeight="26.0" prefWidth="380.0">
                                           <HBox.margin>
                                              <Insets />
                                           </HBox.margin></TextField>
@@ -69,7 +69,7 @@
                                    </HBox>
                                    <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
                                        <children>
-                                           <Label prefHeight="22.0" prefWidth="218.0" text="How much?">
+                                           <Label fx:id="howMuchLabel" prefHeight="22.0" prefWidth="218.0" text="How much?">
                                                <HBox.margin>
                                                    <Insets />
                                                </HBox.margin>
@@ -88,7 +88,7 @@
                                    </HBox>
                                    <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
                                        <children>
-                                           <Label prefHeight="18.0" prefWidth="353.0" text="When?">
+                                           <Label fx:id="whenLabel" prefHeight="18.0" prefWidth="353.0" text="When?">
                                                <HBox.margin>
                                                    <Insets />
                                                </HBox.margin>
@@ -103,7 +103,7 @@
                                    </HBox>
                                    <HBox layoutY="85.0" prefHeight="0.0" prefWidth="450.0">
                                        <children>
-                                           <Label prefHeight="22.0" prefWidth="471.0" text="How to split?">
+                                           <Label fx:id="splitLabel" prefHeight="22.0" prefWidth="471.0" text="How to split?">
                                                <HBox.margin>
                                                    <Insets />
                                                </HBox.margin>
@@ -131,7 +131,7 @@
                                  </ScrollPane>
                                    <HBox layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
                                        <children>
-                                           <Label prefHeight="18.0" prefWidth="353.0" text="expense type">
+                                           <Label fx:id="expenseTypeLabel" prefHeight="18.0" prefWidth="353.0" text="expense type">
                                                <HBox.margin>
                                                    <Insets />
                                                </HBox.margin>
