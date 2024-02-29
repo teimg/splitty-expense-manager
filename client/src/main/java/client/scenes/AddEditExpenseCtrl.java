@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.dialog.Popup;
 import client.utils.DebtorSelector;
 import client.utils.ExpenseBuilder;
 import commons.Expense;
@@ -225,18 +226,13 @@ public class AddEditExpenseCtrl  implements Initializable {
 
         long res = 0;
         String value = priceField.getText();
-        value = value.replaceAll("[^.,0-9]", "");
+//        value = value.replaceAll("[^.,0-9]", "");
         String[] values = value.split(",|\\.");
 
-        try{
-            res += Long.parseLong(values[0]) * 100;
+        res += Long.parseLong(values[0]) * 100;
 
-            if(values.length >= 2){
-                res += Long.parseLong(values[1]);
-            }
-
-        }catch (NumberFormatException e){
-            res = 0;
+        if(values.length >= 2){
+            res += Long.parseLong(values[1]);
         }
 
         return res;
@@ -263,13 +259,21 @@ public class AddEditExpenseCtrl  implements Initializable {
      * @return an expense
      */
     public Expense createExpense(){
-        expenseBuilder.setPurchase(decsriptionField.getText());
-        expenseBuilder.setDate(getDateFieldValue());
-        expenseBuilder.setAmount(getPriceFieldValue());
-        expenseBuilder.setDebtors(debtorSelector.getDebitors());
 
-        System.out.println(expenseBuilder.toString());
-        return expenseBuilder.build();
+        try {
+            expenseBuilder.setPurchase(decsriptionField.getText());
+            expenseBuilder.setDate(getDateFieldValue());
+            expenseBuilder.setAmount(getPriceFieldValue());
+            expenseBuilder.setDebtors(debtorSelector.getDebitors());
+
+            System.out.println(expenseBuilder.toString());
+            return expenseBuilder.build();
+        }catch (NumberFormatException e){
+            Popup popup = new Popup("Price is not a valid digit!", Popup.TYPE.ERROR);
+            popup.show();
+            return null;
+        }
+
     }
 
 
