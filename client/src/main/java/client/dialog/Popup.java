@@ -15,7 +15,7 @@ public class Popup extends Dialog<String> {
             }
 
             public Image getImage(){
-                return  new Image("file:client/src/main/resources/client/icons/error.webp", true);
+                return  new Image("file:client/src/main/resources/client/icons/error.png", true);
             }
         },
         INFO(){
