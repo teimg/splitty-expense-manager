@@ -5,6 +5,7 @@ import commons.Expense;
 import commons.Participant;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class ExpenseBuilder {
     private Participant payer;
     private List<Participant> debtors;
 
-    private LocalDate date;
+    private Date date;
 
     public ExpenseBuilder() {
     }
@@ -25,7 +26,7 @@ public class ExpenseBuilder {
     public Expense build(){
         double expenseAmount = amount / 100.0;
 
-        return  new Expense(id, event, purchase, expenseAmount, payer, debtors);
+        return  new Expense(id, event, purchase, expenseAmount, payer, debtors, new Date());
     }
 
     public int getId() {
@@ -76,11 +77,11 @@ public class ExpenseBuilder {
         this.debtors = debtors;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
