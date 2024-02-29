@@ -55,11 +55,13 @@ public class MainCtrl {
 
     private LanguageSwitch currentCtrl;
 
+    // private final ClientConfiguration config;
+
 
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-        // TODO: Change this to take language from user config file
+        // String startupLanguage = config.getStartupLanguage();
         this.translator = new Translator("english");
 
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
