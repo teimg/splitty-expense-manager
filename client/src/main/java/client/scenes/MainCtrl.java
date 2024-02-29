@@ -59,6 +59,7 @@ public class MainCtrl {
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
+        // TODO: Change this to take language from user config file
         this.translator = new Translator("english");
 
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
