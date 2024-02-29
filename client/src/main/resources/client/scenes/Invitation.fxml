@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.InvitationCtrl">
    <children>
-       <fx:include fx:id="menuBar" source="MenuBar.fxml"/>
+       <fx:include fx:id="menuBar" source="MenuBar.fxml" />
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
             <HBox maxHeight="100.0" VBox.vgrow="ALWAYS" />
@@ -27,9 +27,9 @@
                                  </font>
                               </Text>
                               <Text fx:id="inviteMessage" layoutX="14.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Give people the folloing invite code: CODE" />
-                              <Text layoutX="14.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invite the following people by email (one address per line):" />
+                              <Text fx:id="inviteLabel" layoutX="14.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invite the following people by email (one address per line):" />
                               <TextArea fx:id="addressesArea" layoutX="14.0" layoutY="95.0" prefHeight="111.0" prefWidth="416.0" />
-                              <Button layoutX="350.0" layoutY="216.0" mnemonicParsing="false" onAction="#handleSendInvites" text="Send Invites" />
+                              <Button fx:id="sendInviteButton" layoutX="350.0" layoutY="216.0" mnemonicParsing="false" onAction="#handleSendInvites" text="Send Invites" />
                            </children>
                         </AnchorPane>
                      </children>
