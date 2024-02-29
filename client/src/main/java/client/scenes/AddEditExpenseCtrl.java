@@ -231,8 +231,12 @@ public class AddEditExpenseCtrl  implements Initializable {
 
         res += Long.parseLong(values[0]) * 100;
 
-        if(values.length >= 2){
+        if(values.length == 2){
             res += Long.parseLong(values[1]);
+        }
+
+        if(values.length > 2){
+            throw new NumberFormatException();
         }
 
         return res;
