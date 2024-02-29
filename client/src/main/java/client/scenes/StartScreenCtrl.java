@@ -40,18 +40,18 @@ public class StartScreenCtrl implements LanguageSwitch {
 
     @Override
     public void setLanguage() {
-        createNewEventLabel.setText(mainCtrl.translator.getTranslation(
+        createNewEventLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StartScreen.Create-New-Event-label"));
-        joinEventLabel.setText(mainCtrl.translator.getTranslation(
+        joinEventLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StartScreen.Join-Event-label"
         ));
-        recentlyViewedEventsLabel.setText(mainCtrl.translator.getTranslation(
+        recentlyViewedEventsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StartScreen.Recently-Viewed-label"
         ));
-        createEventButton.setText(mainCtrl.translator.getTranslation(
+        createEventButton.setText(mainCtrl.getTranslator().getTranslation(
                 "StartScreen.Create-Event-Button"
         ));
-        joinEventButton.setText(mainCtrl.translator.getTranslation(
+        joinEventButton.setText(mainCtrl.getTranslator().getTranslation(
                 "StartScreen.Join-Event-Button"
         ));
     }

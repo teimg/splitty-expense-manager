@@ -27,7 +27,7 @@ import java.util.HashMap;
 public class MainCtrl {
 
     private Stage primaryStage;
-    public Translator translator;
+    private Translator translator;
 
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
@@ -47,7 +47,7 @@ public class MainCtrl {
     private StartScreenCtrl startScreenCtrl;
     private Scene start;
 
-    public StatisticsScreenCtrl statisticsScreenCtrl;
+    private StatisticsScreenCtrl statisticsScreenCtrl;
     private Scene statistics;
 
     private ContactInfoCtrl contactInfoCtrl;
@@ -59,7 +59,6 @@ public class MainCtrl {
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-
         this.translator = new Translator("english");
 
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
@@ -104,7 +103,6 @@ public class MainCtrl {
         this.contactInfo = new Scene(contactInfo.getValue());
 
         this.currentCtrl = startScreenCtrl;
-
         showStartScreen();
         primaryStage.show();
     }
@@ -175,6 +173,10 @@ public class MainCtrl {
     public void updateLanguage(String s) {
         translator.setCurrentLanguage(s);
         currentCtrl.setLanguage();
+    }
+
+    public Translator getTranslator() {
+        return translator;
     }
 
 }

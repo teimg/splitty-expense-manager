@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.language.Translator;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -90,9 +89,12 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch {
 
     @Override
     public void setLanguage() {
-        statisticsLabel.setText(mainCtrl.translator.getTranslation("StatisticsScreen.Title-label"));
-        totalCostLabel.setText(mainCtrl.translator.getTranslation("StatisticsScreen.Total-Cost-label"));
-        pieChart.setTitle(mainCtrl.translator.getTranslation("StatisticsScreen.PieChart-Title"));
+        statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Title-label"));
+        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Total-Cost-label"));
+        pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.PieChart-Title"));
     }
 
 }
