@@ -48,6 +48,10 @@ public class Expense {
         this.date = date;
     }
 
+    public Expense() {
+        
+    }
+
     public long getId() {
         return id;
     }
