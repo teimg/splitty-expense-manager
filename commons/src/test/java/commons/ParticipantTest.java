@@ -80,4 +80,17 @@ public class ParticipantTest {
         assertNotEquals(participantOne.hashCode(), "Hello".hashCode());
     }
 
+    @Test
+    public void testEmailGetter() {
+        Participant participant = new Participant("Alex", "alex@gmail.com");
+        assertEquals("alex@gmail.com", participant.getEmail());
+    }
+
+    @Test
+    public void testEmailSetter() {
+        Participant participant = new Participant("Alex");
+        participant.setEmail("alex@gmail.com");
+        assertEquals("alex@gmail.com", participant.getEmail());
+    }
+
 }
