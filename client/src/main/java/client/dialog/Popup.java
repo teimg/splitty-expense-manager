@@ -1,6 +1,5 @@
 package client.dialog;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,8 +42,8 @@ public class Popup extends Dialog<String> {
     private String msg;
     private Label label;
 
-    private final int  FONT_SIZE = 16;
-    private final int IMAGE_SIZE = 50;
+    private final int fontSize = 16;
+    private final int imageSize = 50;
     private int width;
     private int height;
 
@@ -57,12 +56,12 @@ public class Popup extends Dialog<String> {
         Image image = new Image("file:client/src/main/resources/client/icons/error.png", true);
 
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(IMAGE_SIZE);
-        imageView.setFitHeight(IMAGE_SIZE);
+        imageView.setFitWidth(imageSize);
+        imageView.setFitHeight(imageSize);
 
         this.label = new Label();
         this.label.setText(msg);
-        this.label.setFont(new Font(this.FONT_SIZE));
+        this.label.setFont(new Font(this.fontSize));
 
         this.label.setGraphic(imageView);
         this.label.setGraphicTextGap(20);
