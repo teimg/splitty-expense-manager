@@ -34,11 +34,11 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
 
-    private final String SERVER;
+    private final String server;
 
     @Inject
     public ServerUtils(ClientConfiguration config) {
-        SERVER = config.getServer();
+        server = config.getServer();
     }
 
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {
@@ -53,7 +53,7 @@ public class ServerUtils {
 
     public List<Quote> getQuotes() {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(SERVER).path("api/quotes") //
+            .target(server).path("api/quotes") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .get(new GenericType<List<Quote>>() {
@@ -62,7 +62,7 @@ public class ServerUtils {
 
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(SERVER).path("api/quotes") //
+            .target(server).path("api/quotes") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);

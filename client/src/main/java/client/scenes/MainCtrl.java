@@ -67,7 +67,6 @@ public class MainCtrl {
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-
         String startupLanguage = config.getStartupLanguage();
         this.translator = new Translator(startupLanguage);
 
