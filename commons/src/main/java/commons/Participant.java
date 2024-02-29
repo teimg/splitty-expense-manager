@@ -1,6 +1,7 @@
 package commons;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -17,6 +18,7 @@ public class Participant {
     private String name;
     @OneToOne
     private BankAccount bankAccount;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
 

@@ -18,6 +18,8 @@ public class Event {
     private Date creationDate;
     private Date lastActivity;
 
+    public Event() {}
+
     /**
      *
      * @param id - id to identify event
