@@ -17,6 +17,8 @@ package client.scenes;
 
 import client.language.LanguageSwitch;
 import client.language.Translator;
+import client.utils.ClientConfiguration;
+import com.google.inject.Inject;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -55,12 +57,19 @@ public class MainCtrl {
 
     private LanguageSwitch currentCtrl;
 
+    private final ClientConfiguration config;
+
+    @Inject
+    public MainCtrl(ClientConfiguration config) {
+        this.config = config;
+    }
 
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-        // TODO: Change this to take language from user config file
-        this.translator = new Translator("english");
+
+        String startupLanguage = config.getStartupLanguage();
+        this.translator = new Translator(startupLanguage);
 
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
                 sceneMap.get("QuoteOverviewCtrl");

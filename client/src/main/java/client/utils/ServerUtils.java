@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import com.google.inject.Inject;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -32,7 +33,13 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
-    private static final String SERVER = new ClientConfiguration().getServer();
+
+    private final String SERVER;
+
+    @Inject
+    public ServerUtils(ClientConfiguration config) {
+        SERVER = config.getServer();
+    }
 
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {
         var url = new URI("http://localhost:8080/api/quotes").toURL();
