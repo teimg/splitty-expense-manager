@@ -1,6 +1,6 @@
 package commons;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -8,8 +8,12 @@ import java.util.Objects;
  * The BankAccount class is used to store
  * the bank details of a participant
  */
-@Embeddable
+@Entity
 public class BankAccount {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String iban;
     private String bic;
 
