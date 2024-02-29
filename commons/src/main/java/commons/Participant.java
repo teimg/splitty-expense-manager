@@ -15,7 +15,7 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    @Embedded
+    @OneToOne
     private BankAccount bankAccount;
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
