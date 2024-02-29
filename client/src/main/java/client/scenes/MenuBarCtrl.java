@@ -1,11 +1,19 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
-public class MenuBarCtrl {
+public class MenuBarCtrl implements LanguageSwitch {
+
+    @FXML
+    private Menu languageMenu;
+
+    @FXML
+    private Menu setSceneMenu;
 
     @FXML
     private MenuItem startScreen;
@@ -83,13 +91,30 @@ public class MenuBarCtrl {
 
     public void setEnglish(ActionEvent actionEvent) {
         mainCtrl.updateLanguage("english");
+        setLanguage();
     }
 
     public void setDutch(ActionEvent actionEvent) {
         mainCtrl.updateLanguage("dutch");
+        setLanguage();
     }
 
     public void setFrench(ActionEvent actionEvent) {
         mainCtrl.updateLanguage("french");
+        setLanguage();
+    }
+
+    @Override
+    public void setLanguage() {
+        languageMenu.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Language-Menu"));
+        setSceneMenu.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.SetScene-Menu"));
+        englishButton.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.English-Button"));
+        dutchButton.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Dutch-Button"));
+        frenchButton.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.French-Button"));
     }
 }

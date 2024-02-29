@@ -49,11 +49,11 @@ public class ContactInfoCtrl implements LanguageSwitch {
 
     private final MainCtrl mainCtrl;
 
-    void abortButtonPressed(ActionEvent event) {
+    public void abortButtonPressed(ActionEvent event) {
 
     }
 
-    void addButtonPressed(ActionEvent event) {
+    public void addButtonPressed(ActionEvent event) {
 
     }
 
