@@ -3,8 +3,6 @@ package commons;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,7 +47,7 @@ public class Expense {
     }
 
     public Expense() {
-        
+
     }
 
     public long getId() {
@@ -111,8 +109,7 @@ public class Expense {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Expense)) return false;
-        Expense expense = (Expense) o;
+        if (!(o instanceof Expense expense)) return false;
         return id == expense.id &&
                 Double.compare(expense.amount, amount) == 0 &&
                 Objects.equals(event, expense.event) &&
