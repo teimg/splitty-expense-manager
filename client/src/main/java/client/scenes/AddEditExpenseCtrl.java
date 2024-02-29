@@ -1,8 +1,10 @@
 package client.scenes;
 
 import client.dialog.Popup;
+import client.language.LanguageSwitch;
 import client.utils.DebtorSelector;
 import client.utils.ExpenseBuilder;
+import com.google.inject.Inject;
 import commons.Expense;
 import commons.Participant;
 import javafx.fxml.FXML;
@@ -18,7 +20,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddEditExpenseCtrl  implements Initializable {
+public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
+
+    @FXML
+    private Label titleLabel;
+
+    @FXML
+    private Label whoPaidLabel;
+
+    @FXML
+    private Label whatForLabel;
+
+    @FXML
+    private Label howMuchLabel;
+
+    @FXML
+    private Label whenLabel;
+
+    @FXML
+    private Label splitLabel;
+
+    @FXML
+    private Label expenseTypeLabel;
 
     @FXML
     private MenuBar menuBar;
@@ -39,7 +62,7 @@ public class AddEditExpenseCtrl  implements Initializable {
     private DatePicker dateField;
 
     @FXML
-    private TextField decsriptionField;
+    private TextField descriptionField;
 
     @FXML
     private CheckBox evenlyCheckbox;
@@ -60,7 +83,40 @@ public class AddEditExpenseCtrl  implements Initializable {
 
     private DebtorSelector debtorSelector;
 
-    private class Innercheckbox{
+    private final MainCtrl mainCtrl;
+
+    @Override
+    public void setLanguage() {
+        titleLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.Title-label"));
+        whoPaidLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.WhoPaid-label"));
+        whatForLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.WhatFor-label"));
+        howMuchLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.HowMuch-label"));
+        whenLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.When-label"));
+        splitLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.Split-label"));
+        expenseTypeLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.Expense-Type-label"));
+        evenlyCheckbox.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.Evenly-CheckBox"));
+        someCheckbox.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.Some-CheckBox"));
+        abortButton.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.Abort-Button"));
+        addButton.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.Add-Button"));
+    }
+
+    @Inject
+    public AddEditExpenseCtrl (MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
+
+    private static class Innercheckbox{
         private  CheckBox checkBox;
 
         /**
@@ -265,7 +321,7 @@ public class AddEditExpenseCtrl  implements Initializable {
     public Expense createExpense(){
 
         try {
-            expenseBuilder.setPurchase(decsriptionField.getText());
+            expenseBuilder.setPurchase(descriptionField.getText());
             expenseBuilder.setDate(getDateFieldValue());
             expenseBuilder.setAmount(getPriceFieldValue());
             expenseBuilder.setDebtors(debtorSelector.getDebitors());

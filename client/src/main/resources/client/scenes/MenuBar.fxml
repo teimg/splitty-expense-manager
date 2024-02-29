@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0"
-         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21"
-         xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
+<MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
     <menus>
-        <Menu mnemonicParsing="false" text="Set Scene (Temporary)">
+        <Menu fx:id="setSceneMenu" mnemonicParsing="false" text="Set Scene (Temporary)">
             <items>
                 <MenuItem fx:id="quoteOverview" mnemonicParsing="false" onAction="#showQuoteOverview" text="Quote Overview" />
                 <MenuItem fx:id="addQuote" mnemonicParsing="false" onAction="#showAddQuote" text="Add Quote" />
@@ -20,7 +20,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#showContactInfo" text="Contact details" />
             </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Language">
+        <Menu fx:id="languageMenu" mnemonicParsing="false" text="Language">
             <items>
                 <MenuItem fx:id="englishButton" mnemonicParsing="false" onAction="#setEnglish" text="English" />
                 <MenuItem fx:id="dutchButton" mnemonicParsing="false" onAction="#setDutch" text="Dutch" />

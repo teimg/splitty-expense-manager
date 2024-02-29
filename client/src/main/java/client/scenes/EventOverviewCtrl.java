@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import client.utils.IServerUserCommunicator;
 import commons.Event;
 import commons.Expense;
@@ -18,10 +19,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 // TODO: parametrize the 'you' Participant?
-public class EventOverviewCtrl implements Initializable {
+public class EventOverviewCtrl implements Initializable, LanguageSwitch {
     private final IServerUserCommunicator serverUserCommunicator;
     private final Event event;
     private final Participant you;
+
+    @Override
+    public void setLanguage() {
+
+    }
 
     private static class ExpenseCellFactory
             implements Callback<ListView<Expense>, ListCell<Expense>> {
