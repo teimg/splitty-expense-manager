@@ -23,7 +23,6 @@ public class Event {
     private Date creationDate;
     private Date lastActivity;
 
-    public Event() {}
 
     /**
      *
