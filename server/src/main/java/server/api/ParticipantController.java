@@ -31,7 +31,7 @@ public class ParticipantController {
 
     @PostMapping
     public ResponseEntity<Participant> createParticipant(@RequestBody Participant participant) {
-        if (isNullOrEmpty(participant.getName()) || participant.getEvent() == null) {
+        if (isInvalid(participant)) {
             return ResponseEntity.badRequest().build();
         }
         Participant saved = repo.save(participant);
@@ -41,7 +41,7 @@ public class ParticipantController {
     @PutMapping("/{id}")
     public ResponseEntity<Participant> updateParticipant(@PathVariable("id") long id, 
                                                          @RequestBody Participant newDetails) {
-        if (isNullOrEmpty(newDetails.getName()) || newDetails.getEvent() == null) {
+        if (isInvalid(newDetails)) {
             return ResponseEntity.badRequest().build();
         }
         Optional<Participant> participantData = repo.findById(id);
@@ -52,6 +52,7 @@ public class ParticipantController {
         participant.setName(newDetails.getName());
         participant.setEvent(newDetails.getEvent());
         participant.setBankAccount(newDetails.getBankAccount());
+        participant.setEmail(newDetails.getEmail());
         Participant saved = repo.save(participant);
         return ResponseEntity.ok(saved);
     }
@@ -68,5 +69,9 @@ public class ParticipantController {
 
     private static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
+    }
+
+    private static boolean isInvalid(Participant participant) {
+        return isNullOrEmpty(participant.getName()) || participant.getEvent() == null;
     }
 }
