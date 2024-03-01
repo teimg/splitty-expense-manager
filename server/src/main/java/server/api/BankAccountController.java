@@ -71,7 +71,7 @@ public class BankAccountController {
         repo.deleteById(id);
         return ResponseEntity.ok(deleted);
     }
-    
+
 
     /**
      * Private utility method
