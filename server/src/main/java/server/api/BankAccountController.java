@@ -30,6 +30,20 @@ public class BankAccountController {
         return ResponseEntity.ok(repo.findById(id).get());
     }
 
+    @PostMapping(path = {"", "/"})
+    public ResponseEntity<BankAccount> add(@RequestBody BankAccount bankAccount) {
+
+        if (bankAccount == null
+                || isNullOrEmpty(bankAccount.getBic())
+                || isNullOrEmpty(bankAccount.getIban())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        BankAccount saved = repo.save(bankAccount);
+        return ResponseEntity.ok(saved);
+    }
+
+
     private static boolean isNullOrEmpty(String s) {
         return (s == null || s.isEmpty());
     }
