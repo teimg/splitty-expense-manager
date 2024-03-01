@@ -2,6 +2,7 @@ package commons;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,7 @@ public class Expense {
     private Participant payer;
     @ManyToMany
     private List<Participant> debtors;
+    private LocalDate date;
 
     /**
      * Constructs a new Expense with the specified details.
@@ -32,15 +34,21 @@ public class Expense {
      * @param amount   the amount of the expense
      * @param payer    the participant who paid for the expense
      * @param debtors  the list of participants who owe a share of the expense
+     * @param date     the date that the expense was paid
      */
     public Expense(int id, Event event, String purchase, double amount,
-                   Participant payer, List<Participant> debtors) {
+                   Participant payer, List<Participant> debtors, LocalDate date) {
         this.id = id;
         this.event = event;
         this.purchase = purchase;
         this.amount = amount;
         this.payer = payer;
         this.debtors = debtors;
+        this.date = date;
+    }
+
+    public Expense() {
+
     }
 
     public long getId() {
@@ -91,22 +99,30 @@ public class Expense {
         this.debtors = debtors;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Expense)) return false;
-        Expense expense = (Expense) o;
+        if (!(o instanceof Expense expense)) return false;
         return id == expense.id &&
                 Double.compare(expense.amount, amount) == 0 &&
                 Objects.equals(event, expense.event) &&
                 Objects.equals(purchase, expense.purchase) &&
                 Objects.equals(payer, expense.payer) &&
-                Objects.equals(debtors, expense.debtors);
+                Objects.equals(debtors, expense.debtors) &&
+                Objects.equals(date, expense.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, event, purchase, amount, payer, debtors);
+        return Objects.hash(id, event, purchase, amount, payer, debtors, date);
     }
 
     @Override
@@ -118,6 +134,7 @@ public class Expense {
                 ", amount=" + amount +
                 ", payer=" + payer +
                 ", debtors=" + debtors +
+                ", date=" + date +
                 '}';
     }
 }
