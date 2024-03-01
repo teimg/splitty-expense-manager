@@ -22,8 +22,8 @@ public class BankAccountController {
         return repo.findAll();
     }
 
-    @GetMapping(path = {"/personId"})
-    public ResponseEntity<BankAccount> getById(@PathVariable("personId") long id) {
+    @GetMapping(path = {"/{id}"})
+    public ResponseEntity<BankAccount> getById(@PathVariable("id") long id) {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
@@ -43,6 +43,16 @@ public class BankAccountController {
         return ResponseEntity.ok(saved);
     }
 
+    @DeleteMapping(path = {"/{id}"})
+    public ResponseEntity<BankAccount> delete(@PathVariable long id) {
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        BankAccount deleted = repo.findById(id).get();
+        repo.deleteById(id);
+        return ResponseEntity.ok(deleted);
+    }
+    
 
     private static boolean isNullOrEmpty(String s) {
         return (s == null || s.isEmpty());
