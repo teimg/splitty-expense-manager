@@ -50,7 +50,8 @@ public class EventController {
     /**
      * updates an existing event with new details
      * @param id the id of the expense to be updated
-     * @param newEvent the new event object that holds the values for the old event to be updated with
+     * @param newEvent the new event object that holds the values for the old event
+     * to be updated with
      * @return the updated event if the operation was successful,
      * or a {@link ResponseEntity} with notFound status
      */
@@ -77,7 +78,8 @@ public class EventController {
      * or a {@link ResponseEntity} with notFound status
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateLastActivity(@PathVariable long id, @RequestBody Date newLastActivity) {
+    public ResponseEntity<Event>
+    updateLastActivity(@PathVariable long id, @RequestBody Date newLastActivity) {
         Optional<Event> event = repo.findById(id);
         if (event.isPresent()) {
             Event e = event.get();
