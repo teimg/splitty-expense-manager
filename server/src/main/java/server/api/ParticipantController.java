@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.ParticipantRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -65,6 +66,11 @@ public class ParticipantController {
         }
         repo.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public List<Participant> getAll() {
+        return repo.findAll();
     }
 
     private static boolean isNullOrEmpty(String s) {
