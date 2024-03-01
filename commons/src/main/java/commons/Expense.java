@@ -116,7 +116,8 @@ public class Expense {
                 Objects.equals(event, expense.event) &&
                 Objects.equals(purchase, expense.purchase) &&
                 Objects.equals(payer, expense.payer) &&
-                Objects.equals(debtors, expense.debtors);
+                Objects.equals(debtors, expense.debtors) &&
+                Objects.equals(date, expense.date);
     }
 
     @Override
@@ -133,6 +134,7 @@ public class Expense {
                 ", amount=" + amount +
                 ", payer=" + payer +
                 ", debtors=" + debtors +
+                ", date=" + date +
                 '}';
     }
 }

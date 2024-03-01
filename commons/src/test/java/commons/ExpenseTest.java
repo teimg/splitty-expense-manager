@@ -26,6 +26,7 @@ public class ExpenseTest {
         assertEquals(50.0, expense.getAmount(), 0.01);
         assertEquals(payer, expense.getPayer());
         assertEquals(debtors, expense.getDebtors());
+        assertEquals(LocalDate.of(2024, Month.APRIL, 1), expense.getDate());
     }
 
     @Test
@@ -39,11 +40,11 @@ public class ExpenseTest {
         Expense expense1 = new Expense(1, event, "Cake", 50.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
         Expense expense2 = new Expense(1, event, "Cake", 50.0, payer, debtors,LocalDate.of(2024, Month.APRIL, 1));
         Expense expense3 = new Expense(2, event, "Pizza", 30.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 1));
-//        Expense expense4 = new Expense(2, event, "Pizza", 30.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 2));
+        Expense expense4 = new Expense(2, event, "Pizza", 30.0, payer, debtors, LocalDate.of(2024, Month.APRIL, 2));
 
         assertEquals(expense1, expense2);
         assertNotEquals(expense1, expense3);
-//        assertNotEquals(expense3, expense4);
+        assertNotEquals(expense3, expense4);
     }
 
     @Test
