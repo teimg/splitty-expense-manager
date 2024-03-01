@@ -1,6 +1,8 @@
 package commons;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -9,13 +11,17 @@ import java.util.Objects;
  * The Participant class represents a person
  * that is involved in an event
  */
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private BankAccount bankAccount;
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
@@ -27,6 +33,11 @@ public class Participant {
      */
     public Participant(String name) {
         this.name = name;
+    }
+
+    public Participant(String name, BankAccount bankAccount) {
+        this.name = name;
+        this.bankAccount = bankAccount;
     }
 
     public Participant(String name, String email) {
