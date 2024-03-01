@@ -7,4 +7,7 @@ java {
 dependencies {
 	implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '3.1.0'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+
+	implementation 'commons-beanutils:commons-beanutils:1.9.4'
+	implementation 'org.apache.commons:commons-configuration2:2.9.0'
 }

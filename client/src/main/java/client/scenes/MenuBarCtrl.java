@@ -1,13 +1,19 @@
 package client.scenes;
 
+import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 
-public class MenuBarCtrl {
+public class MenuBarCtrl implements LanguageSwitch {
+
+    @FXML
+    private Menu languageMenu;
+
+    @FXML
+    private Menu setSceneMenu;
 
     @FXML
     private MenuItem startScreen;
@@ -41,18 +47,6 @@ public class MenuBarCtrl {
 
     @FXML
     private MenuItem addExpense;
-
-    @FXML
-    private TextField newEventField;
-
-    @FXML
-    private TextField joinEventField;
-
-    @FXML
-    private Button createEventButton;
-
-    @FXML
-    private Button joinEventButton;
 
     private final MainCtrl mainCtrl;
 
@@ -93,17 +87,34 @@ public class MenuBarCtrl {
         mainCtrl.showContactInfo();
     }
 
-    public void showEventOverview(ActionEvent actionEvent) {
-        // TODO: Fix event overview then this can be implemented
-    }
+    public void showEventOverview(ActionEvent actionEvent) {}
 
-    // TODO: Decide on implementation of languages (where to store it - probably in main controller)
     public void setEnglish(ActionEvent actionEvent) {
+        mainCtrl.updateLanguage("english");
+        setLanguage();
     }
 
     public void setDutch(ActionEvent actionEvent) {
+        mainCtrl.updateLanguage("dutch");
+        setLanguage();
     }
 
     public void setFrench(ActionEvent actionEvent) {
+        mainCtrl.updateLanguage("french");
+        setLanguage();
+    }
+
+    @Override
+    public void setLanguage() {
+        languageMenu.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Language-Menu"));
+        setSceneMenu.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.SetScene-Menu"));
+        englishButton.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.English-Button"));
+        dutchButton.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Dutch-Button"));
+        frenchButton.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.French-Button"));
     }
 }

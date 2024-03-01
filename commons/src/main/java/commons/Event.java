@@ -44,6 +44,10 @@ public class Event {
         this.lastActivity = lastActivity;
     }
 
+    public Event() {
+
+    }
+
     /**
      * Getter method for id
      * @return int id

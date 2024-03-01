@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+import client.language.LanguageSwitch;
+import client.language.Translator;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Translator translator;
 
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
@@ -50,10 +53,16 @@ public class MainCtrl {
     private ContactInfoCtrl contactInfoCtrl;
     private Scene contactInfo;
 
+    private LanguageSwitch currentCtrl;
+
+    // private final ClientConfiguration config;
+
 
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
+        // String startupLanguage = config.getStartupLanguage();
+        this.translator = new Translator("english");
 
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
                 sceneMap.get("QuoteOverviewCtrl");
@@ -96,17 +105,22 @@ public class MainCtrl {
         this.contactInfoCtrl = contactInfo.getKey();
         this.contactInfo = new Scene(contactInfo.getValue());
 
+        this.currentCtrl = startScreenCtrl;
         showStartScreen();
         primaryStage.show();
     }
 
     public void showOverview() {
+        currentCtrl = overviewCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
 
     public void showAdd() {
+        currentCtrl = addCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Quotes: Add Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
@@ -118,34 +132,54 @@ public class MainCtrl {
      */
 
     public void showAddEditExpense() {
+        currentCtrl = addEditExpenseCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Add/Edit Expense");
         primaryStage.setScene(addEdit);
     }
 
     public void showInvitation() {
+        currentCtrl = invitationCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Invitation");
         primaryStage.setScene(invitation);
     }
 
     public void showOpenDebts() {
+        currentCtrl = openDebtsCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Open Debts");
         primaryStage.setScene(openDebts);
     }
 
     public void showStartScreen() {
+        currentCtrl = startScreenCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Start Screen");
         primaryStage.setScene(start);
     }
 
     public void showStatistics() {
+        currentCtrl = statisticsScreenCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Statistics");
         primaryStage.setScene(statistics);
     }
 
     public void showContactInfo(){
+        currentCtrl = contactInfoCtrl;
+        currentCtrl.setLanguage();
         primaryStage.setTitle("Contact Information");
         primaryStage.setScene(contactInfo);
     }
 
+    public void updateLanguage(String s) {
+        translator.setCurrentLanguage(s);
+        currentCtrl.setLanguage();
+    }
+
+    public Translator getTranslator() {
+        return translator;
+    }
 
 }

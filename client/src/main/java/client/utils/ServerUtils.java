@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import com.google.inject.Inject;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -32,7 +33,13 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
-    private static final String SERVER = "http://localhost:8080/";
+
+    private final String server;
+
+    @Inject
+    public ServerUtils(ClientConfiguration config) {
+        server = config.getServer();
+    }
 
     public void getQuotesTheHardWay() throws IOException, URISyntaxException {
         var url = new URI("http://localhost:8080/api/quotes").toURL();
@@ -46,7 +53,7 @@ public class ServerUtils {
 
     public List<Quote> getQuotes() {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(SERVER).path("api/quotes") //
+            .target(server).path("api/quotes") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .get(new GenericType<List<Quote>>() {
@@ -55,7 +62,7 @@ public class ServerUtils {
 
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(SERVER).path("api/quotes") //
+            .target(server).path("api/quotes") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);

@@ -39,6 +39,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
 
@@ -67,8 +69,6 @@ public class Main extends Application {
         sceneMap.put("StartScreenCtrl", startScreen);
         sceneMap.put("StatisticsScreenCtrl", statistics);
         sceneMap.put("ContactInfoCtrl", contactInfo);
-        
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }
