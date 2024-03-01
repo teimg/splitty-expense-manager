@@ -21,7 +21,7 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private BankAccount bankAccount;
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
@@ -32,6 +32,11 @@ public class Participant {
      */
     public Participant(String name) {
         this.name = name;
+    }
+
+    public Participant(String name, BankAccount bankAccount) {
+        this.name = name;
+        this.bankAccount = bankAccount;
     }
 
     /**
