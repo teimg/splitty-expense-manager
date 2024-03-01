@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import server.database.BankAccountRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bankAccounts")
@@ -36,7 +37,9 @@ public class BankAccountController {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(repo.findById(id).get());
+        Optional<BankAccount> bankAccount = repo.findById(id);
+        return bankAccount.map(ResponseEntity::ok).orElseGet(()
+                -> ResponseEntity.badRequest().build());
     }
 
     /**
@@ -67,9 +70,33 @@ public class BankAccountController {
         if (id < 0 || !repo.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-        BankAccount deleted = repo.findById(id).get();
+        Optional<BankAccount> deleted = repo.findById(id);
         repo.deleteById(id);
-        return ResponseEntity.ok(deleted);
+        return deleted.map(ResponseEntity::ok).orElseGet(()
+                -> ResponseEntity.badRequest().build());
+    }
+
+    /**
+     * Update method for Bank accounts based on id
+     * @param id - id of bank account ot be updated
+     * @param bankAccount - new Bank Account object
+     * @return - Updated bank account or not found in case of failure.
+     */
+    @PutMapping(path = {"/{id}"})
+    public ResponseEntity<BankAccount> update(@PathVariable long id,
+                                              @RequestBody BankAccount bankAccount) {
+        if (id < 0 || !repo.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        Optional<BankAccount> bankAccountToBeUpdated = repo.findById(id);
+        if (bankAccountToBeUpdated.isPresent()) {
+            BankAccount bank = bankAccountToBeUpdated.get();
+            bank.setBic(bankAccount.getBic());
+            bank.setIban(bankAccount.getIban());
+            BankAccount updateBankAccount = repo.save(bank);
+            return ResponseEntity.ok((updateBankAccount));
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
