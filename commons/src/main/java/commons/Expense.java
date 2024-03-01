@@ -34,6 +34,7 @@ public class Expense {
      * @param amount   the amount of the expense
      * @param payer    the participant who paid for the expense
      * @param debtors  the list of participants who owe a share of the expense
+     * @param date     the date that the expense was paid
      */
     public Expense(int id, Event event, String purchase, double amount,
                    Participant payer, List<Participant> debtors, LocalDate date) {
@@ -120,7 +121,7 @@ public class Expense {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, event, purchase, amount, payer, debtors);
+        return Objects.hash(id, event, purchase, amount, payer, debtors, date);
     }
 
     @Override

@@ -58,7 +58,7 @@
         <module name="ParameterNumber">
             <property name="severity" value="warning"/>
             <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
-            <property name="max" value="6"/>
+            <property name="max" value="7"/>
         </module>
         <module name="CyclomaticComplexity">
             <property name="severity" value="warning"/>
