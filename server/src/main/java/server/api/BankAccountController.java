@@ -17,11 +17,20 @@ public class BankAccountController {
         this.repo = repo;
     }
 
+    /**
+     * Getter Method for all bank accounts
+     * @return List of bank accounts
+     */
     @GetMapping(path = { "", "/" })
     public List<BankAccount> getAll() {
         return repo.findAll();
     }
 
+    /**
+     * Getter Method for a specific bank account through id
+     * @param id - id to be fetched
+     * @return Bank Account
+     */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<BankAccount> getById(@PathVariable("id") long id) {
         if (id < 0 || !repo.existsById(id)) {
@@ -30,6 +39,11 @@ public class BankAccountController {
         return ResponseEntity.ok(repo.findById(id).get());
     }
 
+    /**
+     * Post Method for Bank accounts (Adder)
+     * @param bankAccount - To be Added
+     * @return saved entity / badRequest in the case of failure
+     */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<BankAccount> add(@RequestBody BankAccount bankAccount) {
 
@@ -43,6 +57,11 @@ public class BankAccountController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     * Delete Method for Bank account by id
+     * @param id - id to be deleted
+     * @return deleted object / badRequest in case of failure
+     */
     @DeleteMapping(path = {"/{id}"})
     public ResponseEntity<BankAccount> delete(@PathVariable long id) {
         if (id < 0 || !repo.existsById(id)) {
@@ -54,6 +73,11 @@ public class BankAccountController {
     }
     
 
+    /**
+     * Private utility method
+     * @param s - string to be checked
+     * @return boolean (true/false)
+     */
     private static boolean isNullOrEmpty(String s) {
         return (s == null || s.isEmpty());
     }
