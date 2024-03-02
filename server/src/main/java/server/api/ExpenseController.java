@@ -3,8 +3,8 @@ package server.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.ExpenseRepository;
 import commons.Expense;
+import server.service.ExpenseService;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/expense")
 public class ExpenseController {
-    private final ExpenseRepository repo;
+    private final ExpenseService expenseService;
 
     /**
      * Constructor for expense controller
@@ -22,18 +22,19 @@ public class ExpenseController {
      * @param repo expense repository
      */
     @Autowired
-    public ExpenseController(ExpenseRepository repo) {
-        this.repo = repo;
+    public ExpenseController(ExpenseService expenseService) {
+        this.expenseService = expenseService;
     }
 
     /**
-     * Creates a new expense in the database.
-     * @param expense the expense to be created
+     * Creates a new expense object in the database.
+     * @param expense
      * @return the created expense
      */
     @PostMapping
-    public Expense createExpense(@RequestBody Expense expense) {
-        return repo.save(expense);
+    public ResponseEntity<Expense> addExpense(@RequestBody Expense expense) {
+        Expense savedExpense = expenseService.saveExpense(expense);
+        return ResponseEntity.ok(savedExpense);
     }
 
     /**
@@ -42,31 +43,32 @@ public class ExpenseController {
      */
     @GetMapping
     public List<Expense> getAllExpenses() {
-        return repo.findAll();
+        return expenseService.getAllExpenses();
     }
 
     /**
-     * Retrieves a specific expense by its ID.
+     * Gets expense by expense ID.
      * @param id the ID of the expense to retrieve
      * @return the expense if found, or a {@link ResponseEntity} with not found status
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Expense> getExpenseById(@PathVariable long id) {
-        Optional<Expense> expense = repo.findById(id);
-        return expense.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Expense> getExpenseById(@PathVariable Long id) {
+        return expenseService.getExpenseById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
-     * Updates an existing expense with new details.
+     * Updates an existing expense based on expense id
      * @param id the ID of the expense to update
-     * @param expenseDetails the new details to update the expense with
+     * @param expenseDetails the new details of expense
      * @return the updated expense if the operation was successful,
      * or a {@link ResponseEntity} with not found status
      */
     @PutMapping("/{id}")
     public ResponseEntity<Expense>
     updateExpense(@PathVariable long id, @RequestBody Expense expenseDetails) {
-        Optional<Expense> expenseData = repo.findById(id);
+        Optional<Expense> expenseData = expenseService.getExpenseById(id);
         if (expenseData.isPresent()) {
             Expense expense = expenseData.get();
             expense.setEvent(expenseDetails.getEvent());
@@ -74,7 +76,7 @@ public class ExpenseController {
             expense.setAmount(expenseDetails.getAmount());
             expense.setPayer(expenseDetails.getPayer());
             expense.setDebtors(expenseDetails.getDebtors());
-            Expense updatedExpense = repo.save(expense);
+            Expense updatedExpense = expenseService.saveExpense(expense);
             return ResponseEntity.ok(updatedExpense);
         } else {
             return ResponseEntity.notFound().build();
@@ -88,8 +90,8 @@ public class ExpenseController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteExpense(@PathVariable long id) {
-        return repo.findById(id).map(expense -> {
-            repo.deleteById(id);
+        return expenseService.findById(id).map(expense -> {
+            expenseService.deleteById(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -104,9 +106,9 @@ public class ExpenseController {
             @RequestParam(value = "eventId", required = false) Long eventId) {
         List<Expense> expenses;
         if (eventId != null) {
-            expenses = repo.findByEventId(eventId);
+            expenses = expenseService.findByEventId(eventId);
         } else {
-            expenses = repo.findAll();
+            expenses = expenseService.findAll();
         }
         return ResponseEntity.ok(expenses);
     }
@@ -121,7 +123,7 @@ public class ExpenseController {
     @PatchMapping("/{id}")
     public ResponseEntity<Expense>
     partialUpdateExpense(@PathVariable long id, @RequestBody Map<String, Object> updates) {
-        Optional<Expense> expenseData = repo.findById(id);
+        Optional<Expense> expenseData = expenseService.findById(id);
         if (expenseData.isPresent()) {
             Expense expense = expenseData.get();
             updates.forEach((key, value) -> {
@@ -145,7 +147,7 @@ public class ExpenseController {
                     // Add more case statements as needed
                 }
             });
-            Expense updatedExpense = repo.save(expense);
+            Expense updatedExpense = expenseService.save(expense);
             return ResponseEntity.ok(updatedExpense);
         } else {
             return ResponseEntity.notFound().build();

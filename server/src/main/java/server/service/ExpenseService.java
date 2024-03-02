@@ -19,7 +19,7 @@ public class ExpenseService {
     }
 
     public Expense saveExpense(Expense expense) {
-        return expenseRepository.save(expense);
+        return expenseRepository.saveAndFlush(expense);
     }
 
     public Optional<Expense> getExpenseById(Long id) {
