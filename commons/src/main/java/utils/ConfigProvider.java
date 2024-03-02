@@ -58,6 +58,15 @@ public abstract class ConfigProvider {
     }
 
     /**
+     * Setter method to adapt properties in the properties file.
+     * @param key - Key
+     * @param value - Value
+     */
+    protected void set(String key, String value) {
+        properties.setProperty(key, value);
+    }
+
+    /**
      * Saves the current configuration to disk.
      */
     public void save() {
