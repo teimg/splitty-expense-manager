@@ -64,12 +64,19 @@ public class MainCtrl {
     @Inject
     public MainCtrl(ClientConfiguration config) {
         this.config = config;
+        if (config != null){
+            this.translator = new Translator(config.getStartupLanguage());
+
+        }
+
+
+
     }
 
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-        this.translator = new Translator(config.getStartupLanguage());
+
 
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
                 sceneMap.get("QuoteOverviewCtrl");
