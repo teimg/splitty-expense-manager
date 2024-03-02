@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+import client.utils.ClientConfiguration;
+import com.google.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +24,20 @@ public class MainCtrlTest {
 
     private MainCtrl sut;
 
+    private ClientConfiguration config;
+
+    /**
+     * Setting dependency of config file for testing
+     * @param config - config injected
+     */
+    @Inject
+    public void setClientConfig(ClientConfiguration config) {
+        this.config = config;
+    }
+
     @BeforeEach
     public void setup() {
-        sut = new MainCtrl();
+        sut = new MainCtrl(config);
     }
 
     @Test
