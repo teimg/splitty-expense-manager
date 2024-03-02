@@ -80,16 +80,30 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         languageMenu.setGraphic(createImageView(url));
     }
 
+    private void initFlagLanguageMenu(String name){
+        switch (name) {
+            case "french":
+                setFlagLanguageMenu("fr.png");
+                break;
+            case "dutch":
+                setFlagLanguageMenu("nl.png");
+                break;
+            default:
+                setFlagLanguageMenu("uk.png");
+                break;
+        }
+    }
+
     public void initLanguageMenu(){
         englishButton.setGraphic(createImageView("uk.png"));
         frenchButton.setGraphic(createImageView("fr.png"));
         dutchButton.setGraphic(createImageView("nl.png"));
 
+       String lan = mainCtrl.getTranslator().getCurrentLanguage();
+       initFlagLanguageMenu(lan);
 
-        // needs to be hardcoded for now since
-        // the MenubarCtrl bars is initizalized before the Mainctrl
-        setFlagLanguageMenu("uk.png");
     }
+
 
     @Inject
     public MenuBarCtrl(MainCtrl mainCtrl) {
