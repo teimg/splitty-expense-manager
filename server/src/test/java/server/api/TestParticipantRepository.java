@@ -166,8 +166,8 @@ public class TestParticipantRepository implements ParticipantRepository {
     }
 
     @Override
-    public Optional<Participant> findById(Long aLong) {
-        return Optional.empty();
+    public Optional<Participant> findById(Long id) {
+        return find(id);
     }
 
     @Override

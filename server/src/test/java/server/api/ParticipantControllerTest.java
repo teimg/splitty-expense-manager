@@ -45,4 +45,15 @@ public class ParticipantControllerTest {
         var actual = sut.createParticipant(participant);
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
+
+    @Test
+    public void getById() {
+        Participant participant = new Participant("Bob");
+        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        participant.setEvent(event);
+        var createResponse = sut.createParticipant(participant);
+        Participant saved = createResponse.getBody();
+        var actual = sut.getById(saved.getId());
+        assertEquals(saved, actual.getBody());
+    }
 }
