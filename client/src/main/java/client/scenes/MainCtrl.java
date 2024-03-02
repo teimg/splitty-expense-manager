@@ -64,7 +64,13 @@ public class MainCtrl {
     @Inject
     public MainCtrl(ClientConfiguration config) {
         this.config = config;
-        this.translator = new Translator(config.getStartupLanguage());
+        if (config != null){
+            this.translator = new Translator(config.getStartupLanguage());
+
+        }
+
+
+
     }
 
     @SuppressWarnings("unchecked")
