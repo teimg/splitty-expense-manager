@@ -95,6 +95,9 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch {
                 "StatisticsScreen.Total-Cost-label"));
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
+        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
+                "Titles.Statistics"));
+
     }
 
 }

@@ -109,6 +109,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
                 "AddEditExpense.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
                 "AddEditExpense.Add-Button"));
+        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
+                "Titles.AddEditExpense"));
     }
 
     @Inject

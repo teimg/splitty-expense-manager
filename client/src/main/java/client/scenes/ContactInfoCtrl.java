@@ -78,5 +78,7 @@ public class ContactInfoCtrl implements LanguageSwitch {
                 "ContactInfo.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
                 "ContactInfo.Add-Button"));
+        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
+                "Titles.ContactInfo"));
     }
 }
