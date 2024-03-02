@@ -128,8 +128,8 @@ public class TestParticipantRepository implements ParticipantRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
+    public void deleteById(Long id) {
+        participants.removeIf(p -> p.getId() == id);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class TestParticipantRepository implements ParticipantRepository {
 
     @Override
     public List<Participant> findAll() {
-        return null;
+        return participants;
     }
 
     @Override

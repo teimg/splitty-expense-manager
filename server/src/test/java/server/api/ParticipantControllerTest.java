@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 public class ParticipantControllerTest {
@@ -55,5 +56,29 @@ public class ParticipantControllerTest {
         Participant saved = createResponse.getBody();
         var actual = sut.getById(saved.getId());
         assertEquals(saved, actual.getBody());
+    }
+
+    @Test
+    public void updateParticipant() {
+        Participant participant = new Participant("Bob");
+        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        participant.setEvent(event);
+        var createResponse = sut.createParticipant(participant);
+        Participant saved = createResponse.getBody();
+        saved.setName("Alex");
+        var actual = sut.updateParticipant(saved.getId(), saved);
+        assertEquals(saved, actual.getBody());
+    }
+
+    @Test
+    public void deleteParticipant() {
+        Participant participant = new Participant("Bob");
+        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        participant.setEvent(event);
+        var createResponse = sut.createParticipant(participant);
+        Participant saved = createResponse.getBody();
+        sut.deleteParticipant(saved.getId());
+        var remaining = sut.getAll();
+        assertTrue(remaining.isEmpty());
     }
 }
