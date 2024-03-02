@@ -14,12 +14,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/expense")
 public class ExpenseController {
-    @Autowired
     private final ExpenseRepository repo;
 
     /**
-     * Constructs an {@link ExpenseController} with the specified {@link ExpenseRepository}.
-     * @param repo the expense repository used for data access operations
+     * Constructor for expense controller
+     *
+     * @param repo expense repository
      */
     @Autowired
     public ExpenseController(ExpenseRepository repo) {
