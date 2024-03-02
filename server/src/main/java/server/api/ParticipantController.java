@@ -59,7 +59,7 @@ public class ParticipantController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteExpense(@PathVariable("id") long id) {
+    public ResponseEntity<Participant> deleteParticipant(@PathVariable("id") long id) {
         Optional<Participant> participantData = repo.findById(id);
         if (participantData.isEmpty()) {
             return ResponseEntity.badRequest().build();
