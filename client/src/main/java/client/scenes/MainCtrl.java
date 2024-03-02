@@ -139,42 +139,48 @@ public class MainCtrl {
     public void showAddEditExpense() {
         currentCtrl = addEditExpenseCtrl;
         currentCtrl.setLanguage();
-        primaryStage.setTitle("Add/Edit Expense");
+        primaryStage.setTitle(translator.getTranslation(
+                "Titles.AddEditExpense"));
         primaryStage.setScene(addEdit);
     }
 
     public void showInvitation() {
         currentCtrl = invitationCtrl;
         currentCtrl.setLanguage();
-        primaryStage.setTitle("Invitation");
+        primaryStage.setTitle(translator.getTranslation(
+                "Titles.Invitation"));
         primaryStage.setScene(invitation);
     }
 
     public void showOpenDebts() {
         currentCtrl = openDebtsCtrl;
         currentCtrl.setLanguage();
-        primaryStage.setTitle("Open Debts");
+        primaryStage.setTitle(translator.getTranslation(
+                "Titles.OpenDebts"));
         primaryStage.setScene(openDebts);
     }
 
     public void showStartScreen() {
         currentCtrl = startScreenCtrl;
         currentCtrl.setLanguage();
-        primaryStage.setTitle("Start Screen");
+        primaryStage.setTitle(translator.getTranslation(
+                "Titles.StartScreen"));
         primaryStage.setScene(start);
     }
 
     public void showStatistics() {
         currentCtrl = statisticsScreenCtrl;
         currentCtrl.setLanguage();
-        primaryStage.setTitle("Statistics");
+        primaryStage.setTitle(translator.getTranslation(
+                "Titles.Statistics"));
         primaryStage.setScene(statistics);
     }
 
     public void showContactInfo(){
         currentCtrl = contactInfoCtrl;
         currentCtrl.setLanguage();
-        primaryStage.setTitle("Contact Information");
+        primaryStage.setTitle(translator.getTranslation(
+                "Titles.ContactInfo"));
         primaryStage.setScene(contactInfo);
     }
 
