@@ -19,7 +19,7 @@ public class ExpenseController {
     /**
      * Constructor for expense controller
      *
-     * @param repo expense repository
+     * @param expenseService expense repository
      */
     @Autowired
     public ExpenseController(ExpenseService expenseService) {
@@ -84,73 +84,16 @@ public class ExpenseController {
     }
 
     /**
-     * Deletes an expense by its ID.
+     * Deletes an expense by expense ID.
      * @param id the ID of the expense to delete
-     * @return a {@link ResponseEntity} indicating the operation result
+     * @return a {@link ResponseEntity} indicating if deletion is successful
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteExpense(@PathVariable long id) {
-        return expenseService.findById(id).map(expense -> {
-            expenseService.deleteById(id);
+        return expenseService.getExpenseById(id).map(expense -> {
+            expenseService.deleteExpense(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /**
-     * Filters expenses based on provided criteria.
-     * @param eventId optional filter by event ID
-     * @return a list of expenses that match the filtering criteria
-     */
-    @GetMapping("/filter")
-    public ResponseEntity<List<Expense>> getExpensesByCriteria(
-            @RequestParam(value = "eventId", required = false) Long eventId) {
-        List<Expense> expenses;
-        if (eventId != null) {
-            expenses = expenseService.findByEventId(eventId);
-        } else {
-            expenses = expenseService.findAll();
-        }
-        return ResponseEntity.ok(expenses);
-    }
-
-    /**
-     * Performs a partial update on an expense, updating only specified fields.
-     * @param id the ID of the expense to update
-     * @param updates a map of the fields to update and their new values
-     * @return the updated expense if found and updated,
-     * or a {@link ResponseEntity} with not found status
-     */
-    @PatchMapping("/{id}")
-    public ResponseEntity<Expense>
-    partialUpdateExpense(@PathVariable long id, @RequestBody Map<String, Object> updates) {
-        Optional<Expense> expenseData = expenseService.findById(id);
-        if (expenseData.isPresent()) {
-            Expense expense = expenseData.get();
-            updates.forEach((key, value) -> {
-                switch (key) {
-                    case "event":
-                        // Assuming Event is passed by ID or another simple identifier
-                        // You need to fetch the Event entity and set it here
-                        break;
-                    case "purchase":
-                        expense.setPurchase((String) value);
-                        break;
-                    case "amount":
-                        expense.setAmount((Double) value);
-                        break;
-                    case "payer":
-                        // Similar to "event", fetch and set the payer Participant entity
-                        break;
-                    case "debtors":
-                        // Handle updating the list of debtors appropriately
-                        break;
-                    // Add more case statements as needed
-                }
-            });
-            Expense updatedExpense = expenseService.save(expense);
-            return ResponseEntity.ok(updatedExpense);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }
