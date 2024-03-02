@@ -32,4 +32,11 @@ public class ClientConfiguration extends ConfigProvider {
     public String getStartupLanguage() {
         return get("language");
     }
+
+    /**
+     * Sets the configured language.
+     */
+    public void setStartupLanguage(String language) {
+        set("language", language);
+    }
 }
