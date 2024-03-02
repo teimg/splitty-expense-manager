@@ -74,5 +74,7 @@ public class InvitationCtrl implements Initializable, LanguageSwitch {
                 "Invitation.Invite-label"));
         sendInviteButton.setText(mainCtrl.getTranslator().getTranslation(
                 "Invitation.Send-Invite-Button"));
+        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
+                "Titles.Invitation"));
     }
 }

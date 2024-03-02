@@ -59,6 +59,8 @@ public class MainCtrl {
 
     private final ClientConfiguration config;
 
+    private MenuBarCtrl menuBarCtrl;
+
     @Inject
     public MainCtrl(ClientConfiguration config) {
         this.config = config;
@@ -85,30 +87,28 @@ public class MainCtrl {
                 sceneMap.get("StatisticsScreenCtrl");
         Pair<ContactInfoCtrl, Parent>  contactInfo = (Pair<ContactInfoCtrl, Parent>)
             sceneMap.get("ContactInfoCtrl");
+        Pair<MenuBarCtrl, Parent>  menuBar = (Pair<MenuBarCtrl, Parent>)
+                sceneMap.get("MenuBarCtrl");
 
         this.overviewCtrl = over.getKey();
         this.overview = new Scene(over.getValue());
-
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
-
         this.addEditExpenseCtrl = addEdit.getKey();
         this.addEdit = new Scene(addEdit.getValue());
-
         this.invitationCtrl = invite.getKey();
         this.invitation = new Scene(invite.getValue());
-
         this.openDebtsCtrl = openDebt.getKey();
         this.openDebts = new Scene(openDebt.getValue());
-
         this.startScreenCtrl = start.getKey();
         this.start = new Scene(start.getValue());
-
         this.statisticsScreenCtrl = stats.getKey();
         this.statistics = new Scene(stats.getValue());
-
         this.contactInfoCtrl = contactInfo.getKey();
         this.contactInfo = new Scene(contactInfo.getValue());
+
+        this.menuBarCtrl = menuBar.getKey();
+        this.menuBarCtrl.setLanguage();
 
         this.currentCtrl = startScreenCtrl;
         showStartScreen();
@@ -117,7 +117,7 @@ public class MainCtrl {
 
     public void showOverview() {
         currentCtrl = overviewCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
@@ -125,7 +125,7 @@ public class MainCtrl {
 
     public void showAdd() {
         currentCtrl = addCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle("Quotes: Add Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
@@ -138,7 +138,7 @@ public class MainCtrl {
 
     public void showAddEditExpense() {
         currentCtrl = addEditExpenseCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle(translator.getTranslation(
                 "Titles.AddEditExpense"));
         primaryStage.setScene(addEdit);
@@ -146,7 +146,7 @@ public class MainCtrl {
 
     public void showInvitation() {
         currentCtrl = invitationCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle(translator.getTranslation(
                 "Titles.Invitation"));
         primaryStage.setScene(invitation);
@@ -154,7 +154,7 @@ public class MainCtrl {
 
     public void showOpenDebts() {
         currentCtrl = openDebtsCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle(translator.getTranslation(
                 "Titles.OpenDebts"));
         primaryStage.setScene(openDebts);
@@ -162,7 +162,7 @@ public class MainCtrl {
 
     public void showStartScreen() {
         currentCtrl = startScreenCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle(translator.getTranslation(
                 "Titles.StartScreen"));
         primaryStage.setScene(start);
@@ -170,7 +170,7 @@ public class MainCtrl {
 
     public void showStatistics() {
         currentCtrl = statisticsScreenCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle(translator.getTranslation(
                 "Titles.Statistics"));
         primaryStage.setScene(statistics);
@@ -178,7 +178,7 @@ public class MainCtrl {
 
     public void showContactInfo(){
         currentCtrl = contactInfoCtrl;
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         primaryStage.setTitle(translator.getTranslation(
                 "Titles.ContactInfo"));
         primaryStage.setScene(contactInfo);
@@ -186,13 +186,17 @@ public class MainCtrl {
 
     public void updateLanguage(String s) {
         translator.setCurrentLanguage(s);
-        currentCtrl.setLanguage();
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         config.setStartupLanguage(translator.getCurrentLanguage());
         config.save();
     }
 
     public Translator getTranslator() {
         return translator;
+    }
+
+    public void setTitle(String title){
+        primaryStage.setTitle(title);
     }
 
 }

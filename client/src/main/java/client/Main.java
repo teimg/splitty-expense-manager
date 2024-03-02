@@ -54,9 +54,10 @@ public class Main extends Application {
                 "client", "scenes", "StartScreen.fxml");
         var statistics = FXML.load(StatisticsScreenCtrl.class,
                 "client", "scenes", "StatisticsScreen.fxml");
-
         var contactInfo = FXML.load(StatisticsScreenCtrl.class,
             "client", "scenes", "ContactInfo.fxml");
+        var menuBar = FXML.load(MenuBarCtrl.class,
+                "client", "scenes", "MenuBar.fxml");
 
         HashMap<String, Object> sceneMap = new HashMap<>();
 
@@ -69,6 +70,7 @@ public class Main extends Application {
         sceneMap.put("StartScreenCtrl", startScreen);
         sceneMap.put("StatisticsScreenCtrl", statistics);
         sceneMap.put("ContactInfoCtrl", contactInfo);
+        sceneMap.put("MenuBarCtrl", menuBar);
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }

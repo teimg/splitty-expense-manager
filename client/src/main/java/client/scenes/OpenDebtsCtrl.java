@@ -85,6 +85,8 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch {
                 "OpenDebts.Title-label"));
         noDebtMessage.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.NoDebtsMessage-label"));
+        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
+                "Titles.OpenDebts"));
     }
 
     /**
