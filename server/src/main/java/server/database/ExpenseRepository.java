@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByEventId(Long eventId);
+
 }
