@@ -35,6 +35,7 @@ public class ClientConfiguration extends ConfigProvider {
 
     /**
      * Sets the configured language.
+     * @param language = language
      */
     public void setStartupLanguage(String language) {
         set("language", language);
