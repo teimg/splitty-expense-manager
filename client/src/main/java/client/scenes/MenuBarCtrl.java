@@ -3,7 +3,6 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Menu;
@@ -12,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MenuBarCtrl implements LanguageSwitch, Initializable {
@@ -88,8 +86,9 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         dutchButton.setGraphic(createImageView("nl.png"));
 
 
-        // needs to be hardcoded for now since the MenubarCtrl bars is initizalized before the Mainctrl
-        setFlagLanguageMenu("english");
+        // needs to be hardcoded for now since
+        // the MenubarCtrl bars is initizalized before the Mainctrl
+        setFlagLanguageMenu("uk.png");
     }
 
     @Inject
