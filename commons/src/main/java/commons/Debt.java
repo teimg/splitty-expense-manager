@@ -21,31 +21,60 @@ public class Debt {
         this.debtor = debtor;
         this.amount = amount;
     }
-    
+
+    /**
+     * Getter method for creditor
+     * @return Creditor
+     */
     public Participant getCreditor() {
         return creditor;
     }
 
+    /**
+     * Setter method for creditor
+     * @param creditor - Participant who is owed money
+     */
     public void setCreditor(Participant creditor) {
         this.creditor = creditor;
     }
 
+    /**
+     * Getter method for debtor
+     * @return Debtor
+     */
     public Participant getDebtor() {
         return debtor;
     }
 
+    /**
+     * Setter method for debtor
+     * @param debtor - Participant who owes money
+     */
     public void setDebtor(Participant debtor) {
         this.debtor = debtor;
     }
 
+    /**
+     * Getter method for amount owed
+     * @return Amount
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * Setter method for amount owed
+     * @param amount - owed
+     */
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
+    /**
+     * Standard equals method
+     * @param o - other
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,6 +87,10 @@ public class Debt {
         return Objects.equals(debtor, debt.debtor);
     }
 
+    /**
+     * Standard hashcode method
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         int result;
@@ -69,7 +102,10 @@ public class Debt {
         return result;
     }
 
-
+    /**
+     * toString method for debugging
+     * @return String representation of object
+     */
     @Override
     public String toString() {
         return "Debt{" +
