@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -119,7 +120,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
         expenseSelectorFrom.setText("From " + userName);
         expenseSelectorIncluding.setText("Including " + userName);
         // Populate expense list
-        expenses = serverUserCommunicator.getExpenses(event);
+        expenses = new ArrayList<>(serverUserCommunicator.getAllExpensesForEvent(event.getId()));
         expensesList.setCellFactory(new ExpenseCellFactory());
         shownExpenses = FXCollections.observableArrayList(expenses);
         expensesList.setItems(shownExpenses);
