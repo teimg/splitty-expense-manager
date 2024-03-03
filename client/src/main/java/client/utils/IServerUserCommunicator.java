@@ -1,9 +1,12 @@
 package client.utils;
 
+import commons.BankAccount;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,59 +15,102 @@ import java.util.List;
 public interface IServerUserCommunicator {
 
     /**
-     * Registers a new user to the application.
-     * @param firstName user's first name
-     * @param lastName user's last name
-     * @return the new Participant
+     * Creates a new event.
+     * @param name name of the event
+     * @return the created event
      */
-    Participant registerParticipant(String firstName, String lastName);
+    Event createEvent(String name);
 
     /**
-     * Gets an existing Participant by id.
-     * @param id Participant unique id
-     * @return the corresponding Participant
+     * Gets an existing event by id.
+     * @param id event id
+     * @return the event
      */
-    Participant getParticipant(int id);
+    Event getEvent(long id);
 
     /**
-     * Creates a new Event with a specified name. The name does not have to be unique.
-     * @param name the name of the Event to create
-     * @param creator the creator Participant should be added automatically
-     * @return the created Event
+     * Updates an existing event.
+     * @param event the event with updated fields
+     * @return the updated event
      */
-    Event registerEvent(String name, Participant creator);
+    Event updateEvent(Event event);
 
     /**
-     * Gets an existing Event by id.
-     * @param id Event unique id
-     * @return the corresponding Event
+     * Deletes an existing event.
+     * @param id event id
+     * @return the deleted event
      */
-    Event getEvent(int id);
+    Event deleteEvent(long id);
 
     /**
-     * Makes a Participant join an Event by its invite code.
-     * @param inviteCode the invite code for the Event
-     * @param toJoin the Participant to join the Event
-     * @return the Event that was joined
+     * Creates a new participant.
+     * @param event event the participant belongs to
+     * @param name name of the participant
+     * @param email email of the participant or null
+     * @param bankAccount bank account of the participant or null
+     * @return the created participant
      */
-    Event joinEvent(String inviteCode, Participant toJoin);
+    Participant createParticipant(Event event, String name, String email, BankAccount bankAccount);
 
     /**
-     * Adds a made expense to an Event.
-     * @param event the Event to add the expense to
-     * @param purchase what was purchased with this expense
-     * @param amount the amount paid
-     * @param payer the Participant who paid
-     * @param debtors the Participants who have accrued debt with this expense
-     * @return the created Expense
+     * Gets an existing participant by id.
+     * @param id participant id
+     * @return the participant
      */
-    Expense addExpense(Event event, String purchase, double amount, Participant payer,
-                              List<Participant> debtors);
+    Participant getParticipant(long id);
 
     /**
-     * Gets a List of Expenses registered for an Event.
-     * @param event the Event to query Expenses for
-     * @return the List of Expenses
+     * Updates an existing participant.
+     * @param participant the participant with updated fields
+     * @return the updated participant
      */
-    List<Expense> getExpenses(Event event);
+    Participant updateParticipant(Participant participant);
+
+    /**
+     * Deletes an existing participant.
+     * @param id participant id
+     * @return the deleted participant
+     */
+    Participant deleteParticipant(long id);
+
+    /**
+     * Creates a new expense.
+     * @param event event the expense belongs to
+     * @param purchase name of the purchase
+     * @param amount amount of money spent
+     * @param payer participant who paid
+     * @param debtors participants who profited
+     * @param date date the expense was made
+     * @return the created expense
+     */
+    Expense createExpense(Event event, String purchase, double amount,
+                          Participant payer, List<Participant> debtors, LocalDate date);
+
+    /**
+     * Gets an existing expense by id.
+     * @param id expense id
+     * @return the expense
+     */
+    Expense getExpense(long id);
+
+    /**
+     * Updates an existing expense.
+     * @param expense the expense with updated fields
+     * @return the updated expense
+     */
+    Expense updateExpense(Expense expense);
+
+    /**
+     * Deletes an existing expense.
+     * @param id expense id
+     * @return the deleted expense
+     */
+    Expense deleteExpense(long id);
+
+    /**
+     * Gets a list of all expenses in an event.
+     * @param eventId event id
+     * @return the expenses in that event
+     */
+    Collection<Expense> getAllExpensesForEvent(long eventId);
 }
