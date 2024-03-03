@@ -126,6 +126,16 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * Performs final actions before stopping the application.
+     */
+    public void stop() {
+
+
+        config.save();
+
+    }
+
     public void showOverview() {
         currentCtrl = overviewCtrl;
         currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
@@ -199,7 +209,6 @@ public class MainCtrl {
         translator.setCurrentLanguage(s);
         currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         config.setStartupLanguage(translator.getCurrentLanguage());
-        config.save();
     }
 
     public Translator getTranslator() {

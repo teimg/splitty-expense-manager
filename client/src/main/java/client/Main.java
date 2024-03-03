@@ -32,6 +32,8 @@ public class Main extends Application {
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
+    private static MainCtrl mainCtrl;
+
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
@@ -39,7 +41,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
@@ -73,5 +75,15 @@ public class Main extends Application {
         sceneMap.put("MenuBarCtrl", menuBar);
 
         mainCtrl.initialize(primaryStage, sceneMap);
+    }
+
+    /**
+     * Called by the application before it is stopped.
+     */
+    @Override
+    public void stop() {
+
+        mainCtrl.stop();
+
     }
 }
