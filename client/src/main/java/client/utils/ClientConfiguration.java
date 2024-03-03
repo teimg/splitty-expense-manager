@@ -48,4 +48,12 @@ public class ClientConfiguration extends ConfigProvider {
     public double getWindowHeight() {
         return Double.parseDouble(get("height"));
     }
+
+    public void setWindowWidth(double width) {
+        set("width", String.valueOf(width));
+    }
+
+    public void setWindowHeight(double height) {
+        set("height", String.valueOf(height));
+    }
 }

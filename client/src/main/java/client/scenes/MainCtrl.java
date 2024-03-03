@@ -131,6 +131,8 @@ public class MainCtrl {
      */
     public void stop() {
 
+        config.setWindowWidth(primaryStage.getWidth());
+        config.setWindowHeight(primaryStage.getHeight());
 
         config.save();
 
