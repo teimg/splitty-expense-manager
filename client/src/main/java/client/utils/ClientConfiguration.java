@@ -41,18 +41,34 @@ public class ClientConfiguration extends ConfigProvider {
         set("language", language);
     }
 
+    /**
+     * Gets the configured window width to use on startup.
+     * @return the width
+     */
     public double getWindowWidth() {
         return Double.parseDouble(get("width"));
     }
 
+    /**
+     * Gets the configured window height to use on startup.
+     * @return the height
+     */
     public double getWindowHeight() {
         return Double.parseDouble(get("height"));
     }
 
+    /**
+     * Sets the configured window width.
+     * @param width the configured width
+     */
     public void setWindowWidth(double width) {
         set("width", String.valueOf(width));
     }
 
+    /**
+     * Sets the configured window height.
+     * @param height the configured height
+     */
     public void setWindowHeight(double height) {
         set("height", String.valueOf(height));
     }

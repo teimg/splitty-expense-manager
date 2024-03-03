@@ -77,7 +77,6 @@ public class MainCtrl {
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
 
-
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
                 sceneMap.get("QuoteOverviewCtrl");
         Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
