@@ -40,4 +40,12 @@ public class ClientConfiguration extends ConfigProvider {
     public void setStartupLanguage(String language) {
         set("language", language);
     }
+
+    public double getWindowWidth() {
+        return Double.parseDouble(get("width"));
+    }
+
+    public double getWindowHeight() {
+        return Double.parseDouble(get("height"));
+    }
 }
