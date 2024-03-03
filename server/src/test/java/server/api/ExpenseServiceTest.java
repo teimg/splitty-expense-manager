@@ -14,6 +14,7 @@ import server.database.ExpenseRepository;
 import server.service.ExpenseService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,5 +49,39 @@ public class ExpenseServiceTest {
         Expense savedExpense = expenseService.saveExpense(expense);
         assertEquals(expense, savedExpense);
         verify(expenseRepository).saveAndFlush(expense);
+    }
+
+    @Test
+    void getExpenseByIdTest() {
+        when(expenseRepository.findById(expense.getId())).thenReturn(Optional.of(expense));
+        Optional<Expense> foundExpense = expenseService.getExpenseById(expense.getId());
+        assertTrue(foundExpense.isPresent());
+        assertEquals(expense, foundExpense.get());
+        verify(expenseRepository).findById(expense.getId());
+    }
+
+    @Test
+    void getAllExpensesTest() {
+        List<Expense> allExpenses = Arrays.asList(expense); // Assume multiple expenses
+        when(expenseRepository.findAll()).thenReturn(allExpenses);
+        List<Expense> foundExpenses = expenseService.getAllExpenses();
+        assertEquals(allExpenses, foundExpenses);
+        verify(expenseRepository).findAll();
+    }
+
+    @Test
+    void getExpensesByEventIdTest() {
+        List<Expense> eventExpenses = Arrays.asList(expense); // Assume multiple expenses for an event
+        when(expenseRepository.findByEventId((long) event.getId())).thenReturn(eventExpenses);
+        List<Expense> foundExpenses = expenseService.getExpensesByEventId((long) event.getId());
+        assertEquals(eventExpenses, foundExpenses);
+        verify(expenseRepository).findByEventId((long) event.getId());
+    }
+
+    @Test
+    void deleteExpenseTest() {
+        doNothing().when(expenseRepository).deleteById(expense.getId());
+        expenseService.deleteExpense(expense.getId());
+        verify(expenseRepository).deleteById(expense.getId());
     }
 }
