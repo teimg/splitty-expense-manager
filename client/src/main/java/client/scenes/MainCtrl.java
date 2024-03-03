@@ -118,6 +118,10 @@ public class MainCtrl {
         this.menuBarCtrl.setLanguage();
 
         this.currentCtrl = startScreenCtrl;
+
+        primaryStage.setWidth(config.getWindowWidth());
+        primaryStage.setHeight(config.getWindowHeight());
+
         showStartScreen();
         primaryStage.show();
     }
