@@ -77,7 +77,6 @@ public class MainCtrl {
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
 
-
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
                 sceneMap.get("QuoteOverviewCtrl");
         Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
@@ -118,8 +117,24 @@ public class MainCtrl {
         this.menuBarCtrl.setLanguage();
 
         this.currentCtrl = startScreenCtrl;
+
+        primaryStage.setWidth(config.getWindowWidth());
+        primaryStage.setHeight(config.getWindowHeight());
+
         showStartScreen();
         primaryStage.show();
+    }
+
+    /**
+     * Performs final actions before stopping the application.
+     */
+    public void stop() {
+
+        config.setWindowWidth(primaryStage.getWidth());
+        config.setWindowHeight(primaryStage.getHeight());
+
+        config.save();
+
     }
 
     public void showOverview() {
@@ -195,7 +210,6 @@ public class MainCtrl {
         translator.setCurrentLanguage(s);
         currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         config.setStartupLanguage(translator.getCurrentLanguage());
-        config.save();
     }
 
     public Translator getTranslator() {
