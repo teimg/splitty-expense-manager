@@ -215,8 +215,12 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
         whoPaidField.getEditor().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent x) {
-                whoPaidField.getItems().removeAll(whoPaidField.getItems());
 
+                if(x.getCode() == KeyCode.TAB){
+                    return;
+                }
+
+                whoPaidField.getItems().removeAll(whoPaidField.getItems());
                 whoPaidField.setValue(whoPaidField.getEditor().getText());
 
                 whoPaidField.getItems()
