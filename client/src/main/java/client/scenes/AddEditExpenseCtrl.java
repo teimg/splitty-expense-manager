@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
@@ -311,23 +312,27 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
      * @return the amount in euro cents right now
      */
     private long getPriceFieldValue() {
-
         // Code should be moved to a different class so it can be tested
-
         long res = 0;
         String value = priceField.getText();
-//        value = value.replaceAll("[^.,0-9]", "");
         String[] values = value.split(",|\\.");
 
-        res += Long.parseLong(values[0]) * 100;
+        try{
+            res += Long.parseLong(values[0]) * 100;
 
-        if(values.length == 2){
-            res += Long.parseLong(values[1]);
+            if(values.length == 2){
+                res += Long.parseLong(values[1]);
+            }
+
+            if(values.length > 2 || res < 0){
+                throw new NumberFormatException();
+            }
+
+        }catch (NumberFormatException e){
+            throw new IllegalArgumentException("price");
         }
 
-        if(values.length > 2){
-            throw new NumberFormatException();
-        }
+
 
         return res;
     }
@@ -349,7 +354,33 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
 
     public  Participant getPayer(){
         System.out.println(whoPaidField.getValue());
-        return whoPaidSelector.getCurrentPayer(whoPaidField.getValue());
+
+        Participant res = whoPaidSelector.getCurrentPayer(whoPaidField.getValue());
+
+        if(res == null){
+            throw new IllegalArgumentException("payer");
+        }
+
+        return res;
+    }
+
+    public String getPurchase(){
+        String res = descriptionField.getText();
+
+        if(res == null || res.isEmpty()){
+            throw new IllegalArgumentException("purchase");
+        }
+        return  res;
+    }
+
+    public List<Participant> getDebitors(){
+        List<Participant> res = debtorSelector.getDebitors();
+
+        if(res.isEmpty()){
+            throw new IllegalArgumentException("participant");
+        }
+
+        return res;
     }
 
     /**
@@ -361,19 +392,32 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
 
         try {
             expenseBuilder.setPayer(getPayer());
-            expenseBuilder.setPurchase(descriptionField.getText());
+            expenseBuilder.setPurchase(getPurchase());
             expenseBuilder.setDate(getDateFieldValue());
             expenseBuilder.setAmount(getPriceFieldValue());
-            expenseBuilder.setDebtors(debtorSelector.getDebitors());
+            expenseBuilder.setDebtors(getDebitors());
             expenseBuilder.setEvent(event);
 
             System.out.println(expenseBuilder.toString());
             return expenseBuilder.build();
-        }catch (NumberFormatException e){
-            Popup popup = new Popup("Price is not a valid digit!", Popup.TYPE.ERROR);
+        } catch (IllegalArgumentException e){
+            String msg = switch (e.getMessage()) {
+                case "payer" -> "Payer field invalid";
+                case "price" -> "Price field invalid";
+                case "purchase" -> "purchase left empty";
+                case "participant" -> "No  selected Debitors";
+                default -> "Unknown input error";
+            };
+
+            Popup popup = new Popup(msg, Popup.TYPE.ERROR);
             popup.show();
-            return null;
+
+        }catch (Exception e){
+            Popup popup = new Popup("Unknown exception", Popup.TYPE.ERROR);
+            popup.show();
         }
+
+        return null;
 
     }
 
