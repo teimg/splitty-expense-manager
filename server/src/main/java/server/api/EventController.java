@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.EventRepository;
+import server.service.EventService;
 
 import java.util.Date;
 import java.util.List;
@@ -15,14 +16,15 @@ import java.util.Optional;
 public class EventController {
 
     @Autowired
-    private final EventRepository repo;
+    private final EventService service;
 
     /**
      * constructor for event controller
-     * @param repo event repository
+     * @param service event service
      */
-    public EventController(EventRepository repo) {
-        this.repo = repo;
+    @Autowired
+    public EventController(EventService service) {
+        this.service = service;
     }
 
     /**
@@ -31,7 +33,7 @@ public class EventController {
      */
     @GetMapping(path = { "", "/" })
     public List<Event> getAll() {
-        return repo.findAll();
+        return service.getAll();
     }
 
     /**
@@ -41,8 +43,8 @@ public class EventController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable long id) {
-        return repo.findById(id).map(event -> {
-            repo.deleteById(id);
+        return service.getById(id).map(event -> {
+            service.delete(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -57,7 +59,7 @@ public class EventController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Event> update(@PathVariable long id, @RequestBody Event newEvent) {
-        Optional<Event> oldEvent = repo.findById(id);
+        Optional<Event> oldEvent = service.getById(id);
         if (oldEvent.isPresent()) {
             Event e = oldEvent.get();
             e.setName(newEvent.getName());
@@ -65,7 +67,7 @@ public class EventController {
             e.setInviteCode(newEvent.getInviteCode());
             e.setLastActivity(newEvent.getLastActivity());
 
-            Event updated = repo.save(e);
+            Event updated = service.save(e);
             return ResponseEntity.ok(updated);
         } else return ResponseEntity.notFound().build();
     }
@@ -80,12 +82,12 @@ public class EventController {
     @PutMapping("/{id}")
     public ResponseEntity<Event>
     updateLastActivity(@PathVariable long id, @RequestBody Date newLastActivity) {
-        Optional<Event> event = repo.findById(id);
+        Optional<Event> event = service.getById(id);
         if (event.isPresent()) {
             Event e = event.get();
             e.setLastActivity(newLastActivity);
 
-            Event updated = repo.save(e);
+            Event updated = service.save(e);
             return ResponseEntity.ok(updated);
         } else return ResponseEntity.notFound().build();
     }
