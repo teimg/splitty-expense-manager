@@ -101,7 +101,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
     private Expense expense;
 
     private final MainCtrl mainCtrl;
-    private Event Event;
 
     @Override
     public void setLanguage() {
@@ -209,8 +208,11 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
 
         for (int i = 0; i < participants.size(); i++) {
 
-            Innercheckbox innercheckbox = new Innercheckbox(participants.get(i).getName(), innerCheckboxes, debtorSelector);
-            if(this.isEdit && this.expense.getDebtors().contains(participants.get(i)))
+            Participant currentParticipant = participants.get(i);
+            Innercheckbox innercheckbox =
+                new Innercheckbox(currentParticipant.getName(), innerCheckboxes, debtorSelector);
+            if(this.isEdit &&
+                this.expense.getDebtors().contains(currentParticipant))
                 innercheckbox.setSelected(true);
 
         }
