@@ -27,8 +27,6 @@ public class EventControllerTest {
     @InjectMocks
     EventController controller;
 
-    private Event event;
-
     @Test
     public void getAllTest() {
         Participant p1 = new Participant("name1", "email1");

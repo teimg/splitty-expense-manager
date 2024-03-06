@@ -29,7 +29,7 @@ public class EventTest {
 
     @Test
     public void testEventGetters() {
-        int testID = firstEvent.getId();
+        long testID = firstEvent.getId();
         String testName = firstEvent.getName();
         String testInviteCode = firstEvent.getInviteCode();
         List<Participant> testParticipants = firstEvent.getParticipants();

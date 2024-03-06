@@ -1,0 +1,43 @@
+package server.api;
+
+import commons.Event;
+import commons.Participant;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import server.database.EventRepository;
+import server.service.EventService;
+
+import java.util.Date;
+import java.util.List;
+
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class EventServiceTest {
+
+    @Mock
+    private EventRepository repo;
+
+    @InjectMocks
+    private EventService service;
+
+    @Test
+    public void deleteTest() {
+        Participant p1 = new Participant("name1", "email1");
+        Participant p2 = new Participant("name2", "email2");
+        List<Participant> participants = List.of(p1, p2);
+        Date creationDate = new Date(2024, 2, 10);
+        Date lastActivity = new Date(2024, 10, 10);
+        Event e1 = new Event(1, "name", "inviteCode", participants, creationDate, lastActivity);
+
+        doNothing().when(repo).deleteById(e1.getId());
+        service.delete(e1.getId());
+        verify(repo).deleteById(e1.getId());
+    }
+
+    
+}
