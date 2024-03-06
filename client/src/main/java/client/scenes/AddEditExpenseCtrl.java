@@ -93,7 +93,15 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
 
     private Event event;
 
+
+    // true if input is an edit meaning that the current expense is being edited
+    private boolean isEdit;
+
+    // Only used when there is an edit going on
+    private Expense expense;
+
     private final MainCtrl mainCtrl;
+    private Event Event;
 
     @Override
     public void setLanguage() {
@@ -150,6 +158,10 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
             });
         }
 
+        public void setSelected(boolean value){
+            checkBox.setSelected(value);
+        }
+
     }
 
     /**
@@ -195,12 +207,34 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
         initCurrency();
         initDateField();
 
-
         for (int i = 0; i < participants.size(); i++) {
 
-            new Innercheckbox(participants.get(i).getName(), innerCheckboxes, debtorSelector);
+            Innercheckbox innercheckbox = new Innercheckbox(participants.get(i).getName(), innerCheckboxes, debtorSelector);
+            if(this.isEdit && this.expense.getDebtors().contains(participants.get(i)))
+                innercheckbox.setSelected(true);
 
         }
+
+        if(this.isEdit){
+            setEdit();
+        }
+    }
+
+    public void setEdit(){
+        whoPaidField.setValue(this.expense.getPayer().getName());
+        priceField.setText(Double.toString(this.expense.getAmount()));
+        evenlyCheckbox.setSelected(false);
+
+        someCheckbox.setSelected(true);
+        innerCheckboxes.setDisable(false);
+        debtorSelector.setAllSelected(false);
+        for(Participant x : this.expense.getDebtors()){
+            if(this.expense.getDebtors().contains(x))
+                debtorSelector.add(x.getName());
+        }
+
+        descriptionField.setText(this.expense.getPurchase());
+        dateField.setValue(this.expense.getDate());
     }
 
     public void initWhoPaid(){
@@ -307,7 +341,12 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
     }
 
     public void addButtonPressed(){
-        createExpense();
+        Expense res = createExpense();
+        if(res == null){
+            return;
+        }
+
+
     }
 
     /**
