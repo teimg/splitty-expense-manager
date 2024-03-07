@@ -20,6 +20,10 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expenses;
+
     private Date creationDate;
     private Date lastActivity;
 
@@ -39,6 +43,7 @@ public class Event {
         this.participants = participants;
         this.creationDate = creationDate;
         this.lastActivity = lastActivity;
+        this.expenses = new ArrayList<>();
     }
 
     public Event() {
@@ -142,6 +147,23 @@ public class Event {
     }
 
     /**
+     * Getter method for expenses.
+     * @return list of expenses
+     */
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    /**
+     * Method to add expenses.
+     * Mainly for testing. In production expenses are to be added by JPA.
+     * @param expense - to be added
+     */
+    public void addExpense(Expense expense) {
+        expenses.add(expense);
+    }
+
+    /**
      * Equals function for Event
      * @param o Object for the Event to be compared to
      * @return true if the two objects are equal and false otherwise
@@ -155,7 +177,8 @@ public class Event {
                 Objects.equals(inviteCode, event.inviteCode) &&
                 Objects.equals(participants, event.participants) &&
                 Objects.equals(creationDate, event.creationDate) &&
-                Objects.equals(lastActivity, event.lastActivity);
+                Objects.equals(lastActivity, event.lastActivity) &&
+                Objects.equals(expenses, event.expenses);
     }
 
     /**
@@ -164,7 +187,8 @@ public class Event {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, inviteCode, participants, creationDate, lastActivity);
+        return Objects.hash(id, name, inviteCode, participants,
+                creationDate, lastActivity, expenses);
     }
 
     /**
