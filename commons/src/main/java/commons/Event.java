@@ -14,7 +14,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
     private String name;
     private String inviteCode;
 
@@ -33,7 +33,7 @@ public class Event {
      * @param creationDate - creation date
      * @param lastActivity - last activity date
      */
-    public Event(int id, String name, String inviteCode,
+    public Event(long id, String name, String inviteCode,
                  List<Participant> participants, Date creationDate, Date lastActivity) {
         this.id = id;
         this.name = name;
@@ -51,7 +51,7 @@ public class Event {
      * Getter method for id
      * @return int id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -59,7 +59,7 @@ public class Event {
      * Setter method for id
      * @param id - int to set id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -136,36 +136,28 @@ public class Event {
     }
 
     /**
-     * Equals method for Event class
-     * @param o - Other object
-     * @return boolean based on equality.
+     * Equals function for Event
+     * @param o Object for the Event to be compared to
+     * @return true if the two objects are equal and false otherwise
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Event event = (Event) o;
-
-        if (id != event.id || !Objects.equals(name, event.name)
-                || !Objects.equals(inviteCode, event.inviteCode)) return false;
-        if (!Objects.equals(participants, event.participants)) return false;
-        if (!Objects.equals(creationDate, event.creationDate)) return false;
-        return Objects.equals(lastActivity, event.lastActivity);
+        return id == event.id && Objects.equals(name, event.name) &&
+                Objects.equals(inviteCode, event.inviteCode) &&
+                Objects.equals(participants, event.participants) &&
+                Objects.equals(creationDate, event.creationDate) &&
+                Objects.equals(lastActivity, event.lastActivity);
     }
 
     /**
-     * HashCode method for Event class
-     * @return int hashcode
+     * Hash code function for Event
+     * @return the hash code for the specific object
      */
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (inviteCode != null ? inviteCode.hashCode() : 0);
-        result = 31 * result + (participants != null ? participants.hashCode() : 0);
-        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
-        result = 31 * result + (lastActivity != null ? lastActivity.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name, inviteCode, participants, creationDate, lastActivity);
     }
 }
