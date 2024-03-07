@@ -79,14 +79,36 @@ class ParticipantServiceTest {
 
     @Test
     void updateParticipant() {
+        participant.setEmail("test@gmail.com");
+        Mockito.when(mockedRepo.findById(participant.getId())).thenReturn(Optional.of(participant));
+        Mockito.when(mockedRepo.save(participant)).thenReturn(participant);
+
+        assertEquals(participant, ps.updateParticipant(participant.getId(), participant));
+
     }
 
     @Test
     void deleteParticipant() {
+        Mockito.when(mockedRepo.findById(participant.getId())).thenReturn(Optional.of(participant));
+
+        ps.deleteParticipant(participant.getId());
     }
 
     @Test
+    void deleteParticipantNotFound() {
+        Mockito.when(mockedRepo.findById(participant.getId())).thenReturn(Optional.empty());
+
+        assertThrows(IllegalArgumentException.class, () ->{
+            ps.deleteParticipant(participant.getId());
+        }, "No such participant" );;
+    }
+
+
+    @Test
     void getAll() {
-        Mockito.when(mockedRepo.)
+
+        Mockito.when(mockedRepo.findAll()).thenReturn(List.of(participant, participant1));
+
+        assertEquals(List.of(participant, participant1), ps.getAll());
     }
 }
