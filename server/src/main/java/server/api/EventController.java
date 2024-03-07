@@ -56,7 +56,7 @@ public class EventController {
      * @return the updated event if the operation was successful,
      * or a {@link ResponseEntity} with notFound status
      */
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Event> update(@PathVariable long id, @RequestBody Event newEvent) {
         Optional<Event> oldEvent = service.getById(id);
         if (oldEvent.isPresent()) {
@@ -78,7 +78,7 @@ public class EventController {
      * @return the updated event if the operation was successful,
      * or a {@link ResponseEntity} with notFound status
      */
-    @PutMapping("/{id}")
+    @PutMapping("/update/lastactivity/{id}")
     public ResponseEntity<Event>
     updateLastActivity(@PathVariable long id, @RequestBody Date newLastActivity) {
         Optional<Event> event = service.getById(id);
