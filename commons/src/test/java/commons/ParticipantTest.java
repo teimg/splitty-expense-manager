@@ -136,7 +136,8 @@ public class ParticipantTest {
 
     @Test
     public void testToString() {
-        assertEquals("Participant{id=0, name='Tester Fester', bankAccount=commons.BankAccount@820}", participantOne.toString());
+        assertEquals("Participant{id=0, name='Tester Fester', " +
+                "bankAccount=commons.BankAccount@820}", participantOne.toString());
     }
 
 }

@@ -69,7 +69,6 @@ public class Participant {
     public long getId() {
         return id;
     }
-
     /**
      * Id Setter
      * @param id set
