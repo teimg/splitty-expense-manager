@@ -30,11 +30,13 @@ public class BankAccountService {
         return repo.existsById(id);
     }
 
-    public void save(BankAccount bankAccount) {
-        repo.saveAndFlush(bankAccount);
+    public BankAccount save(BankAccount bankAccount) {
+        return repo.saveAndFlush(bankAccount);
     }
 
-    public void remove(BankAccount bankAccount) {
-        repo.delete(bankAccount);
+    public Optional<BankAccount> remove(long id) {
+        Optional<BankAccount> bankAccount = getById(id);
+        if (bankAccount.isPresent()) repo.deleteById(id);
+        return bankAccount;
     }
 }
