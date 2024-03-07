@@ -1,9 +1,11 @@
 package server.api;
 
 import commons.BankAccount;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.BankAccountRepository;
+
+import server.service.BankAccountService;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +14,11 @@ import java.util.Optional;
 @RequestMapping("/api/bankAccounts")
 public class BankAccountController {
 
-    private final BankAccountRepository repo;
+    private final BankAccountService service;
 
-    public BankAccountController(BankAccountRepository repo) {
-        this.repo = repo;
+    @Autowired
+    public BankAccountController(BankAccountService service) {
+        this.service = service;
     }
 
     /**
@@ -24,7 +27,7 @@ public class BankAccountController {
      */
     @GetMapping(path = { "", "/" })
     public List<BankAccount> getAll() {
-        return repo.findAll();
+        return service.getAll();
     }
 
     /**
@@ -34,12 +37,13 @@ public class BankAccountController {
      */
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<BankAccount> getById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
-            return ResponseEntity.badRequest().build();
+        if (id >= 0) {
+            Optional<BankAccount> bankAccount = service.getById(id);
+            if (bankAccount.isPresent()) {
+                return ResponseEntity.ok(bankAccount.get());
+            }
         }
-        Optional<BankAccount> bankAccount = repo.findById(id);
-        return bankAccount.map(ResponseEntity::ok).orElseGet(()
-                -> ResponseEntity.badRequest().build());
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -56,7 +60,7 @@ public class BankAccountController {
             return ResponseEntity.badRequest().build();
         }
 
-        BankAccount saved = repo.save(bankAccount);
+        BankAccount saved = service.save(bankAccount);
         return ResponseEntity.ok(saved);
     }
 
@@ -67,13 +71,13 @@ public class BankAccountController {
      */
     @DeleteMapping(path = {"/{id}"})
     public ResponseEntity<BankAccount> delete(@PathVariable long id) {
-        if (id < 0 || !repo.existsById(id)) {
-            return ResponseEntity.badRequest().build();
+        if (id >= 0) {
+            Optional<BankAccount> deleted = service.remove(id);
+            if (deleted.isPresent()) {
+                return ResponseEntity.ok(deleted.get());
+            }
         }
-        Optional<BankAccount> deleted = repo.findById(id);
-        repo.deleteById(id);
-        return deleted.map(ResponseEntity::ok).orElseGet(()
-                -> ResponseEntity.badRequest().build());
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -85,18 +89,17 @@ public class BankAccountController {
     @PutMapping(path = {"/{id}"})
     public ResponseEntity<BankAccount> update(@PathVariable long id,
                                               @RequestBody BankAccount bankAccount) {
-        if (id < 0 || !repo.existsById(id)) {
-            return ResponseEntity.badRequest().build();
+        if (id >= 0) {
+            Optional<BankAccount> gotBankAccount = service.getById(id);
+            if (gotBankAccount.isPresent()) {
+                BankAccount toBeUpdated = gotBankAccount.get();
+                toBeUpdated.setBic(bankAccount.getBic());
+                toBeUpdated.setIban(bankAccount.getIban());
+                BankAccount updated = service.save(toBeUpdated);
+                return ResponseEntity.ok(updated);
+            }
         }
-        Optional<BankAccount> bankAccountToBeUpdated = repo.findById(id);
-        if (bankAccountToBeUpdated.isPresent()) {
-            BankAccount bank = bankAccountToBeUpdated.get();
-            bank.setBic(bankAccount.getBic());
-            bank.setIban(bankAccount.getIban());
-            BankAccount updateBankAccount = repo.save(bank);
-            return ResponseEntity.ok((updateBankAccount));
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 
 
