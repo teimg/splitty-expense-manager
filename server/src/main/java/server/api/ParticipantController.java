@@ -6,11 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import server.database.ParticipantRepository;
 import server.service.ParticipantService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/participants")
@@ -24,6 +22,12 @@ public class ParticipantController {
         this.service = service;
     }
 
+    /**
+     * endpoint to get participants by id
+     *
+     * @param id of participant
+     * @return  participant or HttpStatus.BAD_REQUEST
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Participant> getById(@PathVariable("id") long id) {
 
@@ -38,6 +42,11 @@ public class ParticipantController {
 
     }
 
+    /**
+     * Create participant based on id
+     * @param participant to create
+     * @return created participant or HttpStatus.BAD_REQUEST
+     */
     @PostMapping
     public ResponseEntity<Participant> createParticipant(@RequestBody Participant participant) {
         try {
@@ -49,6 +58,12 @@ public class ParticipantController {
         }
     }
 
+    /**
+     *
+     * @param id id of participant to update
+     * @param newDetails participant to update
+     * @return the updated participant
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Participant> updateParticipant(@PathVariable("id") long id,
                                                             @RequestBody Participant newDetails) {
@@ -60,6 +75,12 @@ public class ParticipantController {
         }
     }
 
+    /**
+     * Delete an participant
+     *
+     * @param id of participant
+     * @return participant or HttpStatus.BAD_REQUEST
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Participant> deleteParticipant(@PathVariable("id") long id) {
         try {
@@ -72,6 +93,10 @@ public class ParticipantController {
 
     }
 
+    /**
+     *
+     * @return all participants
+     */
     @GetMapping
     public List<Participant> getAll() {
         return service.getAll();

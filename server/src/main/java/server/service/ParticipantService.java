@@ -2,10 +2,7 @@ package server.service;
 
 import commons.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import server.database.ParticipantRepository;
 
 import java.util.List;
@@ -22,10 +19,10 @@ public class ParticipantService {
     }
     
     public Participant getById( long id) throws IllegalArgumentException {
-        var OptionalParticipant = repo.findById(id);
+        var optionalParticipant = repo.findById(id);
 
-        if(OptionalParticipant.isPresent()){
-            return OptionalParticipant.get();
+        if(optionalParticipant.isPresent()){
+            return optionalParticipant.get();
 
         }
         throw new IllegalArgumentException("No such participant");
@@ -33,12 +30,23 @@ public class ParticipantService {
     }
 
 
-    public Participant createParticipant(Participant participant) throws IllegalArgumentException{
+    public Participant createParticipant(Participant participant)
+        throws IllegalArgumentException{
+
         checkValidParticipant(participant);
         return repo.save(participant);
     }
-    
-    public Participant updateParticipant(long id, Participant newDetails) throws IllegalArgumentException {
+
+    /**
+     *
+     * @param id id of participant
+     * @param newDetails the participant
+     * @return updated participant
+     * @throws IllegalArgumentException if event or name are null
+     */
+    public Participant updateParticipant(long id, Participant newDetails)
+        throws IllegalArgumentException {
+
         checkValidParticipant(newDetails);
         
         Participant participant = getById(id);
@@ -49,6 +57,13 @@ public class ParticipantService {
         return repo.save(participant);
     }
 
+    /**
+     * delete participant
+     *
+     * @param id id of the participant to delete
+     * @throws IllegalArgumentException if participant is not found
+     */
+
     public void deleteParticipant( long id) throws IllegalArgumentException{
         Optional<Participant> participantData = repo.findById(id);
         if (participantData.isEmpty()) {
@@ -56,6 +71,11 @@ public class ParticipantService {
         }
         repo.deleteById(id);
     }
+
+    /**
+     *
+     * @return all participants
+     */
 
     public List<Participant> getAll() {
         return repo.findAll();
@@ -73,10 +93,22 @@ public class ParticipantService {
 
     }
 
+    /**
+     *
+     * @param s string to check if null
+     * @return true if s is empty
+     */
+
     private static boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 
+
+    /**
+     *
+     * @param participant to check invalidly
+     * @return true if invalid
+     */
     private static boolean isInvalid(Participant participant) {
         return isNullOrEmpty(participant.getName()) || participant.getEvent() == null;
     }
