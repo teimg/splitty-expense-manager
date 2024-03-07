@@ -20,6 +20,10 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Expense> expenses;
+
     private Date creationDate;
     private Date lastActivity;
 
