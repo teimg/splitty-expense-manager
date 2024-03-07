@@ -43,6 +43,7 @@ public class Event {
         this.participants = participants;
         this.creationDate = creationDate;
         this.lastActivity = lastActivity;
+        this.expenses = new ArrayList<>();
     }
 
     public Event() {
@@ -143,6 +144,15 @@ public class Event {
      */
     public void addParticipant(Participant participant) {
         participants.add(participant);
+    }
+
+    /**
+     * Method to add expenses.
+     * Mainly for testing. In production expenses are to be added by JPA.
+     * @param expense - to be added
+     */
+    public void addExpense(Expense expense) {
+        expenses.add(expense);
     }
 
     /**
