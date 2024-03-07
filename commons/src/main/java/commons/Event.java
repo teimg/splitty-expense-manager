@@ -26,16 +26,14 @@ public class Event {
 
     /**
      *
-     * @param id - id to identify event
      * @param name - string name of event
      * @param inviteCode - invite code for other participants
      * @param participants - list of participants
      * @param creationDate - creation date
      * @param lastActivity - last activity date
      */
-    public Event(long id, String name, String inviteCode,
+    public Event(String name, String inviteCode,
                  List<Participant> participants, Date creationDate, Date lastActivity) {
-        this.id = id;
         this.name = name;
         this.inviteCode = inviteCode;
         this.participants = participants;
@@ -136,6 +134,14 @@ public class Event {
     }
 
     /**
+     * Method to add participants
+     * @param participant - to be added
+     */
+    public void addParticipant(Participant participant) {
+        participants.add(participant);
+    }
+
+    /**
      * Equals function for Event
      * @param o Object for the Event to be compared to
      * @return true if the two objects are equal and false otherwise
@@ -159,5 +165,21 @@ public class Event {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, inviteCode, participants, creationDate, lastActivity);
+    }
+
+    /**
+     * To String method
+     * @return String representation of object
+     */
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", participants=" + participants +
+                ", creationDate=" + creationDate +
+                ", lastActivity=" + lastActivity +
+                '}';
     }
 }

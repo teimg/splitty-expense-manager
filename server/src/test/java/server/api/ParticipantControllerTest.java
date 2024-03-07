@@ -33,7 +33,7 @@ public class ParticipantControllerTest {
 
         participant = new Participant("Henk");
         participant.setEvent(
-            new Event(1, "Party", "xyz",
+            new Event( "Party", "xyz",
                 List.of(participant), new Date(0), new Date(0)));
     }
 
@@ -66,7 +66,6 @@ public class ParticipantControllerTest {
     public void updateParticipant() {
         Mockito.when(mockService.createParticipant(participant)).thenReturn(participant);
         var createResponse = pc.createParticipant(participant);
-
         Participant saved = createResponse.getBody();
         saved.setName("Alex");
         Mockito.when(mockService.updateParticipant(saved.getId(), saved)).thenReturn(saved);

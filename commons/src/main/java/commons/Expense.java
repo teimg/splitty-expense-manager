@@ -47,66 +47,130 @@ public class Expense {
         this.date = date;
     }
 
+    /**
+     * No arg constructor
+     */
     public Expense() {
 
     }
 
+    /**
+     * Id getter
+     * @return id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Id setter
+     * @param id set
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Event getter
+     * @return event
+     */
     public Event getEvent() {
         return event;
     }
 
+    /**
+     * Event setter
+     * @param event set
+     */
     public void setEvent(Event event) {
         this.event = event;
     }
 
+    /**
+     * Purchase getter
+     * @return purchase
+     */
     public String getPurchase() {
         return purchase;
     }
 
+    /**
+     * Purchase setter
+     * @param purchase set
+     */
     public void setPurchase(String purchase) {
         this.purchase = purchase;
     }
 
+    /**
+     * Amount getter
+     * @return amount
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * Amount setter
+     * @param amount set
+     */
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
+    /**
+     * Payer getter
+     * @return payer
+     */
     public Participant getPayer() {
         return payer;
     }
 
+    /**
+     * Payer setter
+     * @param payer set
+     */
     public void setPayer(Participant payer) {
         this.payer = payer;
     }
 
+    /**
+     * Debtors getter
+     * @return debtors
+     */
     public List<Participant> getDebtors() {
         return debtors;
     }
 
+    /**
+     * Debtors setter
+     * @param debtors set
+     */
     public void setDebtors(List<Participant> debtors) {
         this.debtors = debtors;
     }
 
+    /**
+     * Date getter
+     * @return date
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /**
+     * Date setter
+     * @param date set
+     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    /**
+     * Equals method
+     * @param o other
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,11 +184,19 @@ public class Expense {
                 Objects.equals(date, expense.date);
     }
 
+    /**
+     * Hashcode
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, event, purchase, amount, payer, debtors, date);
     }
 
+    /**
+     * toString
+     * @return string representation
+     */
     @Override
     public String toString() {
         return "Expense{" +

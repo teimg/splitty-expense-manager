@@ -35,11 +35,21 @@ public class Participant {
         this.name = name;
     }
 
+    /**
+     * Constructor for participant with a bankAccount
+     * @param name name
+     * @param bankAccount bankAccount
+     */
     public Participant(String name, BankAccount bankAccount) {
         this.name = name;
         this.bankAccount = bankAccount;
     }
 
+    /**
+     * Constructor for participant with email
+     * @param name name
+     * @param email email
+     */
     public Participant(String name, String email) {
         this.name = name;
         this.email = email;
@@ -52,46 +62,90 @@ public class Participant {
 
     }
 
+    /**
+     * Id Getter
+     * @return Id
+     */
     public long getId() {
         return id;
     }
-
+    /**
+     * Id Setter
+     * @param id set
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Name Getter
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Name Setter
+     * @param name set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * BankAccount getter
+     * @return bankAccount
+     */
     public BankAccount getBankAccount() {
         return bankAccount;
     }
 
+    /**
+     * BankAccount Setter
+     * @param bankAccount set
+     */
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
     }
 
+    /**
+     * Event getter
+     * @return event
+     */
     public Event getEvent() {
         return event;
     }
 
+    /**
+     * Event setter
+     * @param event set
+     */
     public void setEvent(Event event) {
         this.event = event;
     }
 
+    /**
+     * Email getter
+     * @return email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Email setter
+     * @param email set
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Equals method
+     * @param o other
+     * @return boolean
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,6 +158,10 @@ public class Participant {
         return Objects.equals(bankAccount, that.bankAccount);
     }
 
+    /**
+     * Hashcode
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
@@ -112,6 +170,10 @@ public class Participant {
         return result;
     }
 
+    /**
+     * toString
+     * @return String representation
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Participant{");
