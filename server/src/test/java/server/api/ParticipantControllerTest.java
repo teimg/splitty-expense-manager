@@ -25,7 +25,7 @@ public class ParticipantControllerTest {
     @Test
     public void createParticipant() {
         Participant participant = new Participant("Bob");
-        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        Event event = new Event("Party", "xyz", List.of(participant), new Date(0), new Date(0));
         participant.setEvent(event);
         var actual = sut.createParticipant(participant);
         assertEquals(participant, actual.getBody());
@@ -34,7 +34,7 @@ public class ParticipantControllerTest {
     @Test
     public void cannotCreateWithNullName() {
         Participant participant = new Participant(null);
-        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        Event event = new Event("Party", "xyz", List.of(participant), new Date(0), new Date(0));
         participant.setEvent(event);
         var actual = sut.createParticipant(participant);
         assertEquals(BAD_REQUEST, actual.getStatusCode());
@@ -50,7 +50,7 @@ public class ParticipantControllerTest {
     @Test
     public void getById() {
         Participant participant = new Participant("Bob");
-        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        Event event = new Event("Party", "xyz", List.of(participant), new Date(0), new Date(0));
         participant.setEvent(event);
         var createResponse = sut.createParticipant(participant);
         Participant saved = createResponse.getBody();
@@ -61,7 +61,7 @@ public class ParticipantControllerTest {
     @Test
     public void updateParticipant() {
         Participant participant = new Participant("Bob");
-        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        Event event = new Event("Party", "xyz", List.of(participant), new Date(0), new Date(0));
         participant.setEvent(event);
         var createResponse = sut.createParticipant(participant);
         Participant saved = createResponse.getBody();
@@ -73,7 +73,7 @@ public class ParticipantControllerTest {
     @Test
     public void deleteParticipant() {
         Participant participant = new Participant("Bob");
-        Event event = new Event(1, "Party", "xyz", List.of(participant), new Date(0), new Date(0));
+        Event event = new Event("Party", "xyz", List.of(participant), new Date(0), new Date(0));
         participant.setEvent(event);
         var createResponse = sut.createParticipant(participant);
         Participant saved = createResponse.getBody();

@@ -178,7 +178,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
         participants.add(new Participant("Pietje"));
         participants.add(new Participant("Trien"));
 
-        this.event = new Event(1, "dummyEvent", "CODE", participants, new Date(), new Date());
+        this.event = new Event("dummyEvent", "CODE", participants, new Date(), new Date());
     }
 
 
