@@ -26,37 +26,136 @@ public class EventTest {
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
     }
 
+    @Test
+    public void testConstructors() {
+        Event constructorTest = new Event(1, "Test", "InviteCode", participants,
+                new Date(2024, 1, 10), new Date(2024, 2, 10));
+        assertNotNull(constructorTest);
+        Event constructorTestTwo = new Event();
+        assertNotNull(constructorTestTwo);
+    }
 
     @Test
-    public void testEventGetters() {
+    public void getId() {
         long testID = firstEvent.getId();
-        String testName = firstEvent.getName();
-        String testInviteCode = firstEvent.getInviteCode();
-        List<Participant> testParticipants = firstEvent.getParticipants();
-        Date testCreationDate = firstEvent.getCreationDate();
-        Date testLastActivityDate = firstEvent.getLastActivity();
         assertEquals(testID, 1);
+    }
+
+    @Test
+    public void getName() {
+        String testName = firstEvent.getName();
         assertEquals(testName, "Test");
+    }
+
+    @Test
+    public void getInviteCode() {
+        String testInviteCode = firstEvent.getInviteCode();
         assertEquals(testInviteCode, "InviteCode");
+    }
+
+    @Test
+    public void getParticipants() {
+        List<Participant> testParticipants = firstEvent.getParticipants();
         assertEquals(testParticipants, participants);
+    }
+
+    @Test
+    public void getCreationDate() {
+        Date testCreationDate = firstEvent.getCreationDate();
         assertEquals(testCreationDate, new Date(2024, 1, 10));
+    }
+
+    @Test
+    public void getLastActivityDate() {
+        Date testLastActivityDate = firstEvent.getLastActivity();
         assertEquals(testLastActivityDate, new Date(2024, 2, 10));
     }
 
     @Test
-    public void testEventEquals() {
-        assertNotEquals(firstEvent, secondEvent);
-        assertEquals(firstEvent, firstEvent);
+    public void setId() {
+        firstEvent.setId(100);
+        assertEquals(firstEvent.getId(), 100);
+    }
+
+    @Test
+    public void setName() {
+        firstEvent.setName("Change");
+        assertEquals(firstEvent.getName(), "Change");
+    }
+
+    @Test
+    public void setInviteCode() {
+        firstEvent.setInviteCode("Change");
+        assertEquals(firstEvent.getInviteCode(), "Change");
+    }
+
+    @Test
+    public void addParticipants() {
+        Participant added = new Participant("Add");
+        firstEvent.addParticipant(added);
+        assertTrue(firstEvent.getParticipants().contains(added));
+    }
+
+    @Test
+    public void setCreationDate() {
+        Date creationDate = new Date(2000, 1, 11);
+        firstEvent.setCreationDate(creationDate);
+        assertEquals(firstEvent.getCreationDate(), creationDate);
+    }
+
+    @Test
+    public void setLastActivityDate() {
+        Date activityDate = new Date(2050, 10, 11);
+        firstEvent.setLastActivity(activityDate);
+        assertEquals(firstEvent.getLastActivity(), activityDate);
+    }
+
+    @Test
+    public void testEqualsNull() {
         assertNotEquals(firstEvent, null);
-        assertNotEquals("Hello", firstEvent);
+    }
+
+    @Test
+    public void testEqualsSame() {
+        assertEquals(firstEvent, firstEvent);
+    }
+
+    @Test
+    public void testEqualsEqual() {
         assertEquals(firstEvent, thirdEvent);
     }
 
     @Test
-    public void testEventHashCode() {
+    public void testEqualsDifferent() {
+        assertNotEquals(firstEvent, secondEvent);
+    }
+
+    @Test
+    public void testHashCodeSame() {
         assertEquals(firstEvent.hashCode(), firstEvent.hashCode());
+    }
+
+    @Test
+    public void testHashCodeEqual() {
         assertEquals(firstEvent.hashCode(), thirdEvent.hashCode());
+    }
+
+    @Test
+    public void testHashCodeDifferent() {
         assertNotEquals(firstEvent.hashCode(), secondEvent.hashCode());
+    }
+
+    @Test
+    public void testEventHashCodeDifferentClass() {
+        assertNotEquals(firstEvent.hashCode(), "Hello".hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals(firstEvent.toString(), "Event{id=1, name='Test', " +
+                "inviteCode='InviteCode', participants=[Participant{id=0, " +
+                "name='Tester Fester', bankAccount=null}], creationDate=Sun " +
+                "Feb 10 00:00:00 CET 3924, lastActivity=Mon Mar 10 00:00:00 CET 3924}");
     }
 
 }

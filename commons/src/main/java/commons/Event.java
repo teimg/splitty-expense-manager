@@ -136,6 +136,14 @@ public class Event {
     }
 
     /**
+     * Method to add participants
+     * @param participant - to be added
+     */
+    public void addParticipant(Participant participant) {
+        participants.add(participant);
+    }
+
+    /**
      * Equals function for Event
      * @param o Object for the Event to be compared to
      * @return true if the two objects are equal and false otherwise
@@ -159,5 +167,21 @@ public class Event {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, inviteCode, participants, creationDate, lastActivity);
+    }
+
+    /**
+     * To String method
+     * @return String representation of object
+     */
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", participants=" + participants +
+                ", creationDate=" + creationDate +
+                ", lastActivity=" + lastActivity +
+                '}';
     }
 }
