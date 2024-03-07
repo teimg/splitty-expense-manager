@@ -147,6 +147,14 @@ public class Event {
     }
 
     /**
+     * Getter method for expenses.
+     * @return list of expenses
+     */
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    /**
      * Method to add expenses.
      * Mainly for testing. In production expenses are to be added by JPA.
      * @param expense - to be added
