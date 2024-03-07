@@ -34,7 +34,7 @@ public class EventServiceTest {
         List<Participant> participants = List.of(p1, p2);
         Date creationDate = new Date(2024, 2, 10);
         Date lastActivity = new Date(2024, 10, 10);
-        Event e1 = new Event(1, "name", "inviteCode", participants, creationDate, lastActivity);
+        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
 
         when(repo.saveAndFlush(e1)).thenReturn(e1);
         Event actual = service.save(e1);
@@ -48,7 +48,7 @@ public class EventServiceTest {
         List<Participant> participants = List.of(p1, p2);
         Date creationDate = new Date(2024, 2, 10);
         Date lastActivity = new Date(2024, 10, 10);
-        Event e1 = new Event(1, "name", "inviteCode", participants, creationDate, lastActivity);
+        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
 
         when(repo.findById(1L)).thenReturn(Optional.of(e1));
         Optional<Event> actual = service.getById(1L);
@@ -62,8 +62,8 @@ public class EventServiceTest {
         List<Participant> participants = List.of(p1, p2);
         Date creationDate = new Date(2024, 2, 10);
         Date lastActivity = new Date(2024, 10, 10);
-        Event e1 = new Event(1, "name", "inviteCode", participants, creationDate, lastActivity);
-        Event e2 = new Event(1, "name2", "inviteCode2", participants, creationDate, lastActivity);
+        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
+        Event e2 = new Event("name2", "inviteCode2", participants, creationDate, lastActivity);
 
         List<Event> events = Arrays.asList(e1, e2);
         when(repo.findAll()).thenReturn(events);
@@ -80,7 +80,7 @@ public class EventServiceTest {
         List<Participant> participants = List.of(p1, p2);
         Date creationDate = new Date(2024, 2, 10);
         Date lastActivity = new Date(2024, 10, 10);
-        Event e1 = new Event(1, "name", "inviteCode", participants, creationDate, lastActivity);
+        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
 
         doNothing().when(repo).deleteById(e1.getId());
         service.delete(e1.getId());

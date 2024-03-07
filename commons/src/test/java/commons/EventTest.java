@@ -18,17 +18,17 @@ public class EventTest {
         Participant participant1 = new Participant("Tester Fester");
         this.participants = new ArrayList<>();
         participants.add(participant1);
-        this.firstEvent = new Event(1, "Test", "InviteCode", participants,
+        this.firstEvent = new Event("Test", "InviteCode", participants,
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
-        this.secondEvent = new Event(1, "Test", "InviteCode", participants,
+        this.secondEvent = new Event("Test", "InviteCode", participants,
                 new Date(2024, 1, 10), new Date(2023, 2, 10));
-        this.thirdEvent = new Event(1, "Test", "InviteCode", participants,
+        this.thirdEvent = new Event("Test", "InviteCode", participants,
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
     }
 
     @Test
     public void testConstructors() {
-        Event constructorTest = new Event(1, "Test", "InviteCode", participants,
+        Event constructorTest = new Event("Test", "InviteCode", participants,
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
         assertNotNull(constructorTest);
         Event constructorTestTwo = new Event();
@@ -37,8 +37,8 @@ public class EventTest {
 
     @Test
     public void getId() {
-        long testID = firstEvent.getId();
-        assertEquals(testID, 1);
+        Long testID = firstEvent.getId();
+        assertNotNull(testID);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class EventTest {
 
     @Test
     public void testToString() {
-//        assertEquals("Event{id=1, name='Test', " +
+//        assertEquals("Event{name='Test', " +
 //                "inviteCode='InviteCode', participants=[Participant{id=0, " +
 //                "name='Tester Fester', bankAccount=null}], creationDate=Sun " +
 //                "Feb 10 00:00:00 CET 3924, lastActivity=Mon Mar 10 00:00:00 CET 3924}",

@@ -25,9 +25,6 @@ public class ServerUserCommunicator implements IServerUserCommunicator {
         origin = config.getServer();
     }
 
-    // The event controller has not yet been implemented,
-    // so these methods will need to wait.
-    // TODO
     @Override
     public Event createEvent(String name) {
         return null;

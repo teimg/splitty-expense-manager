@@ -24,7 +24,7 @@ public class ExpenseTest {
         List<Participant> debtors = new ArrayList<>();
         debtors.add(participant2);
         debtors.add(participant3);
-        Event event = new Event(1, "Test", "InviteCode", debtors,
+        Event event = new Event("Test", "InviteCode", debtors,
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
         this.expenseOne = new Expense(1, event, "Food", 30.5,
                 participant1, debtors, LocalDate.of(2024, Month.APRIL, 1));
@@ -95,7 +95,7 @@ public class ExpenseTest {
     @Test
     public void setEvent() {
         List<Participant> debtors = new ArrayList<>();
-        Event newEvent = new Event(1, "Change", "InviteCode", debtors,
+        Event newEvent = new Event("Change", "InviteCode", debtors,
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
         expenseOne.setEvent(newEvent);
         assertEquals(newEvent, expenseOne.getEvent());
@@ -181,7 +181,7 @@ public class ExpenseTest {
 
     @Test
     public void testToString() {
-//        assertEquals("Expense{id=1, event=Event{id=1, " +
+//        assertEquals("Expense{id=1, event=Event{" +
 //                "name='Test', inviteCode='InviteCode', participants=[Participant{id=0, " +
 //                "name='Second One', bankAccount=null}, Participant{id=0, name='Third One', " +
 //                "bankAccount=null}], creationDate=Sun Feb 10 00:00:00 CET 3924, " +

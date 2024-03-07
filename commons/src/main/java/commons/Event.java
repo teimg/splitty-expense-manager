@@ -26,16 +26,14 @@ public class Event {
 
     /**
      *
-     * @param id - id to identify event
      * @param name - string name of event
      * @param inviteCode - invite code for other participants
      * @param participants - list of participants
      * @param creationDate - creation date
      * @param lastActivity - last activity date
      */
-    public Event(long id, String name, String inviteCode,
+    public Event(String name, String inviteCode,
                  List<Participant> participants, Date creationDate, Date lastActivity) {
-        this.id = id;
         this.name = name;
         this.inviteCode = inviteCode;
         this.participants = participants;
