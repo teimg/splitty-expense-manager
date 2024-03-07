@@ -169,7 +169,8 @@ public class Event {
                 Objects.equals(inviteCode, event.inviteCode) &&
                 Objects.equals(participants, event.participants) &&
                 Objects.equals(creationDate, event.creationDate) &&
-                Objects.equals(lastActivity, event.lastActivity);
+                Objects.equals(lastActivity, event.lastActivity) &&
+                Objects.equals(expenses, event.expenses);
     }
 
     /**
@@ -178,7 +179,8 @@ public class Event {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, inviteCode, participants, creationDate, lastActivity);
+        return Objects.hash(id, name, inviteCode, participants,
+                creationDate, lastActivity, expenses);
     }
 
     /**
