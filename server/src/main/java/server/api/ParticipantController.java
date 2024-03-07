@@ -1,9 +1,13 @@
 package server.api;
 
 import commons.Participant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import server.database.ParticipantRepository;
+import server.service.ParticipantService;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,73 +15,66 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/participants")
 public class ParticipantController {
-    private final ParticipantRepository repo;
+//    private final ParticipantRepository repo;
 
-    /**
-     * constructor for participant controller
-     *
-     * @param repo participant repository
-     */
-    public ParticipantController(ParticipantRepository repo) {
-        this.repo = repo;
+    private final ParticipantService service;
+
+    @Autowired
+    public ParticipantController(ParticipantService service) {
+        this.service = service;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Participant> getById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
-            return ResponseEntity.badRequest().build();
+
+        try {
+            Participant res = service.getById(id);
+            return ResponseEntity.ok(res);
+        }catch (IllegalArgumentException e){
+            System.out.println("not found");
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
-        return ResponseEntity.ok(repo.findById(id).get());
+
     }
 
     @PostMapping
     public ResponseEntity<Participant> createParticipant(@RequestBody Participant participant) {
-        if (isInvalid(participant)) {
+        try {
+            Participant res = service.createParticipant(participant);
+            return  ResponseEntity.ok(participant);
+        }
+        catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().build();
         }
-        Participant saved = repo.save(participant);
-        return ResponseEntity.ok(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Participant> updateParticipant(@PathVariable("id") long id, 
-                                                         @RequestBody Participant newDetails) {
-        if (isInvalid(newDetails)) {
+    public ResponseEntity<Participant> updateParticipant(@PathVariable("id") long id,
+                                                            @RequestBody Participant newDetails) {
+        try {
+            Participant saved = service.updateParticipant(id, newDetails);
+            return ResponseEntity.ok(saved);
+        }catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().build();
         }
-        Optional<Participant> participantData = repo.findById(id);
-        if (participantData.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-        Participant participant = participantData.get();
-        participant.setName(newDetails.getName());
-        participant.setEvent(newDetails.getEvent());
-        participant.setBankAccount(newDetails.getBankAccount());
-        participant.setEmail(newDetails.getEmail());
-        Participant saved = repo.save(participant);
-        return ResponseEntity.ok(saved);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Participant> deleteParticipant(@PathVariable("id") long id) {
-        Optional<Participant> participantData = repo.findById(id);
-        if (participantData.isEmpty()) {
+        try {
+            service.deleteParticipant(id);
+            return ResponseEntity.ok().build();
+        }
+        catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().build();
         }
-        repo.deleteById(id);
-        return ResponseEntity.ok().build();
+
     }
 
     @GetMapping
     public List<Participant> getAll() {
-        return repo.findAll();
+        return service.getAll();
     }
 
-    private static boolean isNullOrEmpty(String s) {
-        return s == null || s.isEmpty();
-    }
-
-    private static boolean isInvalid(Participant participant) {
-        return isNullOrEmpty(participant.getName()) || participant.getEvent() == null;
-    }
 }
