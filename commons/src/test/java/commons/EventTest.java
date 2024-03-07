@@ -111,6 +111,16 @@ public class EventTest {
     }
 
     @Test
+    public void addExpense() {
+        assertEquals(firstEvent, thirdEvent);
+        Expense expense = new Expense();
+        firstEvent.addExpense(expense);
+        assertNotEquals(firstEvent, thirdEvent);
+        assertTrue(firstEvent.getExpenses().contains(expense));
+        assertEquals(0, thirdEvent.getExpenses().size());
+    }
+
+    @Test
     public void testEqualsNull() {
         assertNotEquals(firstEvent, null);
     }
