@@ -4,7 +4,7 @@ import commons.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.BankAccountRepository;
+
 import server.service.BankAccountService;
 
 import java.util.List;
