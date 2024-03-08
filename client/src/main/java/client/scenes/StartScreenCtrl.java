@@ -1,11 +1,15 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.ServerUserCommunicator;
+import client.utils.IServerUserCommunicator;
 import com.google.inject.Inject;
+import commons.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class StartScreenCtrl implements LanguageSwitch {
+    private final IServerUserCommunicator server;
 
     @FXML
     private Label createNewEventLabel;
@@ -34,7 +38,8 @@ public class StartScreenCtrl implements LanguageSwitch {
     private final MainCtrl mainCtrl;
 
     @Inject
-    public StartScreenCtrl(MainCtrl mainCtrl) {
+    public StartScreenCtrl(ServerUserCommunicator server, MainCtrl mainCtrl) {
+        this.server = server;
         this.mainCtrl = mainCtrl;
     }
 
@@ -56,5 +61,12 @@ public class StartScreenCtrl implements LanguageSwitch {
         ));
         mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
                 "Titles.StartScreen"));
+    }
+
+    public void createEvent() {
+        System.out.println("create event clicked");
+        Event event = new Event(newEventField.getText());
+        event = server.createEvent(event);
+        mainCtrl.showEventOverview(event);
     }
 }

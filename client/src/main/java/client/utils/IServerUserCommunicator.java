@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface IServerUserCommunicator {
 
+    Event createEvent(Event event);
+
     /**
      * Creates a new event.
      * @param name name of the event

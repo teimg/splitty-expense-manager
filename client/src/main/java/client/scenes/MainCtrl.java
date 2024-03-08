@@ -19,6 +19,7 @@ import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import com.google.inject.Inject;
+import commons.Event;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -57,6 +58,9 @@ public class MainCtrl {
 
     private LanguageSwitch currentCtrl;
 
+    private EventOverviewCtrl eventOverviewCtrl;
+    private Scene eventOverview;
+
     private final ClientConfiguration config;
 
     private MenuBarCtrl menuBarCtrl;
@@ -76,7 +80,6 @@ public class MainCtrl {
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-
         Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
                 sceneMap.get("QuoteOverviewCtrl");
         Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
@@ -95,7 +98,8 @@ public class MainCtrl {
             sceneMap.get("ContactInfoCtrl");
         Pair<MenuBarCtrl, Parent>  menuBar = (Pair<MenuBarCtrl, Parent>)
                 sceneMap.get("MenuBarCtrl");
-
+        Pair<EventOverviewCtrl, Parent> eventOverview =(Pair<EventOverviewCtrl, Parent>)
+        sceneMap.get("EventOverviewCtrl");
         this.overviewCtrl = over.getKey();
         this.overview = new Scene(over.getValue());
         this.addCtrl = add.getKey();
@@ -112,15 +116,13 @@ public class MainCtrl {
         this.statistics = new Scene(stats.getValue());
         this.contactInfoCtrl = contactInfo.getKey();
         this.contactInfo = new Scene(contactInfo.getValue());
-
+        this.eventOverviewCtrl = eventOverview.getKey();
+        this.eventOverview = new Scene(eventOverview.getValue());
         this.menuBarCtrl = menuBar.getKey();
         this.menuBarCtrl.setLanguage();
-
         this.currentCtrl = startScreenCtrl;
-
         primaryStage.setWidth(config.getWindowWidth());
         primaryStage.setHeight(config.getWindowHeight());
-
         showStartScreen();
         primaryStage.show();
     }
@@ -210,6 +212,14 @@ public class MainCtrl {
         translator.setCurrentLanguage(s);
         currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
         config.setStartupLanguage(translator.getCurrentLanguage());
+    }
+
+    public void showEventOverview(Event event) {
+        currentCtrl = eventOverviewCtrl;
+        eventOverviewCtrl.loadEvent(event);
+        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
+        primaryStage.setTitle("Event Overview");
+        primaryStage.setScene(eventOverview);
     }
 
     public Translator getTranslator() {
