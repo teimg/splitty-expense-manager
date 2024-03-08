@@ -104,11 +104,11 @@ public class BankAccountController {
 
 
     /**
-     * Private utility method
+     * Utility method
      * @param s - string to be checked
      * @return boolean (true/false)
      */
-    private static boolean isNullOrEmpty(String s) {
+    public static boolean isNullOrEmpty(String s) {
         return (s == null || s.isEmpty());
     }
 
