@@ -33,6 +33,7 @@ public class ServerUserCommunicator implements IServerUserCommunicator {
     public Event createEvent(Event event) {
         event.addParticipant(new Participant("Alice"));
         event.addParticipant(new Participant("Bob"));
+        event.setInviteCode("XYZ");
         return event;
 //        return ClientBuilder.newClient(new ClientConfig())
 //                .target(origin).path("api/event")

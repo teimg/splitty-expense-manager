@@ -79,6 +79,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
 
     @FXML
     private ListView<Expense> expensesList;
+    @FXML
+    private Text inviteCode;
+    @FXML
+    private Button inviteCodeCopyBtn;
 
     private ObservableList<Expense> shownExpenses;
 
@@ -122,6 +126,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
         // Populate expense list
         shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
+        inviteCode.setText(event.getInviteCode());
     }
 
     /**
