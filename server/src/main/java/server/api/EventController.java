@@ -45,6 +45,13 @@ public class EventController {
         return service.getAll();
     }
 
+    @GetMapping("/byInviteCode/{inviteCode}")
+    public ResponseEntity<Event> getByInviteCode(@PathVariable String inviteCode) {
+        return service.getByInviteCode(inviteCode)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     /**
      * Searches for an event by id and deletes if such event exists
      * @param id the ID of the event to be deleted

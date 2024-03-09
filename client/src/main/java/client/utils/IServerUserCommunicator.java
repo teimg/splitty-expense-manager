@@ -30,6 +30,8 @@ public interface IServerUserCommunicator {
      */
     Event getEvent(long id);
 
+    Event getEventByInviteCode(String inviteCode);
+
     /**
      * Updates an existing event.
      * @param event the event with updated fields

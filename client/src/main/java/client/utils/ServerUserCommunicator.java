@@ -45,6 +45,15 @@ public class ServerUserCommunicator implements IServerUserCommunicator {
     }
 
     @Override
+    public Event getEventByInviteCode(String inviteCode) {
+        return ClientBuilder.newClient()
+                .target(origin).path("api/event/byInviteCode/{inviteCode}")
+                .resolveTemplate("inviteCode", inviteCode)
+                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                .get(Event.class);
+    }
+
+    @Override
     public Event updateEvent(Event event) {
         return null;
     }
