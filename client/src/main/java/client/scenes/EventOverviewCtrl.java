@@ -26,13 +26,10 @@ import javafx.scene.input.ClipboardContent;
 // TODO: parametrize the 'you' Participant?
 public class EventOverviewCtrl implements Initializable, LanguageSwitch {
     private final IServerUserCommunicator server;
+
     private Event event;
+
     private Participant selectedPayer;
-
-    @Override
-    public void setLanguage() {
-
-    }
 
     private static class ExpenseCellFactory
             implements Callback<ListView<Expense>, ListCell<Expense>> {
@@ -69,22 +66,51 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
 
     @FXML
     private Text eventTitle;
+
     @FXML
     private Text participantsList;
 
     @FXML
     private RadioButton expenseSelectorAll;
+
     @FXML
     private RadioButton expenseSelectorFrom;
+
     @FXML
     private RadioButton expenseSelectorIncluding;
 
     @FXML
     private ListView<Expense> expensesList;
+
     @FXML
     private Text inviteCode;
+
     @FXML
     private Button inviteCodeCopyBtn;
+
+    @FXML
+    private Button sendInviteButton;
+
+    @FXML
+    private Label participantsLabel;
+
+    @FXML
+    private Button removeParticipantButton;
+
+    @FXML
+    private Button addParticipantButton;
+
+    @FXML
+    private Label expensesLabel;
+
+    @FXML
+    private Label forLabel;
+
+    @FXML
+    private Label inviteCodeLabel;
+
+    @FXML
+    private Button addExpense;
 
     private ObservableList<Expense> shownExpenses;
 
@@ -94,6 +120,34 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
     public EventOverviewCtrl(ServerUserCommunicator server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+    }
+
+    @Override
+    public void setLanguage() {
+        inviteCodeLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.InviteCode-label"));
+        participantsLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Participants-label"));
+        expensesLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Expenses-label"));
+        forLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.For-label"));
+        sendInviteButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.SendInvite-Button"));
+        inviteCodeCopyBtn.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Copy-Button"));
+        removeParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Remove-Button"));
+        addParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.AddParticipant-Button"));
+        addExpense.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.AddExpense-Button"));
+        expenseSelectorAll.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.All-R-Button"));
+        expenseSelectorFrom.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.From-R-Button"));
+        expenseSelectorIncluding.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Including-R-Button"));
     }
 
     /**
