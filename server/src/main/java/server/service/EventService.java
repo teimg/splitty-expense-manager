@@ -54,6 +54,10 @@ public class EventService {
         return repo.findAll();
     }
 
+    public Optional<Event> getByInviteCode(String inviteCode) {
+        return repo.findByInviteCode(inviteCode);
+    }
+
     public void delete(Long id) {
         repo.deleteById(id);
     }

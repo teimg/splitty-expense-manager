@@ -39,7 +39,7 @@
                               <TextField fx:id="newEventField" layoutX="66.0" layoutY="88.0" prefHeight="26.0" prefWidth="267.0" />
                               <TextField fx:id="joinEventField" layoutX="66.0" layoutY="153.0" prefHeight="26.0" prefWidth="267.0" />
                               <Button fx:id="createEventButton" layoutX="338.0" layoutY="88.0" mnemonicParsing="false" onAction="#createEvent" text="Create" />
-                              <Button fx:id="joinEventButton" layoutX="338.0" layoutY="153.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="Join" />
+                              <Button fx:id="joinEventButton" layoutX="338.0" layoutY="153.0" mnemonicParsing="false" onAction="#joinEvent" prefHeight="26.0" prefWidth="54.0" text="Join" />
                               <AnchorPane layoutX="67.0" layoutY="236.0" prefHeight="100.0" prefWidth="329.0" />
                            </children>
                         </AnchorPane>
