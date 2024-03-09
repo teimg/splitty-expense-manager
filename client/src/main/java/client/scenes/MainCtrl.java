@@ -218,7 +218,8 @@ public class MainCtrl {
         currentCtrl = eventOverviewCtrl;
         eventOverviewCtrl.loadEvent(event);
         currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle("Event Overview");
+        primaryStage.setTitle(translator.getTranslation(
+                "Titles.EventOverview"));
         primaryStage.setScene(eventOverview);
     }
 
