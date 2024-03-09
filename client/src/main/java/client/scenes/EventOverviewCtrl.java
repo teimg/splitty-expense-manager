@@ -17,9 +17,11 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+
 
 // TODO: parametrize the 'you' Participant?
 public class EventOverviewCtrl implements Initializable, LanguageSwitch {
@@ -127,6 +129,13 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
         shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
         inviteCode.setText(event.getInviteCode());
+    }
+
+    public void copyInviteCode() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(event.getInviteCode());
+        clipboard.setContent(content);
     }
 
     /**
