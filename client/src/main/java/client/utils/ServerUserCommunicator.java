@@ -30,16 +30,13 @@ public class ServerUserCommunicator implements IServerUserCommunicator {
         return null;
     }
 
+    @Override
     public Event createEvent(Event event) {
-        event.addParticipant(new Participant("Alice"));
-        event.addParticipant(new Participant("Bob"));
-        event.setInviteCode("XYZ");
-        return event;
-//        return ClientBuilder.newClient(new ClientConfig())
-//                .target(origin).path("api/event")
-//                .request(APPLICATION_JSON)
-//                .accept(APPLICATION_JSON)
-//                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+        return ClientBuilder.newClient()
+                .target(origin).path("api/event")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     @Override
