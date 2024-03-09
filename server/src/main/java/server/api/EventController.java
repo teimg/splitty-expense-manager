@@ -26,6 +26,16 @@ public class EventController {
         this.service = service;
     }
 
+    @PostMapping
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        try {
+            Event savedEvent = service.createEvent(event);
+            return ResponseEntity.ok(savedEvent);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     /**
      * standard
      * @return all events

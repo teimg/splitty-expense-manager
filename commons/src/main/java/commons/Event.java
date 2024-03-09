@@ -46,6 +46,12 @@ public class Event {
         this.expenses = new ArrayList<>();
     }
 
+    public Event(String name) {
+        this.name = name;
+        participants = new ArrayList<>();
+        expenses = new ArrayList<>();
+    }
+
     public Event() {
 
     }

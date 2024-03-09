@@ -2,6 +2,8 @@ package client.scenes;
 
 import client.language.LanguageSwitch;
 import client.utils.IServerUserCommunicator;
+import client.utils.ServerUserCommunicator;
+import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 
@@ -15,15 +17,17 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+
 
 // TODO: parametrize the 'you' Participant?
 public class EventOverviewCtrl implements Initializable, LanguageSwitch {
-    private final IServerUserCommunicator serverUserCommunicator;
-    private final Event event;
-    private final Participant you;
+    private final IServerUserCommunicator server;
+    private Event event;
+    private Participant selectedPayer;
 
     @Override
     public void setLanguage() {
@@ -77,21 +81,19 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
 
     @FXML
     private ListView<Expense> expensesList;
+    @FXML
+    private Text inviteCode;
+    @FXML
+    private Button inviteCodeCopyBtn;
 
-    private List<Expense> expenses;
     private ObservableList<Expense> shownExpenses;
 
-    /**
-     * Constructor, should be converted later to use dependency injection.
-     * @param serverUserCommunicator IServerUserCommunicator to request resources from the server
-     * @param event Event for which this EventOverview scene is created
-     * @param you Participant representing this client in the application
-     */
-    public EventOverviewCtrl(IServerUserCommunicator serverUserCommunicator,
-                             Event event, Participant you) {
-        this.serverUserCommunicator = serverUserCommunicator;
-        this.event = event;
-        this.you = you;
+    private final MainCtrl mainCtrl;
+
+    @Inject
+    public EventOverviewCtrl(ServerUserCommunicator server, MainCtrl mainCtrl) {
+        this.server = server;
+        this.mainCtrl = mainCtrl;
     }
 
     /**
@@ -105,25 +107,35 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Set title and participants
-        eventTitle.setText(event.getName());
-        participantsList.setText(String.join(", ", event.getParticipants()
-                .stream().map(Participant::getName).toList()));
         // Create toggle group for radio buttons
         ToggleGroup expenseSelectorToggle = new ToggleGroup();
         expenseSelectorAll.setToggleGroup(expenseSelectorToggle);
         expenseSelectorFrom.setToggleGroup(expenseSelectorToggle);
         expenseSelectorIncluding.setToggleGroup(expenseSelectorToggle);
         expenseSelectorAll.setSelected(true);
-        // Put user's name on radio buttons
-        String userName = you.getName();
-        expenseSelectorFrom.setText("From " + userName);
-        expenseSelectorIncluding.setText("Including " + userName);
         // Populate expense list
-        expenses = new ArrayList<>(serverUserCommunicator.getAllExpensesForEvent(event.getId()));
         expensesList.setCellFactory(new ExpenseCellFactory());
-        shownExpenses = FXCollections.observableArrayList(expenses);
+    }
+
+    public void loadEvent(Event event) {
+        this.event = event;
+        eventTitle.setText(event.getName());
+        participantsList.setText(String.join(", ", event.getParticipants()
+                .stream().map(Participant::getName).toList()));
+        expenseSelectorAll.setSelected(true);
+//        expenseSelectorFrom.setText("From " + selectedPayer.getName());
+//        expenseSelectorIncluding.setText("Including " + selectedPayer.getName());
+        // Populate expense list
+        shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
+        inviteCode.setText(event.getInviteCode());
+    }
+
+    public void copyInviteCode() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(event.getInviteCode());
+        clipboard.setContent(content);
     }
 
     /**
@@ -133,15 +145,16 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
     public void handleExpenseVisibilityChange() {
         // Could be cleaner with ToggleGroup::getSelectedToggle
         if (expenseSelectorAll.isSelected()) {
-            shownExpenses.setAll(expenses);
+            shownExpenses.setAll(event.getExpenses());
         } else if (expenseSelectorFrom.isSelected()) {
-            shownExpenses.setAll(expenses.stream()
-                    .filter(expense -> expense.getPayer().equals(you)).toList());
+            shownExpenses.setAll(event.getExpenses().stream()
+                    .filter(expense -> expense.getPayer().equals(selectedPayer)).toList());
         } else if (expenseSelectorIncluding.isSelected()) {
-            shownExpenses.setAll(expenses.stream()
-                    .filter(expense -> expense.getPayer().equals(you)
-                                    || expense.getDebtors().contains(you)).toList());
+            shownExpenses.setAll(event.getExpenses().stream()
+                    .filter(expense -> expense.getPayer().equals(selectedPayer)
+                                    || expense.getDebtors().contains(selectedPayer)).toList());
         }
+        expensesList.setItems(shownExpenses);
     }
 
     // All of these methods need to be implemented later
