@@ -70,7 +70,7 @@ public class StartScreenCtrl implements LanguageSwitch {
             // We need to show this message in the GUI later
             System.out.println("The name should not be empty");
         } else {
-            Event event = new Event(newEventField.getText());
+            Event event = new Event(name);
             event = server.createEvent(event);
             mainCtrl.showEventOverview(event);
         }
