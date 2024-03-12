@@ -1,8 +1,8 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.ServerUserCommunicator;
-import client.utils.IServerUserCommunicator;
+import client.utils.EventCommunicator;
+import client.utils.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;
@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import jakarta.ws.rs.NotFoundException;
 
 public class StartScreenCtrl implements LanguageSwitch {
-    private final IServerUserCommunicator server;
+    private final IEventCommunicator server;
 
     @FXML
     private Label createNewEventLabel;
@@ -39,7 +39,7 @@ public class StartScreenCtrl implements LanguageSwitch {
     private final MainCtrl mainCtrl;
 
     @Inject
-    public StartScreenCtrl(ServerUserCommunicator server, MainCtrl mainCtrl) {
+    public StartScreenCtrl(EventCommunicator server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
