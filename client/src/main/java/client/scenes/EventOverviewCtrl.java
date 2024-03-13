@@ -1,8 +1,8 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.IServerUserCommunicator;
-import client.utils.ServerUserCommunicator;
+import client.utils.IEventCommunicator;
+import client.utils.EventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -25,7 +25,7 @@ import javafx.scene.input.ClipboardContent;
 
 // TODO: parametrize the 'you' Participant?
 public class EventOverviewCtrl implements Initializable, LanguageSwitch {
-    private final IServerUserCommunicator server;
+    private final IEventCommunicator server;
 
     private Event event;
 
@@ -44,7 +44,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
                 /**
                  * Ran when a cell is shown with a new items or is shown emptied.
                  * @param expense The new item for the cell.
-                 * @param empty whether or not this cell represents data from the list. If it
+                 * @param empty whether this cell represents data from the list. If it
                  *        is empty, then it does not represent any domain data, but is a cell
                  *        being used to render an "empty" row.
                  */
@@ -117,7 +117,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
     private final MainCtrl mainCtrl;
 
     @Inject
-    public EventOverviewCtrl(ServerUserCommunicator server, MainCtrl mainCtrl) {
+    public EventOverviewCtrl(EventCommunicator server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
