@@ -18,6 +18,8 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
+import client.utils.SceneController;
+import client.utils.SceneWrapper;
 import com.google.inject.Inject;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,35 +27,37 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainCtrl {
 
+    private Map<String, SceneWrapper> scenes;
     private Stage primaryStage;
     private Translator translator;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
-
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
-
-    private AddEditExpenseCtrl addEditExpenseCtrl;
-    private Scene addEdit;
-
-    private InvitationCtrl invitationCtrl;
-    private Scene invitation;
-
-    private OpenDebtsCtrl openDebtsCtrl;
-    private Scene openDebts;
-
-    private StartScreenCtrl startScreenCtrl;
-    private Scene start;
-
-    private StatisticsScreenCtrl statisticsScreenCtrl;
-    private Scene statistics;
-
-    private ContactInfoCtrl contactInfoCtrl;
-    private Scene contactInfo;
+//    private QuoteOverviewCtrl overviewCtrl;
+//    private Scene overview;
+//
+//    private AddQuoteCtrl addCtrl;
+//    private Scene add;
+//
+//    private AddEditExpenseCtrl addEditExpenseCtrl;
+//    private Scene addEdit;
+//
+//    private InvitationCtrl invitationCtrl;
+//    private Scene invitation;
+//
+//    private OpenDebtsCtrl openDebtsCtrl;
+//    private Scene openDebts;
+//
+//    private StartScreenCtrl startScreenCtrl;
+//    private Scene start;
+//
+//    private StatisticsScreenCtrl statisticsScreenCtrl;
+//    private Scene statistics;
+//
+//    private ContactInfoCtrl contactInfoCtrl;
+//    private Scene contactInfo;
 
     private LanguageSwitch currentCtrl;
 
@@ -76,53 +80,55 @@ public class MainCtrl {
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
+        this.scenes = new HashMap<>();
 
-        Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
-                sceneMap.get("QuoteOverviewCtrl");
-        Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
-                sceneMap.get("AddQuoteCtrl");
-        Pair<AddEditExpenseCtrl, Parent> addEdit = (Pair<AddEditExpenseCtrl, Parent>)
-                sceneMap.get("AddEditExpenseCtrl");
-        Pair<InvitationCtrl, Parent> invite = (Pair<InvitationCtrl, Parent>)
-                sceneMap.get("InvitationCtrl");
-        Pair<OpenDebtsCtrl, Parent> openDebt = (Pair<OpenDebtsCtrl, Parent>)
-                sceneMap.get("OpenDebtsCtrl");
-        Pair<StartScreenCtrl, Parent> start = (Pair<StartScreenCtrl, Parent>)
-                sceneMap.get("StartScreenCtrl");
-        Pair<StatisticsScreenCtrl, Parent> stats = (Pair<StatisticsScreenCtrl, Parent>)
-                sceneMap.get("StatisticsScreenCtrl");
-        Pair<ContactInfoCtrl, Parent>  contactInfo = (Pair<ContactInfoCtrl, Parent>)
-            sceneMap.get("ContactInfoCtrl");
+//        Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
+//                sceneMap.get("QuoteOverviewCtrl");
+//        Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
+//                sceneMap.get("AddQuoteCtrl");
+//        Pair<AddEditExpenseCtrl, Parent> addEdit = (Pair<AddEditExpenseCtrl, Parent>)
+//                sceneMap.get("AddEditExpenseCtrl");
+//        Pair<InvitationCtrl, Parent> invite = (Pair<InvitationCtrl, Parent>)
+//                sceneMap.get("InvitationCtrl");
+//        Pair<OpenDebtsCtrl, Parent> openDebt = (Pair<OpenDebtsCtrl, Parent>)
+//                sceneMap.get("OpenDebtsCtrl");
+//        Pair<StartScreenCtrl, Parent> start = (Pair<StartScreenCtrl, Parent>)
+//                sceneMap.get("StartScreenCtrl");
+//        Pair<StatisticsScreenCtrl, Parent> stats = (Pair<StatisticsScreenCtrl, Parent>)
+//                sceneMap.get("StatisticsScreenCtrl");
+//        Pair<ContactInfoCtrl, Parent>  contactInfo = (Pair<ContactInfoCtrl, Parent>)
+//            sceneMap.get("ContactInfoCtrl");
         Pair<MenuBarCtrl, Parent>  menuBar = (Pair<MenuBarCtrl, Parent>)
                 sceneMap.get("MenuBarCtrl");
 
-        this.overviewCtrl = over.getKey();
-        this.overview = new Scene(over.getValue());
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
-        this.addEditExpenseCtrl = addEdit.getKey();
-        this.addEdit = new Scene(addEdit.getValue());
-        this.invitationCtrl = invite.getKey();
-        this.invitation = new Scene(invite.getValue());
-        this.openDebtsCtrl = openDebt.getKey();
-        this.openDebts = new Scene(openDebt.getValue());
-        this.startScreenCtrl = start.getKey();
-        this.start = new Scene(start.getValue());
-        this.statisticsScreenCtrl = stats.getKey();
-        this.statistics = new Scene(stats.getValue());
-        this.contactInfoCtrl = contactInfo.getKey();
-        this.contactInfo = new Scene(contactInfo.getValue());
+        initScenes(sceneMap);
 
         this.menuBarCtrl = menuBar.getKey();
         this.menuBarCtrl.setLanguage();
-
-        this.currentCtrl = startScreenCtrl;
 
         primaryStage.setWidth(config.getWindowWidth());
         primaryStage.setHeight(config.getWindowHeight());
 
         showStartScreen();
         primaryStage.show();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initScenes(HashMap<String, Object> sceneMap) {
+        for(String x : sceneMap.keySet()){
+            Pair<Object, Parent> current = (Pair<Object, Parent>) sceneMap.get(x);
+
+            Object d = current.getKey();
+            if(!(d instanceof SceneController)){
+                continue;
+            }
+
+            String key = x.substring(0, x.length() - 4);
+            SceneController currentSceneController = (SceneController) current.getKey();
+            this.scenes.put(key, new SceneWrapper(currentSceneController, current.getValue(), new Scene(current.getValue())));
+
+
+        }
     }
 
     /**
@@ -137,20 +143,27 @@ public class MainCtrl {
 
     }
 
+    public void show(String scene, String title){
+        SceneWrapper currentSceneWrapper = this.scenes.get(scene);
+
+        if (currentSceneWrapper == null){
+            throw new IllegalArgumentException("No such scene: " + scene);
+        }
+
+        this.currentCtrl = (LanguageSwitch) currentSceneWrapper.getSceneController();
+        this.currentCtrl.setLanguage();
+
+        primaryStage.setTitle(title);
+        primaryStage.setScene(currentSceneWrapper.getScene());
+
+    }
+
     public void showOverview() {
-        currentCtrl = overviewCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+        show("QuoteOverview", "Overview");
     }
 
     public void showAdd() {
-        currentCtrl = addCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle("Quotes: Add Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        show("AddQuote", "Quote add");
     }
 
     /**
@@ -159,51 +172,41 @@ public class MainCtrl {
      */
 
     public void showAddEditExpense() {
-        currentCtrl = addEditExpenseCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.AddEditExpense"));
-        primaryStage.setScene(addEdit);
+        String title = translator.getTranslation(
+            "Titles.AddEditExpense");
+        show("AddEditExpense", title);
     }
 
     public void showInvitation() {
-        currentCtrl = invitationCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.Invitation"));
-        primaryStage.setScene(invitation);
+        String title = translator.getTranslation(
+                "Titles.Invitation");
+        show("Invitation", title);
     }
 
     public void showOpenDebts() {
-        currentCtrl = openDebtsCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.OpenDebts"));
-        primaryStage.setScene(openDebts);
+        String title = translator.getTranslation(
+            "Titles.OpenDebts");
+        show("OpenDebts", title);
+
     }
 
     public void showStartScreen() {
-        currentCtrl = startScreenCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.StartScreen"));
-        primaryStage.setScene(start);
+        String title = translator.getTranslation(
+            "Titles.StartScreen");
+        show("StartScreen", title);
     }
 
     public void showStatistics() {
-        currentCtrl = statisticsScreenCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.Statistics"));
-        primaryStage.setScene(statistics);
+        String title = translator.getTranslation(
+            "Titles.Statistics");
+        show("StatisticsScreen", title);
+
     }
 
     public void showContactInfo(){
-        currentCtrl = contactInfoCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.ContactInfo"));
-        primaryStage.setScene(contactInfo);
+        String title = translator.getTranslation(
+            "Titles.ContactInfo");
+        show("ContactInfo", title);
     }
 
     public void updateLanguage(String s) {
