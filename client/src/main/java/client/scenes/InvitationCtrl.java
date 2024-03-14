@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,7 +13,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InvitationCtrl implements Initializable, LanguageSwitch {
+public class InvitationCtrl implements Initializable, LanguageSwitch, SceneController {
 
     @FXML
     private Text inviteLabel;

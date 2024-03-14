@@ -1,11 +1,12 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class StartScreenCtrl implements LanguageSwitch {
+public class StartScreenCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private Label createNewEventLabel;

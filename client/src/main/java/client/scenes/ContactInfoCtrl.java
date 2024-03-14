@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 
-public class ContactInfoCtrl implements LanguageSwitch {
+public class ContactInfoCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private Label titleLabel;

@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class StatisticsScreenCtrl implements Initializable, LanguageSwitch {
+public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, SceneController {
 
 
     @FXML
