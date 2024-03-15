@@ -79,6 +79,11 @@ public class MainCtrl {
 
     }
 
+    /**
+     * Creates a map for all scenes in a SceneWrapper
+     * @param sceneMap map used for creating the map of scenes
+     */
+
     @SuppressWarnings("unchecked")
     private void initScenes(HashMap<String, Object> sceneMap) {
         for(String x : sceneMap.keySet()){
@@ -108,11 +113,24 @@ public class MainCtrl {
 
     }
 
+    /**
+     * gets the title of the current scne
+     * @param sceneName name of the scene you want to get the title for
+     * @return the window title in right language
+     */
+
     public String getTitle(String sceneName){
         String prefix = "Titles.";
         return translator.getTranslation(prefix + sceneName);
 
     }
+
+    /**
+     * General method for showing the right scene
+     *
+     * @param scene name of the scene to display
+     * @param title window title of the new scene
+     */
 
     public void show(String scene, String title){
         SceneWrapper currentSceneWrapper = this.scenes.get(scene);
