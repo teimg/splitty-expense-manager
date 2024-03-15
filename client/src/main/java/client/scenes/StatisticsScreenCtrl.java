@@ -21,9 +21,6 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, Scen
     private Label statisticsLabel;
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private PieChart pieChart;
 
     @FXML

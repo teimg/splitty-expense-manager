@@ -62,9 +62,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     }
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private Text eventTitle;
     @FXML
     private Text participantsList;

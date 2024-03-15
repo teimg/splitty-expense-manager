@@ -36,9 +36,6 @@ public class AddQuoteCtrl implements LanguageSwitch, SceneController {
     private final MainCtrl mainCtrl;
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private TextField firstName;
 
     @FXML

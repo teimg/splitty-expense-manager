@@ -39,9 +39,6 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
     private Label titleLabel;
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private Label noDebtMessage;
 
     @FXML

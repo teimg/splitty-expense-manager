@@ -51,9 +51,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     private Label expenseTypeLabel;
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private Button abortButton;
 
     @FXML

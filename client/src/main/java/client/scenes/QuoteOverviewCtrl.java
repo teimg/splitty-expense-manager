@@ -41,8 +41,6 @@ public class QuoteOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private ObservableList<Quote> data;
 
     @FXML
-    private MenuBar menuBar;
-    @FXML
     private TableView<Quote> table;
     @FXML
     private TableColumn<Quote, String> colFirstName;

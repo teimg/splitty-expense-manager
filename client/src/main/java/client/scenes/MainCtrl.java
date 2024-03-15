@@ -34,7 +34,6 @@ public class MainCtrl {
     private Stage primaryStage;
     private Map<String, SceneWrapper> scenes;
 
-
     private Translator translator;
     private LanguageSwitch currentCtrl;
 

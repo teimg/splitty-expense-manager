@@ -28,9 +28,6 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     private Label bicLabel;
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private TextField bicField;
 
     @FXML

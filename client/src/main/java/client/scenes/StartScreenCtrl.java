@@ -18,9 +18,6 @@ public class StartScreenCtrl implements LanguageSwitch, SceneController {
     private Label recentlyViewedEventsLabel;
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private TextField newEventField;
 
     @FXML

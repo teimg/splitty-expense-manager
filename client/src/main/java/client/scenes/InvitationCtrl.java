@@ -22,9 +22,6 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
     private Button sendInviteButton;
 
     @FXML
-    private MenuBar menuBar;
-
-    @FXML
     private Text eventTitle;
 
     @FXML
