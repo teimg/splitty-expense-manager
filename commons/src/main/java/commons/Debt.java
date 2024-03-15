@@ -140,12 +140,13 @@ public class Debt {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Debt debt = (Debt) o;
-
-        if (Double.compare(amount, debt.amount) != 0) return false;
-        if (!Objects.equals(creditor, debt.creditor)) return false;
-        return Objects.equals(debtor, debt.debtor);
+        return Double.compare(debt.amount, amount) == 0 &&
+                hasPaid == debt.hasPaid &&
+                Objects.equals(creditor, debt.creditor) &&
+                Objects.equals(debtor, debt.debtor) &&
+                Objects.equals(summary, debt.summary) &&
+                Objects.equals(description, debt.description);
     }
 
     /**
@@ -154,13 +155,7 @@ public class Debt {
      */
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = creditor != null ? creditor.hashCode() : 0;
-        result = 31 * result + (debtor != null ? debtor.hashCode() : 0);
-        temp = Double.doubleToLongBits(amount);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return Objects.hash(creditor, debtor, amount, hasPaid, summary, description);
     }
 
     /**
@@ -173,6 +168,9 @@ public class Debt {
                 "creditor=" + creditor +
                 ", debtor=" + debtor +
                 ", amount=" + amount +
+                ", hasPaid=" + hasPaid +
+                ", summary='" + summary + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
