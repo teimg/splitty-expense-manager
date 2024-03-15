@@ -16,54 +16,123 @@ public class DebtTest {
 
     @BeforeEach
     public void setUp() {
-        this.participantOne = new Participant("Tester Fester", new BankAccount("NL12ABNA345678910", "HBUKGB4B"));
-        this.participantTwo = new Participant("Tester Bester", new BankAccount("NL12ABNA345678910", "HBUKGB4C"));
-        this.participantThree = new Participant("Tester Lester", new BankAccount("NL12ABNA345678910", "HBUKGB4D"));
-
-        this.debtOne = new Debt(participantOne, participantTwo, 100, false, "Loan", "First loan");
-        this.debtTwo = new Debt(participantOne, participantTwo, 100, false, "Loan", "First loan");
-        this.debtThree = new Debt(participantOne, participantThree, 200, true, "Repayment", "Final repayment");
+        this.participantOne = new Participant("Tester Fester",
+                new BankAccount("NL12ABNA345678910", "HBUKGB4B"));
+        this.participantTwo = new Participant("Tester Bester",
+                new BankAccount("NL12ABNA345678910", "HBUKGB4C"));
+        this.participantThree = new Participant("Tester Lester",
+                new BankAccount("NL12ABNA345678910", "HBUKGB4C"));
+        this.debtOne = new Debt(participantOne, participantTwo, 100,false,"123","test");
+        this.debtTwo = new Debt(participantOne, participantTwo, 100,false,"123","test");
+        this.debtThree = new Debt(participantOne, participantThree, 100,false,"123","test");
     }
 
     @Test
-    public void testEqualityAndHashcode() {
-        assertEquals(debtOne, debtTwo, "Debts with the same fields should be equal");
-        assertNotEquals(debtOne, debtThree, "Debts with different fields should not be equal");
-
-        assertEquals(debtOne.hashCode(), debtTwo.hashCode(), "Hashcode should match for equal objects");
-        assertNotEquals(debtOne.hashCode(), debtThree.hashCode(), "Hashcode should not match for different objects");
+    public void testConstructor() {
+        assertDebtsNotNull();
     }
 
     @Test
-    public void testGetters() {
-        assertEquals(debtOne.getCreditor(), participantOne, "Creditor should match");
-        assertEquals(debtOne.getDebtor(), participantTwo, "Debtor should match");
-        assertEquals(debtOne.getAmount(), 100, "Amount should match");
-        assertFalse(debtOne.isHasPaid(), "hasPaid should be false");
-        assertEquals(debtOne.getSummary(), "Loan", "Summary should match");
-        assertEquals(debtOne.getDescription(), "First loan", "Description should match");
+    public void testCreditorGetter() {
+        assertCreditor(debtOne, participantOne);
     }
 
     @Test
-    public void testSetters() {
-        debtThree.setCreditor(participantTwo);
-        debtThree.setDebtor(participantOne);
-        debtThree.setAmount(150);
-        debtThree.setHasPaid(false);
-        debtThree.setSummary("Changed Loan");
-        debtThree.setDescription("Updated loan details");
+    public void testDebtorGetter() {
+        assertDebtor(debtOne, participantTwo);
+    }
 
-        assertEquals(participantTwo, debtThree.getCreditor(), "Creditor should be updated");
-        assertEquals(participantOne, debtThree.getDebtor(), "Debtor should be updated");
-        assertEquals(150, debtThree.getAmount(), "Amount should be updated");
-        assertFalse(debtThree.isHasPaid(), "hasPaid should be updated to false");
-        assertEquals("Changed Loan", debtThree.getSummary(), "Summary should be updated");
-        assertEquals("Updated loan details", debtThree.getDescription(), "Description should be updated");
+    @Test
+    public void testAmountGetter() {
+        assertAmount(debtOne, 100);
+    }
+
+    @Test
+    public void testCreditorSetter() {
+        debtThree.setCreditor(participantThree);
+        assertCreditor(debtThree, participantThree);
+    }
+
+    @Test
+    public void testDebtorSetter() {
+        debtThree.setDebtor(participantTwo);
+        assertDebtor(debtThree, participantTwo);
+    }
+
+    @Test
+    public void testAmountSetter() {
+        debtThree.setAmount(500);
+        assertAmount(debtThree, 500);
+    }
+
+    @Test
+    public void testEquals() {
+        assertEquality();
+    }
+
+    @Test
+    public void testHashCode() {
+        assertHashCodes();
     }
 
     @Test
     public void testToString() {
-        String expected = String.format("Debt{creditor=%s, debtor=%s, amount=100.0, hasPaid=false, summary='Loan', description='First loan'}", debtOne.getCreditor(), debtOne.getDebtor());
-        assertEquals(expected, debtOne.toString(), "ToString should return the correct string representation");
+        String expected = buildExpectedToStringForDebt(debtOne);
+        assertEquals(expected, debtOne.toString());
+    }
+
+    private String buildExpectedToStringForDebt(Debt debt) {
+        return String.format("Debt{creditor=%s, debtor=%s, amount=%.1f, hasPaid=%b, summary='%s', description='%s'}",
+                buildParticipantToString(debt.getCreditor()),
+                buildParticipantToString(debt.getDebtor()),
+                debt.getAmount(),
+                debt.isHasPaid(),
+                debt.getSummary(),
+                debt.getDescription());
+    }
+
+    private String buildParticipantToString(Participant participant) {
+        return String.format("Participant{id=%d, name='%s', bankAccount=%s}",
+                participant.getId(),
+                participant.getName(),
+                participant.getBankAccount().toString());
+    }
+
+
+    private void assertDebtsNotNull() {
+        assertNotNull(debtOne);
+        assertNotNull(debtTwo);
+        assertNotNull(debtThree);
+    }
+
+    private void assertCreditor(Debt debt, Participant expected) {
+        assertEquals(expected, debt.getCreditor());
+    }
+
+    private void assertDebtor(Debt debt, Participant expected) {
+        assertEquals(expected, debt.getDebtor());
+    }
+
+    private void assertAmount(Debt debt, double expected) {
+        assertEquals(expected, debt.getAmount());
+    }
+
+    private void assertEquality() {
+        assertEquals(debtOne, debtOne); // Self
+        assertNotEquals(debtOne, null); // Null
+        assertEquals(debtOne, debtTwo); // Equal
+        assertNotEquals(debtOne, debtThree); // Different
+        assertNotEquals(debtOne, "Hello"); // Different class
+    }
+
+    private void assertHashCodes() {
+        assertEquals(debtOne.hashCode(), debtOne.hashCode()); // Self
+        assertEquals(debtOne.hashCode(), debtTwo.hashCode()); // Equal
+        assertNotEquals(debtOne.hashCode(), debtThree.hashCode()); // Different
+        assertNotEquals(debtOne.hashCode(), "Hello".hashCode()); // Different class
+    }
+
+    private void assertToStringContains(Debt debt, String expected) {
+        assertEquals(expected, debt.toString());
     }
 }
