@@ -1,8 +1,10 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.IServerUserCommunicator;
 import client.utils.SceneController;
+import client.utils.IEventCommunicator;
+import client.utils.EventCommunicator;
+import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 
@@ -16,20 +18,19 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+
 
 // TODO: parametrize the 'you' Participant?
 public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
-    private final IServerUserCommunicator serverUserCommunicator;
-    private final Event event;
-    private final Participant you;
+    private final IEventCommunicator server;
 
-    @Override
-    public void setLanguage() {
+    private Event event;
 
-    }
+    private Participant selectedPayer;
 
     private static class ExpenseCellFactory
             implements Callback<ListView<Expense>, ListCell<Expense>> {
@@ -44,7 +45,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 /**
                  * Ran when a cell is shown with a new items or is shown emptied.
                  * @param expense The new item for the cell.
-                 * @param empty whether or not this cell represents data from the list. If it
+                 * @param empty whether this cell represents data from the list. If it
                  *        is empty, then it does not represent any domain data, but is a cell
                  *        being used to render an "empty" row.
                  */
@@ -63,33 +64,88 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
     @FXML
     private Text eventTitle;
+
     @FXML
     private Text participantsList;
 
     @FXML
     private RadioButton expenseSelectorAll;
+
     @FXML
     private RadioButton expenseSelectorFrom;
+
     @FXML
     private RadioButton expenseSelectorIncluding;
 
     @FXML
     private ListView<Expense> expensesList;
 
-    private List<Expense> expenses;
+    @FXML
+    private Text inviteCode;
+
+    @FXML
+    private Button inviteCodeCopyBtn;
+
+    @FXML
+    private Button sendInviteButton;
+
+    @FXML
+    private Label participantsLabel;
+
+    @FXML
+    private Button removeParticipantButton;
+
+    @FXML
+    private Button addParticipantButton;
+
+    @FXML
+    private Label expensesLabel;
+
+    @FXML
+    private Label forLabel;
+
+    @FXML
+    private Label inviteCodeLabel;
+
+    @FXML
+    private Button addExpense;
+
     private ObservableList<Expense> shownExpenses;
 
-    /**
-     * Constructor, should be converted later to use dependency injection.
-     * @param serverUserCommunicator IServerUserCommunicator to request resources from the server
-     * @param event Event for which this EventOverview scene is created
-     * @param you Participant representing this client in the application
-     */
-    public EventOverviewCtrl(IServerUserCommunicator serverUserCommunicator,
-                             Event event, Participant you) {
-        this.serverUserCommunicator = serverUserCommunicator;
-        this.event = event;
-        this.you = you;
+    private final MainCtrl mainCtrl;
+
+    @Inject
+    public EventOverviewCtrl(EventCommunicator server, MainCtrl mainCtrl) {
+        this.server = server;
+        this.mainCtrl = mainCtrl;
+    }
+
+    @Override
+    public void setLanguage() {
+        inviteCodeLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.InviteCode-label"));
+        participantsLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Participants-label"));
+        expensesLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Expenses-label"));
+        forLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.For-label"));
+        sendInviteButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.SendInvite-Button"));
+        inviteCodeCopyBtn.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Copy-Button"));
+        removeParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Remove-Button"));
+        addParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.AddParticipant-Button"));
+        addExpense.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.AddExpense-Button"));
+        expenseSelectorAll.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.All-R-Button"));
+        expenseSelectorFrom.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.From-R-Button"));
+        expenseSelectorIncluding.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Including-R-Button"));
     }
 
     /**
@@ -103,25 +159,35 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Set title and participants
-        eventTitle.setText(event.getName());
-        participantsList.setText(String.join(", ", event.getParticipants()
-                .stream().map(Participant::getName).toList()));
         // Create toggle group for radio buttons
         ToggleGroup expenseSelectorToggle = new ToggleGroup();
         expenseSelectorAll.setToggleGroup(expenseSelectorToggle);
         expenseSelectorFrom.setToggleGroup(expenseSelectorToggle);
         expenseSelectorIncluding.setToggleGroup(expenseSelectorToggle);
         expenseSelectorAll.setSelected(true);
-        // Put user's name on radio buttons
-        String userName = you.getName();
-        expenseSelectorFrom.setText("From " + userName);
-        expenseSelectorIncluding.setText("Including " + userName);
         // Populate expense list
-        expenses = new ArrayList<>(serverUserCommunicator.getAllExpensesForEvent(event.getId()));
         expensesList.setCellFactory(new ExpenseCellFactory());
-        shownExpenses = FXCollections.observableArrayList(expenses);
+    }
+
+    public void loadEvent(Event event) {
+        this.event = event;
+        eventTitle.setText(event.getName());
+        participantsList.setText(String.join(", ", event.getParticipants()
+                .stream().map(Participant::getName).toList()));
+        expenseSelectorAll.setSelected(true);
+//        expenseSelectorFrom.setText("From " + selectedPayer.getName());
+//        expenseSelectorIncluding.setText("Including " + selectedPayer.getName());
+        // Populate expense list
+        shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
+        inviteCode.setText(event.getInviteCode());
+    }
+
+    public void copyInviteCode() {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(event.getInviteCode());
+        clipboard.setContent(content);
     }
 
     /**
@@ -131,15 +197,16 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     public void handleExpenseVisibilityChange() {
         // Could be cleaner with ToggleGroup::getSelectedToggle
         if (expenseSelectorAll.isSelected()) {
-            shownExpenses.setAll(expenses);
+            shownExpenses.setAll(event.getExpenses());
         } else if (expenseSelectorFrom.isSelected()) {
-            shownExpenses.setAll(expenses.stream()
-                    .filter(expense -> expense.getPayer().equals(you)).toList());
+            shownExpenses.setAll(event.getExpenses().stream()
+                    .filter(expense -> expense.getPayer().equals(selectedPayer)).toList());
         } else if (expenseSelectorIncluding.isSelected()) {
-            shownExpenses.setAll(expenses.stream()
-                    .filter(expense -> expense.getPayer().equals(you)
-                                    || expense.getDebtors().contains(you)).toList());
+            shownExpenses.setAll(event.getExpenses().stream()
+                    .filter(expense -> expense.getPayer().equals(selectedPayer)
+                                    || expense.getDebtors().contains(selectedPayer)).toList());
         }
+        expensesList.setItems(shownExpenses);
     }
 
     // All of these methods need to be implemented later

@@ -21,12 +21,16 @@ import client.utils.ClientConfiguration;
 import client.utils.SceneController;
 import client.utils.SceneWrapper;
 import com.google.inject.Inject;
+import commons.Event;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainCtrl {
@@ -38,6 +42,7 @@ public class MainCtrl {
 //    private LanguageSwitch currentCtrl;
 
     private Pair<String, LanguageSwitch> currentCtrl;
+
 
     private final ClientConfiguration config;
 
@@ -52,8 +57,6 @@ public class MainCtrl {
 
         }
 
-
-
     }
 
     @SuppressWarnings("unchecked")
@@ -64,7 +67,6 @@ public class MainCtrl {
         Pair<MenuBarCtrl, Parent>  menuBar = (Pair<MenuBarCtrl, Parent>)
                 sceneMap.get("MenuBar");
 
-
         this.menuBarCtrl = menuBar.getKey();
         this.menuBar = menuBar.getValue();
         this.menuBarCtrl.setLanguage();
@@ -73,7 +75,6 @@ public class MainCtrl {
 
         primaryStage.setWidth(config.getWindowWidth());
         primaryStage.setHeight(config.getWindowHeight());
-
         showStartScreen();
         primaryStage.show();
 
@@ -120,8 +121,10 @@ public class MainCtrl {
         if (currentSceneWrapper == null){
             throw new IllegalArgumentException("No such scene: " + scene);
         }
-
-        ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren().addFirst(menuBar);
+        ObservableList<Node> allNodes = ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren();
+        if(allNodes.getFirst() != menuBar){
+            ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren().addFirst(menuBar);
+        }
 
         this.currentCtrl = new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
         this.currentCtrl.getValue().setLanguage();
@@ -180,6 +183,10 @@ public class MainCtrl {
         primaryStage.setTitle(getTitle(currentCtrl.getKey()));
         menuBarCtrl.setLanguage();
         config.setStartupLanguage(translator.getCurrentLanguage());
+    }
+
+    public void showEventOverview(Event event) {
+        show("EventOverview");
     }
 
     public Translator getTranslator() {

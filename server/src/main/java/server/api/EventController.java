@@ -26,6 +26,16 @@ public class EventController {
         this.service = service;
     }
 
+    @PostMapping
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        try {
+            Event savedEvent = service.createEvent(event);
+            return ResponseEntity.ok(savedEvent);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     /**
      * standard
      * @return all events
@@ -33,6 +43,13 @@ public class EventController {
     @GetMapping(path = { "", "/" })
     public List<Event> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/byInviteCode/{inviteCode}")
+    public ResponseEntity<Event> getByInviteCode(@PathVariable String inviteCode) {
+        return service.getByInviteCode(inviteCode)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
