@@ -51,8 +51,6 @@ public class StartScreenCtrl implements LanguageSwitch, SceneController {
         ));
         joinEventButton.setText(mainCtrl.getTranslator().getTranslation(
                 "StartScreen.Join-Event-Button"
-        ));
-        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
-                "Titles.StartScreen"));
+        ));;
     }
 }

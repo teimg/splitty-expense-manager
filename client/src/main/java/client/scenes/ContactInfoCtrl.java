@@ -75,7 +75,5 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
                 "ContactInfo.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
                 "ContactInfo.Add-Button"));
-        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
-                "Titles.ContactInfo"));
     }
 }

@@ -82,9 +82,7 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
         titleLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.Title-label"));
         noDebtMessage.setText(mainCtrl.getTranslator().getTranslation(
-                "OpenDebts.NoDebtsMessage-label"));
-        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
-                "Titles.OpenDebts"));
+                "OpenDebts.NoDebtsMessage-label"));;
     }
 
     /**

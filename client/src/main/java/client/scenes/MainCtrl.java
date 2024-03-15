@@ -35,7 +35,9 @@ public class MainCtrl {
     private Map<String, SceneWrapper> scenes;
 
     private Translator translator;
-    private LanguageSwitch currentCtrl;
+//    private LanguageSwitch currentCtrl;
+
+    private Pair<String, LanguageSwitch> currentCtrl;
 
     private final ClientConfiguration config;
 
@@ -121,8 +123,8 @@ public class MainCtrl {
 
         ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren().addFirst(menuBar);
 
-        this.currentCtrl = (LanguageSwitch) currentSceneWrapper.getSceneController();
-        this.currentCtrl.setLanguage();
+        this.currentCtrl = new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
+        this.currentCtrl.getValue().setLanguage();
 
         primaryStage.setTitle(title);
         primaryStage.setScene(currentSceneWrapper.getScene());
@@ -174,7 +176,9 @@ public class MainCtrl {
 
     public void updateLanguage(String s) {
         translator.setCurrentLanguage(s);
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
+        currentCtrl.getValue().setLanguage();
+        primaryStage.setTitle(getTitle(currentCtrl.getKey()));
+        menuBarCtrl.setLanguage();
         config.setStartupLanguage(translator.getCurrentLanguage());
     }
 
@@ -182,8 +186,6 @@ public class MainCtrl {
         return translator;
     }
 
-    public void setTitle(String title){
-        primaryStage.setTitle(title);
-    }
+
 
 }
