@@ -38,7 +38,6 @@ public class MainCtrl {
     private Map<String, SceneWrapper> scenes;
 
     private Translator translator;
-//    private LanguageSwitch currentCtrl;
 
     private Pair<String, LanguageSwitch> currentCtrl;
 
