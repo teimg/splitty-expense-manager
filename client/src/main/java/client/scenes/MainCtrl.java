@@ -23,6 +23,7 @@ import client.utils.SceneWrapper;
 import com.google.inject.Inject;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -40,6 +41,7 @@ public class MainCtrl {
     private final ClientConfiguration config;
 
     private MenuBarCtrl menuBarCtrl;
+    private Parent menuBar;
 
     @Inject
     public MainCtrl(ClientConfiguration config) {
@@ -77,16 +79,19 @@ public class MainCtrl {
         Pair<MenuBarCtrl, Parent>  menuBar = (Pair<MenuBarCtrl, Parent>)
                 sceneMap.get("MenuBarCtrl");
 
-        initScenes(sceneMap);
 
         this.menuBarCtrl = menuBar.getKey();
+        this.menuBar = menuBar.getValue();
         this.menuBarCtrl.setLanguage();
+
+        initScenes(sceneMap);
 
         primaryStage.setWidth(config.getWindowWidth());
         primaryStage.setHeight(config.getWindowHeight());
 
         showStartScreen();
         primaryStage.show();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -101,7 +106,7 @@ public class MainCtrl {
 
             String key = x.substring(0, x.length() - 4);
             SceneController currentSceneController = (SceneController) current.getKey();
-            this.scenes.put(key, new SceneWrapper(currentSceneController, current.getValue(), new Scene(current.getValue())));
+            this.scenes.put(key, new SceneWrapper(currentSceneController, current.getValue()));
 
 
         }
@@ -131,6 +136,8 @@ public class MainCtrl {
         if (currentSceneWrapper == null){
             throw new IllegalArgumentException("No such scene: " + scene);
         }
+
+        ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren().addFirst(menuBar);
 
         this.currentCtrl = (LanguageSwitch) currentSceneWrapper.getSceneController();
         this.currentCtrl.setLanguage();
