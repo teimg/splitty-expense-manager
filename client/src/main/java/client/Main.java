@@ -43,39 +43,29 @@ public class Main extends Application {
 
         mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
-        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
-        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-
-        var addExpense = FXML.load(AddEditExpenseCtrl.class,
-                "client", "scenes", "AddEditExpense.fxml");
-        var invitation = FXML.load(InvitationCtrl.class,
-                "client", "scenes", "Invitation.fxml");
-        var openDebts = FXML.load(OpenDebtsCtrl.class,
-                "client", "scenes", "OpenDebtsScreen.fxml");
-        var startScreen = FXML.load(StartScreenCtrl.class,
-                "client", "scenes", "StartScreen.fxml");
-        var statistics = FXML.load(StatisticsScreenCtrl.class,
-                "client", "scenes", "StatisticsScreen.fxml");
-        var contactInfo = FXML.load(StatisticsScreenCtrl.class,
-            "client", "scenes", "ContactInfo.fxml");
-        var menuBar = FXML.load(MenuBarCtrl.class,
-                "client", "scenes", "MenuBar.fxml");
-        var eventOverview = FXML.load(EventOverviewCtrl.class,
-        "client", "scenes", "EventOverview.fxml");
-
         HashMap<String, Object> sceneMap = new HashMap<>();
 
-        sceneMap.put("QuoteOverviewCtrl", overview);
-        sceneMap.put("AddQuoteCtrl", add);
+        sceneMap.put("QuoteOverview",
+            FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml"));
+        sceneMap.put("AddQuote",
+            FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml"));
 
-        sceneMap.put("AddEditExpenseCtrl", addExpense);
-        sceneMap.put("InvitationCtrl", invitation);
-        sceneMap.put("OpenDebtsCtrl", openDebts);
-        sceneMap.put("StartScreenCtrl", startScreen);
-        sceneMap.put("StatisticsScreenCtrl", statistics);
-        sceneMap.put("ContactInfoCtrl", contactInfo);
-        sceneMap.put("MenuBarCtrl", menuBar);
-        sceneMap.put("EventOverviewCtrl", eventOverview);
+        sceneMap.put("AddEditExpense",
+            FXML.load(AddEditExpenseCtrl.class, "client", "scenes", "AddEditExpense.fxml"));
+        sceneMap.put("Invitation",
+            FXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml"));
+        sceneMap.put("OpenDebts",
+            FXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebtsScreen.fxml"));
+        sceneMap.put("StartScreen",
+            FXML.load(StartScreenCtrl.class, "client", "scenes", "StartScreen.fxml"));
+        sceneMap.put("Statistics",
+            FXML.load(StatisticsScreenCtrl.class, "client", "scenes", "StatisticsScreen.fxml"));
+        sceneMap.put("ContactInfo",
+            FXML.load(StatisticsScreenCtrl.class, "client", "scenes", "ContactInfo.fxml"));
+        sceneMap.put("EventOverview",
+            FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml"));
+        sceneMap.put("MenuBar",
+            FXML.load(MenuBarCtrl.class, "client", "scenes", "MenuBar.fxml"));
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }

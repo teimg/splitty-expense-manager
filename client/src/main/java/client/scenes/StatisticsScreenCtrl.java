@@ -1,26 +1,23 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.util.Pair;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class StatisticsScreenCtrl implements Initializable, LanguageSwitch {
+public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, SceneController {
 
 
     @FXML
     private Label statisticsLabel;
-
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private PieChart pieChart;
@@ -95,8 +92,6 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch {
                 "StatisticsScreen.Total-Cost-label"));
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
-        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
-                "Titles.Statistics"));
 
     }
 

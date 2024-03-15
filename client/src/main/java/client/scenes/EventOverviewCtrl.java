@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import client.utils.IEventCommunicator;
 import client.utils.EventCommunicator;
 import com.google.inject.Inject;
@@ -24,7 +25,7 @@ import javafx.scene.input.ClipboardContent;
 
 
 // TODO: parametrize the 'you' Participant?
-public class EventOverviewCtrl implements Initializable, LanguageSwitch {
+public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
     private final IEventCommunicator server;
 
     private Event event;
@@ -60,9 +61,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch {
             };
         }
     }
-
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private Text eventTitle;

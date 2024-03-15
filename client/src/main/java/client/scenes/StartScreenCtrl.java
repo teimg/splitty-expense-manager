@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import client.utils.EventCommunicator;
 import client.utils.IEventCommunicator;
 import com.google.inject.Inject;
@@ -9,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import jakarta.ws.rs.NotFoundException;
 
-public class StartScreenCtrl implements LanguageSwitch {
+public class StartScreenCtrl implements LanguageSwitch, SceneController {
     private final IEventCommunicator server;
 
     @FXML
@@ -20,9 +21,6 @@ public class StartScreenCtrl implements LanguageSwitch {
 
     @FXML
     private Label recentlyViewedEventsLabel;
-
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private TextField newEventField;
@@ -59,9 +57,7 @@ public class StartScreenCtrl implements LanguageSwitch {
         ));
         joinEventButton.setText(mainCtrl.getTranslator().getTranslation(
                 "StartScreen.Join-Event-Button"
-        ));
-        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
-                "Titles.StartScreen"));
+        ));;
     }
 
     public void createEvent() {

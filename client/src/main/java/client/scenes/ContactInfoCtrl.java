@@ -1,15 +1,15 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 
-public class ContactInfoCtrl implements LanguageSwitch {
+public class ContactInfoCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private Label titleLabel;
@@ -25,9 +25,6 @@ public class ContactInfoCtrl implements LanguageSwitch {
 
     @FXML
     private Label bicLabel;
-
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private TextField bicField;
@@ -78,7 +75,5 @@ public class ContactInfoCtrl implements LanguageSwitch {
                 "ContactInfo.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
                 "ContactInfo.Add-Button"));
-        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
-                "Titles.ContactInfo"));
     }
 }

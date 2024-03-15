@@ -18,52 +18,34 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
+import client.utils.SceneController;
+import client.utils.SceneWrapper;
 import com.google.inject.Inject;
 import commons.Event;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Map<String, SceneWrapper> scenes;
+
     private Translator translator;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+    private Pair<String, LanguageSwitch> currentCtrl;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
-
-    private AddEditExpenseCtrl addEditExpenseCtrl;
-    private Scene addEdit;
-
-    private InvitationCtrl invitationCtrl;
-    private Scene invitation;
-
-    private OpenDebtsCtrl openDebtsCtrl;
-    private Scene openDebts;
-
-    private StartScreenCtrl startScreenCtrl;
-    private Scene start;
-
-    private StatisticsScreenCtrl statisticsScreenCtrl;
-    private Scene statistics;
-
-    private ContactInfoCtrl contactInfoCtrl;
-    private Scene contactInfo;
-
-    private LanguageSwitch currentCtrl;
-
-    private EventOverviewCtrl eventOverviewCtrl;
-    private Scene eventOverview;
 
     private final ClientConfiguration config;
 
     private MenuBarCtrl menuBarCtrl;
+    private Parent menuBar;
 
     @Inject
     public MainCtrl(ClientConfiguration config) {
@@ -73,58 +55,49 @@ public class MainCtrl {
 
         }
 
-
-
     }
 
     @SuppressWarnings("unchecked")
     public void initialize(Stage primaryStage, HashMap<String, Object> sceneMap) {
         this.primaryStage = primaryStage;
-        Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
-                sceneMap.get("QuoteOverviewCtrl");
-        Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
-                sceneMap.get("AddQuoteCtrl");
-        Pair<AddEditExpenseCtrl, Parent> addEdit = (Pair<AddEditExpenseCtrl, Parent>)
-                sceneMap.get("AddEditExpenseCtrl");
-        Pair<InvitationCtrl, Parent> invite = (Pair<InvitationCtrl, Parent>)
-                sceneMap.get("InvitationCtrl");
-        Pair<OpenDebtsCtrl, Parent> openDebt = (Pair<OpenDebtsCtrl, Parent>)
-                sceneMap.get("OpenDebtsCtrl");
-        Pair<StartScreenCtrl, Parent> start = (Pair<StartScreenCtrl, Parent>)
-                sceneMap.get("StartScreenCtrl");
-        Pair<StatisticsScreenCtrl, Parent> stats = (Pair<StatisticsScreenCtrl, Parent>)
-                sceneMap.get("StatisticsScreenCtrl");
-        Pair<ContactInfoCtrl, Parent>  contactInfo = (Pair<ContactInfoCtrl, Parent>)
-            sceneMap.get("ContactInfoCtrl");
+        this.scenes = new HashMap<>();
+
         Pair<MenuBarCtrl, Parent>  menuBar = (Pair<MenuBarCtrl, Parent>)
-                sceneMap.get("MenuBarCtrl");
-        Pair<EventOverviewCtrl, Parent> eventOverview =(Pair<EventOverviewCtrl, Parent>)
-        sceneMap.get("EventOverviewCtrl");
-        this.overviewCtrl = over.getKey();
-        this.overview = new Scene(over.getValue());
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
-        this.addEditExpenseCtrl = addEdit.getKey();
-        this.addEdit = new Scene(addEdit.getValue());
-        this.invitationCtrl = invite.getKey();
-        this.invitation = new Scene(invite.getValue());
-        this.openDebtsCtrl = openDebt.getKey();
-        this.openDebts = new Scene(openDebt.getValue());
-        this.startScreenCtrl = start.getKey();
-        this.start = new Scene(start.getValue());
-        this.statisticsScreenCtrl = stats.getKey();
-        this.statistics = new Scene(stats.getValue());
-        this.contactInfoCtrl = contactInfo.getKey();
-        this.contactInfo = new Scene(contactInfo.getValue());
-        this.eventOverviewCtrl = eventOverview.getKey();
-        this.eventOverview = new Scene(eventOverview.getValue());
+                sceneMap.get("MenuBar");
+
         this.menuBarCtrl = menuBar.getKey();
+        this.menuBar = menuBar.getValue();
         this.menuBarCtrl.setLanguage();
-        this.currentCtrl = startScreenCtrl;
+
+        initScenes(sceneMap);
+
         primaryStage.setWidth(config.getWindowWidth());
         primaryStage.setHeight(config.getWindowHeight());
         showStartScreen();
         primaryStage.show();
+
+    }
+
+    /**
+     * Creates a map for all scenes in a SceneWrapper
+     * @param sceneMap map used for creating the map of scenes
+     */
+
+    @SuppressWarnings("unchecked")
+    private void initScenes(HashMap<String, Object> sceneMap) {
+        for(String x : sceneMap.keySet()){
+            Pair<Object, Parent> current = (Pair<Object, Parent>) sceneMap.get(x);
+
+            Object o = current.getKey();
+            if(!(o instanceof SceneController)){
+                continue;
+            }
+
+            SceneController currentSceneController = (SceneController) current.getKey();
+            this.scenes.put(x, new SceneWrapper(currentSceneController, current.getValue()));
+
+
+        }
     }
 
     /**
@@ -139,20 +112,56 @@ public class MainCtrl {
 
     }
 
+    /**
+     * gets the title of the current scne
+     * @param sceneName name of the scene you want to get the title for
+     * @return the window title in right language
+     */
+
+    public String getTitle(String sceneName){
+        String prefix = "Titles.";
+        return translator.getTranslation(prefix + sceneName);
+
+    }
+
+    /**
+     * General method for showing the right scene
+     *
+     * @param scene name of the scene to display
+     * @param title window title of the new scene
+     */
+
+    public void show(String scene, String title){
+        SceneWrapper currentSceneWrapper = this.scenes.get(scene);
+
+        if (currentSceneWrapper == null){
+            throw new IllegalArgumentException("No such scene: " + scene);
+        }
+        ObservableList<Node> allNodes =
+            ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren();
+        if(allNodes.getFirst() != menuBar){
+            allNodes.addFirst(menuBar);
+        }
+
+        this.currentCtrl =
+            new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
+        this.currentCtrl.getValue().setLanguage();
+
+        primaryStage.setTitle(title);
+        primaryStage.setScene(currentSceneWrapper.getScene());
+
+    }
+
+    public void show(String scene){
+        show(scene, getTitle(scene));
+    }
+
     public void showOverview() {
-        currentCtrl = overviewCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+        show("QuoteOverview", "Overview");
     }
 
     public void showAdd() {
-        currentCtrl = addCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle("Quotes: Add Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        show("AddQuote", "Quote add");
     }
 
     /**
@@ -161,74 +170,49 @@ public class MainCtrl {
      */
 
     public void showAddEditExpense() {
-        currentCtrl = addEditExpenseCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.AddEditExpense"));
-        primaryStage.setScene(addEdit);
+        show("AddEditExpense");
     }
 
     public void showInvitation() {
-        currentCtrl = invitationCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.Invitation"));
-        primaryStage.setScene(invitation);
+        show("Invitation");
     }
 
     public void showOpenDebts() {
-        currentCtrl = openDebtsCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.OpenDebts"));
-        primaryStage.setScene(openDebts);
+        show("OpenDebts");
+
     }
 
     public void showStartScreen() {
-        currentCtrl = startScreenCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.StartScreen"));
-        primaryStage.setScene(start);
+        show("StartScreen");
     }
 
     public void showStatistics() {
-        currentCtrl = statisticsScreenCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.Statistics"));
-        primaryStage.setScene(statistics);
+        show("Statistics");
+
     }
 
     public void showContactInfo(){
-        currentCtrl = contactInfoCtrl;
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.ContactInfo"));
-        primaryStage.setScene(contactInfo);
+        show("ContactInfo");
     }
 
     public void updateLanguage(String s) {
         translator.setCurrentLanguage(s);
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
+        currentCtrl.getValue().setLanguage();
+        primaryStage.setTitle(getTitle(currentCtrl.getKey()));
+        menuBarCtrl.setLanguage();
         config.setStartupLanguage(translator.getCurrentLanguage());
     }
 
     public void showEventOverview(Event event) {
-        currentCtrl = eventOverviewCtrl;
-        eventOverviewCtrl.loadEvent(event);
-        currentCtrl.setLanguage(); menuBarCtrl.setLanguage();
-        primaryStage.setTitle(translator.getTranslation(
-                "Titles.EventOverview"));
-        primaryStage.setScene(eventOverview);
+        show("EventOverview");
+        ((EventOverviewCtrl)(this.currentCtrl.getValue())).loadEvent(event);
+
     }
 
     public Translator getTranslator() {
         return translator;
     }
 
-    public void setTitle(String title){
-        primaryStage.setTitle(title);
-    }
+
 
 }

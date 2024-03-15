@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 
 import client.utils.ServerUtils;
@@ -28,19 +29,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class QuoteOverviewCtrl implements Initializable, LanguageSwitch {
+public class QuoteOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
     private ObservableList<Quote> data;
 
-    @FXML
-    private MenuBar menuBar;
     @FXML
     private TableView<Quote> table;
     @FXML

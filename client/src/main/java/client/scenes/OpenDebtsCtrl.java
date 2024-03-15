@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class OpenDebtsCtrl implements Initializable, LanguageSwitch {
+public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneController {
 
     private static class DebtEntry {
 
@@ -36,9 +37,6 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch {
 
     @FXML
     private Label titleLabel;
-
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private Label noDebtMessage;
@@ -84,9 +82,7 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch {
         titleLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.Title-label"));
         noDebtMessage.setText(mainCtrl.getTranslator().getTranslation(
-                "OpenDebts.NoDebtsMessage-label"));
-        mainCtrl.setTitle(mainCtrl.getTranslator().getTranslation(
-                "Titles.OpenDebts"));
+                "OpenDebts.NoDebtsMessage-label"));;
     }
 
     /**

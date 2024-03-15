@@ -4,6 +4,7 @@ import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.DebtorSelector;
 import client.utils.ExpenseBuilder;
+import client.utils.SceneController;
 import client.utils.WhoPaidSelector;
 import com.google.inject.Inject;
 import commons.Event;
@@ -26,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
+public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, SceneController {
 
     @FXML
     private Label titleLabel;
@@ -48,9 +49,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch {
 
     @FXML
     private Label expenseTypeLabel;
-
-    @FXML
-    private MenuBar menuBar;
 
     @FXML
     private Button abortButton;
