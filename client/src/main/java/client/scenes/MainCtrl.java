@@ -188,6 +188,8 @@ public class MainCtrl {
 
     public void showEventOverview(Event event) {
         show("EventOverview");
+        ((EventOverviewCtrl)(this.currentCtrl.getValue())).loadEvent(event);
+
     }
 
     public Translator getTranslator() {
