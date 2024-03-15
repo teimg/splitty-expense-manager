@@ -10,6 +10,12 @@ public class Debt {
 
     private double amount;
 
+    private boolean hasPaid;
+
+    private String summary;
+
+    private String description;
+
     /**
      * Constructor method for the debt class
      * @param creditor - Participant who is owed money
