@@ -1,10 +1,8 @@
 package client.utils;
 
-import client.scenes.MenuBarCtrl;
-import jakarta.inject.Inject;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+
 
 public class SceneWrapper {
 
@@ -18,9 +16,7 @@ public class SceneWrapper {
         this.sceneController = sceneController;
         this.parent = parent;
 
-//        ((Pane) (this.parent)).getChildren().addFirst(menuBar);
         this.scene = new Scene(this.parent);
-
 
     }
 

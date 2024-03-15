@@ -22,7 +22,6 @@ import client.utils.SceneController;
 import client.utils.SceneWrapper;
 import com.google.inject.Inject;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -60,24 +59,8 @@ public class MainCtrl {
         this.primaryStage = primaryStage;
         this.scenes = new HashMap<>();
 
-//        Pair<QuoteOverviewCtrl, Parent> over = (Pair<QuoteOverviewCtrl, Parent>)
-//                sceneMap.get("QuoteOverviewCtrl");
-//        Pair<AddQuoteCtrl, Parent> add = (Pair<AddQuoteCtrl, Parent>)
-//                sceneMap.get("AddQuoteCtrl");
-//        Pair<AddEditExpenseCtrl, Parent> addEdit = (Pair<AddEditExpenseCtrl, Parent>)
-//                sceneMap.get("AddEditExpenseCtrl");
-//        Pair<InvitationCtrl, Parent> invite = (Pair<InvitationCtrl, Parent>)
-//                sceneMap.get("InvitationCtrl");
-//        Pair<OpenDebtsCtrl, Parent> openDebt = (Pair<OpenDebtsCtrl, Parent>)
-//                sceneMap.get("OpenDebtsCtrl");
-//        Pair<StartScreenCtrl, Parent> start = (Pair<StartScreenCtrl, Parent>)
-//                sceneMap.get("StartScreenCtrl");
-//        Pair<StatisticsScreenCtrl, Parent> stats = (Pair<StatisticsScreenCtrl, Parent>)
-//                sceneMap.get("StatisticsScreenCtrl");
-//        Pair<ContactInfoCtrl, Parent>  contactInfo = (Pair<ContactInfoCtrl, Parent>)
-//            sceneMap.get("ContactInfoCtrl");
         Pair<MenuBarCtrl, Parent>  menuBar = (Pair<MenuBarCtrl, Parent>)
-                sceneMap.get("MenuBarCtrl");
+                sceneMap.get("MenuBar");
 
 
         this.menuBarCtrl = menuBar.getKey();
@@ -104,9 +87,8 @@ public class MainCtrl {
                 continue;
             }
 
-            String key = x.substring(0, x.length() - 4);
             SceneController currentSceneController = (SceneController) current.getKey();
-            this.scenes.put(key, new SceneWrapper(currentSceneController, current.getValue()));
+            this.scenes.put(x, new SceneWrapper(currentSceneController, current.getValue()));
 
 
         }

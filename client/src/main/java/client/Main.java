@@ -63,16 +63,16 @@ public class Main extends Application {
 
         HashMap<String, Object> sceneMap = new HashMap<>();
 
-        sceneMap.put("QuoteOverviewCtrl", overview);
-        sceneMap.put("AddQuoteCtrl", add);
+        sceneMap.put("QuoteOverview", overview);
+        sceneMap.put("AddQuote", add);
 
-        sceneMap.put("AddEditExpenseCtrl", addExpense);
-        sceneMap.put("InvitationCtrl", invitation);
-        sceneMap.put("OpenDebtsCtrl", openDebts);
-        sceneMap.put("StartScreenCtrl", startScreen);
-        sceneMap.put("StatisticsCtrl", statistics);
-        sceneMap.put("ContactInfoCtrl", contactInfo);
-        sceneMap.put("MenuBarCtrl", menuBar);
+        sceneMap.put("AddEditExpense", addExpense);
+        sceneMap.put("Invitation", invitation);
+        sceneMap.put("OpenDebts", openDebts);
+        sceneMap.put("StartScreen", startScreen);
+        sceneMap.put("Statistics", statistics);
+        sceneMap.put("ContactInfo", contactInfo);
+        sceneMap.put("MenuBar", menuBar);
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }
