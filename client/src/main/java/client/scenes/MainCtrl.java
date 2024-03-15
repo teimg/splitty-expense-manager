@@ -30,7 +30,6 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainCtrl {
@@ -121,12 +120,14 @@ public class MainCtrl {
         if (currentSceneWrapper == null){
             throw new IllegalArgumentException("No such scene: " + scene);
         }
-        ObservableList<Node> allNodes = ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren();
+        ObservableList<Node> allNodes =
+            ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren();
         if(allNodes.getFirst() != menuBar){
-            ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren().addFirst(menuBar);
+            allNodes.addFirst(menuBar);
         }
 
-        this.currentCtrl = new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
+        this.currentCtrl =
+            new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
         this.currentCtrl.getValue().setLanguage();
 
         primaryStage.setTitle(title);
