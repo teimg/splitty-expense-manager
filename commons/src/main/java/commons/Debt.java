@@ -83,6 +83,55 @@ public class Debt {
     }
 
     /**
+     * Getter method for paid status
+     * @return hasPaid
+     */
+    public boolean isHasPaid() {
+        return hasPaid;
+    }
+
+    /**
+     * Setter for hasPaid
+     * @param hasPaid - paid status
+     */
+    public void setHasPaid(boolean hasPaid) {
+        this.hasPaid = hasPaid;
+    }
+
+    /**
+     * getter method for summary
+     * @return summary of debt
+     */
+    public String getSummary() {
+        return summary;
+    }
+
+    /**
+     * setter method for summary
+     * @param summary debt summary
+     */
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    /**
+     * getter method for description
+     * @return debt description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * setter method for description
+     * @param description description of debt
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    /**
      * Standard equals method
      * @param o - other
      * @return boolean
