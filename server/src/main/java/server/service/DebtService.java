@@ -38,6 +38,10 @@ public class DebtService {
         return repo.save(debt);
     }
 
+    public void deleteDebt(long id) {
+        repo.deleteById(id);
+    }
+
     public List<Debt> getAll() {
         return repo.findAll();
     }
