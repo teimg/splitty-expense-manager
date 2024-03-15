@@ -27,6 +27,16 @@ public class DebtService {
         return repo.save(debt);
     }
 
+    public Debt updateDebt(long id, Debt newDetails) {
+        Debt debt = getById(id);
+        debt.setCreditor(newDetails.getCreditor());
+        debt.setDebtor(newDetails.getDebtor());
+        debt.setAmount(newDetails.getAmount());
+        debt.setHasPaid(newDetails.isHasPaid());
+        debt.setSummary(newDetails.getSummary());
+        debt.setDescription(newDetails.getDescription());
+        return repo.save(debt);
+    }
 
     public List<Debt> getAll() {
         return repo.findAll();
