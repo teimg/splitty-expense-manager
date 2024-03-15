@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import server.database.DebtRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DebtService {

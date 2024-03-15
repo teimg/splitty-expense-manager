@@ -25,7 +25,8 @@ public class Debt {
      * @param summary Brief summary of the debt
      * @param description Detailed description of the debt
      */
-    public Debt(Participant creditor, Participant debtor, double amount, boolean hasPaid, String summary, String description) {
+    public Debt(Participant creditor, Participant debtor, double amount,
+                boolean hasPaid, String summary, String description) {
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;

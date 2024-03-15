@@ -32,7 +32,8 @@ public class DebtController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Debt> updateDebt(@PathVariable("id") long id, @RequestBody Debt newDetails) {
+    public ResponseEntity<Debt> updateDebt(@PathVariable("id") long id,
+                                           @RequestBody Debt newDetails) {
         Debt updatedDebt = service.updateDebt(id, newDetails);
         return ResponseEntity.ok(updatedDebt);
     }
