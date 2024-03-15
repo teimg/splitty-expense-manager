@@ -31,34 +31,11 @@ import java.util.Map;
 
 public class MainCtrl {
 
-    private Map<String, SceneWrapper> scenes;
     private Stage primaryStage;
+    private Map<String, SceneWrapper> scenes;
+
+
     private Translator translator;
-
-//    private QuoteOverviewCtrl overviewCtrl;
-//    private Scene overview;
-//
-//    private AddQuoteCtrl addCtrl;
-//    private Scene add;
-//
-//    private AddEditExpenseCtrl addEditExpenseCtrl;
-//    private Scene addEdit;
-//
-//    private InvitationCtrl invitationCtrl;
-//    private Scene invitation;
-//
-//    private OpenDebtsCtrl openDebtsCtrl;
-//    private Scene openDebts;
-//
-//    private StartScreenCtrl startScreenCtrl;
-//    private Scene start;
-//
-//    private StatisticsScreenCtrl statisticsScreenCtrl;
-//    private Scene statistics;
-//
-//    private ContactInfoCtrl contactInfoCtrl;
-//    private Scene contactInfo;
-
     private LanguageSwitch currentCtrl;
 
     private final ClientConfiguration config;
@@ -118,8 +95,8 @@ public class MainCtrl {
         for(String x : sceneMap.keySet()){
             Pair<Object, Parent> current = (Pair<Object, Parent>) sceneMap.get(x);
 
-            Object d = current.getKey();
-            if(!(d instanceof SceneController)){
+            Object o = current.getKey();
+            if(!(o instanceof SceneController)){
                 continue;
             }
 
@@ -143,6 +120,12 @@ public class MainCtrl {
 
     }
 
+    public String getTitle(String sceneName){
+        String prefix = "Titles.";
+        return translator.getTranslation(prefix + sceneName);
+
+    }
+
     public void show(String scene, String title){
         SceneWrapper currentSceneWrapper = this.scenes.get(scene);
 
@@ -156,6 +139,10 @@ public class MainCtrl {
         primaryStage.setTitle(title);
         primaryStage.setScene(currentSceneWrapper.getScene());
 
+    }
+
+    public void show(String scene){
+        show(scene, getTitle(scene));
     }
 
     public void showOverview() {
@@ -172,41 +159,29 @@ public class MainCtrl {
      */
 
     public void showAddEditExpense() {
-        String title = translator.getTranslation(
-            "Titles.AddEditExpense");
-        show("AddEditExpense", title);
+        show("AddEditExpense");
     }
 
     public void showInvitation() {
-        String title = translator.getTranslation(
-                "Titles.Invitation");
-        show("Invitation", title);
+        show("Invitation");
     }
 
     public void showOpenDebts() {
-        String title = translator.getTranslation(
-            "Titles.OpenDebts");
-        show("OpenDebts", title);
+        show("OpenDebts");
 
     }
 
     public void showStartScreen() {
-        String title = translator.getTranslation(
-            "Titles.StartScreen");
-        show("StartScreen", title);
+        show("StartScreen");
     }
 
     public void showStatistics() {
-        String title = translator.getTranslation(
-            "Titles.Statistics");
-        show("StatisticsScreen", title);
+        show("Statistics");
 
     }
 
     public void showContactInfo(){
-        String title = translator.getTranslation(
-            "Titles.ContactInfo");
-        show("ContactInfo", title);
+        show("ContactInfo");
     }
 
     public void updateLanguage(String s) {

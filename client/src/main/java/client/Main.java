@@ -70,7 +70,7 @@ public class Main extends Application {
         sceneMap.put("InvitationCtrl", invitation);
         sceneMap.put("OpenDebtsCtrl", openDebts);
         sceneMap.put("StartScreenCtrl", startScreen);
-        sceneMap.put("StatisticsScreenCtrl", statistics);
+        sceneMap.put("StatisticsCtrl", statistics);
         sceneMap.put("ContactInfoCtrl", contactInfo);
         sceneMap.put("MenuBarCtrl", menuBar);
 
