@@ -17,15 +17,21 @@ public class Debt {
     private String description;
 
     /**
-     * Constructor method for the debt class
-     * @param creditor - Participant who is owed money
-     * @param debtor - Participant who owes money
-     * @param amount - Amount of money owed
+     * Constructor method for the Debt class
+     * @param creditor Participant who is owed money
+     * @param debtor Participant who owes money
+     * @param amount Amount of money owed
+     * @param hasPaid Status of the debt being paid
+     * @param summary Brief summary of the debt
+     * @param description Detailed description of the debt
      */
-    public Debt(Participant creditor, Participant debtor, double amount) {
+    public Debt(Participant creditor, Participant debtor, double amount, boolean hasPaid, String summary, String description) {
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
+        this.hasPaid = hasPaid;
+        this.summary = summary;
+        this.description = description;
     }
 
     /**
