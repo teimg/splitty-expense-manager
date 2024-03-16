@@ -129,7 +129,8 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
             return;
         }
         if (participant == null) {
-            BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
+            BankAccount bankAccount = (!ibanField.getText().isEmpty()
+                    && !bicField.getText().isEmpty())
                     ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
             participantServer.createParticipant(
                     this.event,
@@ -140,7 +141,8 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
         else {
             participant.setName(nameField.getText());
             participant.setEmail(emailField.getText());
-            BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
+            BankAccount bankAccount = (!ibanField.getText().isEmpty()
+                    && !bicField.getText().isEmpty())
                     ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
             participant.setBankAccount(bankAccount);
             participantServer.updateParticipant(participant);

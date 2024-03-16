@@ -114,7 +114,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private Button addExpense;
 
     @FXML
-    public Button editParticipantButton;
+    private Button editParticipantButton;
 
     @FXML
     private ChoiceBox<String> participantDropDown;
@@ -157,6 +157,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 "EventOverview.From-R-Button"));
         expenseSelectorIncluding.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.Including-R-Button"));
+        editParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.EditParticipant-Button"));
     }
 
     /**
@@ -229,6 +231,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         Optional<Participant> optionalParticipant = event.getParticipants().stream()
                 .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
                 .findFirst();
+        // TODO: give a "confirmation" pop-up
         if (optionalParticipant.isPresent()) {
             participantCommunicator.deleteParticipant(optionalParticipant.get().getId());
         }
