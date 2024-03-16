@@ -1,3 +1,5 @@
+package client.utils;
+
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -12,6 +14,7 @@ import client.utils.ClientConfiguration;
 import client.utils.ExpenseCommunicator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -20,7 +23,8 @@ import java.time.LocalDate;
 import java.util.Collections;
 
 import static org.mockito.Mockito.*;
-
+import org.mockito.junit.jupiter.MockitoExtension;
+@ExtendWith(MockitoExtension.class)
 public class ExpenseCommunicatorTest {
 
     @Mock
@@ -70,5 +74,12 @@ public class ExpenseCommunicatorTest {
         dummyExpense.setDebtors(Collections.singletonList(new Participant("Test Debtor")));
         dummyExpense.setDate(LocalDate.now());
     }
-    
+
+    @Test
+    public void createExpenseTest() {
+        communicator.createExpense(dummyExpense.getEvent(), dummyExpense.getPurchase(), dummyExpense.getAmount(),
+                dummyExpense.getPayer(), dummyExpense.getDebtors(), dummyExpense.getDate());
+
+        verify(invocationBuilder).post(Entity.entity(dummyExpense, MediaType.APPLICATION_JSON));
+    }
 }
