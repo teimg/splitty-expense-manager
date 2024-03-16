@@ -138,10 +138,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         mainCtrl.showStatistics();
     }
 
-    public void showContactInfo(ActionEvent actionEvent) {
-        mainCtrl.showContactInfo();
-    }
-
     public void showEventOverview(ActionEvent actionEvent) {}
 
     public void setEnglish(ActionEvent actionEvent) {

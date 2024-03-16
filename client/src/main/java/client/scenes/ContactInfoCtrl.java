@@ -1,8 +1,9 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.*;
 import com.google.inject.Inject;
+import commons.BankAccount;
 import commons.Event;
 import commons.Participant;
 import javafx.event.ActionEvent;
@@ -10,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ContactInfoCtrl implements LanguageSwitch, SceneController {
 
@@ -48,21 +52,20 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
 
     private final MainCtrl mainCtrl;
 
+    private final IParticipantCommunicator participantServer;
+
+    private final IEventCommunicator eventServer;
+
     private Event event;
 
     private Participant participant;
 
-    public void abortButtonPressed(ActionEvent event) {
-
-    }
-
-    public void addButtonPressed(ActionEvent event) {
-        
-    }
-
     @Inject
-    public ContactInfoCtrl (MainCtrl mainCtrl) {
+    public ContactInfoCtrl (MainCtrl mainCtrl, ParticipantCommunicator participantCommunicator,
+                            EventCommunicator eventCommunicator) {
         this.mainCtrl = mainCtrl;
+        this.participantServer = participantCommunicator;
+        this.eventServer = eventCommunicator;
     }
 
     @Override
@@ -99,4 +102,40 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
             bicField.setText(participant.getBankAccount().getBic());
         }
     }
+
+    private boolean isValidEmail(String email) {
+        // Regular expression pattern for email validation
+        String pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern regexPattern = Pattern.compile(pattern);
+        Matcher matcher = regexPattern.matcher(email);
+
+        return matcher.matches();
+    }
+
+    private boolean validInput() {
+        return (isValidEmail(emailField.getText())
+            && !nameField.getText().isEmpty()
+            && (bicField.getText().isEmpty() && ibanField.getText().isEmpty()
+                || !bicField.getText().isEmpty() && !ibanField.getText().isEmpty()));
+    }
+
+    public void abortButtonPressed(ActionEvent event) {
+
+    }
+
+    public void addButtonPressed(ActionEvent event) {
+        if (!validInput()) {
+            System.out.println("Error");
+            return;
+        }
+        BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
+                ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+        participantServer.createParticipant(
+                this.event,
+                nameField.getText(),
+                emailField.getText(),
+                bankAccount);
+        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(this.event.getInviteCode()));
+    }
+
 }

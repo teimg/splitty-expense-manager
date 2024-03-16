@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.BankAccount;
 import commons.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,16 @@ public class EventController {
     @GetMapping(path = { "", "/" })
     public List<Event> getAll() {
         return service.getAll();
+    }
+
+    /**
+     * Get by ID
+     * @return event with ID
+     */
+    @GetMapping(path = { "/{id}" })
+    public ResponseEntity<Event> getByID(@PathVariable long id) {
+        return service.getById(id).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/byInviteCode/{inviteCode}")

@@ -2,6 +2,7 @@ package client.utils;
 
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Participant;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 
@@ -20,6 +21,21 @@ public class EventCommunicator implements IEventCommunicator{
         return null;
     }
 
+    /**
+     * Gets an existing event by id.
+     *
+     * @param id event id
+     * @return the event
+     */
+    @Override
+    public Event getEvent(long id) {
+        return ClientBuilder.newClient()
+                .target(origin).path("api/event/{id}")
+                .resolveTemplate("id", id)
+                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                .get(Event.class);
+    }
+
     @Override
     public Event createEvent(Event event) {
         return ClientBuilder.newClient()
@@ -27,11 +43,6 @@ public class EventCommunicator implements IEventCommunicator{
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
-    }
-
-    @Override
-    public Event getEvent(long id) {
-        return null;
     }
 
     @Override

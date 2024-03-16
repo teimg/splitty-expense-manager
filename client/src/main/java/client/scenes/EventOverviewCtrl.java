@@ -213,7 +213,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     // TODO: implement these methods with proper server communication
     public void handleSendInvites() {}
     public void handleRemoveParticipant() {}
-    public void handleAddParticipant() {}
+    public void handleAddParticipant() {
+        mainCtrl.showContactInfo(event, null);
+    }
     public void handleAddExpense() {}
 
 }
