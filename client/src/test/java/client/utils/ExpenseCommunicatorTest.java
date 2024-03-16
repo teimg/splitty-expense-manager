@@ -82,4 +82,14 @@ public class ExpenseCommunicatorTest {
 
         verify(invocationBuilder).post(Entity.entity(dummyExpense, MediaType.APPLICATION_JSON));
     }
+
+    @Test
+    public void getExpenseTest() {
+        long expenseId = 1L;
+        communicator.getExpense(expenseId);
+
+        verify(webTarget).path("api/expense/{id}");
+        verify(webTarget).resolveTemplate("id", expenseId);
+        verify(invocationBuilder).get();
+    }
 }
