@@ -22,6 +22,7 @@ import client.utils.SceneController;
 import client.utils.SceneWrapper;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Participant;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -191,8 +192,9 @@ public class MainCtrl {
 
     }
 
-    public void showContactInfo(){
+    public void showContactInfo(Event event, Participant participant){
         show("ContactInfo");
+        ((ContactInfoCtrl)(this.currentCtrl.getValue())).loadInfo(event, participant);
     }
 
     public void updateLanguage(String s) {

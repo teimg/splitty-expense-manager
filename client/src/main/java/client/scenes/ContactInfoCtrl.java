@@ -3,6 +3,8 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.Event;
+import commons.Participant;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,12 +29,6 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     private Label bicLabel;
 
     @FXML
-    private TextField bicField;
-
-    @FXML
-    private TextField ibanField;
-
-    @FXML
     private Button abortButton;
 
     @FXML
@@ -44,14 +40,24 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     @FXML
     private TextField nameField;
 
+    @FXML
+    private TextField bicField;
+
+    @FXML
+    private TextField ibanField;
+
     private final MainCtrl mainCtrl;
+
+    private Event event;
+
+    private Participant participant;
 
     public void abortButtonPressed(ActionEvent event) {
 
     }
 
     public void addButtonPressed(ActionEvent event) {
-
+        
     }
 
     @Inject
@@ -75,5 +81,22 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
                 "ContactInfo.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
                 "ContactInfo.Add-Button"));
+    }
+
+    public void loadInfo(Event event, Participant participant) {
+        this.participant = participant;
+        this.event = event;
+        if (participant != null) {
+           fillInFields();
+        }
+    }
+
+    private void fillInFields() {
+        emailField.setText(participant.getEmail());
+        nameField.setText(participant.getName());
+        if (participant.getBankAccount() != null) {
+            ibanField.setText(participant.getBankAccount().getIban());
+            bicField.setText(participant.getBankAccount().getBic());
+        }
     }
 }
