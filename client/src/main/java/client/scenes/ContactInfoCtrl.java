@@ -90,7 +90,7 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
         this.participant = participant;
         this.event = event;
         if (participant != null) {
-           fillInFields();
+            fillInFields();
         }
     }
 

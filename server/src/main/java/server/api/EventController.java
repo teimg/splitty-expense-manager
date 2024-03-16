@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.BankAccount;
 import commons.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +47,7 @@ public class EventController {
 
     /**
      * Get by ID
+     * @param id - id
      * @return event with ID
      */
     @GetMapping(path = { "/{id}" })

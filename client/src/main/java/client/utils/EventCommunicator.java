@@ -2,7 +2,6 @@ package client.utils;
 
 import com.google.inject.Inject;
 import commons.Event;
-import commons.Participant;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 
