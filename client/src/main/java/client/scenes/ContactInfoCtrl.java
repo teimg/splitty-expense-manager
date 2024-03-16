@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,13 +129,31 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
             System.out.println("Error");
             return;
         }
-        BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
-                ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
-        participantServer.createParticipant(
-                this.event,
-                nameField.getText(),
-                emailField.getText(),
-                bankAccount);
+        if (participant == null) {
+            BankAccount bankAccount = (!ibanField.getText().isEmpty()
+                    && !bicField.getText().isEmpty())
+                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+            participantServer.createParticipant(
+                    this.event,
+                    nameField.getText(),
+                    emailField.getText(),
+                    bankAccount);
+        }
+        else {
+            participant.setName(nameField.getText());
+            participant.setEmail(emailField.getText());
+            BankAccount bankAccount = (!ibanField.getText().isEmpty()
+                    && !bicField.getText().isEmpty())
+                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+            participant.setBankAccount(bankAccount);
+            // TODO: decipher why an exception is thrown here
+            try {
+                participantServer.updateParticipant(participant);
+            }
+            catch (Exception e) {
+                System.out.println(Arrays.toString(e.getStackTrace()));
+            }
+        }
         mainCtrl.showEventOverview(eventServer.getEventByInviteCode(this.event.getInviteCode()));
     }
 
