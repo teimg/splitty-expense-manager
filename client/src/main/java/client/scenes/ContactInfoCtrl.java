@@ -128,13 +128,23 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
             System.out.println("Error");
             return;
         }
-        BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
-                ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
-        participantServer.createParticipant(
-                this.event,
-                nameField.getText(),
-                emailField.getText(),
-                bankAccount);
+        if (participant == null) {
+            BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
+                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+            participantServer.createParticipant(
+                    this.event,
+                    nameField.getText(),
+                    emailField.getText(),
+                    bankAccount);
+        }
+        else {
+            participant.setName(nameField.getText());
+            participant.setEmail(emailField.getText());
+            BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
+                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+            participant.setBankAccount(bankAccount);
+            participantServer.updateParticipant(participant);
+        }
         mainCtrl.showEventOverview(eventServer.getEventByInviteCode(this.event.getInviteCode()));
     }
 

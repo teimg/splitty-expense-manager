@@ -1,9 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
-import client.utils.IEventCommunicator;
-import client.utils.EventCommunicator;
+import client.utils.*;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -11,6 +9,7 @@ import commons.Expense;
 import commons.Participant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -18,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.scene.input.Clipboard;
@@ -26,7 +26,10 @@ import javafx.scene.input.ClipboardContent;
 
 // TODO: parametrize the 'you' Participant?
 public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
-    private final IEventCommunicator server;
+
+    private final IEventCommunicator eventCommunicator;
+
+    private final IParticipantCommunicator participantCommunicator;
 
     private Event event;
 
@@ -111,6 +114,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private Button addExpense;
 
     @FXML
+    public Button editParticipantButton;
+
+    @FXML
     private ChoiceBox<String> participantDropDown;
 
     private ObservableList<Expense> shownExpenses;
@@ -118,8 +124,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private final MainCtrl mainCtrl;
 
     @Inject
-    public EventOverviewCtrl(EventCommunicator server, MainCtrl mainCtrl) {
-        this.server = server;
+    public EventOverviewCtrl(EventCommunicator eventCommunicator, MainCtrl mainCtrl,
+                             ParticipantCommunicator participantCommunicator) {
+        this.eventCommunicator = eventCommunicator;
+        this.participantCommunicator = participantCommunicator;
         this.mainCtrl = mainCtrl;
     }
 
@@ -214,13 +222,36 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         expensesList.setItems(shownExpenses);
     }
 
-    // All of these methods need to be implemented later
     // TODO: implement these methods with proper server communication
     public void handleSendInvites() {}
-    public void handleRemoveParticipant() {}
+
+    public void handleRemoveParticipant() {
+        Optional<Participant> optionalParticipant = event.getParticipants().stream()
+                .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
+                .findFirst();
+        if (optionalParticipant.isPresent()) {
+            participantCommunicator.deleteParticipant(optionalParticipant.get().getId());
+        }
+        // TODO: if no participant is selected
+        else {
+            System.out.println("Error");
+        }
+        loadEvent(eventCommunicator.getEvent(event.getId()));
+    }
+
     public void handleAddParticipant() {
         mainCtrl.showContactInfo(event, null);
     }
+
+    public void handleEditParticipant(ActionEvent actionEvent) {
+        Optional<Participant> optionalParticipant = event.getParticipants().stream()
+                .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
+                .findFirst();
+        optionalParticipant.ifPresent(participant -> mainCtrl.showContactInfo(event, participant));
+        // TODO: if no participant is selected
+        if (optionalParticipant.isEmpty()) System.out.println("Error");
+    }
+
     public void handleAddExpense() {}
 
 }
