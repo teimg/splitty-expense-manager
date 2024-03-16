@@ -17,7 +17,6 @@
                 <MenuItem fx:id="openDebts" mnemonicParsing="false" onAction="#showOpenDebts" text="Open Debts" />
                 <MenuItem fx:id="statistics" mnemonicParsing="false" onAction="#showStatistics" text="Statistics" />
                 <MenuItem fx:id="eventOverview" mnemonicParsing="false" onAction="#showEventOverview" text="Event Overview" />
-                <MenuItem mnemonicParsing="false" onAction="#showContactInfo" text="Contact details" />
             </items>
         </Menu>
         <Menu fx:id="languageMenu" mnemonicParsing="false" text="Language">

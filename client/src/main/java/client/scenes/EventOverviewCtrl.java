@@ -110,6 +110,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     @FXML
     private Button addExpense;
 
+    @FXML
+    private ChoiceBox<String> participantDropDown;
+
     private ObservableList<Expense> shownExpenses;
 
     private final MainCtrl mainCtrl;
@@ -174,6 +177,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         eventTitle.setText(event.getName());
         participantsList.setText(String.join(", ", event.getParticipants()
                 .stream().map(Participant::getName).toList()));
+        participantDropDown.setItems(FXCollections.observableList(event.getParticipants().
+                stream().map(Participant::getName).toList()));
         expenseSelectorAll.setSelected(true);
 //        expenseSelectorFrom.setText("From " + selectedPayer.getName());
 //        expenseSelectorIncluding.setText("Including " + selectedPayer.getName());
@@ -213,7 +218,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     // TODO: implement these methods with proper server communication
     public void handleSendInvites() {}
     public void handleRemoveParticipant() {}
-    public void handleAddParticipant() {}
+    public void handleAddParticipant() {
+        mainCtrl.showContactInfo(event, null);
+    }
     public void handleAddExpense() {}
 
 }

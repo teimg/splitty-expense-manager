@@ -45,6 +45,17 @@ public class EventController {
         return service.getAll();
     }
 
+    /**
+     * Get by ID
+     * @param id - id
+     * @return event with ID
+     */
+    @GetMapping(path = { "/{id}" })
+    public ResponseEntity<Event> getByID(@PathVariable long id) {
+        return service.getById(id).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/byInviteCode/{inviteCode}")
     public ResponseEntity<Event> getByInviteCode(@PathVariable String inviteCode) {
         return service.getByInviteCode(inviteCode)
