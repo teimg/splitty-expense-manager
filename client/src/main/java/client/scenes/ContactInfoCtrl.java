@@ -120,7 +120,7 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     }
 
     public void abortButtonPressed(ActionEvent event) {
-
+        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(this.event.getInviteCode()));
     }
 
     public void addButtonPressed(ActionEvent event) {
