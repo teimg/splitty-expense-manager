@@ -445,18 +445,22 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             return expenseBuilder.build();
         } catch (IllegalArgumentException e){
             String msg = switch (e.getMessage()) {
-                case "payer" -> "Payer field invalid";
-                case "price" -> "Price field invalid";
-                case "purchase" -> "purchase left empty";
-                case "participant" -> "No  selected Debitors";
+                case "payer" -> "PayerFieldInvalid";
+                case "price" -> "PriceFieldInvalid";
+                case "purchase" -> "PurchaseLeftEmpty";
+                case "participant" -> "NoSelectedDebtors";
                 default -> "Unknown input error";
             };
 
-            Popup popup = new Popup(msg, Popup.TYPE.ERROR);
+            Popup popup = new Popup(
+                mainCtrl.getTranslator().getTranslation("Popup." + msg),
+                Popup.TYPE.ERROR);
             popup.show();
 
         }catch (Exception e){
-            Popup popup = new Popup("Unknown exception", Popup.TYPE.ERROR);
+            Popup popup = new Popup(
+                mainCtrl.getTranslator().getTranslation("Popup.UnknownError"),
+                Popup.TYPE.ERROR);
             popup.show();
         }
 
