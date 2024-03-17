@@ -72,7 +72,7 @@ public class ExpenseCommunicatorTest {
         dummyExpense.setAmount(100.0);
         dummyExpense.setPayer(new Participant("Test Payer"));
         dummyExpense.setDebtors(Collections.singletonList(new Participant("Test Debtor")));
-        dummyExpense.setDate(Date.valueOf(LocalDate.now()));
+        dummyExpense.setDate(LocalDate.now());
     }
 
     @Test
