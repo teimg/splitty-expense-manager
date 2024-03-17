@@ -59,7 +59,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                         setText(null);
                         return;
                     }
-                    setText(expense.toString());
+                    setText(expense.description());
                 }
             };
         }

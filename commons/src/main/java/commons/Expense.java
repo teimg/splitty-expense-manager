@@ -209,4 +209,21 @@ public class Expense {
                 ", date=" + date +
                 '}';
     }
+
+    /**
+     * Valid String representation
+     * @return string representation
+     */
+    public String description() {
+        StringBuilder desc = new StringBuilder(getDate().toString() + "    "
+                + getPayer().getName() + " paid "
+                + getAmount() + "$ for " + getPurchase() + "\n");
+        desc.append(" ".repeat(32));
+        desc.append("Debtors: ");
+        for (int i = 0; i < debtors.size() - 1; i++) {
+            desc.append(debtors.get(i).getName()).append(", ");
+        }
+        desc.append(debtors.get(debtors.size()-1).getName());
+        return desc.toString();
+    }
 }
