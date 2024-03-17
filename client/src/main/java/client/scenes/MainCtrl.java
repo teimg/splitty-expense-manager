@@ -165,13 +165,16 @@ public class MainCtrl {
         show("AddQuote", "Quote add");
     }
 
-    /**
-     * TODO: ADD CUSTOM METHODS SUCH AS SEEN ABOVE TO EACH OF THESE.
-     * TODO: ALSO ADDING ANY NEW SCENES
-     */
+     // TODO: ADD CUSTOM METHODS SUCH AS SEEN ABOVE TO EACH OF THESE.
+     // TODO: ALSO ADDING ANY NEW SCENES
 
     public void showAddEditExpense() {
         show("AddEditExpense");
+    }
+
+    public void showAddEditExpense(Event event) {
+        show("AddEditExpense");
+        ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event);
     }
 
     public void showInvitation() {
