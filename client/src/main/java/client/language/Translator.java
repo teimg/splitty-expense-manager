@@ -32,6 +32,12 @@ public class Translator {
         return this.resourceBundle.getString(keyToBeTranslated);
     }
 
+    /**
+     *
+     * @param keyToBeTranslated key to be translated
+     * @return returns the popup message to be translated
+     */
+
     private String getTranslationPopup(String keyToBeTranslated) {
 
         try{
