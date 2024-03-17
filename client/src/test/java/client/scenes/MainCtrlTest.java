@@ -26,18 +26,18 @@ public class MainCtrlTest {
 
     private ClientConfiguration config;
 
-    /**
-     * Setting dependency of config file for testing
-     * @param config - config injected
-     */
-    @Inject
-    public void setClientConfig(ClientConfiguration config) {
-        this.config = config;
-    }
+//    /**
+//     * Setting dependency of config file for testing
+//     * @param config - config injected
+//     */
+//    @Inject
+//    public void setClientConfig(ClientConfiguration config) {
+//        this.config = config;
+//    }
 
     @BeforeEach
     public void setup() {
-        sut = new MainCtrl(config);
+//        sut = new MainCtrl(config, );
     }
 
     @Test

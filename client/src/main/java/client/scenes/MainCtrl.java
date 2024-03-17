@@ -49,10 +49,11 @@ public class MainCtrl {
     private Parent menuBar;
 
     @Inject
-    public MainCtrl(ClientConfiguration config) {
+    public MainCtrl(ClientConfiguration config, Translator translator) {
         this.config = config;
+        this.translator = translator;
         if (config != null){
-            this.translator = new Translator(config.getStartupLanguage());
+            this.translator.setCurrentLanguage(config.getStartupLanguage());
 
         }
 
