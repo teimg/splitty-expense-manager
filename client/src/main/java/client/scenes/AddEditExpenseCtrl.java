@@ -2,10 +2,7 @@ package client.scenes;
 
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
-import client.utils.DebtorSelector;
-import client.utils.ExpenseBuilder;
-import client.utils.SceneController;
-import client.utils.WhoPaidSelector;
+import client.utils.*;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -100,6 +97,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     private final MainCtrl mainCtrl;
 
+    private final IExpenseCommunicator expenseCommunicator;
+
     @Override
     public void setLanguage() {
         titleLabel.setText(mainCtrl.getTranslator().getTranslation(
@@ -127,8 +126,9 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     }
 
     @Inject
-    public AddEditExpenseCtrl (MainCtrl mainCtrl) {
+    public AddEditExpenseCtrl (MainCtrl mainCtrl, ExpenseCommunicator expenseCommunicator) {
         this.mainCtrl = mainCtrl;
+        this.expenseCommunicator = expenseCommunicator;
     }
 
     private static class Innercheckbox{
@@ -345,8 +345,10 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         if(res == null){
             return;
         }
-
-
+        Expense added = expenseCommunicator.createExpense(res);
+        event.addExpense(added);
+        System.out.println(added.toString());
+        mainCtrl.showEventOverview(event);
     }
 
     /**
@@ -455,7 +457,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             Popup popup = new Popup(msg, Popup.TYPE.ERROR);
             popup.show();
 
-        }catch (Exception e){
+        } catch (Exception e){
             Popup popup = new Popup("Unknown exception", Popup.TYPE.ERROR);
             popup.show();
         }

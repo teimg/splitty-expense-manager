@@ -170,7 +170,7 @@ public class MainCtrl {
      * TODO: ALSO ADDING ANY NEW SCENES
      */
 
-    public void showAddEditExpense() {
+    public void showAddEditExpense(Event event) {
         show("AddEditExpense");
     }
 

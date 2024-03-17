@@ -123,7 +123,7 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     }
 
     public void showAddEditExpense(ActionEvent actionEvent) {
-        mainCtrl.showAddEditExpense();
+        mainCtrl.showAddEditExpense(null);
     }
 
     public void showInvitations(ActionEvent actionEvent) {

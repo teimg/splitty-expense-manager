@@ -39,6 +39,14 @@ public class ExpenseCommunicator implements IExpenseCommunicator {
     }
 
     @Override
+    public Expense createExpense(Expense expense) {
+        return ClientBuilder.newClient()
+                .target(origin).path("api/expense")
+                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                .post(Entity.entity(expense, APPLICATION_JSON), Expense.class);
+    }
+
+    @Override
     public Expense getExpense(long id) {
         return ClientBuilder.newClient()
                 .target(origin).path("api/expense/{id}")

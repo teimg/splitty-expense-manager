@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface IExpenseCommunicator {
+
     /**
      * Creates a new expense.
      * @param event event the expense belongs to
@@ -21,6 +22,13 @@ public interface IExpenseCommunicator {
      */
     Expense createExpense(Event event, String purchase, double amount,
                           Participant payer, List<Participant> debtors, LocalDate date);
+
+    /**
+     * Creates a new expense
+     * @param expense expense object
+     * @return the created expense
+     */
+    Expense createExpense(Expense expense);
 
     /**
      * Gets an existing expense by id.

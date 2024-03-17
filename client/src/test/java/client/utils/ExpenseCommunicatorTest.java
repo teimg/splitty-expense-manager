@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Collections;
 
@@ -71,7 +72,7 @@ public class ExpenseCommunicatorTest {
         dummyExpense.setAmount(100.0);
         dummyExpense.setPayer(new Participant("Test Payer"));
         dummyExpense.setDebtors(Collections.singletonList(new Participant("Test Debtor")));
-        dummyExpense.setDate(LocalDate.now());
+        dummyExpense.setDate(Date.valueOf(LocalDate.now()));
     }
 
     @Test
