@@ -59,7 +59,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                         setText(null);
                         return;
                     }
-                    setText(expense.toString());
+                    setText(expense.description());
                 }
             };
         }
@@ -255,6 +255,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         if (optionalParticipant.isEmpty()) System.out.println("Error");
     }
 
-    public void handleAddExpense() {}
+    public void handleAddExpense() {
+        mainCtrl.showAddEditExpense(event);
+    }
 
 }

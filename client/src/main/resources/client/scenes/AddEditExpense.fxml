@@ -146,7 +146,7 @@
                                    </HBox>
                                    <HBox alignment="TOP_RIGHT" layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
                                     <children>
-                                       <Button fx:id="abortButton" mnemonicParsing="false" text="Abort">
+                                       <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abortButtonPressed" text="Abort">
                                           <font>
                                              <Font size="16.0" />
                                           </font></Button>

@@ -2,14 +2,12 @@ package client.scenes;
 
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
-import client.utils.DebtorSelector;
-import client.utils.ExpenseBuilder;
-import client.utils.SceneController;
-import client.utils.WhoPaidSelector;
+import client.utils.*;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,8 +20,6 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -100,6 +96,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     private final MainCtrl mainCtrl;
 
+    private final IExpenseCommunicator expenseCommunicator;
+
     @Override
     public void setLanguage() {
         titleLabel.setText(mainCtrl.getTranslator().getTranslation(
@@ -127,12 +125,41 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     }
 
     @Inject
-    public AddEditExpenseCtrl (MainCtrl mainCtrl) {
+    public AddEditExpenseCtrl (MainCtrl mainCtrl, ExpenseCommunicator expenseCommunicator) {
         this.mainCtrl = mainCtrl;
+        this.expenseCommunicator = expenseCommunicator;
     }
 
-    private static class Innercheckbox{
-        private  CheckBox checkBox;
+    public void loadInfo(Event event) {
+        this.event = event;
+        expenseBuilder = new ExpenseBuilder();
+        List<Participant> participants = this.event.getParticipants();
+        debtorSelector = new DebtorSelector(participants);
+
+        initWhoPaid();
+        initCheckbox();
+        initCurrency();
+        initDateField();
+
+        for (int i = 0; i < participants.size(); i++) {
+
+            Participant currentParticipant = participants.get(i);
+            InnerCheckbox innercheckbox =
+                    new InnerCheckbox(currentParticipant.getName(),
+                            innerCheckboxes, debtorSelector);
+            if(this.isEdit &&
+                    this.expense.getDebtors().contains(currentParticipant))
+                innercheckbox.setSelected(true);
+
+        }
+
+        if(this.isEdit){
+            setEdit();
+        }
+    }
+
+    private static class InnerCheckbox{
+        private final CheckBox checkBox;
 
         /**
          *
@@ -141,7 +168,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
          * @param parent ref to the parent vbox
          * @param debtorSelector ref to the debtselector object
          */
-        public Innercheckbox(String name, VBox parent, DebtorSelector debtorSelector) {
+        public InnerCheckbox(String name, VBox parent, DebtorSelector debtorSelector) {
             this.checkBox = new CheckBox(name);
             this.checkBox.setPadding(new Insets(5, 0, 0, 0));
             parent.getChildren().add(this.checkBox);
@@ -161,24 +188,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     }
 
-    /**
-     * simple dummy event for now;
-     */
-    public void createDummyEvent(){
-        List<Participant> participants = new ArrayList<>();
-        participants.add(new Participant("Henk"));
-        participants.add(new Participant("Piet"));
-        participants.add(new Participant("Joost"));
-        participants.add(new Participant("Barry"));
-        participants.add(new Participant("Joe"));
-        participants.add(new Participant("Jan"));
-        participants.add(new Participant("Abel"));
-        participants.add(new Participant("Pietje"));
-        participants.add(new Participant("Trien"));
-
-        this.event = new Event("dummyEvent", "CODE", participants, new Date(), new Date());
-    }
-
 
     /**
      *
@@ -193,31 +202,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Should be removed once backend is created
-        createDummyEvent();
-
-        expenseBuilder = new ExpenseBuilder();
-        List<Participant> participants = this.event.getParticipants();
-        debtorSelector = new DebtorSelector(participants);
-
-        initWhoPaid();
-        initCheckbox();
-        initCurrency();
-        initDateField();
-
-        for (int i = 0; i < participants.size(); i++) {
-
-            Participant currentParticipant = participants.get(i);
-            Innercheckbox innercheckbox =
-                new Innercheckbox(currentParticipant.getName(), innerCheckboxes, debtorSelector);
-            if(this.isEdit &&
-                this.expense.getDebtors().contains(currentParticipant))
-                innercheckbox.setSelected(true);
-
-        }
-
-        if(this.isEdit){
-            setEdit();
-        }
+        // createDummyEvent();
     }
 
     public void setEdit(){
@@ -345,8 +330,14 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         if(res == null){
             return;
         }
+        Expense added = expenseCommunicator.createExpense(res);
+        event.addExpense(added);
+        System.out.println(added.toString());
+        mainCtrl.showEventOverview(event);
+    }
 
-
+    public void abortButtonPressed(ActionEvent actionEvent) {
+        mainCtrl.showEventOverview(event);
     }
 
     /**
@@ -355,7 +346,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
      * @return the amount in euro cents right now
      */
     private long getPriceFieldValue() {
-        // Code should be moved to a different class so it can be tested
+        // Code should be moved to a different class, so it can be tested
         long res = 0;
         String value = priceField.getText();
         String[] values = value.split(",|\\.");
@@ -416,7 +407,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         return  res;
     }
 
-    public List<Participant> getDebitors(){
+    public List<Participant> getDebtors(){
         List<Participant> res = debtorSelector.getDebitors();
 
         if(res.isEmpty()){
@@ -438,7 +429,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             expenseBuilder.setPurchase(getPurchase());
             expenseBuilder.setDate(getDateFieldValue());
             expenseBuilder.setAmount(getPriceFieldValue());
-            expenseBuilder.setDebtors(getDebitors());
+            expenseBuilder.setDebtors(getDebtors());
             expenseBuilder.setEvent(event);
 
             System.out.println(expenseBuilder.toString());
@@ -456,7 +447,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
                 mainCtrl.getTranslator().getTranslation("Popup." + msg),
                 Popup.TYPE.ERROR);
             popup.show();
-
         }catch (Exception e){
             Popup popup = new Popup(
                 mainCtrl.getTranslator().getTranslation("Popup.UnknownError"),
