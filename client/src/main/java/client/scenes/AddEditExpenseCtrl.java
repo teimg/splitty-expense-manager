@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -332,6 +333,10 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         Expense added = expenseCommunicator.createExpense(res);
         event.addExpense(added);
         System.out.println(added.toString());
+        mainCtrl.showEventOverview(event);
+    }
+
+    public void abortButtonPressed(ActionEvent actionEvent) {
         mainCtrl.showEventOverview(event);
     }
 

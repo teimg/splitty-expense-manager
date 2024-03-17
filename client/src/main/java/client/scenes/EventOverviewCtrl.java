@@ -256,12 +256,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     }
 
     public void handleAddExpense() {
-        Optional<Participant> optionalParticipant = event.getParticipants().stream()
-                .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
-                .findFirst();
-        optionalParticipant.ifPresent(participant -> mainCtrl.showAddEditExpense(event));
-        // TODO: if no participant is selected
-        if (optionalParticipant.isEmpty()) System.out.println("Error");
+        mainCtrl.showAddEditExpense(event);
     }
 
 }
