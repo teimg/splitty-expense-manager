@@ -25,18 +25,17 @@ public class ExpenseCommunicator implements IExpenseCommunicator {
     @Override
     public Expense createExpense(Event event, String purchase, double amount, Participant payer,
                                  List<Participant> debtors, LocalDate date) {
-//        Expense toServer = new Expense();
-//        toServer.setEvent(event);
-//        toServer.setPurchase(purchase);
-//        toServer.setAmount(amount);
-//        toServer.setPayer(payer);
-//        toServer.setDebtors(debtors);
-//        toServer.setDate(date);
-//        return ClientBuilder.newClient()
-//                .target(origin).path("api/expense")
-//                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
-//                .post(Entity.entity(toServer, APPLICATION_JSON), Expense.class);
-        return null;
+        Expense toServer = new Expense();
+        toServer.setEvent(event);
+        toServer.setPurchase(purchase);
+        toServer.setAmount(amount);
+        toServer.setPayer(payer);
+        toServer.setDebtors(debtors);
+        toServer.setDate(date);
+        return ClientBuilder.newClient()
+                .target(origin).path("api/expense")
+                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                .post(Entity.entity(toServer, APPLICATION_JSON), Expense.class);
     }
 
     @Override
