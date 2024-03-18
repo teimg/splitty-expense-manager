@@ -103,6 +103,18 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
         ibanField.setText("");
     }
 
+    private void clearScene(){
+        this.participant = null;
+        this.event = null;
+        clearFields();
+    }
+
+    public void quitScene(){
+        String res = this.event.getInviteCode();
+        clearScene();
+        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(res));
+    }
+
     private void fillInFields() {
         emailField.setText(participant.getEmail());
         nameField.setText(participant.getName());
@@ -129,7 +141,7 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     }
 
     public void abortButtonPressed(ActionEvent event) {
-        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(this.event.getInviteCode()));
+        quitScene();
     }
 
     public void addButtonPressed(ActionEvent event) {
@@ -162,7 +174,7 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
                 System.out.println(Arrays.toString(e.getStackTrace()));
             }
         }
-        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(this.event.getInviteCode()));
+        quitScene();
     }
 
 }
