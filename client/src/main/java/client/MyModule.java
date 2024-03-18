@@ -15,6 +15,7 @@
  */
 package client;
 
+import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
 import com.google.inject.Binder;
@@ -38,5 +39,6 @@ public class MyModule implements Module {
         binder.bind(MenuBarCtrl.class).in(Scopes.SINGLETON);
         // Ensures all config reading/writing goes through a central ClientConfiguration class.
         binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
+        binder.bind(Translator.class).in(Scopes.SINGLETON);
     }
 }
