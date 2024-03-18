@@ -88,11 +88,19 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     }
 
     public void loadInfo(Event event, Participant participant) {
+        clearFields();
         this.participant = participant;
         this.event = event;
         if (participant != null) {
             fillInFields();
         }
+    }
+
+    private void clearFields(){
+        emailField.setText("");
+        nameField.setText("");
+        bicField.setText("");
+        ibanField.setText("");
     }
 
     private void fillInFields() {
