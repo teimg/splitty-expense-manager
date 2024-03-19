@@ -3,6 +3,7 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -49,6 +50,8 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
 
     private final MainCtrl mainCtrl;
 
+    private Event event;
+
     @Inject
     public OpenDebtsCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -75,6 +78,10 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
         if (debtList.isEmpty()) {
             noDebtMessage.setVisible(true);
         }
+    }
+
+    public void loadEvent(Event event){
+        this.event = event;
     }
 
     @Override
