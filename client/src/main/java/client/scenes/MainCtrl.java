@@ -178,8 +178,9 @@ public class MainCtrl {
         ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event);
     }
 
-    public void showInvitation() {
+    public void showInvitation(Event event) {
         show("Invitation");
+        ((InvitationCtrl)(this.currentCtrl.getValue())).loadEvent(event);
     }
 
     public void showOpenDebts() {

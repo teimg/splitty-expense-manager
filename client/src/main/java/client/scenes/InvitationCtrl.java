@@ -3,6 +3,7 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,6 +30,8 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
     @FXML
     private TextArea addressesArea;
 
+    private Event event;
+
     private final MainCtrl mainCtrl;
 
     @Inject
@@ -51,11 +54,13 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
     }
 
     /**
-     * Sets the invite message for a certain invite code.
-     * @param code invite code
+     * Sets the Event to invite Participants to.
+     * @param event Event to use
      */
-    public void setInviteCode(String code) {
-        inviteMessage.setText("Give people the following invite code: " + code);
+    public void loadEvent(Event event) {
+        this.event = event;
+        eventTitle.setText("Invite people to " + event.getName());
+        inviteMessage.setText("Give people the following invite code: " + event.getInviteCode());
     }
 
     /**
