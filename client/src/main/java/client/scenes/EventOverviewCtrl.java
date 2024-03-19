@@ -120,8 +120,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private ChoiceBox<String> participantDropDown;
 
     @FXML
-    public Button openDebtBtn;
-
+    private Button openDebtBtn;
 
     private ObservableList<Expense> shownExpenses;
 

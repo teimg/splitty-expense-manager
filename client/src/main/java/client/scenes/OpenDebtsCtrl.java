@@ -4,7 +4,6 @@ import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -50,7 +49,7 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
     private ArrayList<DebtEntry> debtList;
 
     @FXML
-    public Button abortButton;
+    private Button abortButton;
 
 
     private final MainCtrl mainCtrl;
