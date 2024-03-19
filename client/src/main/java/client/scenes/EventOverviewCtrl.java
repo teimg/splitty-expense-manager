@@ -119,6 +119,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     @FXML
     private ChoiceBox<String> participantDropDown;
 
+    @FXML
+    public Button openDebtBtn;
+
+
     private ObservableList<Expense> shownExpenses;
 
     private final MainCtrl mainCtrl;
@@ -260,5 +264,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     public void handleAddExpense() {
         mainCtrl.showAddEditExpense(event);
     }
+
+    public void handleOpenDebt() {
+        mainCtrl.showOpenDebts(event);
+    }
+
 
 }

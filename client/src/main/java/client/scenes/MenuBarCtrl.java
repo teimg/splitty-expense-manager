@@ -131,7 +131,7 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     }
 
     public void showOpenDebts(ActionEvent actionEvent) {
-        mainCtrl.showOpenDebts();
+        // you should navigate to the openDebt screen through the event overview screen
     }
 
     public void showStatistics(ActionEvent actionEvent) {
