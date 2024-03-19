@@ -119,6 +119,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     @FXML
     private ChoiceBox<String> participantDropDown;
 
+    @FXML
+    private Button openDebtBtn;
+
     private ObservableList<Expense> shownExpenses;
 
     private final MainCtrl mainCtrl;
@@ -159,6 +162,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 "EventOverview.Including-R-Button"));
         editParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.EditParticipant-Button"));
+        openDebtBtn.setText(mainCtrl.getTranslator().getTranslation(
+            "EventOverview.OpenDebt-Button"));
     }
 
     /**
@@ -260,5 +265,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     public void handleAddExpense() {
         mainCtrl.showAddEditExpense(event);
     }
+
+    public void handleOpenDebt() {
+        mainCtrl.showOpenDebts(event);
+    }
+
 
 }
