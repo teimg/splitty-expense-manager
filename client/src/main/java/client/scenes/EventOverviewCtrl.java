@@ -225,7 +225,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     }
 
     // TODO: implement these methods with proper server communication
-    public void handleSendInvites() {}
+    public void handleSendInvites() {
+        mainCtrl.showInvitation(event);
+    }
 
     public void handleRemoveParticipant() {
         Optional<Participant> optionalParticipant = event.getParticipants().stream()
