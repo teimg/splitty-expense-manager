@@ -106,6 +106,9 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
                 "OpenDebts.Title-label"));
         noDebtMessage.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.NoDebtsMessage-label"));;
+        abortButton.setText(mainCtrl.getTranslator().getTranslation(
+            "OpenDebts.Abort-button"
+        ));
     }
 
     /**

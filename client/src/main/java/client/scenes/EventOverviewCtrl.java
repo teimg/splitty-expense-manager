@@ -162,6 +162,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 "EventOverview.Including-R-Button"));
         editParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.EditParticipant-Button"));
+        openDebtBtn.setText(mainCtrl.getTranslator().getTranslation(
+            "EventOverview.OpenDebt-Button"));
     }
 
     /**
