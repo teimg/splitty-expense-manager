@@ -56,7 +56,6 @@ public class MainCtrl {
             this.translator.setCurrentLanguage(config.getStartupLanguage());
 
         }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -215,6 +214,10 @@ public class MainCtrl {
         show("EventOverview");
         ((EventOverviewCtrl)(this.currentCtrl.getValue())).loadEvent(event);
 
+    }
+
+    public void showAdminLogIn() {
+        show("AdminLogIn");
     }
 
     public Translator getTranslator() {

@@ -26,5 +26,10 @@
                 <MenuItem fx:id="frenchButton" mnemonicParsing="false" onAction="#setFrench" text="French" />
             </items>
         </Menu>
+        <Menu fx:id="adminMenu" mnemonicParsing="false" text="Admin">
+            <items>
+                <MenuItem fx:id="adminLogIn" mnemonicParsing="false" onAction="#goToAdminLogIn" text="Management Overview" />
+            </items>
+        </Menu>
     </menus>
 </MenuBar>

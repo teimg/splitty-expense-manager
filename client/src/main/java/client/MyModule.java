@@ -40,5 +40,6 @@ public class MyModule implements Module {
         // Ensures all config reading/writing goes through a central ClientConfiguration class.
         binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
+        binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);
     }
 }

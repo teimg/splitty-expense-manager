@@ -16,6 +16,12 @@ import java.util.ResourceBundle;
 public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     @FXML
+    private MenuItem adminLogIn;
+
+    @FXML
+    private Menu adminMenu;
+
+    @FXML
     private Menu languageMenu;
 
     @FXML
@@ -170,6 +176,13 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
                 "MenuBar.Dutch-Button"));
         frenchButton.setText(mainCtrl.getTranslator().getTranslation(
                 "MenuBar.French-Button"));
+        adminMenu.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Admin-Menu"));
+        adminLogIn.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Management-Button"));
     }
 
+    public void goToAdminLogIn(ActionEvent actionEvent) {
+        mainCtrl.showAdminLogIn();
+    }
 }

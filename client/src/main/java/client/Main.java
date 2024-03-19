@@ -66,6 +66,8 @@ public class Main extends Application {
             FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml"));
         sceneMap.put("MenuBar",
             FXML.load(MenuBarCtrl.class, "client", "scenes", "MenuBar.fxml"));
+        sceneMap.put("AdminLogIn",
+                FXML.load(AdminLogInCtrl.class, "client", "scenes", "AdminLogIn.fxml"));
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }
