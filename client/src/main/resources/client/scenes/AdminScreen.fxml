@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminScreenCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminScreenCtrl">
     <children>
         <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
             <children>
@@ -19,7 +19,7 @@
                         <HBox HBox.hgrow="ALWAYS" />
                         <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <AnchorPane prefHeight="374.0" prefWidth="600.0">
+                                <AnchorPane prefHeight="387.0" prefWidth="450.0">
                                     <children>
                                         <Label fx:id="adminTitleLabel" layoutX="47.0" layoutY="14.0" prefHeight="32.0" prefWidth="369.0" text="Admin Management Overview">
                                             <font>
@@ -43,6 +43,7 @@
                               <ListView fx:id="eventListView" layoutX="47.0" layoutY="82.0" prefHeight="177.0" prefWidth="360.0" />
                               <Button fx:id="importButton" layoutX="173.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleImport" prefHeight="26.0" prefWidth="108.0" text="Import" />
                               <Button fx:id="deleteButton" layoutX="47.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" prefHeight="26.0" prefWidth="108.0" text="Delete Selected" />
+                              <Button fx:id="backButton" layoutX="47.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="26.0" prefWidth="108.0" text="Go Back" />
                                     </children>
                                 </AnchorPane>
                             </children>
