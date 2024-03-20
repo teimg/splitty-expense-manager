@@ -34,6 +34,7 @@ public class AdminLogInCtrl implements LanguageSwitch, SceneController {
     public void enterPassword(ActionEvent actionEvent) {
         // TODO: Link to admin page/check correct password
         System.out.println(passwordField.getText());
+        mainCtrl.showAdminScreen();
     }
 
     @Override

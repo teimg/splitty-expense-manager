@@ -41,5 +41,6 @@ public class MyModule implements Module {
         binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
         binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
     }
 }
