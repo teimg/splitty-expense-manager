@@ -220,6 +220,10 @@ public class MainCtrl {
         show("AdminLogIn");
     }
 
+    public void showAdminScreen() {
+        show("AdminScreen");
+    }
+
     public Translator getTranslator() {
         return translator;
     }

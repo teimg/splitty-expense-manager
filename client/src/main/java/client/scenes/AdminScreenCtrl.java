@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.event.ActionEvent;
@@ -9,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 
-public class AdminScreenCtrl {
+public class AdminScreenCtrl implements SceneController {
 
     @FXML
     private Label eventsLabel;
