@@ -216,6 +216,10 @@ public class MainCtrl {
     }
 
     public void showEventOverview(Event event) {
+
+        // Track for recent events
+        recentEventTracker.registerEvent(event);
+
         show("EventOverview");
         ((EventOverviewCtrl)(this.currentCtrl.getValue())).loadEvent(event);
 
