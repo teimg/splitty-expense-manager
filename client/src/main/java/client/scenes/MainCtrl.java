@@ -184,12 +184,14 @@ public class MainCtrl {
         ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event);
     }
 
-    public void showInvitation() {
+    public void showInvitation(Event event) {
         show("Invitation");
+        ((InvitationCtrl)(this.currentCtrl.getValue())).loadEvent(event);
     }
 
-    public void showOpenDebts() {
+    public void showOpenDebts(Event event) {
         show("OpenDebts");
+        ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadEvent(event);
 
     }
 
@@ -225,10 +227,17 @@ public class MainCtrl {
 
     }
 
+    public void showAdminLogIn() {
+        show("AdminLogIn");
+    }
+
+    public void showAdminScreen() {
+        show("AdminScreen");
+    }
+
     public Translator getTranslator() {
         return translator;
     }
-
 
 
 }
