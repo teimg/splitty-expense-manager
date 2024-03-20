@@ -1,17 +1,24 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
-import client.utils.EventCommunicator;
-import client.utils.IEventCommunicator;
+import client.utils.*;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import jakarta.ws.rs.NotFoundException;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 
-public class StartScreenCtrl implements LanguageSwitch, SceneController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneController {
     private final IEventCommunicator server;
+
+    private final MainCtrl mainCtrl;
 
     @FXML
     private Label createNewEventLabel;
@@ -34,12 +41,58 @@ public class StartScreenCtrl implements LanguageSwitch, SceneController {
     @FXML
     private Button joinEventButton;
 
-    private final MainCtrl mainCtrl;
+    @FXML
+    private ListView<JoinableEvent> recentEventList;
+
+    private RecentEventTracker tracker;
+
+    private class JoinableEventListCell extends ListCell<JoinableEvent> {
+        private HBox container;
+        private Hyperlink title;
+        private Pane filler;
+        private Button deleteButton;
+
+        public JoinableEventListCell() {
+            super();
+            container = new HBox();
+            title = new Hyperlink();
+            filler = new Pane();
+            deleteButton = new Button("Delete");
+            HBox.setHgrow(filler, Priority.ALWAYS);
+            container.getChildren().addAll(title, filler, deleteButton);
+        }
+
+        @Override
+        public void updateItem(JoinableEvent joinableEvent, boolean empty) {
+            super.updateItem(joinableEvent, empty);
+            if (empty) {
+                setGraphic(null);
+                return;
+            }
+            title.setText(joinableEvent.name());
+            title.setOnAction(actionEvent -> {
+                Event event = server.getEvent(joinableEvent.id());
+                mainCtrl.showEventOverview(event);
+            });
+            deleteButton.setOnAction(actionEvent -> {
+                tracker.deleteEvent(joinableEvent);
+            });
+            setGraphic(container);
+        }
+    }
 
     @Inject
-    public StartScreenCtrl(EventCommunicator server, MainCtrl mainCtrl) {
+    public StartScreenCtrl(EventCommunicator server, MainCtrl mainCtrl,
+                           RecentEventTracker tracker) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.tracker = tracker;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        recentEventList.setCellFactory(listView -> new JoinableEventListCell());
+        recentEventList.setItems(tracker.getEvents());
     }
 
     @Override

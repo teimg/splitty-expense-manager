@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 custom.properties
+**/config/recent.ser
 
 **/*.mv.db
 /coverage/*

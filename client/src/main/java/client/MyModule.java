@@ -18,6 +18,7 @@ package client;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
+import client.utils.RecentEventTracker;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -40,6 +41,9 @@ public class MyModule implements Module {
         // Ensures all config reading/writing goes through a central ClientConfiguration class.
         binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
+
+        binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
+
         binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
     }

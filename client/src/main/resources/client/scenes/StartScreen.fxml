@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -39,7 +40,7 @@
                               <TextField fx:id="joinEventField" layoutX="66.0" layoutY="153.0" prefHeight="26.0" prefWidth="267.0" />
                               <Button fx:id="createEventButton" layoutX="338.0" layoutY="88.0" mnemonicParsing="false" onAction="#createEvent" text="Create" />
                               <Button fx:id="joinEventButton" layoutX="338.0" layoutY="153.0" mnemonicParsing="false" onAction="#joinEvent" prefHeight="26.0" prefWidth="54.0" text="Join" />
-                              <AnchorPane layoutX="67.0" layoutY="236.0" prefHeight="100.0" prefWidth="329.0" />
+                              <ListView fx:id="recentEventList" layoutX="66.0" layoutY="231.0" prefHeight="121.0" prefWidth="327.0" />
                            </children>
                         </AnchorPane>
                      </children>
