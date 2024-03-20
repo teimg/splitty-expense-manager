@@ -215,7 +215,15 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
      * Called by an input to one of the selector RadioButtons.
      */
     public void handleExpenseVisibilityChange() {
-        // Could be cleaner with ToggleGroup::getSelectedToggle
+        Optional<Participant> optionalParticipant = event.getParticipants().stream()
+                .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
+                .findFirst();
+        if (optionalParticipant.isPresent()) {
+            selectedPayer = optionalParticipant.get();
+        }
+        else {
+            System.out.println("Database error");
+        }
         if (expenseSelectorAll.isSelected()) {
             shownExpenses.setAll(event.getExpenses());
         } else if (expenseSelectorFrom.isSelected()) {
