@@ -18,6 +18,7 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
+import client.utils.RecentEventTracker;
 import client.utils.SceneController;
 import client.utils.SceneWrapper;
 import com.google.inject.Inject;
@@ -48,15 +49,18 @@ public class MainCtrl {
     private MenuBarCtrl menuBarCtrl;
     private Parent menuBar;
 
+    private final RecentEventTracker recentEventTracker;
+
     @Inject
-    public MainCtrl(ClientConfiguration config, Translator translator) {
+    public MainCtrl(ClientConfiguration config, Translator translator,
+                    RecentEventTracker recentEventTracker) {
         this.config = config;
         this.translator = translator;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
 
         }
-
+        this.recentEventTracker = recentEventTracker;
     }
 
     @SuppressWarnings("unchecked")
@@ -111,6 +115,8 @@ public class MainCtrl {
         config.setWindowHeight(primaryStage.getHeight());
 
         config.save();
+
+        recentEventTracker.persistEvents();
 
     }
 
