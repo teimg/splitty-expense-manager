@@ -4,14 +4,17 @@ import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.util.Callback;
 
-public class AdminScreenCtrl implements LanguageSwitch, SceneController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initializable {
 
     @FXML
     private Label eventsLabel;
@@ -48,9 +51,20 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController {
 
     private final MainCtrl mainCtrl;
 
+    private ObservableList<Event> shownEvents;
+
     @Inject
     public AdminScreenCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
+    }
+
+    @Override
+    public void initialize (URL location, ResourceBundle resources) {
+        ToggleGroup orderByToggle = new ToggleGroup();
+        titleRadioButton.setToggleGroup(orderByToggle);
+        creationRadioButton.setToggleGroup(orderByToggle);
+        activityRadioButton.setToggleGroup(orderByToggle);
+        eventListView.setCellFactory(new AdminScreenCtrl.EventCellFactory());
     }
 
     @Override
@@ -77,19 +91,69 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController {
                 "AdminScreen.Back-Button"));
     }
 
+    // TODO: JSON dump
     public void handleDownload(ActionEvent actionEvent) {
     }
 
+    // TODO: Implement sorting (probably done after web sockets as data structures are not yet determined
     public void handleOrderBy(ActionEvent actionEvent) {
+        if (titleRadioButton.isSelected()) {
+            // TODO: implement sorting
+        }
+        else if (creationRadioButton.isSelected()) {
+            // TODO: implement sorting
+        }
+        else if (activityRadioButton.isSelected()) {
+            // TODO: implement sorting
+        }
+        eventListView.setItems(shownEvents);
     }
 
+    // TODO: Import JSON
     public void handleImport(ActionEvent actionEvent) {
     }
 
+    // TODO: Once web sockets are configured this is fairly elementary - must be sure to refresh page
     public void handleDelete(ActionEvent actionEvent) {
+        Event toBeDeleted = eventListView.getSelectionModel().getSelectedItem();
+        if (toBeDeleted != null) {
+            // TODO: Add Pop Up as well as actually delete item (using web sockets).
+            System.out.println(toBeDeleted.toString());
+        }
     }
 
     public void handleBack(ActionEvent actionEvent) {
         mainCtrl.showStartScreen();
     }
+
+    private static class EventCellFactory
+            implements Callback<ListView<Event>, ListCell<Event>> {
+        /**
+         * Should return a new ListCell usable in the expense ListView.
+         * @param listView the expense ListView
+         * @return a usable ListCell
+         */
+        @Override
+        public ListCell<Event> call(ListView<Event> listView) {
+            return new ListCell<>() {
+                /**
+                 * Ran when a cell is shown with a new items or is shown emptied.
+                 * @param event The new item for the cell.
+                 * @param empty whether this cell represents data from the list. If it
+                 *        is empty, then it does not represent any domain data, but is a cell
+                 *        being used to render an "empty" row.
+                 */
+                @Override
+                public void updateItem(Event event, boolean empty) {
+                    super.updateItem(event, empty);
+                    if (empty) {
+                        setText(null);
+                        return;
+                    }
+                    setText(event.toString());
+                }
+            };
+        }
+    }
+
 }
