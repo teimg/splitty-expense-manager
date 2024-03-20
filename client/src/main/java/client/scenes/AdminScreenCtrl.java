@@ -95,7 +95,8 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     public void handleDownload(ActionEvent actionEvent) {
     }
 
-    // TODO: Implement sorting (probably done after web sockets as data structures are not yet determined
+    // TODO: Implement sorting (probably done after web sockets
+    //  as data structures are not yet determined
     public void handleOrderBy(ActionEvent actionEvent) {
         if (titleRadioButton.isSelected()) {
             // TODO: implement sorting
@@ -113,7 +114,8 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     public void handleImport(ActionEvent actionEvent) {
     }
 
-    // TODO: Once web sockets are configured this is fairly elementary - must be sure to refresh page
+    // TODO: Once web sockets are configured this is fairly elementary
+    //  must be sure to refresh page
     public void handleDelete(ActionEvent actionEvent) {
         Event toBeDeleted = eventListView.getSelectionModel().getSelectedItem();
         if (toBeDeleted != null) {
