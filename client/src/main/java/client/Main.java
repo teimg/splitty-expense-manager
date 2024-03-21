@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
+import client.ModelView.StartScreenMv;
 import client.scenes.*;
 import com.google.inject.Injector;
 
@@ -42,6 +43,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+//        var debug = INJECTOR.getInstance(StartScreenMv.class);
 
         HashMap<String, Object> sceneMap = new HashMap<>();
 

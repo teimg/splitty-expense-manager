@@ -1,17 +1,18 @@
 package client.scenes;
 
+import client.ModelView.StartScreenMv;
+import client.dialog.Popup;
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
-import client.utils.EventCommunicator;
-import client.utils.IEventCommunicator;
+import client.utils.*;
 import com.google.inject.Inject;
-import commons.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import jakarta.ws.rs.NotFoundException;
 
-public class StartScreenCtrl implements LanguageSwitch, SceneController {
-    private final IEventCommunicator server;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneController {
 
     @FXML
     private Label createNewEventLabel;
@@ -36,50 +37,70 @@ public class StartScreenCtrl implements LanguageSwitch, SceneController {
 
     private final MainCtrl mainCtrl;
 
+    private final StartScreenMv startScreenMv;
+
     @Inject
-    public StartScreenCtrl(EventCommunicator server, MainCtrl mainCtrl) {
-        this.server = server;
+    public StartScreenCtrl(MainCtrl mainCtrl, StartScreenMv startScreenMv) {;
         this.mainCtrl = mainCtrl;
+        this.startScreenMv = startScreenMv;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initBinding();
+
+    }
+    public void initBinding(){
+        newEventField.textProperty().bindBidirectional(startScreenMv.newEventProperty());
+        joinEventField.textProperty().bindBidirectional(startScreenMv.joinEventProperty());
     }
 
     @Override
     public void setLanguage() {
         createNewEventLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Create-New-Event-label"));
+            "StartScreen.Create-New-Event-label"));
         joinEventLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Join-Event-label"
+            "StartScreen.Join-Event-label"
         ));
         recentlyViewedEventsLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Recently-Viewed-label"
+            "StartScreen.Recently-Viewed-label"
         ));
         createEventButton.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Create-Event-Button"
+            "StartScreen.Create-Event-Button"
         ));
         joinEventButton.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Join-Event-Button"
+            "StartScreen.Join-Event-Button"
         ));;
     }
 
     public void createEvent() {
-        String name = newEventField.getText();
-        if (name.isEmpty()) {
-            // We need to show this message in the GUI later
-            System.out.println("The name should not be empty");
-        } else {
-            Event event = new Event(name);
-            event = server.createEvent(event);
-            mainCtrl.showEventOverview(event);
+        try{
+            mainCtrl.showEventOverview(
+                startScreenMv.createEvent()
+            );
+        }catch (Exception e){
+            handleException(e);
         }
     }
 
     public void joinEvent() {
-        String inviteCode = joinEventField.getText();
         try {
-            Event event = server.getEventByInviteCode(inviteCode);
-            mainCtrl.showEventOverview(event);
-        } catch (NotFoundException e) {
-            // We need to show this message in the GUI later
-            System.out.println("The invite code is invalid");
+            mainCtrl.showEventOverview(
+                startScreenMv.joinEvent()
+            );
+        } catch (Exception e){
+            handleException(e);
         }
     }
+
+    void handleException(Exception e){
+        Popup.TYPE type = Popup.TYPE.ERROR;
+
+
+        String msg = mainCtrl.getTranslator().getTranslation(
+            "Popup." + e.getMessage()
+        );
+        (new Popup(msg, type)).show();
+    }
+
 }
