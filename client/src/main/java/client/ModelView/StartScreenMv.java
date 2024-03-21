@@ -9,6 +9,11 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+
+import java.security.PublicKey;
+
 
 public class StartScreenMv {
 
@@ -62,6 +67,20 @@ public class StartScreenMv {
             throw new ProcessingException("ServerOffline");
         }
 
+    }
+
+    public Event getRecentEvent(long id){
+        try {
+            return server.getEvent(id);
+        }catch (NotFoundException e){
+            throw new NotFoundException("CodeNotFound");
+        }catch (ProcessingException e){
+            throw new ProcessingException("ServerOffline");
+        }
+    }
+
+    public void deleteEvent(JoinableEvent eventt){
+        tracker.deleteEvent(eventt);
     }
 
     public StringProperty newEventProperty() {

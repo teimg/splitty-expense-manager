@@ -5,6 +5,7 @@ import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import com.google.inject.Inject;
+import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -43,8 +44,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
     @FXML
     private ListView<JoinableEvent> recentEventList;
 
-    private RecentEventTracker tracker;
-
     private final StartScreenMv startScreenMv;
 
 
@@ -66,39 +65,38 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
 
         @Override
         public void updateItem(JoinableEvent joinableEvent, boolean empty) {
-//            super.updateItem(joinableEvent, empty);
-//            if (empty) {
-//                setGraphic(null);
-//                return;
-//            }
-//            title.setText(joinableEvent.name());
-//            title.setOnAction(actionEvent -> {
-//                Event event = server.getEvent(joinableEvent.id());
-//                mainCtrl.showEventOverview(event);
-//            });
-//            deleteButton.setOnAction(actionEvent -> {
-//                tracker.deleteEvent(joinableEvent);
-//            });
-//            setGraphic(container);
+            super.updateItem(joinableEvent, empty);
+            if (empty) {
+                setGraphic(null);
+                return;
+            }
+            title.setText(joinableEvent.name());
+            title.setOnAction(actionEvent -> {
+                Event event = startScreenMv.getRecentEvent(joinableEvent.id());
+                mainCtrl.showEventOverview(event);
+            });
+            deleteButton.setOnAction(actionEvent -> {
+                startScreenMv.deleteEvent(joinableEvent);
+            });
+            setGraphic(container);
         }
     }
 
 
     @Inject
-    public StartScreenCtrl(MainCtrl mainCtrl, StartScreenMv startScreenMv,  RecentEventTracker tracker) {
+    public StartScreenCtrl(MainCtrl mainCtrl, StartScreenMv startScreenMv) {
         ;
         this.mainCtrl = mainCtrl;
         this.startScreenMv = startScreenMv;
-        this.tracker = tracker;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        recentEventList.setCellFactory(listView -> new JoinableEventListCell());
-        recentEventList.setItems(tracker.getEvents());
+        recentEventList.setCellFactory(listView -> new JoinableEventListCell());
         recentEventList.itemsProperty().bindBidirectional(startScreenMv.recentEventsProperty());
 
         initBinding();
+        startScreenMv.init();
 
 
     }
