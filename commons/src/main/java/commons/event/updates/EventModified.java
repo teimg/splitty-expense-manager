@@ -1,4 +1,4 @@
 package commons.event.updates;
 
-public class EventModified extends EventUpdate {
+public class EventModified extends EventChange {
 }
