@@ -21,6 +21,7 @@ import client.scenes.*;
 import client.utils.ClientConfiguration;
 import client.utils.EventCommunicator;
 import client.utils.IEventCommunicator;
+import client.utils.RecentEventTracker;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -43,13 +44,18 @@ public class MyModule implements Module {
         // Ensures all config reading/writing goes through a central ClientConfiguration class.
 //        binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
+
+        binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
+
         binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);
 
         binder.bind(IEventCommunicator.class).to(EventCommunicator.class).in(Scopes.SINGLETON);
         try {
-            binder.bind(StartScreenMv.class).toConstructor(StartScreenMv.class.getConstructor(IEventCommunicator.class)).in(Scopes.SINGLETON);
+            binder.bind(StartScreenMv.class).toConstructor(StartScreenMv.class.getConstructor(IEventCommunicator.class, RecentEventTracker.class)).in(Scopes.SINGLETON);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+
+        binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
     }
 }

@@ -29,7 +29,19 @@ public class Translator {
         if(keyToBeTranslated.startsWith("Popup.")){
             return getTranslationPopup(keyToBeTranslated);
         }
-        return this.resourceBundle.getString(keyToBeTranslated);
+        String translation;
+        try {
+            translation = this.resourceBundle.getString(keyToBeTranslated);
+        }
+        catch (MissingResourceException exception) {
+            try {
+                translation = this.resourceBundle.getString("Translation.error");
+            }
+            catch (MissingResourceException e) {
+                translation = "Template error";
+            }
+        }
+        return translation;
     }
 
     /**

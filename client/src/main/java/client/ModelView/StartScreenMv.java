@@ -1,27 +1,39 @@
 package client.ModelView;
 
 import client.utils.IEventCommunicator;
+import client.utils.JoinableEvent;
+import client.utils.RecentEventTracker;
 import commons.Event;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
+import javafx.collections.ObservableList;
 
 public class StartScreenMv {
 
-    private  IEventCommunicator server;
+    private final IEventCommunicator server;
+
+    private final RecentEventTracker tracker;
 
     private StringProperty newEvent;
 
     private StringProperty joinEvent;
 
+    private ObjectProperty<ObservableList<JoinableEvent>> recentEvents;
 
     @Inject
-    public StartScreenMv(IEventCommunicator server) {
+    public StartScreenMv(IEventCommunicator server, RecentEventTracker tracker) {
         this.server = server;
+        this.tracker = tracker;
+
+        recentEvents = new SimpleObjectProperty<>(new SimpleListProperty<>());
         newEvent =  new SimpleStringProperty("");
         joinEvent = new SimpleStringProperty("");
+    }
+
+    public void init(){
+        recentEvents.set(tracker.getEvents());
     }
 
     public Event createEvent() {
@@ -61,4 +73,8 @@ public class StartScreenMv {
         return joinEvent;
     }
 
+
+    public ObjectProperty<ObservableList<JoinableEvent>> recentEventsProperty() {
+        return recentEvents;
+    }
 }
