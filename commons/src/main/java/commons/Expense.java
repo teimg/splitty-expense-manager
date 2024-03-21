@@ -1,5 +1,7 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -10,6 +12,11 @@ import java.util.Objects;
  * The Expense class represents an expense record associated with an event.
  * It contains details about a specific purchase, the amount, the payer, and a list of debtors.
  */
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        scope = Expense.class
+)
 @Entity
 public class Expense {
     @Id
