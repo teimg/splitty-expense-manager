@@ -118,6 +118,8 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         frenchButton.setGraphic(createImageView("fr.png"));
         dutchButton.setGraphic(createImageView("nl.png"));
 
+        templateBtn.setGraphic(createImageView("template.png"));
+
         String lan = mainCtrl.getTranslator().getCurrentLanguage();
         initFlagLanguageMenu(lan);
 
