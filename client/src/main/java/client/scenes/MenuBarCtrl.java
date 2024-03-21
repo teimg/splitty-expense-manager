@@ -13,14 +13,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MenuBarCtrl implements LanguageSwitch, Initializable {
@@ -182,19 +180,19 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     @Override
     public void setLanguage() {
         languageMenu.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Language-Menu"));
+            "MenuBar.Language-Menu"));
         setSceneMenu.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.SetScene-Menu"));
+            "MenuBar.SetScene-Menu"));
         englishButton.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.English-Button"));
+            "MenuBar.English-Button"));
         dutchButton.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Dutch-Button"));
+            "MenuBar.Dutch-Button"));
         frenchButton.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.French-Button"));
+            "MenuBar.French-Button"));
         adminMenu.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Admin-Menu"));
+            "MenuBar.Admin-Menu"));
         adminLogIn.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Management-Button"));
+            "MenuBar.Management-Button"));
     }
 
     public void goToAdminLogIn(ActionEvent actionEvent) {
@@ -207,10 +205,11 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     private void persistTemplate(File saveLocation){
         // Could be moved to a ModelView class later
-         Path templateLocation = Paths.get(
+        Path templateLocation = Paths.get(
             "client", "src", "main", "resources", "languages", "template.properties");
         try {
-            Files.copy(templateLocation, saveLocation.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(templateLocation, saveLocation.toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             (new Popup("Could not save file", Popup.TYPE.ERROR)).show();
         }
