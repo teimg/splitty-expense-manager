@@ -22,9 +22,9 @@ public class DebtTest {
                 new BankAccount("NL12ABNA345678910", "HBUKGB4C"));
         this.participantThree = new Participant("Tester Lester",
                 new BankAccount("NL12ABNA345678910", "HBUKGB4C"));
-        this.debtOne = new Debt(participantOne, participantTwo, 100,false,"123","test");
-        this.debtTwo = new Debt(participantOne, participantTwo, 100,false,"123","test");
-        this.debtThree = new Debt(participantOne, participantThree, 100,false,"123","test");
+        this.debtOne = new Debt(participantOne, participantTwo, 100);
+        this.debtTwo = new Debt(participantOne, participantTwo, 100);
+        this.debtThree = new Debt(participantOne, participantThree, 100);
     }
 
     @Test
@@ -82,13 +82,12 @@ public class DebtTest {
     }
 
     private String buildExpectedToStringForDebt(Debt debt) {
-        return String.format("Debt{creditor=%s, debtor=%s, amount=%.1f, hasPaid=%b, summary='%s', description='%s'}",
+        return String.format("Debt{creditor=%s, debtor=%s, amount=%.1f, hasPaid=%b}",
                 buildParticipantToString(debt.getCreditor()),
                 buildParticipantToString(debt.getDebtor()),
                 debt.getAmount(),
                 debt.isHasPaid(),
-                debt.getSummary(),
-                debt.getDescription());
+                debt.getSummary());
     }
 
     private String buildParticipantToString(Participant participant) {

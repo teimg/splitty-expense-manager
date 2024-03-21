@@ -1,5 +1,7 @@
-package client.utils;
+package client.utils.communicators.implementations;
 
+import client.utils.ClientConfiguration;
+import client.utils.communicators.interfaces.IExpenseCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;

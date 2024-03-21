@@ -1,5 +1,7 @@
-package client.utils;
+package client.utils.communicators.implementations;
 
+import client.utils.ClientConfiguration;
+import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -7,7 +9,7 @@ import jakarta.ws.rs.client.Entity;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-public class EventCommunicator implements IEventCommunicator{
+public class EventCommunicator implements IEventCommunicator {
     private final String origin;
 
     @Inject
