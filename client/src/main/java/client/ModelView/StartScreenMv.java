@@ -1,8 +1,9 @@
 package client.ModelView;
 
-import client.utils.IEventCommunicator;
+
 import client.utils.JoinableEvent;
 import client.utils.RecentEventTracker;
+import client.utils.communicators.interfaces.IEventCommunicator;
 import commons.Event;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
