@@ -1,24 +1,21 @@
 package client.scenes;
 
+import client.ModelView.StartScreenMv;
+import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
-import client.utils.communicators.implementations.EventCommunicator;
-import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import jakarta.ws.rs.NotFoundException;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneController {
-    private final IEventCommunicator server;
 
     private final MainCtrl mainCtrl;
 
@@ -46,7 +43,8 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
     @FXML
     private ListView<JoinableEvent> recentEventList;
 
-    private RecentEventTracker tracker;
+    private final StartScreenMv startScreenMv;
+
 
     private class JoinableEventListCell extends ListCell<JoinableEvent> {
         private HBox container;
@@ -73,68 +71,86 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
             }
             title.setText(joinableEvent.name());
             title.setOnAction(actionEvent -> {
-                Event event = server.getEvent(joinableEvent.id());
+                Event event = startScreenMv.getRecentEvent(joinableEvent.id());
                 mainCtrl.showEventOverview(event);
             });
             deleteButton.setOnAction(actionEvent -> {
-                tracker.deleteEvent(joinableEvent);
+                startScreenMv.deleteEvent(joinableEvent);
             });
             setGraphic(container);
         }
     }
 
+
     @Inject
-    public StartScreenCtrl(EventCommunicator server, MainCtrl mainCtrl,
-                           RecentEventTracker tracker) {
-        this.server = server;
+    public StartScreenCtrl(MainCtrl mainCtrl, StartScreenMv startScreenMv) {
+        ;
         this.mainCtrl = mainCtrl;
-        this.tracker = tracker;
+        this.startScreenMv = startScreenMv;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         recentEventList.setCellFactory(listView -> new JoinableEventListCell());
-        recentEventList.setItems(tracker.getEvents());
+        recentEventList.itemsProperty().bindBidirectional(startScreenMv.recentEventsProperty());
+
+        initBinding();
+        startScreenMv.init();
+
+
+    }
+    public void initBinding(){
+        newEventField.textProperty().bindBidirectional(startScreenMv.newEventProperty());
+        joinEventField.textProperty().bindBidirectional(startScreenMv.joinEventProperty());
+
+
     }
 
     @Override
     public void setLanguage() {
         createNewEventLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Create-New-Event-label"));
+            "StartScreen.Create-New-Event-label"));
         joinEventLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Join-Event-label"
+            "StartScreen.Join-Event-label"
         ));
         recentlyViewedEventsLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Recently-Viewed-label"
+            "StartScreen.Recently-Viewed-label"
         ));
         createEventButton.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Create-Event-Button"
+            "StartScreen.Create-Event-Button"
         ));
         joinEventButton.setText(mainCtrl.getTranslator().getTranslation(
-                "StartScreen.Join-Event-Button"
+            "StartScreen.Join-Event-Button"
         ));;
     }
 
     public void createEvent() {
-        String name = newEventField.getText();
-        if (name.isEmpty()) {
-            // We need to show this message in the GUI later
-            System.out.println("The name should not be empty");
-        } else {
-            Event event = new Event(name);
-            event = server.createEvent(event);
-            mainCtrl.showEventOverview(event);
+        try{
+            mainCtrl.showEventOverview(
+                startScreenMv.createEvent()
+            );
+        }catch (Exception e){
+            handleException(e);
         }
     }
 
     public void joinEvent() {
-        String inviteCode = joinEventField.getText();
         try {
-            Event event = server.getEventByInviteCode(inviteCode);
-            mainCtrl.showEventOverview(event);
-        } catch (NotFoundException e) {
-            // We need to show this message in the GUI later
-            System.out.println("The invite code is invalid");
+            mainCtrl.showEventOverview(
+                startScreenMv.joinEvent()
+            );
+        } catch (Exception e){
+            handleException(e);
         }
     }
+
+    void handleException(Exception e){
+        Popup.TYPE type = Popup.TYPE.ERROR;
+
+        String msg = mainCtrl.getTranslator().getTranslation(
+            "Popup." + e.getMessage()
+        );
+        (new Popup(msg, type)).show();
+    }
+
 }

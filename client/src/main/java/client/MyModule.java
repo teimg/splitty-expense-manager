@@ -15,10 +15,12 @@
  */
 package client;
 
+import client.ModelView.StartScreenMv;
 import client.language.Translator;
 import client.scenes.*;
-import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
+import client.utils.communicators.implementations.EventCommunicator;
+import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -39,12 +41,23 @@ public class MyModule implements Module {
 
         binder.bind(MenuBarCtrl.class).in(Scopes.SINGLETON);
         // Ensures all config reading/writing goes through a central ClientConfiguration class.
-        binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
+//        binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
 
         binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
 
         binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);
+
+        binder.bind(IEventCommunicator.class).to(EventCommunicator.class).in(Scopes.SINGLETON);
+        try {
+            binder.bind(StartScreenMv.class).toConstructor(
+                StartScreenMv.class.getConstructor(
+                    IEventCommunicator.class, RecentEventTracker.class))
+                .in(Scopes.SINGLETON);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
         binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
     }
 }
