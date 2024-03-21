@@ -12,27 +12,18 @@ public class Debt {
 
     private boolean hasPaid;
 
-    private String summary;
-
-    private String description;
-
     /**
      * Constructor method for the Debt class
+     *
      * @param creditor Participant who is owed money
-     * @param debtor Participant who owes money
-     * @param amount Amount of money owed
-     * @param hasPaid Status of the debt being paid
-     * @param summary Brief summary of the debt
-     * @param description Detailed description of the debt
+     * @param debtor   Participant who owes money
+     * @param amount   Amount of money owed
      */
-    public Debt(Participant creditor, Participant debtor, double amount,
-                boolean hasPaid, String summary, String description) {
+    public Debt(Participant creditor, Participant debtor, double amount) {
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
-        this.hasPaid = hasPaid;
-        this.summary = summary;
-        this.description = description;
+        this.hasPaid = false;
     }
 
     /**
@@ -104,15 +95,7 @@ public class Debt {
      * @return summary of debt
      */
     public String getSummary() {
-        return summary;
-    }
-
-    /**
-     * setter method for summary
-     * @param summary debt summary
-     */
-    public void setSummary(String summary) {
-        this.summary = summary;
+        return "";
     }
 
     /**
@@ -120,17 +103,8 @@ public class Debt {
      * @return debt description
      */
     public String getDescription() {
-        return description;
+        return "";
     }
-
-    /**
-     * setter method for description
-     * @param description description of debt
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 
     /**
      * Standard equals method
@@ -141,13 +115,13 @@ public class Debt {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Debt debt = (Debt) o;
-        return Double.compare(debt.amount, amount) == 0 &&
-                hasPaid == debt.hasPaid &&
-                Objects.equals(creditor, debt.creditor) &&
-                Objects.equals(debtor, debt.debtor) &&
-                Objects.equals(summary, debt.summary) &&
-                Objects.equals(description, debt.description);
+
+        if (Double.compare(amount, debt.amount) != 0) return false;
+        if (hasPaid != debt.hasPaid) return false;
+        if (!Objects.equals(creditor, debt.creditor)) return false;
+        return Objects.equals(debtor, debt.debtor);
     }
 
     /**
@@ -156,7 +130,7 @@ public class Debt {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(creditor, debtor, amount, hasPaid, summary, description);
+        return Objects.hash(creditor, debtor, amount, hasPaid);
     }
 
     /**
@@ -170,8 +144,6 @@ public class Debt {
                 ", debtor=" + debtor +
                 ", amount=" + amount +
                 ", hasPaid=" + hasPaid +
-                ", summary='" + summary + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 }

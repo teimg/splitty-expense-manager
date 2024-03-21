@@ -1,8 +1,10 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.DebtsBuilder;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.Debt;
 import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,6 +53,7 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
     @FXML
     private Button abortButton;
 
+    private ArrayList<Debt> debts;
 
     private final MainCtrl mainCtrl;
 
@@ -84,8 +87,16 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
         }
     }
 
-    public void loadEvent(Event event){
+    public void loadInfo(Event event){
         this.event = event;
+        this.debts = new DebtsBuilder(event).getDebts();
+        updateAccordion();
+    }
+
+    private void updateAccordion() {
+
+        TitledPane pane1 = new TitledPane("Debts", new Label(debts.toString()));
+        accordionDebts.getPanes().add(pane1);
     }
 
     public void abortButtonPressed() {
@@ -96,9 +107,8 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
     }
 
     private void clearScene() {
-        //TODO clear all fields, lists, etc when quiting
+        // TODO clear all fields, lists, etc when quiting
     }
-
 
     @Override
     public void setLanguage() {

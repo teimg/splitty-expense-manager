@@ -22,9 +22,9 @@ public class DebtTest {
                 new BankAccount("NL12ABNA345678910", "HBUKGB4C"));
         this.participantThree = new Participant("Tester Lester",
                 new BankAccount("NL12ABNA345678910", "HBUKGB4C"));
-        this.debtOne = new Debt(participantOne, participantTwo, 100,false,"123","test");
-        this.debtTwo = new Debt(participantOne, participantTwo, 100,false,"123","test");
-        this.debtThree = new Debt(participantOne, participantThree, 100,false,"123","test");
+        this.debtOne = new Debt(participantOne, participantTwo, 100);
+        this.debtTwo = new Debt(participantOne, participantTwo, 100);
+        this.debtThree = new Debt(participantOne, participantThree, 100);
     }
 
     @Test
