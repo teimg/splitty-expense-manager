@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
@@ -9,8 +10,15 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 
 public class MenuBarCtrl implements LanguageSwitch, Initializable {
@@ -38,6 +46,9 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     @FXML
     private MenuItem frenchButton;
+
+    @FXML
+    private MenuItem templateBtn;
 
     @FXML
     private MenuItem quoteOverview;
@@ -105,6 +116,8 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         frenchButton.setGraphic(createImageView("fr.png"));
         dutchButton.setGraphic(createImageView("nl.png"));
 
+        templateBtn.setGraphic(createImageView("template.png"));
+
         String lan = mainCtrl.getTranslator().getCurrentLanguage();
         initFlagLanguageMenu(lan);
 
@@ -167,22 +180,48 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     @Override
     public void setLanguage() {
         languageMenu.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Language-Menu"));
+            "MenuBar.Language-Menu"));
         setSceneMenu.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.SetScene-Menu"));
+            "MenuBar.SetScene-Menu"));
         englishButton.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.English-Button"));
+            "MenuBar.English-Button"));
         dutchButton.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Dutch-Button"));
+            "MenuBar.Dutch-Button"));
         frenchButton.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.French-Button"));
+            "MenuBar.French-Button"));
         adminMenu.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Admin-Menu"));
+            "MenuBar.Admin-Menu"));
         adminLogIn.setText(mainCtrl.getTranslator().getTranslation(
-                "MenuBar.Management-Button"));
+            "MenuBar.Management-Button"));
     }
 
     public void goToAdminLogIn(ActionEvent actionEvent) {
         mainCtrl.showAdminLogIn();
+    }
+
+    public void downloadTemplateBtn(ActionEvent actionEvent) {
+        downloadTemplate();
+    }
+
+    private void persistTemplate(File saveLocation){
+        // Could be moved to a ModelView class later
+        Path templateLocation = Paths.get(
+            "client", "src", "main", "resources", "languages", "template.properties");
+        try {
+            Files.copy(templateLocation, saveLocation.toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            (new Popup("Could not save file", Popup.TYPE.ERROR)).show();
+        }
+    }
+
+    private void downloadTemplate() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save template");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Downloads"));
+        fileChooser.setInitialFileName("template.properties");
+        File saveLocation = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
+        persistTemplate(saveLocation);
+
     }
 }

@@ -235,6 +235,10 @@ public class MainCtrl {
         show("AdminScreen");
     }
 
+    public Stage getPrimaryStage(){
+        return primaryStage;
+    }
+
     public Translator getTranslator() {
         return translator;
     }
