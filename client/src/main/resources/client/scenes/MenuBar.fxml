@@ -5,7 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
+<MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
     <menus>
         <Menu fx:id="setSceneMenu" mnemonicParsing="false" text="Set Scene (Temporary)">
             <items>
@@ -24,6 +24,7 @@
                 <MenuItem fx:id="englishButton" mnemonicParsing="false" onAction="#setEnglish" text="English" />
                 <MenuItem fx:id="dutchButton" mnemonicParsing="false" onAction="#setDutch" text="Dutch" />
                 <MenuItem fx:id="frenchButton" mnemonicParsing="false" onAction="#setFrench" text="French" />
+            <MenuItem mnemonicParsing="false" text="Template" />
             </items>
         </Menu>
         <Menu fx:id="adminMenu" mnemonicParsing="false" text="Admin">
