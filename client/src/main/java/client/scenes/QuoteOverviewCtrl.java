@@ -22,7 +22,7 @@ import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 
-import client.utils.ServerUtils;
+import client.utils.communicators.implementations.ServerUtils;
 import commons.Quote;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

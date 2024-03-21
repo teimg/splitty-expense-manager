@@ -3,6 +3,8 @@ package client.scenes;
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
+import client.utils.communicators.implementations.ExpenseCommunicator;
+import client.utils.communicators.interfaces.IExpenseCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;

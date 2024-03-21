@@ -2,6 +2,8 @@ package client.scenes;
 
 import client.language.LanguageSwitch;
 import client.utils.*;
+import client.utils.communicators.implementations.EventCommunicator;
+import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;

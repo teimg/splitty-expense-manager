@@ -1,4 +1,4 @@
-package client.utils;
+package client.utils.communicators.interfaces;
 
 import commons.Event;
 import commons.Expense;
