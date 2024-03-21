@@ -95,15 +95,8 @@ public class Debt {
      * @return summary of debt
      */
     public String getSummary() {
-        return "";
-    }
-
-    /**
-     * getter method for description
-     * @return debt description
-     */
-    public String getDescription() {
-        return "";
+        return debtor.getName() + " owes " + amount + "$ to "
+                + creditor.getName();
     }
 
     /**

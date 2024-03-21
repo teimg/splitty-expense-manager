@@ -82,13 +82,12 @@ public class DebtTest {
     }
 
     private String buildExpectedToStringForDebt(Debt debt) {
-        return String.format("Debt{creditor=%s, debtor=%s, amount=%.1f, hasPaid=%b, summary='%s', description='%s'}",
+        return String.format("Debt{creditor=%s, debtor=%s, amount=%.1f, hasPaid=%b}",
                 buildParticipantToString(debt.getCreditor()),
                 buildParticipantToString(debt.getDebtor()),
                 debt.getAmount(),
                 debt.isHasPaid(),
-                debt.getSummary(),
-                debt.getDescription());
+                debt.getSummary());
     }
 
     private String buildParticipantToString(Participant participant) {

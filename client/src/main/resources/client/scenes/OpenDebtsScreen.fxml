@@ -8,32 +8,30 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OpenDebtsCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OpenDebtsCtrl">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
             <HBox maxHeight="100.0" VBox.vgrow="ALWAYS" />
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abortButtonPressed" text="Go Back" />
-                     </children></HBox>
+                  <HBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS" />
                   <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
                      <children>
                         <AnchorPane prefHeight="374.0" prefWidth="600.0">
                            <children>
-                              <Label fx:id="noDebtMessage" layoutX="67.0" layoutY="81.0" prefHeight="28.0" prefWidth="325.0" text="There are currently no open debts. Way to go!">
+                              <Label fx:id="noDebtMessage" layoutX="17.0" layoutY="68.0" prefHeight="28.0" prefWidth="325.0" text="There are currently no open debts. Way to go!">
                                  <font>
                                     <Font name="Arial Bold" size="13.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="titleLabel" layoutX="67.0" layoutY="52.0" text="Open Debts">
+                              <Label fx:id="titleLabel" layoutX="17.0" layoutY="39.0" text="Open Debts">
                                  <font>
                                     <Font name="Al Bayan Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Accordion fx:id="accordionDebts" layoutX="67.0" layoutY="107.0" prefHeight="230.0" prefWidth="278.0" AnchorPane.bottomAnchor="45.0" AnchorPane.topAnchor="95.0" />
+                              <Accordion fx:id="accordionDebts" layoutX="17.0" layoutY="83.0" prefHeight="237.0" prefWidth="416.0" AnchorPane.bottomAnchor="50.0" AnchorPane.topAnchor="83.0" />
+                              <Button fx:id="abortButton" layoutX="17.0" layoutY="337.0" mnemonicParsing="false" onAction="#abortButtonPressed" text="Go Back" />
                            </children>
                         </AnchorPane>
                      </children>

@@ -7,15 +7,14 @@ import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneController {
+public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
+
+
 
     private static class DebtEntry {
 
@@ -55,6 +54,8 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
 
     private ArrayList<Debt> debts;
 
+    private ArrayList<TitledPane> panes;
+
     private final MainCtrl mainCtrl;
 
     private Event event;
@@ -64,39 +65,16 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
         this.mainCtrl = mainCtrl;
     }
 
-    /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *                  the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        noDebtMessage.setVisible(false);
-        debtList = new ArrayList<>();
-
-        /**
-         * HERE WE NEED TO ADD PROCESS OF CREATING DEBT ENTRIES AND FILLING IN THE ACCORDION
-         */
-
-        if (debtList.isEmpty()) {
-            noDebtMessage.setVisible(true);
-        }
-    }
-
     public void loadInfo(Event event){
         this.event = event;
         this.debts = new DebtsBuilder(event).getDebts();
+        noDebtMessage.setVisible(debts.isEmpty());
+        this.panes = new DebtsBuilder(event).getPanes();
         updateAccordion();
     }
 
     private void updateAccordion() {
-
-        TitledPane pane1 = new TitledPane("Debts", new Label(debts.toString()));
-        accordionDebts.getPanes().add(pane1);
+        accordionDebts.getPanes().addAll(panes);
     }
 
     public void abortButtonPressed() {
