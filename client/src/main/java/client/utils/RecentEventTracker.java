@@ -20,6 +20,7 @@ public class RecentEventTracker {
     /**
      * Should be created in singleton scope with DI.
      */
+    @SuppressWarnings("unchecked")
     public RecentEventTracker() {
         if (Files.isRegularFile(location)) {
             try (FileInputStream in = new FileInputStream(location.toString())) {

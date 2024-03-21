@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package client.utils;
+package client.utils.communicators.implementations;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import client.utils.ClientConfiguration;
 import com.google.inject.Inject;
 import org.glassfish.jersey.client.ClientConfig;
 

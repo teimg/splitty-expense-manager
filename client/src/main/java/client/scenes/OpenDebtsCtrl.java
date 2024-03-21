@@ -1,40 +1,16 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.utils.DebtsBuilder;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.Debt;
 import commons.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
-public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneController {
-
-    private static class DebtEntry {
-
-        @FXML
-        private TitledPane titledPane;
-
-        @FXML
-        private Button markRecievedButton;
-
-        @FXML
-        private Optional<Label> bankingInfo;
-
-        @FXML
-        private Optional<Button> sendEmailButton;
-
-        /**
-         * Constructor, current empty.
-         */
-        public DebtEntry() {}
-
-    }
+public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private Label titleLabel;
@@ -46,11 +22,11 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
     private Accordion accordionDebts;
 
     @FXML
-    private ArrayList<DebtEntry> debtList;
-
-    @FXML
     private Button abortButton;
 
+    private ArrayList<Debt> debts;
+
+    private ArrayList<TitledPane> panes;
 
     private final MainCtrl mainCtrl;
 
@@ -61,31 +37,17 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
         this.mainCtrl = mainCtrl;
     }
 
-    /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *                  the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        noDebtMessage.setVisible(false);
-        debtList = new ArrayList<>();
-
-        /**
-         * HERE WE NEED TO ADD PROCESS OF CREATING DEBT ENTRIES AND FILLING IN THE ACCORDION
-         */
-
-        if (debtList.isEmpty()) {
-            noDebtMessage.setVisible(true);
-        }
+    public void loadInfo(Event event){
+        this.event = event;
+        this.debts = new DebtsBuilder(event).getDebts();
+        noDebtMessage.setVisible(debts.isEmpty());
+        this.panes = new DebtsBuilder(event).getPanes();
+        updateAccordion();
     }
 
-    public void loadEvent(Event event){
-        this.event = event;
+    private void updateAccordion() {
+        accordionDebts.getPanes().clear();
+        accordionDebts.getPanes().addAll(panes);
     }
 
     public void abortButtonPressed() {
@@ -96,9 +58,8 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
     }
 
     private void clearScene() {
-        //TODO clear all fields, lists, etc when quiting
+        // TODO clear all fields, lists, etc when quiting
     }
-
 
     @Override
     public void setLanguage() {
@@ -109,25 +70,6 @@ public class OpenDebtsCtrl implements Initializable, LanguageSwitch, SceneContro
         abortButton.setText(mainCtrl.getTranslator().getTranslation(
             "OpenDebts.Abort-button"
         ));
-    }
-
-    /**
-     * Handling button events of the mark received functionality.
-     * Will remove it from the open debts.
-     * @param debtNumber - int to gauge which debt we are modifying.
-     */
-    public void handleReceivedButton(int debtNumber) {
-
-        debtList.remove(debtNumber - 1);
-
-        /**
-         * HERE WE WILL ADD THE PROCESSING OF REMOVING THE ENTRY FROM THE LIST
-         * ALSO WILL CALL BACKEND TO REMOVE IT AS AN OPEN DEBT (PAID)
-         */
-
-        if (debtList.isEmpty()) {
-            noDebtMessage.setVisible(true);
-        }
     }
 
 }

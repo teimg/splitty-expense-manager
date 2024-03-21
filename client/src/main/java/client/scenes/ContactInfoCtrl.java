@@ -2,6 +2,10 @@ package client.scenes;
 
 import client.language.LanguageSwitch;
 import client.utils.*;
+import client.utils.communicators.implementations.EventCommunicator;
+import client.utils.communicators.interfaces.IEventCommunicator;
+import client.utils.communicators.interfaces.IParticipantCommunicator;
+import client.utils.communicators.implementations.ParticipantCommunicator;
 import com.google.inject.Inject;
 import commons.BankAccount;
 import commons.Event;

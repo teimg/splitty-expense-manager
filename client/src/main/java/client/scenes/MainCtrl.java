@@ -191,7 +191,7 @@ public class MainCtrl {
 
     public void showOpenDebts(Event event) {
         show("OpenDebts");
-        ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadEvent(event);
+        ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadInfo(event);
 
     }
 
