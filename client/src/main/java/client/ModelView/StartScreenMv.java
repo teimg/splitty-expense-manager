@@ -9,11 +9,6 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-
-import java.security.PublicKey;
-
 
 public class StartScreenMv {
 

@@ -18,7 +18,6 @@ package client;
 import client.ModelView.StartScreenMv;
 import client.language.Translator;
 import client.scenes.*;
-import client.utils.ClientConfiguration;
 import client.utils.EventCommunicator;
 import client.utils.IEventCommunicator;
 import client.utils.RecentEventTracker;
@@ -51,7 +50,10 @@ public class MyModule implements Module {
 
         binder.bind(IEventCommunicator.class).to(EventCommunicator.class).in(Scopes.SINGLETON);
         try {
-            binder.bind(StartScreenMv.class).toConstructor(StartScreenMv.class.getConstructor(IEventCommunicator.class, RecentEventTracker.class)).in(Scopes.SINGLETON);
+            binder.bind(StartScreenMv.class).toConstructor(
+                StartScreenMv.class.getConstructor(
+                    IEventCommunicator.class, RecentEventTracker.class))
+                .in(Scopes.SINGLETON);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

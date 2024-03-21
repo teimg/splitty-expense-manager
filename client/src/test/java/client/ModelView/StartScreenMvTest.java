@@ -1,6 +1,7 @@
 package client.ModelView;
 
 import client.utils.IEventCommunicator;
+import client.utils.RecentEventTracker;
 import commons.Event;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
@@ -54,7 +55,7 @@ class StartScreenMvTest {
             }
         };
 
-        startScreenMv = new StartScreenMv(eventCommunicator);
+        startScreenMv = new StartScreenMv(eventCommunicator, new RecentEventTracker());
 
 
     }
@@ -93,7 +94,7 @@ class StartScreenMvTest {
             }
         };
 
-        startScreenMv = new StartScreenMv(eventCommunicator);
+        startScreenMv = new StartScreenMv(eventCommunicator, new RecentEventTracker());
 
         assertThrows(ProcessingException.class, () ->{
             startScreenMv.joinEventProperty().setValue("Not empty");

@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import client.ModelView.StartScreenMv;
 import client.scenes.*;
 import com.google.inject.Injector;
 

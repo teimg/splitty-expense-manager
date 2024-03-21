@@ -5,8 +5,6 @@ import commons.Event;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 
-import java.util.Arrays;
-
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventCommunicator implements IEventCommunicator{
