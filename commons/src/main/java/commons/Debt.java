@@ -95,8 +95,8 @@ public class Debt {
      * @return summary of debt
      */
     public String getSummary() {
-        return debtor.getName() + " owes " + amount + "$ to "
-                + creditor.getName();
+        return debtor.getName() + " owes " + (Math.round(amount * 100.0) / 100.0)
+                + "$ to " + creditor.getName();
     }
 
     /**
