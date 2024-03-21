@@ -8,34 +8,9 @@ import commons.Debt;
 import commons.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
-
-
-
-    private static class DebtEntry {
-
-        @FXML
-        private TitledPane titledPane;
-
-        @FXML
-        private Button markRecievedButton;
-
-        @FXML
-        private Optional<Label> bankingInfo;
-
-        @FXML
-        private Optional<Button> sendEmailButton;
-
-        /**
-         * Constructor, current empty.
-         */
-        public DebtEntry() {}
-
-    }
 
     @FXML
     private Label titleLabel;
@@ -45,9 +20,6 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private Accordion accordionDebts;
-
-    @FXML
-    private ArrayList<DebtEntry> debtList;
 
     @FXML
     private Button abortButton;
@@ -74,6 +46,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     }
 
     private void updateAccordion() {
+        accordionDebts.getPanes().clear();
         accordionDebts.getPanes().addAll(panes);
     }
 
@@ -97,25 +70,6 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         abortButton.setText(mainCtrl.getTranslator().getTranslation(
             "OpenDebts.Abort-button"
         ));
-    }
-
-    /**
-     * Handling button events of the mark received functionality.
-     * Will remove it from the open debts.
-     * @param debtNumber - int to gauge which debt we are modifying.
-     */
-    public void handleReceivedButton(int debtNumber) {
-
-        debtList.remove(debtNumber - 1);
-
-        /**
-         * HERE WE WILL ADD THE PROCESSING OF REMOVING THE ENTRY FROM THE LIST
-         * ALSO WILL CALL BACKEND TO REMOVE IT AS AN OPEN DEBT (PAID)
-         */
-
-        if (debtList.isEmpty()) {
-            noDebtMessage.setVisible(true);
-        }
     }
 
 }

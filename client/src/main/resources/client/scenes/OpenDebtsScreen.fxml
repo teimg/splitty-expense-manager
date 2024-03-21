@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -25,13 +27,25 @@
                                     <Font name="Arial Bold" size="13.0" />
                                  </font>
                               </Label>
+                              <VBox layoutX="17.0" layoutY="74.0" prefHeight="283.0" prefWidth="411.0">
+                                 <children>
+                                    <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                       <content>
+                                          <Accordion fx:id="accordionDebts" prefWidth="409.0" />
+                                       </content>
+                                    </ScrollPane>
+                                    <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abortButtonPressed" text="Go Back">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                              </VBox>
                               <Label fx:id="titleLabel" layoutX="17.0" layoutY="39.0" text="Open Debts">
                                  <font>
                                     <Font name="Al Bayan Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Accordion fx:id="accordionDebts" layoutX="17.0" layoutY="83.0" prefHeight="237.0" prefWidth="416.0" AnchorPane.bottomAnchor="50.0" AnchorPane.topAnchor="83.0" />
-                              <Button fx:id="abortButton" layoutX="17.0" layoutY="337.0" mnemonicParsing="false" onAction="#abortButtonPressed" text="Go Back" />
                            </children>
                         </AnchorPane>
                      </children>
