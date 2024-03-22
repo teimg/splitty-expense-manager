@@ -8,6 +8,7 @@ import commons.Event;
 import commons.Participant;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 
@@ -20,10 +21,10 @@ public class ContactInfoMv {
 
     private final IParticipantCommunicator participantServer;
 
-    private StringProperty email;
-    private StringProperty bic;
-    private StringProperty iban;
-    private StringProperty name;
+    private final StringProperty email;
+    private final StringProperty bic;
+    private final StringProperty iban;
+    private final StringProperty name;
 
     private Event event;
     private Participant participant;
@@ -34,6 +35,12 @@ public class ContactInfoMv {
                          IParticipantCommunicator participantCommunicator) {
         this.eventServer = eventCommunicator;
         this.participantServer = participantCommunicator;
+
+        email =  new SimpleStringProperty("");
+        bic = new SimpleStringProperty("");
+        name = new SimpleStringProperty("");
+        iban = new SimpleStringProperty("");
+
     }
 
     public String getEventInviteCode() {
@@ -79,8 +86,6 @@ public class ContactInfoMv {
             bic.setValue(participant.getBankAccount().getBic());
         }
     }
-
-
 
 
     public void createParticipant(Event event, String name, String email, BankAccount bankAccount) {
@@ -150,7 +155,6 @@ public class ContactInfoMv {
     public Event getCurrentEvent() {
         return this.event;
     }
-
 
     public StringProperty emailProperty() {
         return email;

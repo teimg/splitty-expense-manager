@@ -53,13 +53,6 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
 
     private final MainCtrl mainCtrl;
 
-//    private final IParticipantCommunicator participantServer;
-
-//    private final IEventCommunicator eventServer;
-
-//    private Event event;
-
-//    private Participant participant;
 
     private final ContactInfoMv contactInfoMv;
 
