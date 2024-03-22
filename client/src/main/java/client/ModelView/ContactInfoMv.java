@@ -6,6 +6,8 @@ import com.google.inject.Inject;
 import commons.BankAccount;
 import commons.Event;
 import commons.Participant;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.ProcessingException;
 
 public class ContactInfoMv {
 
@@ -21,14 +23,30 @@ public class ContactInfoMv {
     }
 
     public Event getEventByInviteCode(String inviteCode) {
-        return eventServer.getEventByInviteCode(inviteCode);
+        try {
+            return eventServer.getEventByInviteCode(inviteCode);
+        } catch (ProcessingException e) {
+            throw new ProcessingException("ServerOffLine");
+        }
     }
 
     public void createParticipant(Event event, String name, String email, BankAccount bankAccount) {
-        participantServer.createParticipant(event, name, email, bankAccount);
+        try {
+            participantServer.createParticipant(event, name, email, bankAccount);
+        }catch (jakarta.ws.rs.NotFoundException e) {
+            throw new NotFoundException("CodeNotFound");
+        }catch (ProcessingException e) {
+            throw new ProcessingException("ServerOffline");
+        }
     }
 
     public void updateParticipant(Participant participant) {
-        participantServer.updateParticipant(participant);
+        try {
+            participantServer.updateParticipant(participant);
+        }catch (jakarta.ws.rs.NotFoundException e) {
+            throw new NotFoundException("CodeNotFound");
+        }catch (ProcessingException e) {
+            throw new ProcessingException("ServerOffline");
+        }
     }
 }
