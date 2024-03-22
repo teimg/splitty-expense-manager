@@ -3,10 +3,6 @@ package client.scenes;
 import client.ModelView.ContactInfoMv;
 import client.language.LanguageSwitch;
 import client.utils.*;
-import client.utils.communicators.implementations.EventCommunicator;
-import client.utils.communicators.interfaces.IEventCommunicator;
-import client.utils.communicators.interfaces.IParticipantCommunicator;
-import client.utils.communicators.implementations.ParticipantCommunicator;
 import com.google.inject.Inject;
 import commons.BankAccount;
 import commons.Event;
@@ -17,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -163,48 +158,20 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     }
 
     public void addButtonPressed(ActionEvent event) {
-//        if (!validInput()) {
-//            System.out.println("Error");
-//            return;
-//        }
-//        if (participant == null) {
-//            BankAccount bankAccount = (!ibanField.getText().isEmpty()
-//                    && !bicField.getText().isEmpty())
-//                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
-//            participantServer.createParticipant(
-//                    this.event,
-//                    nameField.getText(),
-//                    emailField.getText(),
-//                    bankAccount);
-//        }
-//        else {
-//            participant.setName(nameField.getText());
-//            participant.setEmail(emailField.getText());
-//            BankAccount bankAccount = (!ibanField.getText().isEmpty()
-//                    && !bicField.getText().isEmpty())
-//                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
-//            participant.setBankAccount(bankAccount);
-//            // TODO: decipher why an exception is thrown here
-//            try {
-//                participantServer.updateParticipant(participant);
-//            }
-//            catch (Exception e) {
-//                System.out.println(Arrays.toString(e.getStackTrace()));
-//            }
-//        }
-//        quitScene();
-
         if (!validInput()) {
             System.out.println("Error");
             return;
         }
 
-        Event currentEvent = getCurrentEvent(); // Obtain the current event from your controller or other sources
+        Event currentEvent = getCurrentEvent();
 
         if (participant == null) {
-            BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
-                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
-            contactInfoMv.createParticipant(currentEvent, nameField.getText(), emailField.getText(), bankAccount);
+            BankAccount bankAccount = (!ibanField.getText().isEmpty()
+                        && !bicField.getText().isEmpty())
+                    ? new BankAccount(ibanField.getText(),
+                        bicField.getText()) : null;
+            contactInfoMv.createParticipant(currentEvent,
+                        nameField.getText(), emailField.getText(), bankAccount);
         } else {
             participant.setName(nameField.getText());
             participant.setEmail(emailField.getText());

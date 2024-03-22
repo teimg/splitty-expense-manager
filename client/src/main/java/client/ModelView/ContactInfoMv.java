@@ -9,12 +9,13 @@ import commons.Participant;
 
 public class ContactInfoMv {
 
-    IEventCommunicator eventServer;
+    private final IEventCommunicator eventServer;
 
-    IParticipantCommunicator participantServer;
+    private final IParticipantCommunicator participantServer;
 
     @Inject
-    public ContactInfoMv(IEventCommunicator eventCommunicator, IParticipantCommunicator participantCommunicator) {
+    public ContactInfoMv(IEventCommunicator eventCommunicator,
+                         IParticipantCommunicator participantCommunicator) {
         this.eventServer = eventCommunicator;
         this.participantServer = participantCommunicator;
     }
