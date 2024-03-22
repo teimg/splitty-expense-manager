@@ -8,12 +8,21 @@ import commons.Event;
 import commons.Participant;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
+import javafx.beans.property.StringProperty;
 
 public class ContactInfoMv {
 
     private final IEventCommunicator eventServer;
 
     private final IParticipantCommunicator participantServer;
+
+    private StringProperty email;
+
+    private StringProperty bic;
+
+    private StringProperty iban;
+
+    private StringProperty name;
 
     @Inject
     public ContactInfoMv(IEventCommunicator eventCommunicator,
@@ -48,5 +57,21 @@ public class ContactInfoMv {
         }catch (ProcessingException e) {
             throw new ProcessingException("ServerOffline");
         }
+    }
+
+    public StringProperty emailProperty() {
+        return email;
+    }
+
+    public StringProperty nameProperty() {
+        return name;
+    }
+
+    public StringProperty bicProperty() {
+        return bic;
+    }
+
+    public StringProperty ibanProperty() {
+        return iban;
     }
 }

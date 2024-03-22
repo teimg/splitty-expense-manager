@@ -9,14 +9,17 @@ import commons.Event;
 import commons.Participant;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ContactInfoCtrl implements LanguageSwitch, SceneController {
+public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initializable {
 
     @FXML
     private Label titleLabel;
@@ -63,14 +66,10 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
 
     private final ContactInfoMv contactInfoMv;
 
-//    @Inject
-//    public ContactInfoCtrl (MainCtrl mainCtrl, ParticipantCommunicator participantCommunicator,
-//                            EventCommunicator eventCommunicator) {
-//        this.mainCtrl = mainCtrl;
-//        this.participantServer = participantCommunicator;
-//        this.eventServer = eventCommunicator;
-//    }
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initBindings();
+    }
     @Inject
     public ContactInfoCtrl(MainCtrl mainCtrl, ContactInfoMv contactInfoMv) {
         this.mainCtrl = mainCtrl;
@@ -118,9 +117,6 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     }
 
     public void quitScene(){
-//        String res = this.event.getInviteCode();
-//        clearScene();
-//        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(res));
         String inviteCode = this.event.getInviteCode();
         Event newEvent = contactInfoMv.getEventByInviteCode(inviteCode);
         clearScene();
@@ -166,26 +162,33 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
         Event currentEvent = getCurrentEvent();
 
         if (participant == null) {
-            BankAccount bankAccount = (!ibanField.getText().isEmpty()
-                        && !bicField.getText().isEmpty())
-                    ? new BankAccount(ibanField.getText(),
-                        bicField.getText()) : null;
+            BankAccount bankAccount = (!contactInfoMv.ibanProperty().isEmpty().get()
+                    && !contactInfoMv.bicProperty().isEmpty().get())
+                    ? new BankAccount(contactInfoMv.ibanProperty().get(),
+                    contactInfoMv.bicProperty().get()) : null;
             contactInfoMv.createParticipant(currentEvent,
-                        nameField.getText(), emailField.getText(), bankAccount);
+                    contactInfoMv.nameProperty().get(),
+                    contactInfoMv.emailProperty().get(), bankAccount);
         } else {
-            participant.setName(nameField.getText());
-            participant.setEmail(emailField.getText());
-            BankAccount bankAccount = (!ibanField.getText().isEmpty()
-                    && !bicField.getText().isEmpty())
-                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+            participant.setName(contactInfoMv.nameProperty().get());
+            participant.setEmail(contactInfoMv.emailProperty().get());
+            BankAccount bankAccount = (!contactInfoMv.ibanProperty().isEmpty().get()
+                    && !contactInfoMv.bicProperty().isEmpty().get())
+                    ? new BankAccount(contactInfoMv.ibanProperty().get(),
+                    contactInfoMv.bicProperty().get()) : null;
             participant.setBankAccount(bankAccount);
             contactInfoMv.updateParticipant(participant);
         }
-        quitScene();
-    }
+        quitScene();    }
 
     private Event getCurrentEvent() {
         return this.event;
     }
 
+    private void initBindings() {
+        nameField.textProperty().bindBidirectional(contactInfoMv.nameProperty());
+        emailField.textProperty().bindBidirectional(contactInfoMv.emailProperty());
+        ibanField.textProperty().bindBidirectional(contactInfoMv.ibanProperty());
+        bicField.textProperty().bindBidirectional(contactInfoMv.bicProperty());
+    }
 }
