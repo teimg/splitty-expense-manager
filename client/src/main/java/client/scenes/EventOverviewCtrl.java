@@ -28,7 +28,6 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
 
-// TODO: parametrize the 'you' Participant?
 public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
 
     private final IEventCommunicator eventCommunicator;
@@ -39,7 +38,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
     private Participant selectedPayer;
 
-    private static class ExpenseCellFactory
+    private class ExpenseCellFactory
             implements Callback<ListView<Expense>, ListCell<Expense>> {
         /**
          * Should return a new ListCell usable in the expense ListView.
@@ -63,7 +62,24 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                         setText(null);
                         return;
                     }
-                    setText(expense.description());
+                    setText(expenseDescription(expense));
+                }
+
+                private String expenseDescription(Expense expense) {
+                    StringBuilder desc = new StringBuilder(expense.getDate().toString() + "    "
+                            + expense.getPayer().getName() + " " + mainCtrl.getTranslator()
+                            .getTranslation("EventOverview.ExpenseLabel-paid")
+                            + " " + expense.getAmount() + "$ " + mainCtrl.getTranslator()
+                            .getTranslation("EventOverview.ExpenseLabel-for") +
+                            " " + expense.getPurchase() + "\n");
+                    desc.append(" ".repeat(32));
+                    desc.append(mainCtrl.getTranslator()
+                            .getTranslation("EventOverview.ExpenseLabel-debtors"));
+                    for (int i = 0; i < expense.getDebtors().size() - 1; i++) {
+                        desc.append(expense.getDebtors().get(i).getName()).append(", ");
+                    }
+                    desc.append(expense.getDebtors().get(expense.getDebtors().size()-1).getName());
+                    return desc.toString();
                 }
             };
         }
@@ -168,6 +184,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 "EventOverview.EditParticipant-Button"));
         openDebtBtn.setText(mainCtrl.getTranslator().getTranslation(
             "EventOverview.OpenDebt-Button"));
+        loadEvent(event);
     }
 
     /**
