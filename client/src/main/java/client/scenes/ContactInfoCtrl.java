@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.ModelView.ContactInfoMv;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import client.utils.communicators.implementations.EventCommunicator;
@@ -57,20 +58,28 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
 
     private final MainCtrl mainCtrl;
 
-    private final IParticipantCommunicator participantServer;
+//    private final IParticipantCommunicator participantServer;
 
-    private final IEventCommunicator eventServer;
+//    private final IEventCommunicator eventServer;
 
     private Event event;
 
     private Participant participant;
 
+    private final ContactInfoMv contactInfoMv;
+
+//    @Inject
+//    public ContactInfoCtrl (MainCtrl mainCtrl, ParticipantCommunicator participantCommunicator,
+//                            EventCommunicator eventCommunicator) {
+//        this.mainCtrl = mainCtrl;
+//        this.participantServer = participantCommunicator;
+//        this.eventServer = eventCommunicator;
+//    }
+
     @Inject
-    public ContactInfoCtrl (MainCtrl mainCtrl, ParticipantCommunicator participantCommunicator,
-                            EventCommunicator eventCommunicator) {
+    public ContactInfoCtrl(MainCtrl mainCtrl, ContactInfoMv contactInfoMv) {
         this.mainCtrl = mainCtrl;
-        this.participantServer = participantCommunicator;
-        this.eventServer = eventCommunicator;
+        this.contactInfoMv = contactInfoMv;
     }
 
     @Override
@@ -114,9 +123,14 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     }
 
     public void quitScene(){
-        String res = this.event.getInviteCode();
+//        String res = this.event.getInviteCode();
+//        clearScene();
+//        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(res));
+        String inviteCode = this.event.getInviteCode();
+        Event newEvent = contactInfoMv.getEventByInviteCode(inviteCode);
         clearScene();
-        mainCtrl.showEventOverview(eventServer.getEventByInviteCode(res));
+        mainCtrl.showEventOverview(newEvent);
+
     }
 
     private void fillInFields() {
@@ -149,36 +163,62 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController {
     }
 
     public void addButtonPressed(ActionEvent event) {
+//        if (!validInput()) {
+//            System.out.println("Error");
+//            return;
+//        }
+//        if (participant == null) {
+//            BankAccount bankAccount = (!ibanField.getText().isEmpty()
+//                    && !bicField.getText().isEmpty())
+//                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+//            participantServer.createParticipant(
+//                    this.event,
+//                    nameField.getText(),
+//                    emailField.getText(),
+//                    bankAccount);
+//        }
+//        else {
+//            participant.setName(nameField.getText());
+//            participant.setEmail(emailField.getText());
+//            BankAccount bankAccount = (!ibanField.getText().isEmpty()
+//                    && !bicField.getText().isEmpty())
+//                    ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
+//            participant.setBankAccount(bankAccount);
+//            // TODO: decipher why an exception is thrown here
+//            try {
+//                participantServer.updateParticipant(participant);
+//            }
+//            catch (Exception e) {
+//                System.out.println(Arrays.toString(e.getStackTrace()));
+//            }
+//        }
+//        quitScene();
+
         if (!validInput()) {
             System.out.println("Error");
             return;
         }
+
+        Event currentEvent = getCurrentEvent(); // Obtain the current event from your controller or other sources
+
         if (participant == null) {
-            BankAccount bankAccount = (!ibanField.getText().isEmpty()
-                    && !bicField.getText().isEmpty())
+            BankAccount bankAccount = (!ibanField.getText().isEmpty() && !bicField.getText().isEmpty())
                     ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
-            participantServer.createParticipant(
-                    this.event,
-                    nameField.getText(),
-                    emailField.getText(),
-                    bankAccount);
-        }
-        else {
+            contactInfoMv.createParticipant(currentEvent, nameField.getText(), emailField.getText(), bankAccount);
+        } else {
             participant.setName(nameField.getText());
             participant.setEmail(emailField.getText());
             BankAccount bankAccount = (!ibanField.getText().isEmpty()
                     && !bicField.getText().isEmpty())
                     ? new BankAccount(ibanField.getText(), bicField.getText()) : null;
             participant.setBankAccount(bankAccount);
-            // TODO: decipher why an exception is thrown here
-            try {
-                participantServer.updateParticipant(participant);
-            }
-            catch (Exception e) {
-                System.out.println(Arrays.toString(e.getStackTrace()));
-            }
+            contactInfoMv.updateParticipant(participant);
         }
         quitScene();
+    }
+
+    private Event getCurrentEvent() {
+        return this.event;
     }
 
 }
