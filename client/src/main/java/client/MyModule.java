@@ -21,6 +21,7 @@ import client.language.Translator;
 import client.scenes.*;
 import client.utils.RecentEventTracker;
 import client.utils.communicators.implementations.EventCommunicator;
+import client.utils.communicators.implementations.ParticipantCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import com.google.inject.Binder;
@@ -39,8 +40,8 @@ public class MyModule implements Module {
         binder.bind(OpenDebtsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StatisticsScreenCtrl.class).in(Scopes.SINGLETON);
-//        binder.bind(ContactInfoCtrl.class).in(Scopes.SINGLETON);
 
+        binder.bind(IParticipantCommunicator.class).to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
         try {
             binder.bind(ContactInfoMv.class).toConstructor(
                             ContactInfoMv.class.getConstructor(

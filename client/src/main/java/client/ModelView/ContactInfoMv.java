@@ -127,7 +127,7 @@ public class ContactInfoMv {
     public void addButtonPressed(ActionEvent event) {
         if (!validInput()) {
             System.out.println("Error");
-            return;
+            throw new IllegalArgumentException("Error");
         }
 
         Event currentEvent = getCurrentEvent();

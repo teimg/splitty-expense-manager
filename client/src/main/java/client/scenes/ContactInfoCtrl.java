@@ -108,8 +108,12 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
     }
 
     public void addButtonPressed(ActionEvent event) {
-        contactInfoMv.addButtonPressed(event);
-        quitScene();
+        try {
+            contactInfoMv.addButtonPressed(event);
+            quitScene();
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
     }
 
     private void initBindings() {
