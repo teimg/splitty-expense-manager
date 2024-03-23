@@ -59,8 +59,10 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
      */
     public void loadEvent(Event event) {
         this.event = event;
-        eventTitle.setText("Invite people to " + event.getName());
-        inviteMessage.setText("Give people the following invite code: " + event.getInviteCode());
+        eventTitle.setText(mainCtrl.getTranslator().getTranslation(
+                "Invitation.Title-label") + " " + event.getName());
+        inviteMessage.setText(mainCtrl.getTranslator().getTranslation(
+                "Invitation.Invite-Message-label") + " " + event.getInviteCode());
     }
 
     /**
@@ -70,11 +72,13 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
 
     @Override
     public void setLanguage() {
-        inviteMessage.setText(mainCtrl.getTranslator().getTranslation(
-                "Invitation.Invite-Message-label"));
         inviteLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "Invitation.Invite-label"));
         sendInviteButton.setText(mainCtrl.getTranslator().getTranslation(
                 "Invitation.Send-Invite-Button"));
+        eventTitle.setText(mainCtrl.getTranslator().getTranslation(
+                "Invitation.Title-label") + " " + event.getName());
+        inviteMessage.setText(mainCtrl.getTranslator().getTranslation(
+                "Invitation.Invite-Message-label") + " " + event.getInviteCode());
     }
 }

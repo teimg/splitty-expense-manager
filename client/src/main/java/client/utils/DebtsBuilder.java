@@ -1,5 +1,6 @@
 package client.utils;
 
+import client.language.Translator;
 import commons.Debt;
 import commons.Event;
 import commons.Expense;
@@ -22,10 +23,13 @@ public class DebtsBuilder {
 
     private final Event event;
 
-    public DebtsBuilder(Event event) {
+    private final Translator translator;
+
+    public DebtsBuilder(Event event, Translator translator) {
         this.event = event;
         this.debts = new ArrayList<>();
         this.panes = new ArrayList<>();
+        this.translator = translator;
         findDebts();
         buildPanes();
     }
@@ -55,28 +59,32 @@ public class DebtsBuilder {
         for (Debt debt : debts) {
             HBox title = new HBox();
             VBox contents = new VBox();
-            title.getChildren().add(new Label(debt.getSummary()));
+            title.getChildren().add(new Label(getSummary(debt)));
             String label;
             if (debt.getCreditor().getBankAccount() != null) {
-                label = "Bank Account information available, transfer money to:\n" +
-                        "Account Holder: " + debt.getCreditor().getName() + "\n" +
+                label = translator.getTranslation("OpenDebts.BankInfo-label")
+                        + "\n" + translator.getTranslation("OpenDebts.AccountHolder-label")
+                        + debt.getCreditor().getName() + "\n" +
                         "IBAN: " + debt.getCreditor().getBankAccount().getIban() + " \n" +
                         "BIC: " + debt.getCreditor().getBankAccount().getBic() + "\n";
                 title.getChildren().add(prepareIcons("BankIcon"));
             }
             else {
-                label = "No Bank Account info available.\n";
+                label = translator.getTranslation(
+                        "OpenDebts.NoBankInfo-label") + "\n";
                 title.getChildren().add(prepareIcons("NoBankIcon"));
             }
             if (!debt.getDebtor().getEmail().isEmpty()) {
-                label = label + "\nEmail Configured: ";
-                Button button = new Button("Send Reminder Email");
+                label = label + "\n" + translator.getTranslation("OpenDebts.Email-label")  ;
+                Button button = new Button(translator
+                        .getTranslation("OpenDebts.ReminderEmail-Button"));
                 button.setOnAction(event -> handleEmailButtonClick(debt));
                 contents.getChildren().addAll(new Label(label), button);
                 title.getChildren().add(prepareIcons("MailIcon"));
             }
             else {
-                label = label + "\nNo Email Configured ";
+                label = label + "\n" + translator
+                        .getTranslation("OpenDebts.NoEmail-label");
                 contents.getChildren().addAll(new Label(label));
                 title.getChildren().add(prepareIcons("NoMailIcon"));
             }
@@ -86,6 +94,14 @@ public class DebtsBuilder {
             titledPane.setContent(contents);
             panes.add(titledPane);
         }
+    }
+
+    private String getSummary(Debt debt) {
+        return debt.getDebtor().getName() + " " +
+                translator.getTranslation("OpenDebts.Summary-owes")
+                + " " + (Math.round(debt.getAmount() * 100.0) / 100.0)
+                + "$ " + translator.getTranslation("OpenDebts.Summary-to")
+                + " " + debt.getCreditor().getName();
     }
 
     private ImageView prepareIcons(String path) {
