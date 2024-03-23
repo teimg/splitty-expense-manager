@@ -12,10 +12,12 @@ import java.util.Optional;
 public class ParticipantService {
 
     private  final ParticipantRepository repo;
+    private final EventService eventService;
 
     @Autowired
-    public ParticipantService(ParticipantRepository participantRepository) {
+    public ParticipantService(ParticipantRepository participantRepository, EventService eventService) {
         this.repo = participantRepository;
+        this.eventService = eventService;
     }
     
     public Participant getById( long id) throws IllegalArgumentException {
@@ -29,12 +31,17 @@ public class ParticipantService {
 
     }
 
+    public Participant save(Participant participant) {
+        eventService.save(participant.getEvent());
+        return repo.save(participant);
+    }
+
 
     public Participant createParticipant(Participant participant)
         throws IllegalArgumentException{
 
         checkValidParticipant(participant);
-        return repo.save(participant);
+        return save(participant);
     }
 
     /**
@@ -54,7 +61,7 @@ public class ParticipantService {
         participant.setEvent(newDetails.getEvent());
         participant.setBankAccount(newDetails.getBankAccount());
         participant.setEmail(newDetails.getEmail());
-        return repo.save(participant);
+        return save(participant);
     }
 
     /**

@@ -21,6 +21,7 @@ public class EventService {
     }
 
     public Event save(Event event) {
+        event.setLastActivity(new Date());
         return repo.saveAndFlush(event);
     }
 
@@ -29,10 +30,9 @@ public class EventService {
             throw new IllegalArgumentException();
         }
         event.setCreationDate(new Date());
-        event.setLastActivity(event.getCreationDate());
-        event = repo.save(event);
+        event = save(event);
         event.setInviteCode(generateInviteCode(event.getId()));
-        event = repo.save(event);
+        event = save(event);
         return event;
     }
 
@@ -61,5 +61,4 @@ public class EventService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
-
 }

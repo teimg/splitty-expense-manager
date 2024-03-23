@@ -12,13 +12,16 @@ import java.util.Optional;
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
+    private final EventService eventService;
 
     @Autowired
-    public ExpenseService(ExpenseRepository expenseRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, EventService eventService) {
         this.expenseRepository = expenseRepository;
+        this.eventService = eventService;
     }
 
     public Expense saveExpense(Expense expense) {
+        eventService.save(expense.getEvent());
         return expenseRepository.saveAndFlush(expense);
     }
 

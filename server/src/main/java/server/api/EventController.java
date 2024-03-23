@@ -1,9 +1,13 @@
 package server.api;
 
 import commons.Event;
+import commons.event.changes.EventCreated;
+import commons.event.changes.EventDeleted;
+import commons.event.changes.EventModified;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.service.EventChangeService;
 import server.service.EventService;
 
 import java.util.Date;
@@ -13,23 +17,25 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
-
-    @Autowired
     private final EventService service;
+    private final EventChangeService eventChangeService;
 
     /**
      * constructor for event controller
-     * @param service event service
+     *
+     * @param service            event service
+     * @param eventChangeService
      */
-    @Autowired
-    public EventController(EventService service) {
+    public EventController(EventService service, EventChangeService eventChangeService) {
         this.service = service;
+        this.eventChangeService = eventChangeService;
     }
 
     @PostMapping
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         try {
             Event savedEvent = service.createEvent(event);
+            eventChangeService.sendChange(new EventCreated(savedEvent));
             return ResponseEntity.ok(savedEvent);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
@@ -72,6 +78,7 @@ public class EventController {
     public ResponseEntity<?> delete(@PathVariable long id) {
         return service.getById(id).map(event -> {
             service.delete(id);
+            eventChangeService.sendChange(new EventDeleted(event));
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -95,6 +102,7 @@ public class EventController {
             e.setLastActivity(newEvent.getLastActivity());
 
             Event updated = service.save(e);
+
             return ResponseEntity.ok(updated);
         } else return ResponseEntity.notFound().build();
     }
