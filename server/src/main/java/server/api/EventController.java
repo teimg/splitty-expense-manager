@@ -16,24 +16,20 @@ import java.util.Optional;
 @RequestMapping("/api/event")
 public class EventController {
     private final EventService service;
-    private final EventChangeService eventChangeService;
 
     /**
      * constructor for event controller
      *
      * @param service            event service
-     * @param eventChangeService
      */
-    public EventController(EventService service, EventChangeService eventChangeService) {
+    public EventController(EventService service) {
         this.service = service;
-        this.eventChangeService = eventChangeService;
     }
 
     @PostMapping
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         try {
             Event savedEvent = service.createEvent(event);
-            eventChangeService.sendChange(new EventCreated(savedEvent));
             return ResponseEntity.ok(savedEvent);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
@@ -76,7 +72,6 @@ public class EventController {
     public ResponseEntity<?> delete(@PathVariable long id) {
         return service.getById(id).map(event -> {
             service.delete(id);
-            eventChangeService.sendChange(new EventDeleted(event));
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -97,30 +92,9 @@ public class EventController {
             e.setName(newEvent.getName());
             e.setCreationDate(newEvent.getCreationDate());
             e.setInviteCode(newEvent.getInviteCode());
-            e.setLastActivity(newEvent.getLastActivity());
 
-            Event updated = service.save(e);
+            Event updated = service.update(e);
 
-            return ResponseEntity.ok(updated);
-        } else return ResponseEntity.notFound().build();
-    }
-
-    /**
-     * updates an existing events last activity field
-     * @param id the ID of the event for the last activity to be updated
-     * @param newLastActivity the Date that the last activity should be updated to
-     * @return the updated event if the operation was successful,
-     * or a {@link ResponseEntity} with notFound status
-     */
-    @PutMapping("/update/lastactivity/{id}")
-    public ResponseEntity<Event>
-    updateLastActivity(@PathVariable long id, @RequestBody Date newLastActivity) {
-        Optional<Event> event = service.getById(id);
-        if (event.isPresent()) {
-            Event e = event.get();
-            e.setLastActivity(newLastActivity);
-
-            Event updated = service.save(e);
             return ResponseEntity.ok(updated);
         } else return ResponseEntity.notFound().build();
     }

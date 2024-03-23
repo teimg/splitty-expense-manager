@@ -33,8 +33,9 @@ public class ParticipantService {
     }
 
     public Participant save(Participant participant) {
-        eventService.save(participant.getEvent());
-        return repo.save(participant);
+        participant = repo.save(participant);
+        eventService.updateLastActivity(participant.getEvent().getId());
+        return participant;
     }
 
 
@@ -77,7 +78,9 @@ public class ParticipantService {
         if (participantData.isEmpty()) {
             throw new IllegalArgumentException("No such participant");
         }
+        Participant participant = participantData.get();
         repo.deleteById(id);
+        eventService.updateLastActivity(participant.getEvent().getId());
     }
 
     /**
