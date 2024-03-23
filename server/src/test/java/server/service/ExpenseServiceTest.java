@@ -22,6 +22,10 @@ public class ExpenseServiceTest {
     @Mock
     private ExpenseRepository expenseRepository;
 
+    @Mock
+    private EventService eventService;
+
+
     @InjectMocks
     private ExpenseService expenseService;
 

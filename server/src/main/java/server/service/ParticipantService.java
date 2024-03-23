@@ -15,7 +15,8 @@ public class ParticipantService {
     private final EventService eventService;
 
     @Autowired
-    public ParticipantService(ParticipantRepository participantRepository, EventService eventService) {
+    public ParticipantService(ParticipantRepository participantRepository,
+                              EventService eventService) {
         this.repo = participantRepository;
         this.eventService = eventService;
     }

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import server.service.EventChangeService;
 import server.service.EventService;
 
 import javax.swing.*;
@@ -23,6 +24,8 @@ public class EventControllerTest {
 
     @Mock
     private EventService service;
+    @Mock
+    private EventChangeService eventChangeService;
 
     @InjectMocks
     EventController controller;
