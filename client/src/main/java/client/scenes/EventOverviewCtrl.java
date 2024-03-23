@@ -142,6 +142,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     @FXML
     private Button openDebtBtn;
 
+    @FXML
+    private Button statisticsButton;
+
+    @FXML
+    private Button backButton;
+
     private ObservableList<Expense> shownExpenses;
 
     private final MainCtrl mainCtrl;
@@ -184,6 +190,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 "EventOverview.EditParticipant-Button"));
         openDebtBtn.setText(mainCtrl.getTranslator().getTranslation(
             "EventOverview.OpenDebt-Button"));
+        statisticsButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Statistics-Button"));
+        backButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Back-Button"));
         loadEvent(event);
     }
 
@@ -299,5 +309,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         mainCtrl.showOpenDebts(event);
     }
 
+    public void handleBack(ActionEvent actionEvent) {
+        mainCtrl.showStartScreen();
+    }
+
+    public void handleStatistics(ActionEvent actionEvent) {
+        mainCtrl.showStatistics(event);
+    }
 
 }

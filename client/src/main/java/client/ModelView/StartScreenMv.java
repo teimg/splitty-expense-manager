@@ -83,11 +83,9 @@ public class StartScreenMv {
         return newEvent;
     }
 
-
     public StringProperty joinEventProperty() {
         return joinEvent;
     }
-
 
     public ObjectProperty<ObservableList<JoinableEvent>> recentEventsProperty() {
         return recentEvents;

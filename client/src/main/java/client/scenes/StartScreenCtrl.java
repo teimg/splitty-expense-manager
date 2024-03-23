@@ -45,7 +45,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
 
     private final StartScreenMv startScreenMv;
 
-
     private class JoinableEventListCell extends ListCell<JoinableEvent> {
         private HBox container;
         private Hyperlink title;
@@ -81,10 +80,8 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
         }
     }
 
-
     @Inject
     public StartScreenCtrl(MainCtrl mainCtrl, StartScreenMv startScreenMv) {
-        ;
         this.mainCtrl = mainCtrl;
         this.startScreenMv = startScreenMv;
     }
@@ -151,6 +148,11 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
             "Popup." + e.getMessage()
         );
         (new Popup(msg, type)).show();
+    }
+
+    public void loadInfo() {
+        newEventField.setText("");
+        joinEventField.setText("");
     }
 
 }

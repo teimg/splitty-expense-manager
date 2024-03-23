@@ -201,11 +201,13 @@ public class MainCtrl {
 
     public void showStartScreen() {
         show("StartScreen");
+        ((StartScreenCtrl)(this.currentCtrl.getValue())).loadInfo();
         this.currentCtrl.getValue().setLanguage();
     }
 
-    public void showStatistics() {
+    public void showStatistics(Event event) {
         show("Statistics");
+        ((StatisticsScreenCtrl)(this.currentCtrl.getValue())).loadInfo(event);
         this.currentCtrl.getValue().setLanguage();
     }
 

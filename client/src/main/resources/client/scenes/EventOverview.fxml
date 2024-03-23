@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
       <VBox prefHeight="502.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
@@ -31,8 +31,6 @@
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="removeParticipantButton" layoutX="296.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleRemoveParticipant" text="Remove" />
-                              <Button fx:id="addParticipantButton" layoutX="378.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleAddParticipant" prefHeight="26.0" prefWidth="60.0" text="Add" AnchorPane.rightAnchor="25.0" />
                               <Label fx:id="expensesLabel" layoutX="14.0" layoutY="127.0" prefHeight="20.0" prefWidth="74.0" text="Expenses">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
@@ -54,6 +52,21 @@
                                  </font>
                               </Text>
                               <Text fx:id="participantsList" layoutX="15.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARTICIPANTS" wrappingWidth="413.80339431762695" />
+                              <HBox layoutX="245.0" layoutY="75.0" prefHeight="26.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="75.0">
+                                 <children>
+                                    <Button fx:id="editParticipantButton" mnemonicParsing="false" onAction="#handleEditParticipant" prefHeight="26.0" text="Edit">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="addParticipantButton" mnemonicParsing="false" onAction="#handleAddParticipant" prefHeight="26.0" text="Add">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="removeParticipantButton" mnemonicParsing="false" onAction="#handleRemoveParticipant" text="Remove" />
+                                 </children>
+                              </HBox>
                               <Label fx:id="inviteCodeLabel" layoutX="14.0" layoutY="47.0" prefHeight="20.0" prefWidth="133.0" text="Invite code:">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
@@ -61,10 +74,19 @@
                               </Label>
                               <Text fx:id="inviteCode" layoutX="153.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="code" wrappingWidth="105.22527326175816" />
                               <Button fx:id="inviteCodeCopyBtn" layoutX="379.0" layoutY="44.0" mnemonicParsing="false" onAction="#copyInviteCode" text="Copy" AnchorPane.rightAnchor="25.0" />
-                              <Button fx:id="editParticipantButton" layoutX="227.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleEditParticipant" prefHeight="26.0" prefWidth="60.0" text="Edit" />
                            </children></AnchorPane>
                         <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="396.0">
                            <children>
+                              <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBack" prefHeight="26.0" prefWidth="117.0" text="Go Back">
+                                 <HBox.margin>
+                                    <Insets right="29.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="statisticsButton" mnemonicParsing="false" onAction="#handleStatistics" prefHeight="26.0" prefWidth="117.0" text="Statistics">
+                                 <HBox.margin>
+                                    <Insets right="29.0" />
+                                 </HBox.margin>
+                              </Button>
                               <Button fx:id="openDebtBtn" mnemonicParsing="false" onAction="#handleOpenDebt" prefHeight="26.0" prefWidth="117.0" text="Settle Debts">
                                  <HBox.margin>
                                     <Insets right="20.0" />
