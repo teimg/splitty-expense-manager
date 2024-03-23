@@ -201,6 +201,7 @@ public class MainCtrl {
 
     public void showStartScreen() {
         show("StartScreen");
+        ((StartScreenCtrl)(this.currentCtrl.getValue())).loadInfo();
         this.currentCtrl.getValue().setLanguage();
     }
 
