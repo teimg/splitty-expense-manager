@@ -41,7 +41,8 @@ public class MyModule implements Module {
         binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StatisticsScreenCtrl.class).in(Scopes.SINGLETON);
 
-        binder.bind(IParticipantCommunicator.class).to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(IParticipantCommunicator.class)
+                .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
         try {
             binder.bind(ContactInfoMv.class).toConstructor(
                             ContactInfoMv.class.getConstructor(
