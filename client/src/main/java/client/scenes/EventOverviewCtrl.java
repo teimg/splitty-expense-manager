@@ -142,6 +142,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     @FXML
     private Button openDebtBtn;
 
+    @FXML
+    private Button statisticsButton;
+
+    @FXML
+    private Button backButton;
+
     private ObservableList<Expense> shownExpenses;
 
     private final MainCtrl mainCtrl;
@@ -297,6 +303,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
     public void handleOpenDebt() {
         mainCtrl.showOpenDebts(event);
+    }
+
+    public void handleBack(ActionEvent actionEvent) {
+        mainCtrl.showStartScreen();
+    }
+
+    public void handleStatistics(ActionEvent actionEvent) {
+        mainCtrl.showStatistics(event);
     }
 
 

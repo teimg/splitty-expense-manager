@@ -204,7 +204,7 @@ public class MainCtrl {
         this.currentCtrl.getValue().setLanguage();
     }
 
-    public void showStatistics() {
+    public void showStatistics(Event event) {
         show("Statistics");
         this.currentCtrl.getValue().setLanguage();
     }
