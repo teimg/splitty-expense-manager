@@ -184,7 +184,6 @@ public class Expense {
         if (!(o instanceof Expense expense)) return false;
         return id == expense.id &&
                 Double.compare(expense.amount, amount) == 0 &&
-                Objects.equals(event, expense.event) &&
                 Objects.equals(purchase, expense.purchase) &&
                 Objects.equals(payer, expense.payer) &&
                 Objects.equals(debtors, expense.debtors) &&
