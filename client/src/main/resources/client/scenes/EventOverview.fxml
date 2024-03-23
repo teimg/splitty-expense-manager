@@ -52,7 +52,7 @@
                                  </font>
                               </Text>
                               <Text fx:id="participantsList" layoutX="15.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARTICIPANTS" wrappingWidth="413.80339431762695" />
-                              <HBox layoutX="245.0" layoutY="75.0" prefHeight="26.0" prefWidth="160.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="75.0">
+                              <HBox layoutX="245.0" layoutY="75.0" prefHeight="26.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="75.0">
                                  <children>
                                     <Button fx:id="editParticipantButton" mnemonicParsing="false" onAction="#handleEditParticipant" prefHeight="26.0" text="Edit">
                                        <HBox.margin>

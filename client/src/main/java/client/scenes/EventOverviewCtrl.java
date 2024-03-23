@@ -190,6 +190,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 "EventOverview.EditParticipant-Button"));
         openDebtBtn.setText(mainCtrl.getTranslator().getTranslation(
             "EventOverview.OpenDebt-Button"));
+        statisticsButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Statistics-Button"));
+        backButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.Back-Button"));
         loadEvent(event);
     }
 
@@ -312,6 +316,5 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     public void handleStatistics(ActionEvent actionEvent) {
         mainCtrl.showStatistics(event);
     }
-
 
 }
