@@ -207,6 +207,7 @@ public class MainCtrl {
 
     public void showStatistics(Event event) {
         show("Statistics");
+        ((StatisticsScreenCtrl)(this.currentCtrl.getValue())).loadInfo(event);
         this.currentCtrl.getValue().setLanguage();
     }
 

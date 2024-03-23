@@ -3,9 +3,12 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
+import commons.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 
@@ -15,6 +18,8 @@ import java.util.ResourceBundle;
 
 public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, SceneController {
 
+    @FXML
+    private Button backButton;
 
     @FXML
     private Label statisticsLabel;
@@ -26,6 +31,8 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, Scen
     private Label totalCostLabel;
 
     private final MainCtrl mainCtrl;
+
+    private Event event;
 
     @Inject
     public StatisticsScreenCtrl(MainCtrl mainCtrl) {
@@ -84,6 +91,10 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, Scen
 
     }
 
+    public void loadInfo(Event event) {
+        this.event = event;
+    }
+
     @Override
     public void setLanguage() {
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
@@ -92,7 +103,11 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, Scen
                 "StatisticsScreen.Total-Cost-label"));
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
-
+        backButton.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Back-Button"));
     }
 
+    public void handleBack(ActionEvent actionEvent) {
+        mainCtrl.showEventOverview(event);
+    }
 }
