@@ -37,6 +37,29 @@ public class EventController {
     }
 
     /**
+     * Checks for updates to an event by its ID.
+     * @param id The ID of the event.
+     * @return ResponseEntity with the updated event if there's an update, or an empty body if not.
+     */
+    @GetMapping("/checkUpdates/{id}")
+    public ResponseEntity<Event> checkForUpdates(@PathVariable long id) {
+        Optional<Event> currentEvent = service.getById(id);
+        if (currentEvent.isPresent()) {
+            Event event = currentEvent.get();
+            // Example logic: return the event if it has been updated within the last 5 minutes.
+            long lastUpdateTime = event.getLastActivity().getTime();
+            long now = new Date().getTime();
+            if (now - lastUpdateTime < 300000) { // 5 minutes in milliseconds
+                return ResponseEntity.ok(event);
+            } else {
+                return ResponseEntity.noContent().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
      * standard
      * @return all events
      */
