@@ -1,14 +1,17 @@
 package client.scenes;
 
+import client.ModelView.AddEditExpenseMv;
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
-import client.utils.communicators.implementations.ExpenseCommunicator;
-import client.utils.communicators.interfaces.IExpenseCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,11 +21,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, SceneController {
@@ -55,7 +57,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     private Button addButton;
 
     @FXML
-    private VBox innerCheckboxes;
+    private ListView<Participant> innerCheckboxes;
 
     @FXML
     private ComboBox<String> currencyField;
@@ -76,29 +78,57 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     private CheckBox someCheckbox;
 
     @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
     private ComboBox<String> tagField;
 
     @FXML
     private ComboBox<String> whoPaidField;
 
-    private ExpenseBuilder expenseBuilder;
-
-    private DebtorSelector debtorSelector;
 
     private WhoPaidSelector whoPaidSelector;
 
-    private Event event;
-
-
-    // true if input is an edit meaning that the current expense is being edited
-    private boolean isEdit;
-
-    // Only used when there is an edit going on
-    private Expense expense;
 
     private final MainCtrl mainCtrl;
 
-    private final IExpenseCommunicator expenseCommunicator;
+
+    private final AddEditExpenseMv addEditExpenseMv;
+
+
+    private class InnerCheckBoxManger
+        extends VBox implements ListChangeListener<Pair<Participant, BooleanProperty>>{
+        private ObjectProperty<ObservableList<Pair<Participant, BooleanProperty>>> state;
+
+        public InnerCheckBoxManger(
+            ObjectProperty<ObservableList<Pair<Participant, BooleanProperty>>> toBind ) {
+            this.setPadding(new Insets(0, 0, 0, 10));
+            this.state = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+            this.state.bindBidirectional(toBind);
+
+            state.getValue().addListener(this);
+        }
+
+        @Override
+        public void onChanged(Change<? extends Pair<Participant, BooleanProperty>> c) {
+            System.out.println("change!!");
+            while (c.next()){
+                if(c.wasRemoved()){
+                    this.getChildren().removeAll(this.getChildren());
+                }
+
+                for(var x : c.getAddedSubList()){
+
+                    CheckBox current = new CheckBox(x.getKey().getName());
+                    current.setPadding(new Insets(5, 0, 0, 0));
+                    x.getValue().bindBidirectional(current.selectedProperty());
+                    this.getChildren().add(current);
+                }
+            }
+
+        }
+    }
+
 
     @Override
     public void setLanguage() {
@@ -127,69 +157,20 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     }
 
     @Inject
-    public AddEditExpenseCtrl (MainCtrl mainCtrl, ExpenseCommunicator expenseCommunicator) {
+    public AddEditExpenseCtrl (MainCtrl mainCtrl, AddEditExpenseMv addEditExpenseMv) {
         this.mainCtrl = mainCtrl;
-        this.expenseCommunicator = expenseCommunicator;
+        this.addEditExpenseMv = addEditExpenseMv;
     }
 
     public void loadInfo(Event event) {
-        this.event = event;
-        expenseBuilder = new ExpenseBuilder();
-        List<Participant> participants = this.event.getParticipants();
-        debtorSelector = new DebtorSelector(participants);
+        addEditExpenseMv.loadInfo(event);
 
         initWhoPaid();
         initCheckbox();
         initCurrency();
         initDateField();
 
-        for (int i = 0; i < participants.size(); i++) {
-
-            Participant currentParticipant = participants.get(i);
-            InnerCheckbox innercheckbox =
-                    new InnerCheckbox(currentParticipant.getName(),
-                            innerCheckboxes, debtorSelector);
-            if(this.isEdit &&
-                    this.expense.getDebtors().contains(currentParticipant))
-                innercheckbox.setSelected(true);
-
-        }
-
-        if(this.isEdit){
-            setEdit();
-        }
     }
-
-    private static class InnerCheckbox{
-        private final CheckBox checkBox;
-
-        /**
-         *
-         * @param name label used for checkbox should
-         *             equal name of participant
-         * @param parent ref to the parent vbox
-         * @param debtorSelector ref to the debtselector object
-         */
-        public InnerCheckbox(String name, VBox parent, DebtorSelector debtorSelector) {
-            this.checkBox = new CheckBox(name);
-            this.checkBox.setPadding(new Insets(5, 0, 0, 0));
-            parent.getChildren().add(this.checkBox);
-
-            this.checkBox.setOnAction( e->{
-                if(this.checkBox.isSelected()){
-                    debtorSelector.add(this.checkBox.getText());
-                }else {
-                    debtorSelector.remove(this.checkBox.getText());
-                }
-            });
-        }
-
-        public void setSelected(boolean value){
-            checkBox.setSelected(value);
-        }
-
-    }
-
 
     /**
      *
@@ -203,35 +184,51 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Should be removed once backend is created
-        // createDummyEvent();
+
+        InnerCheckBoxManger innerCheckBoxManger =
+            new InnerCheckBoxManger(addEditExpenseMv.debtorsProperty());
+        scrollPane.setContent(innerCheckBoxManger);
+
+        initBindings();
+
     }
 
-    public void setEdit(){
-        whoPaidField.setValue(this.expense.getPayer().getName());
-        priceField.setText(Double.toString(this.expense.getAmount()));
-        evenlyCheckbox.setSelected(false);
-
-        someCheckbox.setSelected(true);
-        innerCheckboxes.setDisable(false);
-        debtorSelector.setAllSelected(false);
-        for(Participant x : this.expense.getDebtors()){
-            if(this.expense.getDebtors().contains(x))
-                debtorSelector.add(x.getName());
-        }
-
-        descriptionField.setText(this.expense.getPurchase());
-        dateField.setValue(this.expense.getDate());
+    public void initBindings(){
+        priceField.textProperty().bindBidirectional(
+            addEditExpenseMv.priceFieldProperty());
+        currencyField.promptTextProperty().bindBidirectional(
+            addEditExpenseMv.currencyFieldProperty());
+        descriptionField.textProperty().bindBidirectional(
+            addEditExpenseMv.descriptionFieldProperty());
+        dateField.valueProperty().bindBidirectional(
+            addEditExpenseMv.dateFieldProperty());
+        whoPaidField.valueProperty().bindBidirectional(
+            addEditExpenseMv.whoPaidFieldProperty());
+        evenlyCheckbox.selectedProperty().bindBidirectional(
+            addEditExpenseMv.evenlyCheckboxProperty());
+        whoPaidField.itemsProperty().bindBidirectional(
+            addEditExpenseMv.whoPaidItemsProperty());
     }
+
+//    public void setEdit(){
+//        whoPaidField.setValue(this.expense.getPayer().getName());
+//        priceField.setText(Double.toString(this.expense.getAmount()));
+//        evenlyCheckbox.setSelected(false);
+//
+//        someCheckbox.setSelected(true);
+//        innerCheckboxes.setDisable(false);
+//        debtorSelector.setAllSelected(false);
+//        for(Participant x : this.expense.getDebtors()){
+//            if(this.expense.getDebtors().contains(x))
+//                debtorSelector.add(x.getName());
+//        }
+//
+//        descriptionField.setText(this.expense.getPurchase());
+//        dateField.setValue(this.expense.getDate());
+//    }
 
     public void initWhoPaid(){
-        this.whoPaidSelector = new WhoPaidSelector(this.event.getParticipants());
         this.whoPaidField.setVisibleRowCount(3);
-        whoPaidField.getItems().addAll(
-            this.event.getParticipants()
-                .stream()
-                .map(Participant::getName)
-                .toList());
 
         whoPaidField.getEditor().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -263,7 +260,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         dateField.getEditor().setDisable(true);
         dateField.getEditor().setOpacity(1);;
 
-
         dateField.setValue(LocalDate.now());
     }
 
@@ -288,8 +284,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         someCheckbox.setSelected(false);
         evenlyCheckbox.setAllowIndeterminate(false);
         someCheckbox.setAllowIndeterminate(false);
-        innerCheckboxes.setDisable(true);
-        debtorSelector.setAllSelected(true);
+        scrollPane.setDisable(true);
     }
 
     /**
@@ -300,13 +295,11 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     public void someCheckboxToggle(){
         if(someCheckbox.isSelected()){
             evenlyCheckbox.setSelected(false);
-            innerCheckboxes.setDisable(false);
-            debtorSelector.setAllSelected(false);
+            scrollPane.setDisable(false);
             return;
         }
         evenlyCheckbox.setSelected(true);
         innerCheckboxes.setDisable(true);
-        debtorSelector.setAllSelected(true);
 
     }
 
@@ -317,147 +310,44 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     public void evenlyCheckboxToggle(){
         if(evenlyCheckbox.isSelected()){
             someCheckbox.setSelected(false);
-            innerCheckboxes.setDisable(true);
-            debtorSelector.setAllSelected(true);
+            scrollPane.setDisable(true);
+//            debtorSelector.setAllSelected(true);
             return;
         }
         someCheckbox.setSelected(true);
-        innerCheckboxes.setDisable(false);
-        debtorSelector.setAllSelected(false);
+        scrollPane.setDisable(false);
+//        debtorSelector.setAllSelected(false);
 
     }
 
     public void addButtonPressed(){
-        Expense res = createExpense();
-        if(res == null){
-            return;
-        }
-        Expense added = expenseCommunicator.createExpense(res);
-        event.addExpense(added);
-        System.out.println(added.toString());
-        mainCtrl.showEventOverview(event);
+        createExpense();
     }
 
     public void abortButtonPressed(ActionEvent actionEvent) {
-        mainCtrl.showEventOverview(event);
+        addEditExpenseMv.clear();
+        mainCtrl.showEventOverview(addEditExpenseMv.getEvent());
     }
 
-    /**
-     * get the value of the priceField
-     *
-     * @return the amount in euro cents right now
-     */
-    private long getPriceFieldValue() {
-        // Code should be moved to a different class, so it can be tested
-        long res = 0;
-        String value = priceField.getText();
-        String[] values = value.split(",|\\.");
-
-        try{
-            res += Long.parseLong(values[0]) * 100;
-
-            if(values.length == 2){
-                res += Long.parseLong(values[1]);
-            }
-
-            if(values.length > 2 || res < 0){
-                throw new NumberFormatException();
-            }
-
-        }catch (NumberFormatException e){
-            throw new IllegalArgumentException("price");
-        }
-
-
-
-        return res;
-    }
-
-    /**
-     * Get the value in date field
-     * @return the Date set in the date field
-     */
-
-    public LocalDate getDateFieldValue(){
-        try{
-            return  dateField.getValue();
-
-        }catch (DateTimeParseException e){
-            // Not a very nice solution, but will work for now
-            return LocalDate.now();
-        }
-    }
-
-    public  Participant getPayer(){
-        System.out.println(whoPaidField.getValue());
-
-        Participant res = whoPaidSelector.getCurrentPayer(whoPaidField.getValue());
-
-        if(res == null){
-            throw new IllegalArgumentException("payer");
-        }
-
-        return res;
-    }
-
-    public String getPurchase(){
-        String res = descriptionField.getText();
-
-        if(res == null || res.isEmpty()){
-            throw new IllegalArgumentException("purchase");
-        }
-        return  res;
-    }
-
-    public List<Participant> getDebtors(){
-        List<Participant> res = debtorSelector.getDebitors();
-
-        if(res.isEmpty()){
-            throw new IllegalArgumentException("participant");
-        }
-
-        return res;
-    }
-
-    /**
-     * create the final expense
-     *
-     * @return an expense
-     */
-    public Expense createExpense(){
+    public void createExpense(){
 
         try {
-            expenseBuilder.setPayer(getPayer());
-            expenseBuilder.setPurchase(getPurchase());
-            expenseBuilder.setDate(getDateFieldValue());
-            expenseBuilder.setAmount(getPriceFieldValue());
-            expenseBuilder.setDebtors(getDebtors());
-            expenseBuilder.setEvent(event);
-
-            System.out.println(expenseBuilder.toString());
-            return expenseBuilder.build();
-        } catch (IllegalArgumentException e){
-            String msg = switch (e.getMessage()) {
-                case "payer" -> "PayerFieldInvalid";
-                case "price" -> "PriceFieldInvalid";
-                case "purchase" -> "PurchaseLeftEmpty";
-                case "participant" -> "NoSelectedDebtors";
-                default -> "Unknown input error";
-            };
-
-            Popup popup = new Popup(
-                mainCtrl.getTranslator().getTranslation("Popup." + msg),
-                Popup.TYPE.ERROR);
-            popup.show();
+            Expense added = addEditExpenseMv.createExpense();
+            System.out.println(added.toString());
+            mainCtrl.showEventOverview(addEditExpenseMv.getEvent());
+            return;
         }catch (Exception e){
-            Popup popup = new Popup(
-                mainCtrl.getTranslator().getTranslation("Popup.UnknownError"),
-                Popup.TYPE.ERROR);
-            popup.show();
+            handleException(e);
         }
+    }
 
-        return null;
+    void handleException(Exception e){
+        Popup.TYPE type = Popup.TYPE.ERROR;
 
+        String msg = mainCtrl.getTranslator().getTranslation(
+            "Popup." + e.getMessage()
+        );
+        (new Popup(msg, type)).show();
     }
 
 
