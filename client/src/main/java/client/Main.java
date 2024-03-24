@@ -42,6 +42,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+//        var debug = INJECTOR.getInstance(StartScreenMv.class);
 
         HashMap<String, Object> sceneMap = new HashMap<>();
 

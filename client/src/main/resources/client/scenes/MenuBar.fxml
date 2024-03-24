@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
+<MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
     <menus>
         <Menu fx:id="setSceneMenu" mnemonicParsing="false" text="Set Scene (Temporary)">
             <items>
@@ -24,6 +22,7 @@
                 <MenuItem fx:id="englishButton" mnemonicParsing="false" onAction="#setEnglish" text="English" />
                 <MenuItem fx:id="dutchButton" mnemonicParsing="false" onAction="#setDutch" text="Dutch" />
                 <MenuItem fx:id="frenchButton" mnemonicParsing="false" onAction="#setFrench" text="French" />
+            <MenuItem fx:id="templateBtn" mnemonicParsing="false" onAction="#downloadTemplateBtn" text="Template" />
             </items>
         </Menu>
         <Menu fx:id="adminMenu" mnemonicParsing="false" text="Admin">

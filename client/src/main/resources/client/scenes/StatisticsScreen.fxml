@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -19,13 +20,14 @@
                      <children>
                         <AnchorPane prefHeight="374.0" prefWidth="600.0">
                            <children>
-                              <Label fx:id="statisticsLabel" layoutX="14.0" layoutY="58.0" text="Statistics">
+                              <Label fx:id="statisticsLabel" layoutX="14.0" layoutY="47.0" text="Statistics">
                                  <font>
                                     <Font name="Al Bayan Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <PieChart fx:id="pieChart" layoutX="15.0" layoutY="128.0" prefHeight="215.0" prefWidth="421.0" title="Pie Chart of Expenses" />
-                              <Label fx:id="totalCostLabel" layoutX="14.0" layoutY="93.0" text="The total cost of the trip is:  " />
+                              <PieChart fx:id="pieChart" layoutX="15.0" layoutY="102.0" prefHeight="215.0" prefWidth="421.0" title="Pie Chart of Expenses" />
+                              <Label fx:id="totalCostLabel" layoutX="14.0" layoutY="76.0" text="The total cost of the trip is:  " />
+                              <Button fx:id="backButton" layoutX="18.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="26.0" prefWidth="87.0" text="Go Back" />
                            </children>
                         </AnchorPane>
                      </children>

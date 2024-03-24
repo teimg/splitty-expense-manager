@@ -39,9 +39,9 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
     public void loadInfo(Event event){
         this.event = event;
-        this.debts = new DebtsBuilder(event).getDebts();
+        this.debts = new DebtsBuilder(event, mainCtrl.getTranslator()).getDebts();
         noDebtMessage.setVisible(debts.isEmpty());
-        this.panes = new DebtsBuilder(event).getPanes();
+        this.panes = new DebtsBuilder(event, mainCtrl.getTranslator()).getPanes();
         updateAccordion();
     }
 
@@ -68,8 +68,8 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         noDebtMessage.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.NoDebtsMessage-label"));;
         abortButton.setText(mainCtrl.getTranslator().getTranslation(
-            "OpenDebts.Abort-button"
-        ));
+            "OpenDebts.Abort-button"));
+        loadInfo(event);
     }
 
 }

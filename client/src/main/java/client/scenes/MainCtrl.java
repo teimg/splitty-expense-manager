@@ -153,7 +153,6 @@ public class MainCtrl {
 
         this.currentCtrl =
             new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
-        this.currentCtrl.getValue().setLanguage();
 
         primaryStage.setTitle(title);
         primaryStage.setScene(currentSceneWrapper.getScene());
@@ -166,10 +165,12 @@ public class MainCtrl {
 
     public void showOverview() {
         show("QuoteOverview", "Overview");
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showAdd() {
         show("AddQuote", "Quote add");
+        this.currentCtrl.getValue().setLanguage();
     }
 
      // TODO: ADD CUSTOM METHODS SUCH AS SEEN ABOVE TO EACH OF THESE.
@@ -177,36 +178,43 @@ public class MainCtrl {
 
     public void showAddEditExpense() {
         show("AddEditExpense");
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showAddEditExpense(Event event) {
         show("AddEditExpense");
         ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event);
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showInvitation(Event event) {
         show("Invitation");
         ((InvitationCtrl)(this.currentCtrl.getValue())).loadEvent(event);
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showOpenDebts(Event event) {
         show("OpenDebts");
         ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadInfo(event);
-
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showStartScreen() {
         show("StartScreen");
+        ((StartScreenCtrl)(this.currentCtrl.getValue())).loadInfo();
+        this.currentCtrl.getValue().setLanguage();
     }
 
-    public void showStatistics() {
+    public void showStatistics(Event event) {
         show("Statistics");
-
+        ((StatisticsScreenCtrl)(this.currentCtrl.getValue())).loadInfo(event);
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showContactInfo(Event event, Participant participant){
         show("ContactInfo");
         ((ContactInfoCtrl)(this.currentCtrl.getValue())).loadInfo(event, participant);
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void updateLanguage(String s) {
@@ -218,21 +226,25 @@ public class MainCtrl {
     }
 
     public void showEventOverview(Event event) {
-
         // Track for recent events
         recentEventTracker.registerEvent(event);
-
         show("EventOverview");
         ((EventOverviewCtrl)(this.currentCtrl.getValue())).loadEvent(event);
-
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showAdminLogIn() {
         show("AdminLogIn");
+        this.currentCtrl.getValue().setLanguage();
     }
 
     public void showAdminScreen() {
         show("AdminScreen");
+        this.currentCtrl.getValue().setLanguage();
+    }
+
+    public Stage getPrimaryStage(){
+        return primaryStage;
     }
 
     public Translator getTranslator() {

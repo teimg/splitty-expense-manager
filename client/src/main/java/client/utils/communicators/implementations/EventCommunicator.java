@@ -7,8 +7,6 @@ import commons.Event;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 
-import java.util.Arrays;
-
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventCommunicator implements IEventCommunicator {
@@ -50,17 +48,11 @@ public class EventCommunicator implements IEventCommunicator {
 
     @Override
     public Event getEventByInviteCode(String inviteCode) {
-        Event e = null;
-        try {
-            e = ClientBuilder.newClient()
+        return ClientBuilder.newClient()
                     .target(origin).path("api/event/byInviteCode/{inviteCode}")
                     .resolveTemplate("inviteCode", inviteCode)
                     .request(APPLICATION_JSON).accept(APPLICATION_JSON)
                     .get(Event.class);
-        } catch (Exception ex) {
-            System.out.println(Arrays.toString(ex.getStackTrace()));
-        }
-        return e;
     }
 
     @Override
