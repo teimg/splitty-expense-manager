@@ -11,8 +11,10 @@ import commons.Event;
 import commons.Expense;
 
 import commons.Participant;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,6 +39,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private Event event;
 
     private Participant selectedPayer;
+
+    private Task<Void> longPollingTask;
 
     private class ExpenseCellFactory
             implements Callback<ListView<Expense>, ListCell<Expense>> {
@@ -159,6 +163,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         this.participantCommunicator = participantCommunicator;
         this.mainCtrl = mainCtrl;
     }
+
+
 
     @Override
     public void setLanguage() {
@@ -315,6 +321,71 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
     public void handleStatistics(ActionEvent actionEvent) {
         mainCtrl.showStatistics(event);
+    }
+
+    private void startEventUpdatesLongPolling() {
+        longPollingTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                final int maxRetries = 5;
+                int retries = 0;
+
+                while (!isCancelled() && retries < maxRetries) {
+                    Event updatedEvent = eventCommunicator.checkForEventUpdates(event.getId());
+                    if (updatedEvent == null) {
+                        // Log error and wait before retrying
+                        System.err.println("Failed to check for updates. Retrying...");
+                        retries++;
+                        Thread.sleep(5000 * retries); // Exponential back-off
+                        continue;
+                    }
+
+                    retries = 0; // Reset retries on successful update check
+
+                    if (!updatedEvent.equals(event)) {
+                        Platform.runLater(() -> updateUI(updatedEvent));
+                    }
+
+                    Thread.sleep(5000); // Check every 5 seconds
+                }
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Updates the UI components with the data from the updated event.
+     * This method is designed to be run on the JavaFX Application Thread.
+     * @param updatedEvent The updated event object containing new data.
+     */
+    private void updateUI(Event updatedEvent) {
+        if (updatedEvent == null) {
+            System.err.println("The updated event is null, cannot update UI.");
+            return;
+        }
+
+        // Ensure UI updates are run on the JavaFX Application Thread
+        Platform.runLater(() -> {
+            // Update event title
+            eventTitle.setText(updatedEvent.getName());
+
+            // Update participants list
+            participantsList.setText(String.join(", ", updatedEvent.getParticipants()
+                    .stream().map(Participant::getName).toList()));
+
+            // Update expenses list
+            shownExpenses.clear();
+            shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
+            expensesList.setItems(shownExpenses);
+
+            // Update other UI components as needed
+            inviteCode.setText(updatedEvent.getInviteCode());
+
+            // Replace the local event object with the updated one
+            this.event = updatedEvent;
+
+            System.out.println("UI has been updated with new event data.");
+        });
     }
 
 }

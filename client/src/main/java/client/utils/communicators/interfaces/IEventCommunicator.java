@@ -36,4 +36,5 @@ public interface IEventCommunicator {
      */
     Event deleteEvent(long id);
 
+    Event checkForEventUpdates(long id);
 }
