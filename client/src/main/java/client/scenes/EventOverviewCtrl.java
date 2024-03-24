@@ -40,7 +40,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
     private Participant selectedPayer;
 
-    private Task<Void> longPollingTask;
+    private Task<Void> longPollingTask = null;
+    private Thread pollingThread = null;
 
     private class ExpenseCellFactory
             implements Callback<ListView<Expense>, ListCell<Expense>> {
@@ -222,7 +223,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         expenseSelectorAll.setSelected(true);
         // Populate expense list
         expensesList.setCellFactory(new ExpenseCellFactory());
-        startEventUpdatesLongPolling();
     }
 
     public void loadEvent(Event event) {
@@ -239,6 +239,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
         inviteCode.setText(event.getInviteCode());
+        stopEventUpdatesLongPolling();
+        startEventUpdatesLongPolling(event.getId());
     }
 
     public void copyInviteCode() {
@@ -324,34 +326,35 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         mainCtrl.showStatistics(event);
     }
 
-    private void startEventUpdatesLongPolling() {
-        longPollingTask = new Task<>() {
+    private void startEventUpdatesLongPolling(long eventId) {
+        longPollingTask = new Task<Void>() {
             @Override
-            protected Void call() throws Exception {
-                final int maxRetries = 5;
-                int retries = 0;
-
-                while (!isCancelled() && retries < maxRetries) {
-                    Event updatedEvent = eventCommunicator.checkForEventUpdates(event.getId());
-                    if (updatedEvent == null) {
-                        // Log error and wait before retrying
-                        System.err.println("Failed to check for updates. Retrying...");
-                        retries++;
-                        Thread.sleep(5000 * retries); // Exponential back-off
-                        continue;
+            protected Void call() {
+                try {
+                    while (!isCancelled()) {
+                        Event updatedEvent = eventCommunicator.checkForEventUpdates(eventId);
+                        if (updatedEvent != null && !updatedEvent.equals(event)) {
+                            updateUI(updatedEvent);
+                        }
+                        Thread.sleep(5000); // 5 seconds
                     }
-
-                    retries = 0; // Reset retries on successful update check
-
-                    if (!updatedEvent.equals(event)) {
-                        Platform.runLater(() -> updateUI(updatedEvent));
-                    }
-
-                    Thread.sleep(5000); // Check every 5 seconds
+                } catch (InterruptedException e) {
+                    // Handle if the thread is interrupted
                 }
                 return null;
             }
         };
+
+        pollingThread = new Thread(longPollingTask);
+        pollingThread.setDaemon(true);
+        pollingThread.start();
+    }
+
+    private void stopEventUpdatesLongPolling() {
+        if (longPollingTask != null) {
+            longPollingTask.cancel();
+            pollingThread.interrupt();
+        }
     }
 
     /**
@@ -390,9 +393,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     }
 
     public void stop() {
-        if (longPollingTask != null) {
-            longPollingTask.cancel();
-        }
+        stopEventUpdatesLongPolling();
     }
 
 }
