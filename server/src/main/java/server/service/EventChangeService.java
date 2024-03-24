@@ -21,12 +21,12 @@ public class EventChangeService {
         this.longPolls = new HashMap<>();
     }
 
-    public void addLongPolling(Event event, DeferredResult<EventChange> result) {
+    public void addLongPoll(Event event, DeferredResult<EventChange> result) {
         longPolls.getOrDefault(event.getId(), new HashSet<>()).add(result);
     }
 
     public void sendChange(EventChange change) {
-        websocketMsgs.convertAndSend(change);
+        websocketMsgs.convertAndSend("/topic/events", change);
 
         var results = longPolls.get(change.getEvent().getId());
         if (results == null) {

@@ -1,14 +1,11 @@
 package server.api;
 
 import commons.Event;
-import commons.event.changes.EventCreated;
-import commons.event.changes.EventDeleted;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-import server.service.EventChangeService;
 import server.service.EventService;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,14 +13,17 @@ import java.util.Optional;
 @RequestMapping("/api/event")
 public class EventController {
     private final EventService service;
+    private final SimpMessagingTemplate msgs;
 
     /**
      * constructor for event controller
      *
-     * @param service            event service
+     * @param service event service
+     * @param msgs
      */
-    public EventController(EventService service) {
+    public EventController(EventService service, SimpMessagingTemplate msgs) {
         this.service = service;
+        this.msgs = msgs;
     }
 
     @PostMapping

@@ -41,7 +41,7 @@ public class ExpenseService {
     public void deleteExpense(Long id) {
         Optional<Expense> getRes = getExpenseById(id);
         if (getRes.isEmpty()) {
-            throw new IllegalArgumentException();
+            return;
         }
         Expense expense = getRes.get();
         expenseRepository.deleteById(id);

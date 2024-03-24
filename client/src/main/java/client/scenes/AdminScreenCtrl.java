@@ -2,8 +2,12 @@ package client.scenes;
 
 import client.language.LanguageSwitch;
 import client.utils.SceneController;
+import client.utils.communicators.implementations.EventCommunicator;
+import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.event.changes.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,9 +57,31 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
     private ObservableList<Event> shownEvents;
 
+    private final IEventCommunicator eventCommunicator;
+
     @Inject
-    public AdminScreenCtrl(MainCtrl mainCtrl) {
+    public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator) {
         this.mainCtrl = mainCtrl;
+        this.eventCommunicator = eventCommunicator;
+    }
+
+    private void handleEventCreated(EventCreated eventCreated) {
+        Event event = eventCreated.getEvent();
+        shownEvents.add(event);
+        System.out.println("websockets: event created");
+    }
+
+    private void handleEventModified(EventModified eventModified) {
+        Event event = eventModified.getEvent();
+        shownEvents.removeIf(e -> e.getId() == event.getId());
+        shownEvents.add(event);
+        System.out.println("websockets: event created");
+    }
+
+    private void handleEventDeleted(EventDeleted eventDeleted) {
+        Event event = eventDeleted.getEvent();
+        shownEvents.removeIf(e -> e.getId() == event.getId());
+        System.out.println("websockets: event deleted");
     }
 
     @Override
@@ -65,6 +91,23 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         creationRadioButton.setToggleGroup(orderByToggle);
         activityRadioButton.setToggleGroup(orderByToggle);
         eventListView.setCellFactory(new AdminScreenCtrl.EventCellFactory());
+
+        shownEvents = FXCollections.observableArrayList(eventCommunicator.getAll());
+        eventListView.setItems(shownEvents);
+
+        eventCommunicator.registerForWebSocketMessages(
+                "/topic/events",
+                EventChange.class, change -> {
+            if (change instanceof EventCreated) {
+                handleEventCreated((EventCreated)change);
+            }
+            if (change instanceof EventModified) {
+                handleEventModified((EventModified)change);
+            }
+            if (change instanceof EventDeleted) {
+                handleEventDeleted((EventDeleted)change);
+            }
+        });
     }
 
     @Override

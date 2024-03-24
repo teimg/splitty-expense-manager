@@ -36,6 +36,7 @@ public class EventService {
         event = save(event);
         event.setInviteCode(generateInviteCode(event.getId()));
         event = save(event);
+        eventChangeService.sendChange(new EventCreated(event));
         return event;
     }
 
@@ -71,7 +72,7 @@ public class EventService {
     public void delete(Long id) {
         Optional<Event> getRes = getById(id);
         if (getRes.isEmpty()) {
-            throw new IllegalArgumentException();
+            return;
         }
         Event event = getRes.get();
         eventChangeService.sendChange(new EventDeleted(event));
