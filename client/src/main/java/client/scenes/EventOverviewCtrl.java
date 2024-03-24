@@ -222,6 +222,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         expenseSelectorAll.setSelected(true);
         // Populate expense list
         expensesList.setCellFactory(new ExpenseCellFactory());
+        startEventUpdatesLongPolling();
     }
 
     public void loadEvent(Event event) {
@@ -386,6 +387,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
             System.out.println("UI has been updated with new event data.");
         });
+    }
+
+    public void stop() {
+        if (longPollingTask != null) {
+            longPollingTask.cancel();
+        }
     }
 
 }
