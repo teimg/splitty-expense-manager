@@ -55,6 +55,19 @@ public class EventCommunicator implements IEventCommunicator {
                     .get(Event.class);
     }
 
+    public Event checkForEventUpdates(long id) {
+        try {
+            return ClientBuilder.newClient()
+                    .target(origin).path("api/event/checkUpdates/{id}")
+                    .resolveTemplate("id", id)
+                    .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                    .get(Event.class);
+        } catch (Exception e) {
+            System.err.println("Error checking for event updates: " + e.getMessage());
+            return null; // Return null in case of error to handle it gracefully
+        }
+    }
+
     @Override
     public Event updateEvent(Event event) {
         return null;
