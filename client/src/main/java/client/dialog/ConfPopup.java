@@ -2,9 +2,7 @@ package client.dialog;
 
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 
 public class ConfPopup extends Alert {
 
@@ -12,7 +10,7 @@ public class ConfPopup extends Alert {
         super(AlertType.CONFIRMATION, question , ButtonType.CANCEL, ButtonType.YES);
     }
 
-    public static ConfPopup CREATE(String question){
+    public static ConfPopup create(String question){
         return new ConfPopup(question);
     }
 
