@@ -439,7 +439,7 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
     }
 
     public Tag getTag(){
-        Tag res = whichTagSelector.getCurrentTag(whoPaidField.getValue());
+        Tag res = whichTagSelector.getCurrentTag(tagField.getValue());
 
         if(res == null){
             throw new IllegalArgumentException("tag");

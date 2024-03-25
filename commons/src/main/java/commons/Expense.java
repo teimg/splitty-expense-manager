@@ -31,7 +31,7 @@ public class Expense {
     @ManyToMany
     private List<Participant> debtors;
     private LocalDate date;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Tag tag;
 
     /**
