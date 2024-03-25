@@ -19,6 +19,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import jakarta.ws.rs.core.Response;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -68,6 +69,26 @@ public class EventCommunicator implements IEventCommunicator {
                     .resolveTemplate("inviteCode", inviteCode)
                     .request(APPLICATION_JSON).accept(APPLICATION_JSON)
                     .get(Event.class);
+    }
+
+    public Event checkForEventUpdates(long id) {
+        try {
+            Response response = ClientBuilder.newClient()
+                    .target(origin).path("api/event/checkUpdates/{id}")
+                    .resolveTemplate("id", id)
+                    .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                    .get();
+
+            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+                return response.readEntity(Event.class);
+            } else {
+                // No updates or event not found, handle accordingly
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println("Error checking for event updates: " + e.getMessage());
+            return null; // Return null in case of error to handle it gracefully
+        }
     }
 
     @Override

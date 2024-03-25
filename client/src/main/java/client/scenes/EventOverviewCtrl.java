@@ -11,8 +11,10 @@ import commons.Event;
 import commons.Expense;
 
 import commons.Participant;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,6 +39,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private Event event;
 
     private Participant selectedPayer;
+
+    private Task<Void> longPollingTask = null;
+    private Thread pollingThread = null;
 
     private class ExpenseCellFactory
             implements Callback<ListView<Expense>, ListCell<Expense>> {
@@ -160,6 +165,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         this.mainCtrl = mainCtrl;
     }
 
+
+
     @Override
     public void setLanguage() {
         inviteCodeLabel.setText(mainCtrl.getTranslator().getTranslation(
@@ -232,6 +239,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
         inviteCode.setText(event.getInviteCode());
+        stopEventUpdatesLongPolling();
+        startEventUpdatesLongPolling(event.getId());
     }
 
     public void copyInviteCode() {
@@ -315,6 +324,76 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
     public void handleStatistics(ActionEvent actionEvent) {
         mainCtrl.showStatistics(event);
+    }
+
+    private void startEventUpdatesLongPolling(long eventId) {
+        longPollingTask = new Task<Void>() {
+            @Override
+            protected Void call() {
+                try {
+                    while (!isCancelled()) {
+                        Event updatedEvent = eventCommunicator.checkForEventUpdates(eventId);
+                        if (updatedEvent != null && !updatedEvent.equals(event)) {
+                            updateUI(updatedEvent);
+                        }
+                        Thread.sleep(5000); // 5 seconds
+                    }
+                } catch (InterruptedException e) {
+                    // Handle if the thread is interrupted
+                }
+                return null;
+            }
+        };
+
+        pollingThread = new Thread(longPollingTask);
+        pollingThread.setDaemon(true);
+        pollingThread.start();
+    }
+
+    private void stopEventUpdatesLongPolling() {
+        if (longPollingTask != null) {
+            longPollingTask.cancel();
+            pollingThread.interrupt();
+        }
+    }
+
+    /**
+     * Updates the UI components with the data from the updated event.
+     * This method is designed to be run on the JavaFX Application Thread.
+     * @param updatedEvent The updated event object containing new data.
+     */
+    private void updateUI(Event updatedEvent) {
+        if (updatedEvent == null) {
+            System.err.println("The updated event is null, cannot update UI.");
+            return;
+        }
+
+        // Ensure UI updates are run on the JavaFX Application Thread
+        Platform.runLater(() -> {
+            // Update event title
+            eventTitle.setText(updatedEvent.getName());
+
+            // Update participants list
+            participantsList.setText(String.join(", ", updatedEvent.getParticipants()
+                    .stream().map(Participant::getName).toList()));
+
+            // Update expenses list
+            shownExpenses.clear();
+            shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
+            expensesList.setItems(shownExpenses);
+
+            // Update other UI components as needed
+            inviteCode.setText(updatedEvent.getInviteCode());
+
+            // Replace the local event object with the updated one
+            this.event = updatedEvent;
+
+            System.out.println("UI has been updated with new event data.");
+        });
+    }
+
+    public void stop() {
+        stopEventUpdatesLongPolling();
     }
 
 }
