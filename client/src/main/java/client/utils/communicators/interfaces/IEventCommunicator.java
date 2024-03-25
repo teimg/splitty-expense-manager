@@ -2,6 +2,9 @@ package client.utils.communicators.interfaces;
 
 import commons.Event;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 public interface IEventCommunicator {
 
     Event createEvent(Event event);
@@ -36,4 +39,8 @@ public interface IEventCommunicator {
      */
     Event deleteEvent(long id);
 
+    List<Event> getAll();
+
+    <T> void registerForWebSocketMessages(String dest, Class<T> type, Consumer<T> consumer);
+    Event checkForEventUpdates(long id);
 }
