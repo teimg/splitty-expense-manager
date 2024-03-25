@@ -21,6 +21,9 @@ class ParticipantServiceTest {
     @Mock
     ParticipantRepository mockedRepo;
 
+    @Mock
+    EventService mockedEventService;
+
     ParticipantService ps;
 
     Participant participant;
@@ -30,7 +33,7 @@ class ParticipantServiceTest {
 
     @BeforeEach
     public void setup(){
-        ps = new ParticipantService(mockedRepo);
+        ps = new ParticipantService(mockedRepo, mockedEventService);
         participant = new Participant("Henk");
         participant.setEvent(new Event());
 
