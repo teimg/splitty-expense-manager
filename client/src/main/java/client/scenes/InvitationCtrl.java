@@ -1,19 +1,40 @@
 package client.scenes;
 
+import client.ModelView.InvitationMv;
+import client.dialog.ConfPopup;
+import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InvitationCtrl implements Initializable, LanguageSwitch, SceneController {
+
+    @FXML
+    private ListView<String> emailsField;
+
+    @FXML
+    private Button abortBtn;
+
+    @FXML
+    private Button emailInputBtn;
+
+    @FXML
+    private TextField emailInputField;
+
+    @FXML
+    private Button clearBtn;
 
     @FXML
     private Text inviteLabel;
@@ -30,13 +51,54 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
     @FXML
     private TextArea addressesArea;
 
-    private Event event;
+//    private Event event;
 
     private final MainCtrl mainCtrl;
 
+    private final InvitationMv invitationMv;
+
+    private class  EmailCell extends ListCell<String>{
+        private HBox container;
+        private Label email;
+        private Pane filler;
+        private Button deleteButton;
+
+        public EmailCell() {
+            super();
+            container = new HBox();
+            email = new Label();
+            filler = new Pane();
+            deleteButton = new Button("Delete");
+            HBox.setHgrow(filler, Priority.ALWAYS);
+            container.getChildren().addAll(email, filler, deleteButton);
+        }
+
+        @Override
+        protected void updateItem(String email, boolean empty) {
+            super.updateItem(email, empty);
+
+            if(empty){
+                setGraphic(null);
+                return;
+            }
+
+            this.email.setText(email);
+
+            this.deleteButton.setOnAction(e ->{
+                emailsField.getItems().remove(getIndex());
+//                emailsField.getItems().removeLast();
+            });
+
+            setGraphic(container);
+
+        }
+    }
+
     @Inject
-    public InvitationCtrl(MainCtrl mainCtrl) {
+    public InvitationCtrl(MainCtrl mainCtrl, InvitationMv invitationMv) {
         this.mainCtrl = mainCtrl;
+        this.invitationMv = invitationMv;
+
     }
 
     /**
@@ -50,35 +112,86 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        emailInputField.setOnKeyReleased(e ->{
+            if (e.getCode() == KeyCode.ENTER){
+                emailAddPressed();
+            }
+        });
+        new EmailCell();
+
+        emailsField.setCellFactory(listView -> new EmailCell());
+        initBindings();
 
     }
+
+    private void initBindings() {
+        emailsField.itemsProperty().bindBidirectional(invitationMv.emailsProperty());
+        emailInputField.textProperty().bindBidirectional(invitationMv.emailEnteredProperty());
+    }
+
 
     /**
      * Sets the Event to invite Participants to.
      * @param event Event to use
      */
     public void loadEvent(Event event) {
-        this.event = event;
+        invitationMv.loadEvent(event);
         eventTitle.setText(mainCtrl.getTranslator().getTranslation(
-                "Invitation.Title-label") + " " + event.getName());
+            "Invitation.Title-label") + " " + event.getName());
         inviteMessage.setText(mainCtrl.getTranslator().getTranslation(
-                "Invitation.Invite-Message-label") + " " + event.getInviteCode());
+            "Invitation.Invite-Message-label") + " " + event.getInviteCode());
     }
 
     /**
      * Called on press of the Send Invites button.
      */
-    public void handleSendInvites() {}
+    public void handleSendInvites() {
+        invitationMv.handleSendInvites();
+    }
 
     @Override
     public void setLanguage() {
         inviteLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "Invitation.Invite-label"));
+            "Invitation.Invite-label"));
         sendInviteButton.setText(mainCtrl.getTranslator().getTranslation(
-                "Invitation.Send-Invite-Button"));
+            "Invitation.Send-Invite-Button"));
         eventTitle.setText(mainCtrl.getTranslator().getTranslation(
-                "Invitation.Title-label") + " " + event.getName());
+            "Invitation.Title-label") + " " + invitationMv.getEvent().getName());
         inviteMessage.setText(mainCtrl.getTranslator().getTranslation(
-                "Invitation.Invite-Message-label") + " " + event.getInviteCode());
+            "Invitation.Invite-Message-label") + " " + invitationMv.getEvent().getInviteCode());
     }
+
+    public void clearButtonPressed() {
+        boolean res = ConfPopup
+            .create("Do you want to clear everything")
+            .display()
+            .isConfirmed();
+        if(res){
+            invitationMv.clear();
+        }
+    }
+
+    public void abortButtonPressed() {
+        mainCtrl.showEventOverview(this.invitationMv.getEvent());
+    }
+
+    public void emailAddPressed() {
+        try {
+            invitationMv.emailAdd();
+
+        }catch (Exception e){
+            handleException(e);
+        }
+
+    }
+
+    void handleException(Exception e){
+        Popup.TYPE type = Popup.TYPE.ERROR;
+
+        String msg = mainCtrl.getTranslator().getTranslation(
+            "Popup." + e.getMessage()
+        );
+        (new Popup(msg, type)).show();
+    }
+
 }
