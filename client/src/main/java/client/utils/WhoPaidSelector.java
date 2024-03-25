@@ -17,7 +17,7 @@ public class WhoPaidSelector  {
 
     public List<String> query(String query){
         if(query == null || query.isEmpty()){
-            return participants.stream().map(x -> x.getName()).toList();
+            return participants.stream().map(Participant::getName).toList();
         }
 
         optionalParticipants = new ArrayList<>();

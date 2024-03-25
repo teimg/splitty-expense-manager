@@ -24,6 +24,7 @@ import client.utils.SceneWrapper;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Participant;
+import commons.Tag;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -241,6 +242,11 @@ public class MainCtrl {
     public void showAdminScreen() {
         show("AdminScreen");
         this.currentCtrl.getValue().setLanguage();
+    }
+
+    public void showTagScreen(Event event, Tag tag) {
+        show("TagScreen");
+        ((TagScreenCtrl)(this.currentCtrl.getValue())).loadInfo(event, tag);
     }
 
     public Stage getPrimaryStage(){

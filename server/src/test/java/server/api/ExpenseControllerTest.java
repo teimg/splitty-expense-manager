@@ -43,7 +43,7 @@ public class ExpenseControllerTest {
         participants.add(new Participant("Shakira"));
         event = new Event("Jackson", "lfy2024",
                 participants, new Date(2023,05,17),new Date(2023,05,26));
-        expense = new Expense(10086, event, "Lunch", 60.0, new Participant("Jackson"), participants, LocalDate.now());
+        expense = new Expense(event, "Lunch", 60.0, new Participant("Jackson"), participants, LocalDate.now(), new Tag());
     }
     @Test
     public void addExpenseTest() {
@@ -70,7 +70,7 @@ public class ExpenseControllerTest {
 
     @Test
     public void updateExpenseTest() {
-        Expense updatedExpense = new Expense(1, null, "Dinner", 25.0, null, new ArrayList<>(), LocalDate.now());
+        Expense updatedExpense = new Expense(null, "Dinner", 25.0, null, new ArrayList<>(), LocalDate.now(), null);
         when(expenseService.getExpenseById(1L)).thenReturn(Optional.of(expense));
         when(expenseService.saveExpense(expense)).thenReturn(updatedExpense);
 

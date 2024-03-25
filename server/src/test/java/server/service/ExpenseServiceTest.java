@@ -44,7 +44,7 @@ public class ExpenseServiceTest {
         participants.add(new Participant("Shakira"));
         event = new Event("Jackson", "lfy2024",
                 participants, new Date(2023,05,17),new Date(2023,05,26));
-        expense = new Expense(10086, event, "Lunch", 60.0, new Participant("Jackson"), participants, LocalDate.now());
+        expense = new Expense(event, "Lunch", 60.0, new Participant("Jackson"), participants, LocalDate.now(), new Tag());
     }
 
     @Test
