@@ -136,6 +136,12 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
             "AddEditExpense.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
             "AddEditExpense.Add-Button"));
+        addTagButton.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.AddTag-Button"));
+        editTagButton.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.EditTag-Button"));
+        deleteTagButton.setText(mainCtrl.getTranslator().getTranslation(
+                "AddEditExpense.DeleteTag-Button"));
     }
 
     @Inject
@@ -207,7 +213,9 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
 
     public void setEdit(){
         whoPaidField.setValue(this.expense.getPayer().getName());
-        tagField.setValue(this.expense.getTag().getName());
+        if (expense.getTag() != null) {
+            tagField.setValue(this.expense.getTag().getName());
+        }
         priceField.setText(Double.toString(this.expense.getAmount()));
         evenlyCheckbox.setSelected(false);
 
