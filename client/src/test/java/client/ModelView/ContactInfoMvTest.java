@@ -7,6 +7,8 @@ import commons.Event;
 import commons.Participant;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
+import javafx.event.ActionEvent;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +33,13 @@ public class ContactInfoMvTest {
     @BeforeEach
     void setup() {
         contactInfoMv = new ContactInfoMv(eventCommunicator, participantCommunicator);
+    }
+
+    @AfterEach
+    void resetter() {
+        reset(participantCommunicator);
+        reset(eventCommunicator);
+        contactInfoMv.clearFields();
     }
 
     @Test
@@ -227,11 +236,31 @@ public class ContactInfoMvTest {
 
     @Test
     void addButtonPressedNullParticipant() {
+        Event event = new Event();
+        contactInfoMv.loadInfo(event, null);
+        contactInfoMv.emailProperty().setValue("validemail@mail.com");
+        contactInfoMv.nameProperty().setValue("Real Name");
+        contactInfoMv.bicProperty().setValue("BIC123");
+        contactInfoMv.ibanProperty().setValue("IBAN123");
 
+        assertDoesNotThrow(() -> contactInfoMv.addButtonPressed(new ActionEvent()));
+        verify(participantCommunicator).createParticipant(eq(event), eq("Real Name"),
+                eq("validemail@mail.com"), any(BankAccount.class));
     }
 
     @Test
     void addButtonPressedSuccess() {
+        Event event = new Event();
+        Participant participant = new Participant();
 
+        contactInfoMv.loadInfo(event, participant);
+
+        contactInfoMv.emailProperty().setValue("valid_email@example.com");
+        contactInfoMv.nameProperty().setValue("Real NAme");
+        contactInfoMv.bicProperty().setValue("BIC123");
+        contactInfoMv.ibanProperty().setValue("IBAN123");
+
+        assertDoesNotThrow(() -> contactInfoMv.addButtonPressed(new ActionEvent()));
+        verify(participantCommunicator).updateParticipant(eq(participant));
     }
 }

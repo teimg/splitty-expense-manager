@@ -27,7 +27,7 @@ public class ContactInfoMv {
     private final StringProperty name;
 
     private Event event;
-    private Participant participant;
+    Participant participant;
 
 
     @Inject
