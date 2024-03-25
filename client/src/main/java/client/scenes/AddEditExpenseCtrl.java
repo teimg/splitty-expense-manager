@@ -26,7 +26,6 @@ import java.util.List;
 
 public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
 
-
     @FXML
     private Label titleLabel;
 
@@ -80,6 +79,15 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
 
     @FXML
     private ComboBox<String> whoPaidField;
+
+    @FXML
+    private Button deleteTagButton;
+
+    @FXML
+    private Button editTagButton;
+
+    @FXML
+    private Button addTagButton;
 
     private ExpenseBuilder expenseBuilder;
 
@@ -246,6 +254,8 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
 
     public void initTag(){
         this.whichTagSelector = new WhichTagSelector(this.tagCommunicator.getAllTags());
+        this.tagField.setValue(null);
+        tagField.getItems().clear();
         this.tagField.setVisibleRowCount(3);
         tagField.getItems().addAll(
                 this.tagCommunicator.getAllTags()
@@ -489,6 +499,21 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
 
         return null;
 
+    }
+
+    public void handleDeleteTag(ActionEvent actionEvent) {
+        this.tagCommunicator.deleteTag(getTag().getId());
+        initTag();
+    }
+
+    public void handleEditTag(ActionEvent actionEvent) {
+        // TODO: Decide how to edit tags
+        initTag();
+    }
+
+    public void handleAddTag(ActionEvent actionEvent) {
+        // TODO: Decide how to add tags
+        initTag();
     }
 
 
