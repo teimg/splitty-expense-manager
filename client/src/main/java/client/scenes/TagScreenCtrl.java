@@ -109,6 +109,15 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch {
 
     @Override
     public void setLanguage() {
-
+        titleLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "TagScreen.Title-label"));
+        tagNameLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "TagScreen.TagName-label"));
+        tagColorLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "TagScreen.TagColor-label"));
+        backButton.setText(mainCtrl.getTranslator().getTranslation(
+                "TagScreen.Back-Button"));
+        submitButton.setText(mainCtrl.getTranslator().getTranslation(
+                "TagScreen.Submit-Button"));
     }
 }
