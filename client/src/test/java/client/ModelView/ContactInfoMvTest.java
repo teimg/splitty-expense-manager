@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ContactInfoMvTest {
@@ -171,27 +170,59 @@ public class ContactInfoMvTest {
 
     @Test
     void isValidFalse() {
-
+        assertFalse(contactInfoMv.isValidEmail("invalid_email.com"));
     }
 
     @Test
     void isValidTrue() {
-
+        assertTrue(contactInfoMv.isValidEmail("valid_email@example.com"));
     }
 
     @Test
-    void validInputFalse() {
+    void validInputEmptyName() {
+        contactInfoMv.emailProperty().setValue("valid_email@mail.com");
+        contactInfoMv.nameProperty().setValue("");
+        contactInfoMv.bicProperty().setValue("BIC123");
+        contactInfoMv.ibanProperty().setValue("IBAN123");
+        assertFalse(contactInfoMv.validInput());
+    }
 
+    @Test
+    void validInputEmptyBic() {
+        contactInfoMv.nameProperty().setValue("Actual Name");
+        contactInfoMv.bicProperty().setValue("");
+        contactInfoMv.emailProperty().setValue("valid_email@mail.com");
+        contactInfoMv.ibanProperty().setValue("IBAN123");
+
+        assertFalse(contactInfoMv.validInput());
+    }
+
+    @Test
+    void validInputInvalidEmail() {
+        contactInfoMv.nameProperty().setValue("Actual Name");
+        contactInfoMv.ibanProperty().setValue("IBAN123");
+        contactInfoMv.bicProperty().setValue("BIC123");
+        contactInfoMv.emailProperty().setValue("invalid_email.com");
+        assertFalse(contactInfoMv.validInput());
     }
 
     @Test
     void validInputTrue() {
-
+        contactInfoMv.nameProperty().setValue("Actual Name");
+        contactInfoMv.ibanProperty().setValue("IBAN123");
+        contactInfoMv.bicProperty().setValue("BIC123");
+        contactInfoMv.emailProperty().setValue("valid_email@lala.com");
+        assertTrue(contactInfoMv.validInput());
     }
 
     @Test
     void addButtonPressedIllegalArg() {
+        Event event = new Event();
+        Participant participant = new Participant();
+        contactInfoMv.loadInfo(event, participant);
 
+        contactInfoMv.emailProperty().setValue("");
+        assertThrows(IllegalArgumentException.class, () -> contactInfoMv.addButtonPressed(null));
     }
 
     @Test
@@ -203,6 +234,4 @@ public class ContactInfoMvTest {
     void addButtonPressedSuccess() {
 
     }
-
-
 }
