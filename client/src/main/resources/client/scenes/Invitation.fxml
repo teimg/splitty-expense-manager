@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.InvitationCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.InvitationCtrl">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
@@ -27,25 +22,38 @@
                         </Text>
                         <Text fx:id="inviteMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Give people the folloing invite code: CODE" />
                         <Text fx:id="inviteLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Invite the following people by email (one address per line):" />
-                        <ScrollPane prefHeight="135.0" prefWidth="427.0">
-                           <content>
-                              <VBox prefHeight="139.0" prefWidth="429.0" />
-                           </content>
-                        </ScrollPane>
+                        <ListView fx:id="emailsField" prefHeight="139.0" prefWidth="450.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></ListView>
                         <HBox prefHeight="32.0" prefWidth="450.0">
                            <children>
-                              <TextField prefHeight="32.0" prefWidth="205.0" />
-                              <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="105.0" text="Add email" />
+                              <Button fx:id="clearBtn" mnemonicParsing="false" onAction="#clearButtonPressed" prefHeight="32.0" prefWidth="72.0" text="Clear" />
+                              <Separator prefHeight="14.0" prefWidth="65.0" />
+                              <TextField fx:id="emailInputField" prefHeight="32.0" prefWidth="205.0" />
+                              <Button fx:id="emailInputBtn" mnemonicParsing="false" onAction="#emailAddPressed" prefHeight="32.0" prefWidth="105.0" text="Add email" />
                            </children>
                            <VBox.margin>
                               <Insets bottom="20.0" top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <Button fx:id="sendInviteButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handleSendInvites" prefHeight="32.0" prefWidth="466.0" text="Send Invites">
+                        <HBox>
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
-                        </Button>
+                           <children>
+                              <Button fx:id="abortBtn" mnemonicParsing="false" onAction="#abortButtonPressed" prefHeight="32.0" prefWidth="198.0" text="Go Back">
+                                 <HBox.margin>
+                                    <Insets right="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="sendInviteButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handleSendInvites" prefHeight="32.0" prefWidth="220.0" text="Send Invites">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                   <HBox HBox.hgrow="ALWAYS" />
