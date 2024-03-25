@@ -67,7 +67,9 @@ public class TagController {
             if (gotTag.isPresent()) {
                 Tag toBeUpdated = gotTag.get();
                 toBeUpdated.setName(tag.getName());
-                toBeUpdated.setRgb(tag.getRgb());
+                toBeUpdated.setRed(tag.getRed());
+                toBeUpdated.setGreen(tag.getGreen());
+                toBeUpdated.setBlue(tag.getBlue());
                 Tag updated = service.save(toBeUpdated);
                 return ResponseEntity.ok(updated);
             }

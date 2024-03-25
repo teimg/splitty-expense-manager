@@ -28,13 +28,13 @@ public class ExpenseTest {
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
         this.expenseOne = new Expense(event, "Food", 30.5,
                 participant1, debtors, LocalDate.of(2024, Month.APRIL, 1),
-                new Tag("Test", 0));
+                new Tag("Test", 0, 0, 0));
         this.expenseTwo = new Expense(event, "Food", 31.5,
                 participant2, debtors, LocalDate.of(2024, Month.APRIL, 2),
-                new Tag("Test", 0));
+                new Tag("Test", 0, 0, 0));
         this.expenseThree = new Expense(event, "Food", 30.5,
                 participant1, debtors, LocalDate.of(2024, Month.APRIL, 1),
-                new Tag("Test", 0));
+                new Tag("Test", 0, 0, 0));
         expenseOne.setId(1);
         expenseThree.setId(1);
         this.event = event;

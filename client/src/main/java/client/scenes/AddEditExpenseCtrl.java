@@ -507,12 +507,12 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
     }
 
     public void handleEditTag(ActionEvent actionEvent) {
-        // TODO: Decide how to edit tags
+        mainCtrl.showTagScreen(event, getTag());
         initTag();
     }
 
     public void handleAddTag(ActionEvent actionEvent) {
-        // TODO: Decide how to add tags
+        mainCtrl.showTagScreen(event, null);
         initTag();
     }
 
