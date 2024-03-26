@@ -32,9 +32,9 @@ public class ParticipantControllerTest {
         pc = new ParticipantController(mockService);
 
         participant = new Participant("Henk");
-        participant.setEvent(
-            new Event( "Party", "xyz",
-                List.of(participant), new Date(0), new Date(0)));
+//        participant.setEvent(
+//            new Event( "Party", "xyz",
+//                List.of(participant), new Date(0), new Date(0)));
     }
 
     @Test

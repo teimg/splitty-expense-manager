@@ -22,7 +22,7 @@ public class ExpenseService {
 
     public Expense saveExpense(Expense expense) {
         expense = expenseRepository.saveAndFlush(expense);
-        eventService.updateLastActivity(expense.getEvent().getId());
+        eventService.updateLastActivity(expense.getEventId());
         return expense;
     }
 
@@ -45,6 +45,6 @@ public class ExpenseService {
         }
         Expense expense = getRes.get();
         expenseRepository.deleteById(id);
-        eventService.updateLastActivity(expense.getEvent().getId());
+        eventService.updateLastActivity(expense.getEventId());
     }
 }

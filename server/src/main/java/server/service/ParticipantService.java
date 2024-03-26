@@ -34,7 +34,7 @@ public class ParticipantService {
 
     public Participant save(Participant participant) {
         participant = repo.save(participant);
-        eventService.updateLastActivity(participant.getEvent().getId());
+        eventService.updateLastActivity(participant.getEventId());
         return participant;
     }
 
@@ -60,7 +60,7 @@ public class ParticipantService {
         
         Participant participant = getById(id);
         participant.setName(newDetails.getName());
-        participant.setEvent(newDetails.getEvent());
+        participant.setEventId(newDetails.getEventId());
         participant.setBankAccount(newDetails.getBankAccount());
         participant.setEmail(newDetails.getEmail());
         return save(participant);
@@ -80,7 +80,7 @@ public class ParticipantService {
         }
         Participant participant = participantData.get();
         repo.deleteById(id);
-        eventService.updateLastActivity(participant.getEvent().getId());
+        eventService.updateLastActivity(participant.getEventId());
     }
 
     /**
@@ -121,7 +121,7 @@ public class ParticipantService {
      * @return true if invalid
      */
     private static boolean isInvalid(Participant participant) {
-        return isNullOrEmpty(participant.getName()) || participant.getEvent() == null;
+        return isNullOrEmpty(participant.getName()) || participant.getEventId() == null;
     }
 
 }
