@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ExpenseBuilder {
 
     private int id;
-    private Event event;
+    private Long eventId;
     private String purchase;
     private long amount;
     private Participant payer;
@@ -26,15 +26,15 @@ public class ExpenseBuilder {
     public Expense build(){
         double expenseAmount = amount / 100.0;
 
-        return  new Expense(event, purchase, expenseAmount, payer, debtors, date, tag);
+        return  new Expense(eventId, purchase, expenseAmount, payer, debtors, date, tag);
     }
 
     public int getId() {
         return id;
     }
 
-    public Event getEvent() {
-        return event;
+    public Long getEventId() {
+        return eventId;
     }
 
     public String getPurchase() {
@@ -61,8 +61,8 @@ public class ExpenseBuilder {
         this.id = id;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public void setPurchase(String purchase) {
@@ -99,7 +99,7 @@ public class ExpenseBuilder {
         if (o == null || getClass() != o.getClass()) return false;
         ExpenseBuilder that = (ExpenseBuilder) o;
         return getId() == that.getId() && getAmount() == that.getAmount()
-            && Objects.equals(getEvent(), that.getEvent())
+            && Objects.equals(getEventId(), that.getEventId())
             && Objects.equals(getPurchase(), that.getPurchase())
             && Objects.equals(getPayer(), that.getPayer())
             && Objects.equals(getDebtors(), that.getDebtors())
@@ -108,7 +108,7 @@ public class ExpenseBuilder {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEvent(),
+        return Objects.hash(getId(), getEventId(),
             getPurchase(), getAmount(),
             getPayer(), getDebtors(), getDate());
     }
@@ -117,7 +117,7 @@ public class ExpenseBuilder {
     public String toString() {
         final StringBuilder sb = new StringBuilder("ExpenseBuilder{");
         sb.append("id=").append(id);
-        sb.append(", event=").append(event);
+        sb.append(", eventId=").append(eventId);
         sb.append(", payer=").append(payer);
         sb.append(", purchase='").append(purchase).append('\'');
         sb.append(", amount=").append(amount);

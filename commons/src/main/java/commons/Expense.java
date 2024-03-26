@@ -33,20 +33,9 @@ public class Expense {
     @ManyToOne(cascade = CascadeType.ALL)
     private Tag tag;
 
-    /**
-     * Constructs a new Expense with the specified details.
-     *
-     * @param event    the event associated with the expense
-     * @param purchase the description of the purchase
-     * @param amount   the amount of the expense
-     * @param payer    the participant who paid for the expense
-     * @param debtors  the list of participants who owe a share of the expense
-     * @param date     the date that the expense was paid
-     * @param tag      the tag for the expense
-     */
-    public Expense(Event event, String purchase, double amount,
+    public Expense(Long eventId, String purchase, double amount,
                    Participant payer, List<Participant> debtors, LocalDate date, Tag tag) {
-        this.event = event;
+        this.eventId = eventId;
         this.purchase = purchase;
         this.amount = amount;
         this.payer = payer;
@@ -54,6 +43,7 @@ public class Expense {
         this.date = date;
         this.tag = tag;
     }
+
 
     /**
      * No arg constructor
