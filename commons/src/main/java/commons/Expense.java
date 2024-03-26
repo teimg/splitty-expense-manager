@@ -35,7 +35,6 @@ public class Expense {
     /**
      * Constructs a new Expense with the specified details.
      *
-     * @param id       the unique identifier for the expense
      * @param event    the event associated with the expense
      * @param purchase the description of the purchase
      * @param amount   the amount of the expense
@@ -43,7 +42,7 @@ public class Expense {
      * @param debtors  the list of participants who owe a share of the expense
      * @param date     the date that the expense was paid
      */
-    public Expense(int id, Event event, String purchase, double amount,
+    public Expense(Event event, String purchase, double amount,
                    Participant payer, List<Participant> debtors, LocalDate date) {
         this.id = id;
         this.event = event;

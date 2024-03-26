@@ -25,7 +25,7 @@ public class ExpenseBuilder {
     public Expense build(){
         double expenseAmount = amount / 100.0;
 
-        return  new Expense(id, event, purchase, expenseAmount, payer, debtors, date);
+        return  new Expense(event, purchase, expenseAmount, payer, debtors, date);
     }
 
     public int getId() {

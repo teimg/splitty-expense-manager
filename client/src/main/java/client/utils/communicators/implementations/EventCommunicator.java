@@ -57,7 +57,11 @@ public class EventCommunicator implements IEventCommunicator {
 
     @Override
     public Event updateEvent(Event event) {
-        return null;
+        return ClientBuilder.newClient()
+            .target(origin).path("api/event/update/{id}")
+            .resolveTemplate("id", event.getId())
+            .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+            .put(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     @Override
