@@ -1,8 +1,8 @@
 package server.api;
 
 import commons.Event;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.EventService;
 
@@ -13,17 +13,18 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
-
-    @Autowired
     private final EventService service;
+    private final SimpMessagingTemplate msgs;
 
     /**
      * constructor for event controller
+     *
      * @param service event service
+     * @param msgs
      */
-    @Autowired
-    public EventController(EventService service) {
+    public EventController(EventService service, SimpMessagingTemplate msgs) {
         this.service = service;
+        this.msgs = msgs;
     }
 
     @PostMapping
@@ -33,6 +34,29 @@ public class EventController {
             return ResponseEntity.ok(savedEvent);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * Checks for updates to an event by its ID.
+     * @param id The ID of the event.
+     * @return ResponseEntity with the updated event if there's an update, or an empty body if not.
+     */
+    @GetMapping("/checkUpdates/{id}")
+    public ResponseEntity<Event> checkForUpdates(@PathVariable long id) {
+        Optional<Event> currentEvent = service.getById(id);
+        if (currentEvent.isPresent()) {
+            Event event = currentEvent.get();
+            // Example logic: return the event if it has been updated within the last 5 minutes.
+            long lastUpdateTime = event.getLastActivity().getTime();
+            long now = new Date().getTime();
+            if (now - lastUpdateTime < 300000) { // 5 minutes in milliseconds
+                return ResponseEntity.ok(event);
+            } else {
+                return ResponseEntity.noContent().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -92,29 +116,9 @@ public class EventController {
             e.setName(newEvent.getName());
             e.setCreationDate(newEvent.getCreationDate());
             e.setInviteCode(newEvent.getInviteCode());
-            e.setLastActivity(newEvent.getLastActivity());
 
-            Event updated = service.save(e);
-            return ResponseEntity.ok(updated);
-        } else return ResponseEntity.notFound().build();
-    }
+            Event updated = service.update(e);
 
-    /**
-     * updates an existing events last activity field
-     * @param id the ID of the event for the last activity to be updated
-     * @param newLastActivity the Date that the last activity should be updated to
-     * @return the updated event if the operation was successful,
-     * or a {@link ResponseEntity} with notFound status
-     */
-    @PutMapping("/update/lastactivity/{id}")
-    public ResponseEntity<Event>
-    updateLastActivity(@PathVariable long id, @RequestBody Date newLastActivity) {
-        Optional<Event> event = service.getById(id);
-        if (event.isPresent()) {
-            Event e = event.get();
-            e.setLastActivity(newLastActivity);
-
-            Event updated = service.save(e);
             return ResponseEntity.ok(updated);
         } else return ResponseEntity.notFound().build();
     }

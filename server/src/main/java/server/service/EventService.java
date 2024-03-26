@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.Event;
+import commons.event.changes.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,15 @@ import java.util.Optional;
 public class EventService {
 
     private final EventRepository repo;
+    private final EventChangeService eventChangeService;
 
     @Autowired
-    public EventService(EventRepository repo) {
+    public EventService(EventRepository repo, EventChangeService eventChangeService) {
         this.repo = repo;
+        this.eventChangeService = eventChangeService;
     }
 
-    public Event save(Event event) {
+    private Event save(Event event) {
         return repo.saveAndFlush(event);
     }
 
@@ -30,9 +33,17 @@ public class EventService {
         }
         event.setCreationDate(new Date());
         event.setLastActivity(event.getCreationDate());
-        event = repo.save(event);
+        event = save(event);
         event.setInviteCode(generateInviteCode(event.getId()));
-        event = repo.save(event);
+        event = save(event);
+        eventChangeService.sendChange(new EventCreated(event));
+        return event;
+    }
+
+    public Event update(Event event) {
+        event.setLastActivity(new Date());
+        event = save(event);
+        eventChangeService.sendChange(new EventModified(event));
         return event;
     }
 
@@ -59,7 +70,21 @@ public class EventService {
     }
 
     public void delete(Long id) {
-        repo.deleteById(id);
+        Optional<Event> getRes = getById(id);
+        if (getRes.isEmpty()) {
+            return;
+        }
+        Event event = getRes.get();
+        eventChangeService.sendChange(new EventDeleted(event));
+        repo.delete(event);
     }
 
+    public void updateLastActivity(Long id) {
+        Optional<Event> getRes = getById(id);
+        if (getRes.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        Event event = getRes.get();
+        update(event);
+    }
 }

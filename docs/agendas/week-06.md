@@ -92,7 +92,11 @@ Deadline for everyone is Sunday evening.
 Now tasks are not spilt by front end/ back end but by features.
 Try to start working on product pitch (target audience is client), 
 discuss PPT structuring in group and divide tasks.
-See item 4 for action points.
+Nick will work on client side testing, deadline is Sunday.
+Jona will work on navigation and recent events, deadline is Friday.
+Teim and Makar will work on admin and websockets, deadline is Sunday.
+Feiyang will work on long polling, deadline is Sunday.
+Defne will work on email notifications, deadline is Friday.
 
 - Feedback round: What went well and what can be improved next time? (2 min)
 
