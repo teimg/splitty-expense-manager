@@ -51,8 +51,6 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
     @FXML
     private TextArea addressesArea;
 
-//    private Event event;
-
     private final MainCtrl mainCtrl;
 
     private final InvitationMv invitationMv;
@@ -159,11 +157,17 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
             "Invitation.Title-label") + " " + invitationMv.getEvent().getName());
         inviteMessage.setText(mainCtrl.getTranslator().getTranslation(
             "Invitation.Invite-Message-label") + " " + invitationMv.getEvent().getInviteCode());
+        emailInputBtn.setText(mainCtrl.getTranslator().getTranslation(
+            "Invitation.AddEmail"));
+        abortBtn.setText(mainCtrl.getTranslator().getTranslation(
+            "AddEditExpense.Abort-Button"));
+        clearBtn.setText(mainCtrl.getTranslator().getTranslation(
+            "Invitation.Clear"));
     }
 
     public void clearButtonPressed() {
         boolean res = ConfPopup
-            .create("Do you want to clear everything")
+            .create(mainCtrl.getTranslator().getTranslation("Conf.ClearEverything"))
             .display()
             .isConfirmed();
         if(res){
