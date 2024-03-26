@@ -2,6 +2,7 @@ package client.ModelView;
 
 import client.utils.ExpenseBuilder;
 import client.utils.WhoPaidSelector;
+import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
@@ -27,8 +28,8 @@ public class AddEditExpenseMv {
 
     private ObjectProperty<LocalDate> dateField;
 
-    private StringProperty whoPaidField;
-    private ObjectProperty<ObservableList<String>> whoPaidItems;
+    private ObjectProperty<Participant> whoPaidField;
+//    private ObjectProperty<ObservableList<Participant>> whoPaidItems;
 
     private BooleanProperty evenlyCheckbox;
 
@@ -51,19 +52,21 @@ public class AddEditExpenseMv {
 
 
     private final IExpenseCommunicator expenseCommunicator;
+    private final IEventCommunicator eventCommunicator;
 
 
     @Inject
-    public AddEditExpenseMv(IExpenseCommunicator iExpenseCommunicator) {
-        this.expenseCommunicator = iExpenseCommunicator;
+    public AddEditExpenseMv(IExpenseCommunicator expenseCommunicator, IEventCommunicator eventCommunicator) {
+        this.expenseCommunicator = expenseCommunicator;
+        this.eventCommunicator = eventCommunicator;
 
         priceField = new SimpleStringProperty("");
         descriptionField = new SimpleStringProperty("");
         currencyField = new SimpleStringProperty("");
         evenlyCheckbox = new SimpleBooleanProperty(true);
         dateField = new SimpleObjectProperty<>(LocalDate.now());
-        whoPaidField = new SimpleStringProperty("");
-        whoPaidItems = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+        whoPaidField = new SimpleObjectProperty<>();
+//        whoPaidItems = new SimpleObjectProperty<>(FXCollections.observableArrayList());
         debtors = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 
 
@@ -71,7 +74,7 @@ public class AddEditExpenseMv {
 
     public void loadInfo(Event event) {
         this.event = event;
-        initWhoPaid();
+//        initWhoPaid();
         expenseBuilder = new ExpenseBuilder();
 
         for(var x : event.getParticipants()){
@@ -80,25 +83,34 @@ public class AddEditExpenseMv {
     }
 
     public void clear(){
+        for(var x : event.getParticipants()){
+            debtors.get().removeLast();
+        }
+
+
         descriptionField.setValue("");
         priceField.setValue("");
         currencyField.setValue("");
         evenlyCheckbox.setValue(true);
         dateField.setValue(LocalDate.now());
-        whoPaidField.setValue("");
-        whoPaidItems.setValue(FXCollections.observableArrayList());
-        debtors.setValue(FXCollections.observableArrayList());
+//        whoPaidField.setValue("");
+        whoPaidField.setValue(null);
+
+        debtors.getValue().removeAll();
+
+        this.event = null;
+        this.expense = null;
     }
 
-    public void initWhoPaid() {
-        this.whoPaidSelector = new WhoPaidSelector(this.event.getParticipants());
-        whoPaidItems.get().addAll(
-            this.event.getParticipants()
-                .stream()
-                .map(Participant::getName)
-                .toList());
-
-    }
+//    public void initWhoPaid() {
+//        this.whoPaidSelector = new WhoPaidSelector(this.event.getParticipants());
+//        whoPaidItems.get().addAll(
+//            this.event.getParticipants()
+//                .stream()
+//                .map(Participant::getName)
+//                .toList());
+//
+//    }
     /**
      * get the value of the priceField
      *
@@ -125,8 +137,6 @@ public class AddEditExpenseMv {
             throw new IllegalArgumentException("PriceFieldInvalid");
         }
 
-
-
         return res;
     }
 
@@ -148,7 +158,7 @@ public class AddEditExpenseMv {
     public  Participant getPayer(){
         System.out.println(whoPaidField.getValue());
 
-        Participant res = whoPaidSelector.getCurrentPayer(whoPaidField.getValue());
+            Participant res = whoPaidField.getValue();
 
         if(res == null){
             throw new IllegalArgumentException("PayerFieldInvalid");
@@ -194,12 +204,12 @@ public class AddEditExpenseMv {
         expenseBuilder.setDebtors(getDebtors());
         expenseBuilder.setEvent(event);
 
-        System.out.println(expenseBuilder.toString());
+//        System.out.println(expenseBuilder.toString());
         Expense res = expenseBuilder.build();
 
         res = expenseCommunicator.createExpense(res);
-        this.event.addExpense(res);
-        clear();
+        this.event = eventCommunicator.updateEvent(event);
+
         return res;
 
     }
@@ -222,7 +232,7 @@ public class AddEditExpenseMv {
         return dateField;
     }
 
-    public StringProperty whoPaidFieldProperty() {
+    public ObjectProperty<Participant> whoPaidFieldProperty() {
         return whoPaidField;
     }
 
@@ -234,8 +244,12 @@ public class AddEditExpenseMv {
         return debtors;
     }
 
-    public ObjectProperty<ObservableList<String>> whoPaidItemsProperty() {
-        return whoPaidItems;
+//    public ObjectProperty<ObservableList<Participant>> whoPaidItemsProperty() {
+//        return whoPaidItems;
+//    }
+
+    public List<Participant> getParticipants(){
+        return this.event.getParticipants();
     }
 
     public Event getEvent() {
