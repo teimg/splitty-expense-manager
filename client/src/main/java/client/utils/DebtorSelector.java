@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+//deprecated marked for removal ;)
 public class DebtorSelector {
 
     private boolean allSelected;

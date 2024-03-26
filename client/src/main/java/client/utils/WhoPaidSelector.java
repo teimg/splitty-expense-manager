@@ -8,16 +8,16 @@ import java.util.List;
 public class WhoPaidSelector  {
 
     private List<Participant> participants;
-    private List<String> optionalParticipants;
+    private List<Participant> optionalParticipants;
 
     public WhoPaidSelector(List<Participant> participants) {
         this.participants = participants;
         optionalParticipants = new ArrayList<>();
     }
 
-    public List<String> query(String query){
+    public List<Participant> query(String query){
         if(query == null || query.isEmpty()){
-            return participants.stream().map(x -> x.getName()).toList();
+            return new ArrayList<>(participants);
         }
 
         optionalParticipants = new ArrayList<>();
@@ -27,7 +27,7 @@ public class WhoPaidSelector  {
             String name = participant.getName().toLowerCase();
 
             if(name.startsWith(query)){
-                optionalParticipants.add(name.substring(0, 1).toUpperCase() + name.substring(1));
+                optionalParticipants.add(participant);
             }
         }
 

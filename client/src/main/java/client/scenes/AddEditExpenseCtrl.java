@@ -22,6 +22,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
+import javafx.util.StringConverter;
+import org.checkerframework.checker.units.qual.C;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -84,7 +86,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     private ComboBox<String> tagField;
 
     @FXML
-    private ComboBox<String> whoPaidField;
+    private ComboBox<Participant> whoPaidField;
 
 
     private WhoPaidSelector whoPaidSelector;
@@ -206,8 +208,9 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             addEditExpenseMv.whoPaidFieldProperty());
         evenlyCheckbox.selectedProperty().bindBidirectional(
             addEditExpenseMv.evenlyCheckboxProperty());
-        whoPaidField.itemsProperty().bindBidirectional(
-            addEditExpenseMv.whoPaidItemsProperty());
+//        whoPaidField.itemsProperty().bindBidirectional(addEditExpenseMv.whoPaidItemsProperty());
+//        whoPaidField.itemsProperty().bindBidirectional(
+//            addEditExpenseMv.whoPaidItemsProperty());
     }
 
 //    public void setEdit(){
@@ -228,25 +231,53 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 //    }
 
     public void initWhoPaid(){
+        // temp disable whoPaidSelector Since to unstable
+        whoPaidField.setEditable(false);
         this.whoPaidField.setVisibleRowCount(3);
-
-        whoPaidField.getEditor().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        whoPaidField.setConverter(new StringConverter<Participant>() {
             @Override
-            public void handle(KeyEvent x) {
+            public String toString(Participant object) {
+                if(object == null){
+                    return null;
+                }
+                return object.getName();
+            }
 
-                if(x.getCode() == KeyCode.TAB){
+            @Override
+            public Participant fromString(String string) {
+                return null;
+            }
+        });
+
+        this.whoPaidSelector = new WhoPaidSelector(this.addEditExpenseMv.getParticipants());
+        whoPaidField.getItems().addAll(addEditExpenseMv.getParticipants());
+
+        this.whoPaidField.setCellFactory(call -> new ListCell<Participant>(){
+            @Override
+            protected void updateItem(Participant participant, boolean empty) {
+                super.updateItem(participant, empty);
+
+                if(empty){
                     return;
                 }
-
-                whoPaidField.getItems().removeAll(whoPaidField.getItems());
-                whoPaidField.setValue(whoPaidField.getEditor().getText());
-
-                whoPaidField.getItems()
-                    .addAll(whoPaidSelector
-                        .query(
-                            whoPaidField.getEditor().getText()));
-                whoPaidField.show();
+                setText(participant.getName());
             }
+        });
+
+        whoPaidField.getEditor().setOnKeyPressed(x -> {
+
+            if(!x.getCode().isLetterKey()){
+                return;
+            }
+
+            whoPaidField.getItems().removeAll(whoPaidField.getItems());
+            whoPaidField.setValue(whoPaidSelector.getCurrentPayer(whoPaidField.getEditor().getText()));
+
+            whoPaidField.getItems()
+                .addAll(whoPaidSelector
+                    .query(
+                        whoPaidField.getEditor().getText()));
+            whoPaidField.show();
         });
     }
 
@@ -320,23 +351,35 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     }
 
+    public void clear(){
+        whoPaidField.getItems().removeAll(whoPaidField.getItems());
+
+    }
+
     public void addButtonPressed(){
         createExpense();
+
     }
 
     public void abortButtonPressed(ActionEvent actionEvent) {
+        Event res = addEditExpenseMv.getEvent();
+        clear();
         addEditExpenseMv.clear();
-        mainCtrl.showEventOverview(addEditExpenseMv.getEvent());
+        mainCtrl.showEventOverview(res);
     }
 
     public void createExpense(){
-
+        System.out.println(this.whoPaidField.getSelectionModel().getSelectedItem());
         try {
             Expense added = addEditExpenseMv.createExpense();
+            Event res = addEditExpenseMv.getEvent();
             System.out.println(added.toString());
-            mainCtrl.showEventOverview(addEditExpenseMv.getEvent());
+            addEditExpenseMv.clear();
+            clear();
+            mainCtrl.showEventOverview(res);
             return;
         }catch (Exception e){
+            e.printStackTrace();
             handleException(e);
         }
     }
