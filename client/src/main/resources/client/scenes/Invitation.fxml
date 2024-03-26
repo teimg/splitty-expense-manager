@@ -28,7 +28,7 @@
                               <Text fx:id="inviteMessage" layoutX="14.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Give people the folloing invite code: CODE" />
                               <Text fx:id="inviteLabel" layoutX="14.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invite the following people by email (one address per line):" />
                               <TextArea fx:id="addressesArea" layoutX="14.0" layoutY="95.0" prefHeight="111.0" prefWidth="416.0" />
-                              <Button fx:id="sendInviteButton" layoutX="350.0" layoutY="216.0" mnemonicParsing="false" onAction="#handleSendInvites" text="Send Invites" />
+                              <Button fx:id="sendInviteButton" layoutX="346.0" layoutY="216.0" mnemonicParsing="false" onAction="#handleSendInvites" text="Send Invites" AnchorPane.rightAnchor="20.5" />
                            </children>
                         </AnchorPane>
                      </children>

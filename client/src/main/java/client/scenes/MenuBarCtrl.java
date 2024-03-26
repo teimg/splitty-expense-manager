@@ -154,7 +154,7 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     }
 
     public void showStatistics(ActionEvent actionEvent) {
-        mainCtrl.showStatistics();
+        // can now be navigated through event overview page
     }
 
     public void showEventOverview(ActionEvent actionEvent) {}

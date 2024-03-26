@@ -31,6 +31,8 @@ public class Expense {
     @ManyToMany
     private List<Participant> debtors;
     private LocalDate date;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Tag tag;
 
     /**
      * Constructs a new Expense with the specified details.
@@ -41,16 +43,17 @@ public class Expense {
      * @param payer    the participant who paid for the expense
      * @param debtors  the list of participants who owe a share of the expense
      * @param date     the date that the expense was paid
+     * @param tag      the tag for the expense
      */
     public Expense(Event event, String purchase, double amount,
-                   Participant payer, List<Participant> debtors, LocalDate date) {
-        this.id = id;
+                   Participant payer, List<Participant> debtors, LocalDate date, Tag tag) {
         this.event = event;
         this.purchase = purchase;
         this.amount = amount;
         this.payer = payer;
         this.debtors = debtors;
         this.date = date;
+        this.tag = tag;
     }
 
     /**
@@ -173,6 +176,22 @@ public class Expense {
     }
 
     /**
+     * Tag getter
+     * @return tag
+     */
+    public Tag getTag() {
+        return tag;
+    }
+
+    /**
+     * Tag setter
+     * @param tag set
+     */
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    /**
      * Equals method
      * @param o other
      * @return boolean
@@ -186,6 +205,7 @@ public class Expense {
                 Objects.equals(purchase, expense.purchase) &&
                 Objects.equals(payer, expense.payer) &&
                 Objects.equals(debtors, expense.debtors) &&
+                Objects.equals(tag, expense.tag) &&
                 Objects.equals(date, expense.date);
     }
 
@@ -195,7 +215,7 @@ public class Expense {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, event, purchase, amount, payer, debtors, date);
+        return Objects.hash(id, event, purchase, amount, payer, debtors, date, tag);
     }
 
     /**
@@ -212,23 +232,8 @@ public class Expense {
                 ", payer=" + payer +
                 ", debtors=" + debtors +
                 ", date=" + date +
+                ", tag=" + tag +
                 '}';
     }
 
-    /**
-     * Valid String representation
-     * @return string representation
-     */
-    public String description() {
-        StringBuilder desc = new StringBuilder(getDate().toString() + "    "
-                + getPayer().getName() + " paid "
-                + getAmount() + "$ for " + getPurchase() + "\n");
-        desc.append(" ".repeat(32));
-        desc.append("Debtors: ");
-        for (int i = 0; i < debtors.size() - 1; i++) {
-            desc.append(debtors.get(i).getName()).append(", ");
-        }
-        desc.append(debtors.get(debtors.size()-1).getName());
-        return desc.toString();
-    }
 }

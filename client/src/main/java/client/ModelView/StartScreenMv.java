@@ -62,7 +62,6 @@ public class StartScreenMv {
         }catch (ProcessingException e){
             throw new ProcessingException("ServerOffline");
         }
-
     }
 
     public Event getRecentEvent(long id){
@@ -83,11 +82,9 @@ public class StartScreenMv {
         return newEvent;
     }
 
-
     public StringProperty joinEventProperty() {
         return joinEvent;
     }
-
 
     public ObjectProperty<ObservableList<JoinableEvent>> recentEventsProperty() {
         return recentEvents;

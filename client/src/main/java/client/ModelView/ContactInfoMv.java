@@ -61,7 +61,7 @@ public class ContactInfoMv {
         clearFields();
     }
 
-    private void clearFields(){
+    void clearFields(){
         email.setValue("");
         name.setValue("");
         bic.setValue("");
@@ -78,7 +78,7 @@ public class ContactInfoMv {
     }
 
 
-    private void fillInFields() {
+    void fillInFields() {
         email.setValue(participant.getEmail());
         name.setValue(participant.getName());
         if (participant.getBankAccount() != null) {
@@ -127,7 +127,7 @@ public class ContactInfoMv {
     public void addButtonPressed(ActionEvent event) {
         if (!validInput()) {
             System.out.println("Error");
-            return;
+            throw new IllegalArgumentException("Error");
         }
 
         Event currentEvent = getCurrentEvent();
@@ -154,6 +154,10 @@ public class ContactInfoMv {
 
     public Event getCurrentEvent() {
         return this.event;
+    }
+
+    public Participant getCurrentParticipant() {
+        return this.participant;
     }
 
     public StringProperty emailProperty() {

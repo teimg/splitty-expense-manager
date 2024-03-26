@@ -71,6 +71,8 @@ public class Main extends Application {
                 FXML.load(AdminLogInCtrl.class, "client", "scenes", "AdminLogIn.fxml"));
         sceneMap.put("AdminScreen",
                 FXML.load(AdminScreenCtrl.class, "client", "scenes", "AdminScreen.fxml"));
+        sceneMap.put("TagScreen",
+                FXML.load(TagScreenCtrl.class, "client", "scenes", "TagScreen.fxml"));
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }

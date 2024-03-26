@@ -6,15 +6,31 @@ import com.google.inject.Inject;
 import commons.Event;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import jakarta.ws.rs.core.Response;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventCommunicator implements IEventCommunicator {
     private final String origin;
+    private final StompSession session;
 
     @Inject
     public EventCommunicator(ClientConfiguration config) {
         origin = config.getServer();
+        session = connect("ws://localhost:8080/websocket");
     }
 
     @Override
@@ -55,6 +71,26 @@ public class EventCommunicator implements IEventCommunicator {
                     .get(Event.class);
     }
 
+    public Event checkForEventUpdates(long id) {
+        try {
+            Response response = ClientBuilder.newClient()
+                    .target(origin).path("api/event/checkUpdates/{id}")
+                    .resolveTemplate("id", id)
+                    .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                    .get();
+
+            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+                return response.readEntity(Event.class);
+            } else {
+                // No updates or event not found, handle accordingly
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println("Error checking for event updates: " + e.getMessage());
+            return null; // Return null in case of error to handle it gracefully
+        }
+    }
+
     @Override
     public Event updateEvent(Event event) {
         return ClientBuilder.newClient()
@@ -69,5 +105,43 @@ public class EventCommunicator implements IEventCommunicator {
         return null;
     }
 
+    @Override
+    public List<Event> getAll() {
+        return ClientBuilder.newClient()
+                .target(origin).path("api/event")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Event>>() {});
+    }
 
+
+    private StompSession connect(String url) {
+        var client = new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try {
+            return stomp.connect(url, new StompSessionHandlerAdapter() {
+            }).get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override
+    public <T> void registerForWebSocketMessages(String dest, Class<T> type, Consumer<T> consumer) {
+        session.subscribe(dest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return type;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                consumer.accept((T) payload);
+            }
+        });
+    }
 }

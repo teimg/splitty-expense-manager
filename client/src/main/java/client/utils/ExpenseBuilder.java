@@ -3,6 +3,7 @@ package client.utils;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import commons.Tag;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,8 +17,8 @@ public class ExpenseBuilder {
     private long amount;
     private Participant payer;
     private List<Participant> debtors;
-
     private LocalDate date;
+    private Tag tag;
 
     public ExpenseBuilder() {
     }
@@ -25,7 +26,7 @@ public class ExpenseBuilder {
     public Expense build(){
         double expenseAmount = amount / 100.0;
 
-        return  new Expense(event, purchase, expenseAmount, payer, debtors, date);
+        return  new Expense(event, purchase, expenseAmount, payer, debtors, date, tag);
     }
 
     public int getId() {
@@ -52,6 +53,10 @@ public class ExpenseBuilder {
         return debtors;
     }
 
+    public Tag getTag() {
+        return tag;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -74,6 +79,10 @@ public class ExpenseBuilder {
 
     public void setDebtors(List<Participant> debtors) {
         this.debtors = debtors;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     public void setDate(LocalDate date) {

@@ -76,6 +76,7 @@ public class ExpenseController {
             expense.setAmount(expenseDetails.getAmount());
             expense.setPayer(expenseDetails.getPayer());
             expense.setDebtors(expenseDetails.getDebtors());
+            expense.setTag(expenseDetails.getTag());
             Expense updatedExpense = expenseService.saveExpense(expense);
             return ResponseEntity.ok(updatedExpense);
         } else {

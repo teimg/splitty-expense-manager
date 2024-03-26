@@ -15,7 +15,7 @@
                         <HBox HBox.hgrow="ALWAYS" />
                         <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
                             <children>
-                                <AnchorPane prefHeight="374.0" prefWidth="600.0">
+                                <AnchorPane prefHeight="453.0" prefWidth="450.0">
                            <children>
                                <VBox maxWidth="450.0" HBox.hgrow="ALWAYS">
                                    <Label fx:id="titleLabel" layoutX="47.0" layoutY="60.0" style="-fx-font-weight: bold;" text="add/Edit  Expenses">
@@ -32,7 +32,8 @@
                                           </HBox.margin>
                                           <font>
                                              <Font size="16.0" />
-                                          </font></Label>
+                                          </font>
+                                       </Label>
                                            <ComboBox fx:id="whoPaidField" editable="true" prefHeight="26.0" prefWidth="380.0" />
                                        </children>
                                     <VBox.margin>
@@ -47,11 +48,13 @@
                                                </HBox.margin>
                                                <font>
                                                    <Font size="16.0" />
-                                               </font></Label>
+                                               </font>
+                                       </Label>
                                        <TextField fx:id="descriptionField" prefHeight="26.0" prefWidth="380.0">
                                           <HBox.margin>
                                              <Insets />
-                                          </HBox.margin></TextField>
+                                          </HBox.margin>
+                                       </TextField>
                                        </children>
                                     <VBox.margin>
                                        <Insets bottom="10.0" />
@@ -65,12 +68,14 @@
                                                </HBox.margin>
                                                <font>
                                                    <Font size="16.0" />
-                                               </font></Label>
+                                               </font>
+                                       </Label>
                                            <TextField fx:id="priceField" prefHeight="26.0" prefWidth="113.0" />
                                            <ComboBox fx:id="currencyField" editable="true" prefHeight="26.0" prefWidth="84.0" promptText="EUR">
                                           <HBox.margin>
                                              <Insets left="50.0" />
-                                          </HBox.margin></ComboBox>
+                                          </HBox.margin>
+                                       </ComboBox>
                                        </children>
                                     <VBox.margin>
                                        <Insets bottom="10.0" />
@@ -84,7 +89,8 @@
                                                </HBox.margin>
                                                <font>
                                                    <Font size="16.0" />
-                                               </font></Label>
+                                               </font>
+                                       </Label>
                                            <DatePicker fx:id="dateField" prefHeight="26.0" prefWidth="380.0" />
                                        </children>
                                     <VBox.margin>
@@ -99,7 +105,8 @@
                                                </HBox.margin>
                                                <font>
                                                    <Font size="16.0" />
-                                               </font></Label>
+                                               </font>
+                                       </Label>
                                        </children>
                                    </HBox>
                                  <CheckBox fx:id="evenlyCheckbox" mnemonicParsing="false" onAction="#evenlyCheckboxToggle" prefHeight="22.0" prefWidth="542.0" text="Split Evenly" />
@@ -113,7 +120,7 @@
                                  </ScrollPane>
                                    <HBox layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
                                        <children>
-                                           <Label fx:id="expenseTypeLabel" prefHeight="18.0" prefWidth="353.0" text="expense type">
+                                           <Label fx:id="expenseTypeLabel" prefHeight="18.0" prefWidth="353.0" text="Expense type">
                                                <HBox.margin>
                                                    <Insets />
                                                </HBox.margin>
@@ -121,26 +128,48 @@
                                                    <Font size="16.0" />
                                                </font>
                                        </Label>
-                                           <ComboBox fx:id="tagField" editable="true" prefHeight="26.0" prefWidth="380.0" />
+                                           <ComboBox fx:id="tagField" editable="true" prefHeight="26.0" prefWidth="226.0" />
                                        </children>
                                     <VBox.margin>
                                        <Insets bottom="10.0" />
                                     </VBox.margin>
                                    </HBox>
-                                   <HBox alignment="TOP_RIGHT" layoutY="85.0" prefHeight="23.0" prefWidth="450.0">
-                                    <children>
-                                       <Button fx:id="abortButton" mnemonicParsing="false" onAction="#abortButtonPressed" text="Abort">
-                                          <font>
-                                             <Font size="16.0" />
-                                          </font></Button>
-                                       <Separator prefHeight="0.0" prefWidth="33.0" />
-                                       <Button fx:id="addButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#addButtonPressed" text="Add">
-                                          <font>
-                                             <Font size="16.0" />
-                                          </font></Button>
-                                    </children>
-                                   </HBox>
                                </VBox>
+                              <HBox alignment="TOP_RIGHT" layoutY="382.0" prefHeight="23.0" prefWidth="450.0">
+                                 <children>
+                                    <Button fx:id="deleteTagButton" mnemonicParsing="false" onAction="#handleDeleteTag" text="Delete Tag">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="editTagButton" mnemonicParsing="false" onAction="#handleEditTag" text="Edit Tag">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="addTagButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAddTag" text="Add Tag">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="abortButton" layoutY="424.0" mnemonicParsing="false" onAction="#abortButtonPressed" text="Abort" AnchorPane.leftAnchor="0.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="addButton" layoutX="401.0" layoutY="424.0" mnemonicParsing="false" onAction="#addButtonPressed" text="Add" AnchorPane.rightAnchor="0.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Button>
                            </children>
                                 </AnchorPane>
                             </children>

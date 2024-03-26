@@ -12,14 +12,19 @@ import java.util.Optional;
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
+    private final EventService eventService;
 
     @Autowired
-    public ExpenseService(ExpenseRepository expenseRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, EventService eventService) {
         this.expenseRepository = expenseRepository;
+        this.eventService = eventService;
     }
 
     public Expense saveExpense(Expense expense) {
         return expenseRepository.save(expense);
+//        expense = expenseRepository.saveAndFlush(expense);
+//        eventService.updateLastActivity(expense.getEvent().getId());
+//        return expense;
     }
 
     public Optional<Expense> getExpenseById(Long id) {
@@ -35,6 +40,12 @@ public class ExpenseService {
     }
 
     public void deleteExpense(Long id) {
+        Optional<Expense> getRes = getExpenseById(id);
+        if (getRes.isEmpty()) {
+            return;
+        }
+        Expense expense = getRes.get();
         expenseRepository.deleteById(id);
+        eventService.updateLastActivity(expense.getEvent().getId());
     }
 }
