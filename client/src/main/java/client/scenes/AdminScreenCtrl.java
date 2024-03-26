@@ -6,7 +6,7 @@ import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
-import commons.event.changes.*;
+import commons.EventChange;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,27 +65,27 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         this.eventCommunicator = eventCommunicator;
     }
 
-    private void handleEventCreated(EventCreated eventCreated) {
-        Event event = eventCreated.getEvent();
+    private void addEvent(Event event) {
         shownEvents.add(event);
+        eventListView.refresh();
         System.out.println("websockets: event created");
     }
 
-    private void handleEventModified(EventModified eventModified) {
-        Event event = eventModified.getEvent();
+    private void updateEvent(Event event) {
         shownEvents.removeIf(e -> e.getId() == event.getId());
         shownEvents.add(event);
+        eventListView.refresh();
         System.out.println("websockets: event created");
     }
 
-    private void handleEventDeleted(EventDeleted eventDeleted) {
-        Event event = eventDeleted.getEvent();
+    private void deleteEvent(Event event) {
         shownEvents.removeIf(e -> e.getId() == event.getId());
+        eventListView.refresh();
         System.out.println("websockets: event deleted");
     }
 
     @Override
-    public void initialize (URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) {
         ToggleGroup orderByToggle = new ToggleGroup();
         titleRadioButton.setToggleGroup(orderByToggle);
         creationRadioButton.setToggleGroup(orderByToggle);
@@ -97,17 +97,14 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
         eventCommunicator.registerForWebSocketMessages(
                 "/topic/events",
-                EventChange.class, change -> {
-            if (change instanceof EventCreated) {
-                handleEventCreated((EventCreated)change);
-            }
-            if (change instanceof EventModified) {
-                handleEventModified((EventModified)change);
-            }
-            if (change instanceof EventDeleted) {
-                handleEventDeleted((EventDeleted)change);
-            }
-        });
+                EventChange.class,
+                change -> {
+                    switch (change.getType()) {
+                        case CREATION -> addEvent(change.getEvent());
+                        case MODIFICATION -> updateEvent(change.getEvent());
+                        case DELETION -> deleteEvent(change.getEvent());
+                    }
+                });
     }
 
     @Override
@@ -143,11 +140,9 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     public void handleOrderBy(ActionEvent actionEvent) {
         if (titleRadioButton.isSelected()) {
             // TODO: implement sorting
-        }
-        else if (creationRadioButton.isSelected()) {
+        } else if (creationRadioButton.isSelected()) {
             // TODO: implement sorting
-        }
-        else if (activityRadioButton.isSelected()) {
+        } else if (activityRadioButton.isSelected()) {
             // TODO: implement sorting
         }
         eventListView.setItems(shownEvents);
@@ -175,6 +170,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
             implements Callback<ListView<Event>, ListCell<Event>> {
         /**
          * Should return a new ListCell usable in the expense ListView.
+         *
          * @param listView the expense ListView
          * @return a usable ListCell
          */
