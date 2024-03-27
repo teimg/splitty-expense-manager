@@ -24,7 +24,7 @@ public class ParticipantCommunicator implements IParticipantCommunicator {
     public Participant createParticipant(Event event, String name,
                                          String email, BankAccount bankAccount) {
         Participant toServer = new Participant(name, email);
-        toServer.setEvent(event);
+        toServer.setEventId(event.getId());
         toServer.setBankAccount(bankAccount);
         return ClientBuilder.newClient()
                 .target(origin).path("api/participants")

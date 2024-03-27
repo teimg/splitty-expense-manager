@@ -35,7 +35,7 @@ class ParticipantServiceTest {
     public void setup(){
         ps = new ParticipantService(mockedRepo, mockedEventService);
         participant = new Participant("Henk");
-        participant.setEvent(new Event());
+        participant.setEventId(new Event().getId());
 
         participant1 = new Participant("Piet");
 
@@ -66,7 +66,7 @@ class ParticipantServiceTest {
 
     @Test
     void createParticipantNoEvent() {
-        participant.setEvent(null);
+        participant.setEventId(null);
         assertThrows(IllegalArgumentException.class, () ->{
            ps.createParticipant(participant);
         }, "Event not specified");

@@ -106,7 +106,6 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         }
     }
 
-
     @Override
     public void initialize (URL location, ResourceBundle resources) {
         ToggleGroup orderByToggle = new ToggleGroup();
@@ -163,9 +162,11 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     public void handleOrderBy(ActionEvent actionEvent) {
         if (titleRadioButton.isSelected()) {
             // TODO: implement sorting
-        } else if (creationRadioButton.isSelected()) {
+        }
+        else if (creationRadioButton.isSelected()) {
             // TODO: implement sorting
-        } else if (activityRadioButton.isSelected()) {
+        }
+        else if (activityRadioButton.isSelected()) {
             // TODO: implement sorting
         }
         eventListView.setItems(shownEvents);

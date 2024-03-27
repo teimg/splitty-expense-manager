@@ -61,7 +61,7 @@ public class ExpenseCommunicatorTest {
 
         dummyExpense = new Expense();
         dummyExpense.setId(1);
-        dummyExpense.setEvent(new Event());
+        dummyExpense.setEventId(null);
         dummyExpense.setPurchase("Test Purchase");
         dummyExpense.setAmount(100.0);
         dummyExpense.setPayer(new Participant("Test Payer"));
