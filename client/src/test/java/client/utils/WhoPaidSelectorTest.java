@@ -29,15 +29,15 @@ class WhoPaidSelectorTest {
     }
     @Test
     void query() {
-        List<String> res = ds.query("j");
+        List<Participant> res = ds.query("j");
 
-        List<String> expected = new ArrayList<>();
-        expected.add("Jan");
-        expected.add("Joe");
-        expected.add("Joost");
+        List<Participant> expected = new ArrayList<>();
+        expected.add(new Participant("Jan"));
+        expected.add(new Participant("Joe"));
+        expected.add(new Participant("Joost"));
 
-        Collections.sort(expected);
-        Collections.sort(res);
+        expected.sort(Comparator.comparing(Participant::getName));
+        res.sort(Comparator.comparing(Participant::getName));
 
         assertEquals(expected, res);
     }
