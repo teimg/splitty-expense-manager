@@ -7,6 +7,7 @@ import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,27 +66,49 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         this.eventCommunicator = eventCommunicator;
     }
 
-    private void addEvent(Event event) {
-        shownEvents.add(event);
-        eventListView.refresh();
-        System.out.println("websockets: event created");
+    class AddEvent implements Runnable {
+        Event event;
+        public AddEvent(Event event) {
+            this.event = event;
+        }
+        @Override
+        public void run() {
+            shownEvents.add(event);
+            eventListView.refresh();
+            System.out.println("websockets: event created");
+        }
     }
 
-    private void updateEvent(Event event) {
-        shownEvents.removeIf(e -> e.getId() == event.getId());
-        shownEvents.add(event);
-        eventListView.refresh();
-        System.out.println("websockets: event created");
+    class UpdateEvent implements Runnable {
+        Event event;
+        public UpdateEvent(Event event) {
+            this.event = event;
+        }
+        @Override
+        public void run() {
+            shownEvents.removeIf(e -> e.getId() == event.getId());
+            shownEvents.add(event);
+            eventListView.refresh();
+            System.out.println("websockets: event modified");
+        }
     }
 
-    private void deleteEvent(Event event) {
-        shownEvents.removeIf(e -> e.getId() == event.getId());
-        eventListView.refresh();
-        System.out.println("websockets: event deleted");
+    class DeleteEvent implements Runnable {
+        Event event;
+        public DeleteEvent(Event event) {
+            this.event = event;
+        }
+        @Override
+        public void run() {
+            shownEvents.removeIf(e -> e.getId() == event.getId());
+            eventListView.refresh();
+            System.out.println("websockets: event deleted");
+        }
     }
+
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize (URL location, ResourceBundle resources) {
         ToggleGroup orderByToggle = new ToggleGroup();
         titleRadioButton.setToggleGroup(orderByToggle);
         creationRadioButton.setToggleGroup(orderByToggle);
@@ -100,9 +123,9 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
                 EventChange.class,
                 change -> {
                     switch (change.getType()) {
-                        case CREATION -> addEvent(change.getEvent());
-                        case MODIFICATION -> updateEvent(change.getEvent());
-                        case DELETION -> deleteEvent(change.getEvent());
+                        case CREATION -> Platform.runLater(new AddEvent(change.getEvent()));
+                        case MODIFICATION -> Platform.runLater(new UpdateEvent(change.getEvent()));
+                        case DELETION -> Platform.runLater(new DeleteEvent(change.getEvent()));
                     }
                 });
     }
@@ -170,7 +193,6 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
             implements Callback<ListView<Event>, ListCell<Event>> {
         /**
          * Should return a new ListCell usable in the expense ListView.
-         *
          * @param listView the expense ListView
          * @return a usable ListCell
          */
