@@ -18,7 +18,9 @@ public class EmailRequest {
 
     private String password;
 
-    public EmailRequest() {}
+    public EmailRequest() {
+        loadProperties();
+    }
 
     public EmailRequest(String to, String subject, String body) {
         this.to = to;
