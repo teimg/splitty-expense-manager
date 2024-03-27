@@ -1,9 +1,9 @@
 package client.ModelView;
 
 import client.utils.ExpenseBuilder;
-import client.utils.WhoPaidSelector;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
+import client.utils.communicators.interfaces.ITagCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -30,7 +30,6 @@ public class AddEditExpenseMv {
     private ObjectProperty<LocalDate> dateField;
 
     private ObjectProperty<Participant> whoPaidField;
-//    private ObjectProperty<ObservableList<Participant>> whoPaidItems;
 
     private BooleanProperty evenlyCheckbox;
 
@@ -41,13 +40,8 @@ public class AddEditExpenseMv {
 
     private ExpenseBuilder expenseBuilder;
 
-    private WhoPaidSelector whoPaidSelector;
-
     private Event event;
 
-
-    // true if input is an edit meaning that the current expense is being edited
-    private boolean isEdit;
 
     // Only used when there is an edit going on
     private Expense expense;
@@ -55,12 +49,14 @@ public class AddEditExpenseMv {
 
     private final IExpenseCommunicator expenseCommunicator;
     private final IEventCommunicator eventCommunicator;
+    private final ITagCommunicator tagCommunicator;
 
 
     @Inject
-    public AddEditExpenseMv(IExpenseCommunicator expenseCommunicator, IEventCommunicator eventCommunicator) {
+    public AddEditExpenseMv(IExpenseCommunicator expenseCommunicator, IEventCommunicator eventCommunicator, ITagCommunicator tagCommunicator) {
         this.expenseCommunicator = expenseCommunicator;
         this.eventCommunicator = eventCommunicator;
+        this.tagCommunicator = tagCommunicator;
 
         priceField = new SimpleStringProperty("");
         descriptionField = new SimpleStringProperty("");
@@ -115,6 +111,7 @@ public class AddEditExpenseMv {
         descriptionField.setValue(expense.getPurchase());
         priceField.setValue(String.valueOf(expense.getAmount()));
         dateField.set(expense.getDate());
+        tagField.set(expense.getTag());
     }
 
 
@@ -183,7 +180,6 @@ public class AddEditExpenseMv {
     }
 
     public  Participant getPayer(){
-        System.out.println(whoPaidField.getValue());
 
             Participant res = whoPaidField.getValue();
 
@@ -218,6 +214,16 @@ public class AddEditExpenseMv {
         return res;
     }
 
+    public Tag getTag(){
+        Tag res = tagField.getValue();
+
+        if(res == null){
+            throw new IllegalArgumentException("TagInvalid");
+        }
+
+        return res;
+    }
+
     private Expense updateExpense() {
 
         Expense res = expenseBuilder.build();
@@ -245,13 +251,13 @@ public class AddEditExpenseMv {
         expenseBuilder.setDate(getDateFieldValue());
         expenseBuilder.setAmount(getPriceFieldValue());
         expenseBuilder.setDebtors(getDebtors());
+//        expenseBuilder.setTag(getTag());
         expenseBuilder.setEvent(event);
 
         if(this.expense != null){
             return updateExpense();
         }
 
-//        System.out.println(expenseBuilder.toString());
         Expense res = expenseBuilder.build();
 
 
@@ -259,7 +265,10 @@ public class AddEditExpenseMv {
         this.event = eventCommunicator.updateEvent(event);
 
         return res;
+    }
 
+    public void deleteTag() {
+        this.tagCommunicator.deleteTag(getTag().getId());
     }
 
 
@@ -293,14 +302,17 @@ public class AddEditExpenseMv {
         return debtors;
     }
 
-//    public ObjectProperty<ObservableList<Participant>> whoPaidItemsProperty() {
-//        return whoPaidItems;
-//    }
+    public ObjectProperty<Tag> tagFieldProperty() {
+        return tagField;
+    }
 
     public List<Participant> getParticipants(){
         return this.event.getParticipants();
     }
 
+    public List<Tag> getTags(){
+        return tagCommunicator.getAllTags();
+    }
     public Event getEvent() {
         return event;
     }

@@ -1,5 +1,7 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -120,8 +122,7 @@ public class Tag {
 
         if ((id != tag.id) || (red != tag.red)|| (green != tag.green)) return false;
         if (blue != tag.blue) return false;
-        if (!Objects.equals(name, tag.name)) return false;
-        return Objects.equals(expenses, tag.expenses);
+        return !Objects.equals(name, tag.name);
     }
 
     @Override
