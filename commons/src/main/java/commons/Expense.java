@@ -1,6 +1,7 @@
 package commons;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -30,7 +31,8 @@ public class Expense {
     @ManyToMany
     private List<Participant> debtors;
     private LocalDate date;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"expenses"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Tag tag;
 
     public Expense(Long eventId, String purchase, double amount,

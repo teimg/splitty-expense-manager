@@ -1,6 +1,5 @@
 package client.utils;
 
-import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import commons.Tag;
