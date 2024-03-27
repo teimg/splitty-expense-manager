@@ -479,7 +479,7 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
             expenseBuilder.setDate(getDateFieldValue());
             expenseBuilder.setAmount(getPriceFieldValue());
             expenseBuilder.setDebtors(getDebtors());
-            expenseBuilder.setEvent(event);
+            expenseBuilder.setEventId(event.getId());
             expenseBuilder.setTag(getTag());
 
             System.out.println(expenseBuilder.toString());

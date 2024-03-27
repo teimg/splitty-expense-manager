@@ -1,16 +1,9 @@
 package commons;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.*;
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        scope = Event.class
-)
 @Entity
 public class Event {
 
@@ -171,11 +164,6 @@ public class Event {
         expenses.add(expense);
     }
 
-    /**
-     * Equals function for Event
-     * @param o Object for the Event to be compared to
-     * @return true if the two objects are equal and false otherwise
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -189,10 +177,6 @@ public class Event {
                 Objects.equals(expenses, event.expenses);
     }
 
-    /**
-     * Hash code function for Event
-     * @return the hash code for the specific object
-     */
     @Override
     public int hashCode() {
         return Objects.hash(id, name, inviteCode, participants,
