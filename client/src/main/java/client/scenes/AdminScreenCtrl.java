@@ -7,6 +7,8 @@ import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
+import commons.Expense;
+import commons.Participant;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initializable {
@@ -67,7 +70,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     }
 
     class AddEvent implements Runnable {
-        Event event;
+        private Event event;
         public AddEvent(Event event) {
             this.event = event;
         }
@@ -80,7 +83,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     }
 
     class UpdateEvent implements Runnable {
-        Event event;
+        private Event event;
         public UpdateEvent(Event event) {
             this.event = event;
         }
@@ -94,7 +97,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     }
 
     class DeleteEvent implements Runnable {
-        Event event;
+        private Event event;
         public DeleteEvent(Event event) {
             this.event = event;
         }
@@ -192,6 +195,29 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
     private static class EventCellFactory
             implements Callback<ListView<Event>, ListCell<Event>> {
+
+        private String participantsText(List<Participant> participants) {
+            return String.join(", ", participants.stream().map(Participant::getName).toList());
+        }
+
+        private String expensesText(List<Expense> expenses) {
+            return String.join(", ", expenses.stream().map(Expense::getPurchase).toList());
+        }
+
+        private String eventText(Event event) {
+            return String.format("""
+                    Name: %s
+                    Created: %s
+                    Last Modified: %s
+                    Participants: %s
+                    Expenses: %s""",
+                    event.getName(),
+                    event.getCreationDate(),
+                    event.getLastActivity(),
+                    participantsText(event.getParticipants()),
+                    expensesText(event.getExpenses()));
+        }
+
         /**
          * Should return a new ListCell usable in the expense ListView.
          * @param listView the expense ListView
@@ -214,7 +240,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
                         setText(null);
                         return;
                     }
-                    setText(event.toString());
+                    setText(eventText(event));
                 }
             };
         }
