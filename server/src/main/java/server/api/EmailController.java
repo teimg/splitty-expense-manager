@@ -19,7 +19,8 @@ public class EmailController {
 
     @PostMapping
     public ResponseEntity<EmailRequest> sendEmail(@RequestBody EmailRequest request) {
-        service.sendEmail(request.getTo(), request.getSubject(), request.getBody());
+        service.sendEmail(request.getTo(), request.getSubject(), request.getBody(),
+                request.getUsername(), request.getPassword());
         return ResponseEntity.ok(request);
     }
 

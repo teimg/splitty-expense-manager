@@ -102,15 +102,17 @@ public class InvitationMv {
     public void sendOutEmails() {
         List<String> allEmails = getAllEmails();
         for (String email : allEmails) {
-            emailCommunicator.sendEmail(new EmailRequest(
+            EmailRequest request = new EmailRequest(
                     email,
                     "Invitation to Event!",
                     "You have been invited to the event: " + event.getName()
                             + "\n\nThe invite code is: " + event.getInviteCode()
                             + "\n\nThe server URL is: " + emailCommunicator.getOrigin()
                             + "\n\nHave a nice day!"
-            ));
+            );
+            emailCommunicator.sendEmail(request);
         }
+        System.out.println();
     }
 
     public ObjectProperty<ObservableList<String>> emailsProperty() {
