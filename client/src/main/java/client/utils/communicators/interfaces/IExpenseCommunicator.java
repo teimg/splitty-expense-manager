@@ -42,7 +42,7 @@ public interface IExpenseCommunicator {
      * @param expense the expense with updated fields
      * @return the updated expense
      */
-    Expense updateExpense(Expense expense);
+    Expense updateExpense(long id, Expense expense);
 
     /**
      * Deletes an existing expense.

@@ -1,11 +1,12 @@
 package client.utils;
 
 import commons.Participant;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WhoPaidSelector  {
+public class WhoPaidSelector  extends StringConverter<Participant> {
 
     private List<Participant> participants;
     private List<Participant> optionalParticipants;
@@ -48,4 +49,19 @@ public class WhoPaidSelector  {
         return  null;
     }
 
+    public WhoPaidSelector() {
+        super();
+    }
+
+    @Override
+    public String toString(Participant object) {
+        if(object == null) return null;
+        return object.getName();
+    }
+
+    @Override
+    public Participant fromString(String string) {
+        if(string == null || string.isEmpty()) return null;
+        return getCurrentPayer(string);
+    }
 }

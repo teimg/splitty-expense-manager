@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
+import commons.Tag;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,9 +36,10 @@ public class AddEditExpenseMv {
 
     private ObjectProperty<ObservableList<Pair<Participant, BooleanProperty>>> debtors;
 
+    private ObjectProperty<Tag> tagField;
+
 
     private ExpenseBuilder expenseBuilder;
-
 
     private WhoPaidSelector whoPaidSelector;
 
@@ -66,7 +68,7 @@ public class AddEditExpenseMv {
         evenlyCheckbox = new SimpleBooleanProperty(true);
         dateField = new SimpleObjectProperty<>(LocalDate.now());
         whoPaidField = new SimpleObjectProperty<>();
-//        whoPaidItems = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+        tagField = new SimpleObjectProperty<>(null);
         debtors = new SimpleObjectProperty<>(FXCollections.observableArrayList());
 
 
@@ -74,13 +76,48 @@ public class AddEditExpenseMv {
 
     public void loadInfo(Event event) {
         this.event = event;
-//        initWhoPaid();
         expenseBuilder = new ExpenseBuilder();
 
         for(var x : event.getParticipants()){
             debtors.get().add(new Pair<>(x,  new SimpleBooleanProperty(false)));
         }
     }
+
+    public void loadExpense( Expense expense) {
+        this.event = event;
+        this.expense = expense;
+
+        for(var x : debtors.get()){
+
+            if(expense.getDebtors().contains(x.getKey())){
+                x.getValue().setValue(true);
+            }
+        }
+
+        setBuilder();
+        setFields();
+
+    }
+
+    public void setBuilder(){
+        expenseBuilder = new ExpenseBuilder();
+        expenseBuilder.setDebtors(expense.getDebtors());
+        expenseBuilder.setTag(expense.getTag());
+        expenseBuilder.setDate(expense.getDate());
+        expenseBuilder.setPurchase(expense.getPurchase());
+        expenseBuilder.setPayer(expense.getPayer());
+        expenseBuilder.setAmount((long)(expense.getAmount() * 100));
+    }
+
+    public void setFields(){
+        descriptionField.setValue(expense.getPurchase());
+        whoPaidField.setValue(expense.getPayer());
+        descriptionField.setValue(expense.getPurchase());
+        priceField.setValue(String.valueOf(expense.getAmount()));
+        dateField.set(expense.getDate());
+    }
+
+
 
     public void clear(){
         for(var x : event.getParticipants()){
@@ -93,7 +130,6 @@ public class AddEditExpenseMv {
         currencyField.setValue("");
         evenlyCheckbox.setValue(true);
         dateField.setValue(LocalDate.now());
-//        whoPaidField.setValue("");
         whoPaidField.setValue(null);
 
         debtors.getValue().removeAll();
@@ -102,15 +138,6 @@ public class AddEditExpenseMv {
         this.expense = null;
     }
 
-//    public void initWhoPaid() {
-//        this.whoPaidSelector = new WhoPaidSelector(this.event.getParticipants());
-//        whoPaidItems.get().addAll(
-//            this.event.getParticipants()
-//                .stream()
-//                .map(Participant::getName)
-//                .toList());
-//
-//    }
     /**
      * get the value of the priceField
      *
@@ -191,12 +218,28 @@ public class AddEditExpenseMv {
         return res;
     }
 
+    private Expense updateExpense() {
+
+        Expense res = expenseBuilder.build();
+
+        expense.setAmount(getPriceFieldValue());
+        expenseCommunicator.deleteExpense(expense.getId());
+        res = expenseCommunicator.createExpense(res);
+//        res = expenseCommunicator.updateExpense(expense.getId(), res);
+        this.event = eventCommunicator.updateEvent(event);
+
+        return res;
+
+    }
+
+
     /**
      * create the final expense
      *
      * @return an expense
      */
     public Expense createExpense(){
+
         expenseBuilder.setPayer(getPayer());
         expenseBuilder.setPurchase(getPurchase());
         expenseBuilder.setDate(getDateFieldValue());
@@ -204,8 +247,13 @@ public class AddEditExpenseMv {
         expenseBuilder.setDebtors(getDebtors());
         expenseBuilder.setEvent(event);
 
+        if(this.expense != null){
+            return updateExpense();
+        }
+
 //        System.out.println(expenseBuilder.toString());
         Expense res = expenseBuilder.build();
+
 
         res = expenseCommunicator.createExpense(res);
         this.event = eventCommunicator.updateEvent(event);
@@ -213,6 +261,7 @@ public class AddEditExpenseMv {
         return res;
 
     }
+
 
     public StringProperty priceFieldProperty() {
         return priceField;
@@ -255,4 +304,5 @@ public class AddEditExpenseMv {
     public Event getEvent() {
         return event;
     }
+
 }

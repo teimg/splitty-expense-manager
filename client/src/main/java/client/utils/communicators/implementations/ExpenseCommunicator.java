@@ -58,10 +58,10 @@ public class ExpenseCommunicator implements IExpenseCommunicator {
     }
 
     @Override
-    public Expense updateExpense(Expense expense) {
+    public Expense updateExpense(long id, Expense expense) {
         return ClientBuilder.newClient()
                 .target(origin).path("api/expense/{id}")
-                .resolveTemplate("id", expense.getId())
+                .resolveTemplate("id", id)
                 .request(APPLICATION_JSON).accept(APPLICATION_JSON)
                 .put(Entity.entity(expense, APPLICATION_JSON), Expense.class);
     }

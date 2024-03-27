@@ -209,6 +209,13 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         this.tagCommunicator = tagCommunicator;
     }
 
+    public void loadInfo(Event event, Expense expense) {
+        loadInfo(event);
+
+       addEditExpenseMv.loadExpense(expense);
+    }
+
+
     public void loadInfo(Event event) {
         addEditExpenseMv.loadInfo(event);
 
@@ -312,26 +319,14 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     public void initWhoPaid(){
         // temp disable whoPaidSelector Since to unstable
-        whoPaidField.setEditable(false);
-        this.whoPaidField.setVisibleRowCount(3);
-        whoPaidField.setConverter(new StringConverter<Participant>() {
-
-            @Override
-            public String toString(Participant object) {
-                if(object == null){
-                    return null;
-                }
-                return object.getName();
-            }
-
-            @Override
-            public Participant fromString(String string) {
-                return null;
-            }
-        });
+//        whoPaidField.setEditable(false);
+//        this.whoPaidField.setVisibleRowCount(3);
 
         this.whoPaidSelector = new WhoPaidSelector(this.addEditExpenseMv.getParticipants());
+        whoPaidField.setConverter(whoPaidSelector);
+
         whoPaidField.getItems().addAll(addEditExpenseMv.getParticipants());
+
 
         this.whoPaidField.setCellFactory(call -> new ListCell<Participant>(){
             @Override
@@ -345,7 +340,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             }
         });
 
-        whoPaidField.getEditor().setOnKeyPressed(x -> {
+        whoPaidField.getEditor().setOnKeyReleased(x -> {
 
             if(!x.getCode().isLetterKey()){
                 return;
@@ -354,6 +349,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             whoPaidField.getItems().removeAll(whoPaidField.getItems());
             whoPaidField.setValue(whoPaidSelector.getCurrentPayer(whoPaidField.getEditor().getText()));
 
+            whoPaidField.getItems().removeAll(whoPaidField.getItems());
             whoPaidField.getItems()
                 .addAll(whoPaidSelector
                     .query(
@@ -515,17 +511,17 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         (new Popup(msg, type)).show();
     }
 
-    public void handleDeleteTag(ActionEvent actionEvent) {
+    public void handleDeleteTag() {
         this.tagCommunicator.deleteTag(getTag().getId());
         initTag();
     }
 
-    public void handleEditTag(ActionEvent actionEvent) {
+    public void handleEditTag() {
         mainCtrl.showTagScreen(event, getTag());
         initTag();
     }
 
-    public void handleAddTag(ActionEvent actionEvent) {
+    public void handleAddTag() {
         mainCtrl.showTagScreen(event, null);
         initTag();
     }
