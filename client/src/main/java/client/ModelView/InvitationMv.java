@@ -1,5 +1,9 @@
 package client.ModelView;
 
+import client.utils.communicators.implementations.EmailCommunicator;
+import client.utils.communicators.interfaces.IEmailCommunicator;
+import com.google.inject.Inject;
+import commons.EmailRequest;
 import commons.Event;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -16,9 +20,13 @@ public class InvitationMv {
 
     private StringProperty emailEntered;
 
-    public InvitationMv() {
+    private final IEmailCommunicator emailCommunicator;
+
+    @Inject
+    public InvitationMv(EmailCommunicator emailCommunicator) {
         this.emails = new SimpleObjectProperty<>(FXCollections.observableArrayList());
         this.emailEntered = new SimpleStringProperty("");
+        this.emailCommunicator = emailCommunicator;
     }
 
     public void loadEvent(Event event) {
@@ -60,8 +68,9 @@ public class InvitationMv {
 
     public void handleSendInvites() {
         List<String> allEmails = getAllEmails();
-        // TODO: implement email functionality
-
+        EmailRequest request = emailCommunicator.getAll();
+        emailCommunicator.sendEmail(new EmailRequest("teim.giesen@gmail.com",
+                "Test", "TesterBody"));
     }
 
     public ObjectProperty<ObservableList<String>> emailsProperty() {

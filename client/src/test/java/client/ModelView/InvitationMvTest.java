@@ -1,9 +1,11 @@
 package client.ModelView;
 
+import client.utils.communicators.implementations.EmailCommunicator;
 import commons.Event;
 import javafx.collections.FXCollections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.List;
 
@@ -13,9 +15,12 @@ class InvitationMvTest {
 
     private InvitationMv invitationMv;
 
+    @Mock
+    EmailCommunicator mockEmailCommunicator;
+
     @BeforeEach
-    void  setup (){
-        invitationMv = new InvitationMv();
+    void setup (){
+        invitationMv = new InvitationMv(mockEmailCommunicator);
     }
 
     @Test
