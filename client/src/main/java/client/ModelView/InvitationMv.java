@@ -1,16 +1,21 @@
 package client.ModelView;
 
 import client.utils.communicators.implementations.EmailCommunicator;
+import client.utils.communicators.implementations.ParticipantCommunicator;
 import client.utils.communicators.interfaces.IEmailCommunicator;
+import client.utils.communicators.interfaces.IParticipantCommunicator;
 import com.google.inject.Inject;
 import commons.EmailRequest;
 import commons.Event;
+import commons.Participant;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InvitationMv {
 
@@ -22,11 +27,15 @@ public class InvitationMv {
 
     private final IEmailCommunicator emailCommunicator;
 
+    private final IParticipantCommunicator participantCommunicator;
+
     @Inject
-    public InvitationMv(EmailCommunicator emailCommunicator) {
+    public InvitationMv(EmailCommunicator emailCommunicator,
+                        ParticipantCommunicator participantCommunicator) {
         this.emails = new SimpleObjectProperty<>(FXCollections.observableArrayList());
         this.emailEntered = new SimpleStringProperty("");
         this.emailCommunicator = emailCommunicator;
+        this.participantCommunicator = participantCommunicator;
     }
 
     public void loadEvent(Event event) {
@@ -67,10 +76,41 @@ public class InvitationMv {
     }
 
     public void handleSendInvites() {
+        sendOutEmails();
+        addParticipants();
+    }
+
+    public boolean isValidEmail(String email) {
+        String pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern regexPattern = Pattern.compile(pattern);
+        Matcher matcher = regexPattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private void addParticipants() {
         List<String> allEmails = getAllEmails();
-        EmailRequest request = emailCommunicator.getAll();
-        emailCommunicator.sendEmail(new EmailRequest("teim.giesen@gmail.com",
-                "Test", "TesterBody"));
+        for (String email : allEmails) {
+            if (isValidEmail(email)) {
+                participantCommunicator.createParticipant(
+                        event, email.split("@")[0], email, null);
+                event.addParticipant(new Participant(email.split("@")[0], email));
+            }
+            // TODO: Error handling
+        }
+    }
+
+    public void sendOutEmails() {
+        List<String> allEmails = getAllEmails();
+        for (String email : allEmails) {
+            emailCommunicator.sendEmail(new EmailRequest(
+                    email,
+                    "Invitation to Event!",
+                    "You have been invited to the event: " + event.getName()
+                            + "\n\nThe invite code is: " + event.getInviteCode()
+                            + "\n\nThe server URL is: " + emailCommunicator.getOrigin()
+                            + "\n\nHave a nice day!"
+            ));
+        }
     }
 
     public ObjectProperty<ObservableList<String>> emailsProperty() {

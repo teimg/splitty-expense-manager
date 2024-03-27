@@ -18,6 +18,10 @@ public class EmailCommunicator implements IEmailCommunicator {
         origin = config.getServer();
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
     @Override
     public EmailRequest sendEmail(EmailRequest emailRequest) {
         return ClientBuilder.newClient()

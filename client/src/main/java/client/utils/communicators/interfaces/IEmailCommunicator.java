@@ -8,4 +8,6 @@ public interface IEmailCommunicator {
 
     EmailRequest getAll();
 
+    String getOrigin();
+
 }
