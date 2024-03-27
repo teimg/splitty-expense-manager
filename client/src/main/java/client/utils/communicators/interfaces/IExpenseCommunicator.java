@@ -39,6 +39,7 @@ public interface IExpenseCommunicator {
 
     /**
      * Updates an existing expense.
+     * @param id of the event to update
      * @param expense the expense with updated fields
      * @return the updated expense
      */

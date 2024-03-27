@@ -53,7 +53,9 @@ public class AddEditExpenseMv {
 
 
     @Inject
-    public AddEditExpenseMv(IExpenseCommunicator expenseCommunicator, IEventCommunicator eventCommunicator, ITagCommunicator tagCommunicator) {
+    public AddEditExpenseMv(IExpenseCommunicator expenseCommunicator,
+                            IEventCommunicator eventCommunicator,
+                            ITagCommunicator tagCommunicator) {
         this.expenseCommunicator = expenseCommunicator;
         this.eventCommunicator = eventCommunicator;
         this.tagCommunicator = tagCommunicator;
@@ -181,7 +183,7 @@ public class AddEditExpenseMv {
 
     public  Participant getPayer(){
 
-            Participant res = whoPaidField.getValue();
+        Participant res = whoPaidField.getValue();
 
         if(res == null){
             throw new IllegalArgumentException("PayerFieldInvalid");
@@ -251,8 +253,8 @@ public class AddEditExpenseMv {
         expenseBuilder.setDate(getDateFieldValue());
         expenseBuilder.setAmount(getPriceFieldValue());
         expenseBuilder.setDebtors(getDebtors());
-//        expenseBuilder.setTag(getTag());
-        expenseBuilder.setEvent(event);
+        expenseBuilder.setTag(getTag());
+        expenseBuilder.setEventId(event.getId());
 
         if(this.expense != null){
             return updateExpense();

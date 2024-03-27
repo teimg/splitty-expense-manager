@@ -75,7 +75,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         Event event = eventModified.getEvent();
         shownEvents.removeIf(e -> e.getId() == event.getId());
         shownEvents.add(event);
-        System.out.println("websockets: event created");
+        System.out.println("websockets: event modified");
     }
 
     private void handleEventDeleted(EventDeleted eventDeleted) {

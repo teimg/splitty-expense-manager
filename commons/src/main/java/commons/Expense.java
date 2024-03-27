@@ -1,7 +1,7 @@
 package commons;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -12,18 +12,18 @@ import java.util.Objects;
  * The Expense class represents an expense record associated with an event.
  * It contains details about a specific purchase, the amount, the payer, and a list of debtors.
  */
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        scope = Expense.class
-)
 @Entity
 public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @JsonIgnore
+    @JoinColumn(name = "event_id", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
+    @Column(name = "event_id")
+    private Long eventId;
+
     private String purchase;
     private double amount;
     @ManyToOne
@@ -31,23 +31,13 @@ public class Expense {
     @ManyToMany
     private List<Participant> debtors;
     private LocalDate date;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"expenses"})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Tag tag;
 
-    /**
-     * Constructs a new Expense with the specified details.
-     *
-     * @param event    the event associated with the expense
-     * @param purchase the description of the purchase
-     * @param amount   the amount of the expense
-     * @param payer    the participant who paid for the expense
-     * @param debtors  the list of participants who owe a share of the expense
-     * @param date     the date that the expense was paid
-     * @param tag      the tag for the expense
-     */
-    public Expense(Event event, String purchase, double amount,
+    public Expense(Long eventId, String purchase, double amount,
                    Participant payer, List<Participant> debtors, LocalDate date, Tag tag) {
-        this.event = event;
+        this.eventId = eventId;
         this.purchase = purchase;
         this.amount = amount;
         this.payer = payer;
@@ -55,6 +45,7 @@ public class Expense {
         this.date = date;
         this.tag = tag;
     }
+
 
     /**
      * No arg constructor
@@ -79,20 +70,12 @@ public class Expense {
         this.id = id;
     }
 
-    /**
-     * Event getter
-     * @return event
-     */
-    public Event getEvent() {
-        return event;
+    public Long getEventId() {
+        return eventId;
     }
 
-    /**
-     * Event setter
-     * @param event set
-     */
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     /**

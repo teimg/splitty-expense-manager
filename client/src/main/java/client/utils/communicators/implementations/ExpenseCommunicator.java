@@ -28,7 +28,7 @@ public class ExpenseCommunicator implements IExpenseCommunicator {
     public Expense createExpense(Event event, String purchase, double amount, Participant payer,
                                  List<Participant> debtors, LocalDate date) {
         Expense toServer = new Expense();
-        toServer.setEvent(event);
+        toServer.setEventId(event.getId());
         toServer.setPurchase(purchase);
         toServer.setAmount(amount);
         toServer.setPayer(payer);

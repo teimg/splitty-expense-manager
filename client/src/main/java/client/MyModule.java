@@ -37,18 +37,7 @@ public class MyModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddEditExpenseCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(InvitationCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(OpenDebtsCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(StatisticsScreenCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ContactInfoCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);
+        configureScenes(binder);
 
         binder.bind(MenuBarCtrl.class).in(Scopes.SINGLETON);
 
@@ -87,5 +76,20 @@ public class MyModule implements Module {
         }
 
 
+    }
+
+    private static void configureScenes(Binder binder) {
+        binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AddEditExpenseCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(InvitationCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(OpenDebtsCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(StatisticsScreenCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ContactInfoCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);
     }
 }

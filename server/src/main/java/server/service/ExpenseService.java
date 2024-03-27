@@ -21,10 +21,9 @@ public class ExpenseService {
     }
 
     public Expense saveExpense(Expense expense) {
-        return expenseRepository.save(expense);
-//        expense = expenseRepository.saveAndFlush(expense);
-//        eventService.updateLastActivity(expense.getEvent().getId());
-//        return expense;
+        expense = expenseRepository.saveAndFlush(expense);
+        eventService.updateLastActivity(expense.getEventId());
+        return expense;
     }
 
     public Optional<Expense> getExpenseById(Long id) {
@@ -46,6 +45,6 @@ public class ExpenseService {
         }
         Expense expense = getRes.get();
         expenseRepository.deleteById(id);
-        eventService.updateLastActivity(expense.getEvent().getId());
+        eventService.updateLastActivity(expense.getEventId());
     }
 }

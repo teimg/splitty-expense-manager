@@ -71,7 +71,7 @@ public class ExpenseController {
         Optional<Expense> expenseData = expenseService.getExpenseById(id);
         if (expenseData.isPresent()) {
             Expense expense = expenseData.get();
-            expense.setEvent(expenseDetails.getEvent());
+            expense.setEventId(expenseDetails.getEventId());
             expense.setPurchase(expenseDetails.getPurchase());
             expense.setAmount(expenseDetails.getAmount());
             expense.setPayer(expenseDetails.getPayer());

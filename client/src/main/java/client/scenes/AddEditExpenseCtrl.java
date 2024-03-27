@@ -4,8 +4,6 @@ import client.ModelView.AddEditExpenseMv;
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
-import client.utils.communicators.implementations.ExpenseCommunicator;
-import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -260,9 +258,11 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             }
 
             whoPaidField.getItems().removeAll(whoPaidField.getItems());
-            whoPaidField.setValue(whoPaidSelector.getCurrentPayer(whoPaidField.getEditor().getText()));
+            whoPaidField.setValue(
+                whoPaidSelector.getCurrentPayer(whoPaidField.getEditor().getText()));
 
-            whoPaidField.getItems().removeAll(whoPaidField.getItems());
+            whoPaidField.getItems()
+                .removeAll(whoPaidField.getItems());
             whoPaidField.getItems()
                 .addAll(whoPaidSelector
                     .query(

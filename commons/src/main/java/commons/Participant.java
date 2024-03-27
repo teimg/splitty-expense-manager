@@ -1,8 +1,6 @@
 package commons;
 
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -12,11 +10,6 @@ import java.util.Objects;
  * that is involved in an event
  */
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        scope = Participant.class
-)
 @Entity
 public class Participant {
     @Id
@@ -25,8 +18,14 @@ public class Participant {
     private String name;
     @OneToOne(cascade = CascadeType.ALL)
     private BankAccount bankAccount;
+
+    @JsonIgnore
+    @JoinColumn(name = "event_id", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private Event event;
+
+    @Column(name = "event_id")
+    private Long eventId;
     private String email;
 
     /**
@@ -111,20 +110,12 @@ public class Participant {
         this.bankAccount = bankAccount;
     }
 
-    /**
-     * Event getter
-     * @return event
-     */
-    public Event getEvent() {
-        return event;
+    public Long getEventId() {
+        return eventId;
     }
 
-    /**
-     * Event setter
-     * @param event set
-     */
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     /**
@@ -143,11 +134,6 @@ public class Participant {
         this.email = email;
     }
 
-    /**
-     * Equals method
-     * @param o other
-     * @return boolean
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -160,10 +146,6 @@ public class Participant {
         return Objects.equals(bankAccount, that.bankAccount);
     }
 
-    /**
-     * Hashcode
-     * @return hashcode
-     */
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
