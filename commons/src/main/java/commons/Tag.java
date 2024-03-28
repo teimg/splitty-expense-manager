@@ -129,7 +129,6 @@ public class Tag {
 
         Tag tag = (Tag) o;
 
-        if ((red != tag.red)|| (green != tag.green) || (blue != tag.blue)) return false;
         return Objects.equals(name, tag.name);
     }
 
