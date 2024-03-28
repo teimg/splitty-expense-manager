@@ -6,7 +6,10 @@ import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
-import commons.event.changes.*;
+import commons.EventChange;
+import commons.Expense;
+import commons.Participant;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initializable {
@@ -65,23 +69,44 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         this.eventCommunicator = eventCommunicator;
     }
 
-    private void handleEventCreated(EventCreated eventCreated) {
-        Event event = eventCreated.getEvent();
-        shownEvents.add(event);
-        System.out.println("websockets: event created");
+    class AddEvent implements Runnable {
+        private Event event;
+        public AddEvent(Event event) {
+            this.event = event;
+        }
+        @Override
+        public void run() {
+            shownEvents.add(event);
+            eventListView.refresh();
+            System.out.println("websockets: event created");
+        }
     }
 
-    private void handleEventModified(EventModified eventModified) {
-        Event event = eventModified.getEvent();
-        shownEvents.removeIf(e -> e.getId() == event.getId());
-        shownEvents.add(event);
-        System.out.println("websockets: event modified");
+    class UpdateEvent implements Runnable {
+        private Event event;
+        public UpdateEvent(Event event) {
+            this.event = event;
+        }
+        @Override
+        public void run() {
+            shownEvents.removeIf(e -> e.getId() == event.getId());
+            shownEvents.add(event);
+            eventListView.refresh();
+            System.out.println("websockets: event modified");
+        }
     }
 
-    private void handleEventDeleted(EventDeleted eventDeleted) {
-        Event event = eventDeleted.getEvent();
-        shownEvents.removeIf(e -> e.getId() == event.getId());
-        System.out.println("websockets: event deleted");
+    class DeleteEvent implements Runnable {
+        private Event event;
+        public DeleteEvent(Event event) {
+            this.event = event;
+        }
+        @Override
+        public void run() {
+            shownEvents.removeIf(e -> e.getId() == event.getId());
+            eventListView.refresh();
+            System.out.println("websockets: event deleted");
+        }
     }
 
     @Override
@@ -97,17 +122,14 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
         eventCommunicator.registerForWebSocketMessages(
                 "/topic/events",
-                EventChange.class, change -> {
-            if (change instanceof EventCreated) {
-                handleEventCreated((EventCreated)change);
-            }
-            if (change instanceof EventModified) {
-                handleEventModified((EventModified)change);
-            }
-            if (change instanceof EventDeleted) {
-                handleEventDeleted((EventDeleted)change);
-            }
-        });
+                EventChange.class,
+                change -> {
+                    switch (change.getType()) {
+                        case CREATION -> Platform.runLater(new AddEvent(change.getEvent()));
+                        case MODIFICATION -> Platform.runLater(new UpdateEvent(change.getEvent()));
+                        case DELETION -> Platform.runLater(new DeleteEvent(change.getEvent()));
+                    }
+                });
     }
 
     @Override
@@ -173,6 +195,29 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
     private static class EventCellFactory
             implements Callback<ListView<Event>, ListCell<Event>> {
+
+        private String participantsText(List<Participant> participants) {
+            return String.join(", ", participants.stream().map(Participant::getName).toList());
+        }
+
+        private String expensesText(List<Expense> expenses) {
+            return String.join(", ", expenses.stream().map(Expense::getPurchase).toList());
+        }
+
+        private String eventText(Event event) {
+            return String.format("""
+                    Name: %s
+                    Created: %s
+                    Last Modified: %s
+                    Participants: %s
+                    Expenses: %s""",
+                    event.getName(),
+                    event.getCreationDate(),
+                    event.getLastActivity(),
+                    participantsText(event.getParticipants()),
+                    expensesText(event.getExpenses()));
+        }
+
         /**
          * Should return a new ListCell usable in the expense ListView.
          * @param listView the expense ListView
@@ -195,7 +240,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
                         setText(null);
                         return;
                     }
-                    setText(event.toString());
+                    setText(eventText(event));
                 }
             };
         }

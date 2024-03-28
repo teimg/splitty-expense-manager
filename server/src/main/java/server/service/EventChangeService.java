@@ -1,7 +1,7 @@
 package server.service;
 
 import commons.Event;
-import commons.event.changes.EventChange;
+import commons.EventChange;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -26,6 +26,7 @@ public class EventChangeService {
     }
 
     public void sendChange(EventChange change) {
+        System.out.println("Change sent: " + change.toString());
         websocketMsgs.convertAndSend("/topic/events", change);
 
         var results = longPolls.get(change.getEvent().getId());
