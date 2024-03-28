@@ -55,6 +55,14 @@ public class DebtsBuilder {
         }
     }
 
+    private boolean containsSameParticipants(Debt firstDebt, Debt secondDebt) {
+        return (firstDebt.getCreditor().equals(secondDebt.getCreditor()) &&
+                firstDebt.getDebtor().equals(secondDebt.getDebtor())) ||
+                (firstDebt.getCreditor().equals(secondDebt.getDebtor()) &&
+                        firstDebt.getDebtor().equals(secondDebt.getCreditor()));
+    }
+
+
     private void buildPanes() {
         for (Debt debt : debts) {
             HBox title = new HBox();

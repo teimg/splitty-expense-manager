@@ -67,4 +67,12 @@ public class TagCommunicator implements ITagCommunicator {
                 .put(Entity.entity(tag, APPLICATION_JSON), Tag.class);
     }
 
+    @Override
+    public Tag saveOrUpdateTag(Tag tag) {
+        return ClientBuilder.newClient()
+                .target(origin).path("api/tags/saveOrUpdate")
+                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+    }
+
 }

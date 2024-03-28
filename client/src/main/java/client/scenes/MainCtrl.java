@@ -19,8 +19,8 @@ import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
-import client.utils.SceneController;
-import client.utils.SceneWrapper;
+import client.utils.scene.SceneController;
+import client.utils.scene.SceneWrapper;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -49,9 +49,11 @@ public class MainCtrl {
     private final ClientConfiguration config;
 
     private MenuBarCtrl menuBarCtrl;
+
     private Parent menuBar;
 
     private final RecentEventTracker recentEventTracker;
+
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
@@ -60,7 +62,6 @@ public class MainCtrl {
         this.translator = translator;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
-
         }
         this.recentEventTracker = recentEventTracker;
     }

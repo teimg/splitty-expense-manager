@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;

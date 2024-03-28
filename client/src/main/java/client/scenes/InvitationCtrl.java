@@ -4,7 +4,7 @@ import client.ModelView.InvitationMv;
 import client.dialog.ConfPopup;
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;

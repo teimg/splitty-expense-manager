@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.TagCommunicator;
 import client.utils.communicators.interfaces.ITagCommunicator;
 import com.google.inject.Inject;
