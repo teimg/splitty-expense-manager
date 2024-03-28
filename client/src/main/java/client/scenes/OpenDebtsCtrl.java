@@ -4,7 +4,6 @@ import client.language.LanguageSwitch;
 import client.utils.DebtsBuilder;
 import client.utils.SceneController;
 import client.utils.communicators.implementations.EmailCommunicator;
-import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.implementations.ExpenseCommunicator;
 import com.google.inject.Inject;
 import commons.Debt;
