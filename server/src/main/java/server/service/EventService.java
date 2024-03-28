@@ -1,7 +1,7 @@
 package server.service;
 
 import commons.Event;
-import commons.event.changes.*;
+import commons.EventChange;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,14 +36,14 @@ public class EventService {
         event = save(event);
         event.setInviteCode(generateInviteCode(event.getId()));
         event = save(event);
-        eventChangeService.sendChange(new EventCreated(event));
+        eventChangeService.sendChange(new EventChange(EventChange.Type.CREATION, event));
         return event;
     }
 
     public Event update(Event event) {
         event.setLastActivity(new Date());
         event = save(event);
-        eventChangeService.sendChange(new EventModified(event));
+        eventChangeService.sendChange(new EventChange(EventChange.Type.MODIFICATION, event));
         return event;
     }
 
@@ -75,7 +75,7 @@ public class EventService {
             return;
         }
         Event event = getRes.get();
-        eventChangeService.sendChange(new EventDeleted(event));
+        eventChangeService.sendChange(new EventChange(EventChange.Type.DELETION, event));
         repo.delete(event);
     }
 
