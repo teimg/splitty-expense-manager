@@ -26,12 +26,13 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class EventCommunicator implements IEventCommunicator {
     private final String origin;
-    private final StompSession session;
+    private final String webSocketURL;
+    private StompSession session;
 
     @Inject
     public EventCommunicator(ClientConfiguration config) {
         origin = config.getServer();
-        session = connect("ws://localhost:8080/websocket");
+        webSocketURL = "ws://localhost:8080/websocket";
     }
 
     @Override
@@ -112,29 +113,31 @@ public class EventCommunicator implements IEventCommunicator {
                 .target(origin).path("api/event")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Event>>() {});
+                .get(new GenericType<List<Event>>() {
+                });
     }
 
-
-    private StompSession connect(String url) {
+    @Override
+    public void establishWebSocketConnection() {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.getObjectMapper().registerModule(new JavaTimeModule());
         stomp.setMessageConverter(converter);
         try {
-            return stomp.connect(url, new StompSessionHandlerAdapter() {
+            session = stomp.connect(webSocketURL, new StompSessionHandlerAdapter() {
             }).get();
+            System.out.println("websockets: connection established");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
-        throw new IllegalStateException();
     }
 
     @Override
-    public <T> void registerForWebSocketMessages(String dest, Class<T> type, Consumer<T> consumer) {
+    public <T> void subscribeForWebSocketMessages(String dest, Class<T> type,
+                                                  Consumer<T> consumer) {
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -146,5 +149,11 @@ public class EventCommunicator implements IEventCommunicator {
                 consumer.accept((T) payload);
             }
         });
+    }
+
+    @Override
+    public void closeWebSocketConnection() {
+        session.disconnect();
+        System.out.println("websockets: connection closed");
     }
 }

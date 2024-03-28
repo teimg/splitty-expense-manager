@@ -243,6 +243,7 @@ public class MainCtrl {
 
     public void showAdminScreen() {
         show("AdminScreen");
+        ((AdminScreenCtrl)this.currentCtrl.getValue()).initializeScene();
         this.currentCtrl.getValue().setLanguage();
     }
 
