@@ -145,7 +145,9 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
      */
     public void handleSendInvites() {
         invitationMv.handleSendInvites();
+        mainCtrl.showEventOverview(this.invitationMv.getEvent());
     }
+
 
     @Override
     public void setLanguage() {
