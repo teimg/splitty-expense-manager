@@ -2,9 +2,9 @@ package client.scenes;
 
 import client.language.LanguageSwitch;
 import client.utils.DebtsBuilder;
-import client.utils.SceneController;
 import client.utils.communicators.implementations.EmailCommunicator;
 import client.utils.communicators.implementations.ExpenseCommunicator;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
