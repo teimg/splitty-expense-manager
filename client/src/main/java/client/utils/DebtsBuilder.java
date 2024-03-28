@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class DebtsBuilder {
         this.expenseCommunicator = expenseCommunicator;
         this.mainCtrl = mainCtrl;
         findDebts();
+        simplifyDebts();
         buildPanes();
     }
 
@@ -71,11 +73,43 @@ public class DebtsBuilder {
         }
     }
 
-    private boolean containsSameParticipants(Debt firstDebt, Debt secondDebt) {
-        return (firstDebt.getCreditor().equals(secondDebt.getCreditor()) &&
-                firstDebt.getDebtor().equals(secondDebt.getDebtor())) ||
-                (firstDebt.getCreditor().equals(secondDebt.getDebtor()) &&
-                        firstDebt.getDebtor().equals(secondDebt.getCreditor()));
+    private void simplifyDebts() {
+        ArrayList<Pair<Participant, Participant>> allPossiblePairs = new ArrayList<>();
+        for (int i = 0; i < event.getParticipants().size(); i++) {
+            for (int j = i + 1; j < event.getParticipants().size(); j++) {
+                allPossiblePairs.add(new Pair<>(event.getParticipants().get(i),
+                        event.getParticipants().get(j)));
+            }
+        }
+        ArrayList<Debt> simplifiedDebts = new ArrayList<>();
+        for (Pair<Participant, Participant> pair : allPossiblePairs) {
+            double amount = 0.0;
+            for (Debt debt : debts) {
+                if (containsParticipantsSame(debt, pair)) {
+                    amount = amount + debt.getAmount();
+                }
+                else if (containsParticipantsOpposite(debt, pair)) {
+                    amount = amount - debt.getAmount();
+                }
+            }
+            if (amount > 0) {
+                simplifiedDebts.add(new Debt(pair.getKey(), pair.getValue(), amount));
+            }
+            else if (amount < 0) {
+                simplifiedDebts.add(new Debt(pair.getValue(), pair.getKey(), (-1*amount)));
+            }
+        }
+        debts = simplifiedDebts;
+    }
+
+    private boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {
+        return ((debt.getCreditor().equals(pair.getKey()) &&
+                debt.getDebtor().equals(pair.getValue())));
+    }
+
+    private boolean containsParticipantsOpposite(Debt debt, Pair<Participant, Participant> pair) {
+        return (debt.getCreditor().equals(pair.getValue()) &&
+                debt.getDebtor().equals(pair.getKey()));
     }
 
     private void buildPanes() {
@@ -126,17 +160,6 @@ public class DebtsBuilder {
         }
     }
 
-    private void settleDebt(Debt debt) {
-        ArrayList<Participant> debtor = new ArrayList<>();
-        debtor.add(debt.getCreditor());
-        Expense newExpense = new Expense(event.getId(),
-                "Debt Settlement", debt.getAmount(), debt.getDebtor(),
-                debtor, LocalDate.now(), null);
-        event.addExpense(newExpense);
-        expenseCommunicator.createExpense(newExpense);
-        mainCtrl.showOpenDebts(event);
-    }
-
     private Button createButton(Debt debt) {
         Button settleButton = new Button(translator
                 .getTranslation("OpenDebts.SettleDebt-Button"));
@@ -149,6 +172,17 @@ public class DebtsBuilder {
         settleButton.setStyle("-fx-background-color: rgb(" +
                 "" + 180 + ", " + 180 + ", " + 180 + ");");
         return settleButton;
+    }
+
+    private void settleDebt(Debt debt) {
+        ArrayList<Participant> debtor = new ArrayList<>();
+        debtor.add(debt.getCreditor());
+        Expense newExpense = new Expense(event.getId(),
+                "Debt Settlement", debt.getAmount(), debt.getDebtor(),
+                debtor, LocalDate.now(), null);
+        event.addExpense(newExpense);
+        expenseCommunicator.createExpense(newExpense);
+        mainCtrl.showOpenDebts(event);
     }
 
     private String getSummary(Debt debt) {
