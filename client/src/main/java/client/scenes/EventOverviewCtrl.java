@@ -333,22 +333,15 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         longPollingTask = new Task<Void>() {
             @Override
             protected Void call() {
-                try {
-                    while (!isCancelled()) {
-                        EventChange eventChange = eventCommunicator.checkForEventUpdates(eventId);
-                        if (eventChange != null) {
-                            if (eventChange.getType() == EventChange.Type.MODIFICATION) {
-                                Platform.runLater(() -> updateUI(eventChange.getEvent()));
-                            } else if (eventChange.getType() == EventChange.Type.DELETION) {
-                                Platform.runLater(() -> {
-                                    //pop-up to show event deleted
-                                });
-                            }
+                while (!isCancelled()) {
+                    EventChange eventChange = eventCommunicator.checkForEventUpdates(eventId);
+                    if (eventChange != null) {
+                        if (eventChange.getType() == EventChange.Type.MODIFICATION) {
+                            updateUI(eventChange.getEvent());
+                        } else if (eventChange.getType() == EventChange.Type.DELETION) {
+                            //pop-up to show event deleted
                         }
-                        Thread.sleep(5000); // 5 seconds
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
                 return null;
             }
@@ -401,9 +394,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         });
 
     }
-        public void stop () {
-            stopEventUpdatesLongPolling();
-        }
+    public void stop () {
+        stopEventUpdatesLongPolling();
+    }
 
 
 }
