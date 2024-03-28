@@ -326,20 +326,21 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         mainCtrl.showStatistics(event);
     }
 
+
+
     private void startEventUpdatesLongPolling(long eventId) {
         longPollingTask = new Task<Void>() {
             @Override
             protected Void call() {
                 try {
-                    while (!isCancelled()) {
-                        Event updatedEvent = eventCommunicator.checkForEventUpdates(eventId);
-                        if (updatedEvent != null && !updatedEvent.equals(event)) {
+                    eventCommunicator.requestEventUpdates(eventId, updatedEvent -> {
+                        if (!isCancelled() && updatedEvent != null) {
                             updateUI(updatedEvent);
+                            startEventUpdatesLongPolling(eventId); // Restart listening for updates
                         }
-                        Thread.sleep(5000); // 5 seconds
-                    }
-                } catch (InterruptedException e) {
-                    // Handle if the thread is interrupted
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 return null;
             }
@@ -349,6 +350,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         pollingThread.setDaemon(true);
         pollingThread.start();
     }
+
+
+
+
 
     private void stopEventUpdatesLongPolling() {
         if (longPollingTask != null) {
@@ -368,16 +373,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             return;
         }
 
-        // Ensure UI updates are run on the JavaFX Application Thread
         Platform.runLater(() -> {
-            // Update event title
             eventTitle.setText(updatedEvent.getName());
 
-            // Update participants list
             participantsList.setText(String.join(", ", updatedEvent.getParticipants()
                     .stream().map(Participant::getName).toList()));
 
-            // Update expenses list
             shownExpenses.clear();
             shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
             expensesList.setItems(shownExpenses);
@@ -390,10 +391,11 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
             System.out.println("UI has been updated with new event data.");
         });
-    }
 
-    public void stop() {
-        stopEventUpdatesLongPolling();
     }
+        public void stop () {
+            stopEventUpdatesLongPolling();
+        }
+
 
 }
