@@ -3,6 +3,7 @@ package client.scenes;
 import client.language.LanguageSwitch;
 import client.utils.DebtsBuilder;
 import client.utils.SceneController;
+import client.utils.communicators.implementations.EmailCommunicator;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
@@ -30,18 +31,25 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
     private final MainCtrl mainCtrl;
 
+    private final EmailCommunicator emailCommunicator;
+
     private Event event;
 
+    private DebtsBuilder debtsBuilder;
+
     @Inject
-    public OpenDebtsCtrl(MainCtrl mainCtrl) {
+    public OpenDebtsCtrl(MainCtrl mainCtrl, EmailCommunicator emailCommunicator) {
         this.mainCtrl = mainCtrl;
+        this.emailCommunicator = emailCommunicator;
     }
 
     public void loadInfo(Event event){
         this.event = event;
-        this.debts = new DebtsBuilder(event, mainCtrl.getTranslator()).getDebts();
+        this.debtsBuilder = new DebtsBuilder(event,
+                mainCtrl.getTranslator(), emailCommunicator);
+        this.debts = debtsBuilder.getDebts();
         noDebtMessage.setVisible(debts.isEmpty());
-        this.panes = new DebtsBuilder(event, mainCtrl.getTranslator()).getPanes();
+        this.panes = debtsBuilder.getPanes();
         updateAccordion();
     }
 

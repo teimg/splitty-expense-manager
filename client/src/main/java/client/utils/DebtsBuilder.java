@@ -1,10 +1,8 @@
 package client.utils;
 
 import client.language.Translator;
-import commons.Debt;
-import commons.Event;
-import commons.Expense;
-import commons.Participant;
+import client.utils.communicators.implementations.EmailCommunicator;
+import commons.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
@@ -25,11 +23,15 @@ public class DebtsBuilder {
 
     private final Translator translator;
 
-    public DebtsBuilder(Event event, Translator translator) {
+    private final EmailCommunicator emailCommunicator;
+
+    public DebtsBuilder(Event event, Translator translator,
+                        EmailCommunicator emailCommunicator) {
         this.event = event;
         this.debts = new ArrayList<>();
         this.panes = new ArrayList<>();
         this.translator = translator;
+        this.emailCommunicator = emailCommunicator;
         findDebts();
         buildPanes();
     }
@@ -53,6 +55,13 @@ public class DebtsBuilder {
                 }
             }
         }
+    }
+
+    private boolean containsSameParticipants(Debt firstDebt, Debt secondDebt) {
+        return (firstDebt.getCreditor().equals(secondDebt.getCreditor()) &&
+                firstDebt.getDebtor().equals(secondDebt.getDebtor())) ||
+                (firstDebt.getCreditor().equals(secondDebt.getDebtor()) &&
+                        firstDebt.getDebtor().equals(secondDebt.getCreditor()));
     }
 
     private void buildPanes() {
@@ -114,8 +123,15 @@ public class DebtsBuilder {
     }
 
     private void handleEmailButtonClick(Debt debt) {
-        // TODO: Send the email
-        System.out.println(debt.getDebtor().getEmail());
+        try {
+            EmailRequest emailRequest = new EmailRequest(debt.getDebtor().getEmail(),
+                    "Debt Reminder", "This is a reminder for an open debt. " +
+                    "You owe " + debt.getCreditor().getName() + " " + debt.getAmount() + "$.");
+            emailCommunicator.sendEmail(emailRequest);
+        }
+        catch (Exception e) {
+            System.out.println("Something went wrong");
+        }
     }
 
 }
