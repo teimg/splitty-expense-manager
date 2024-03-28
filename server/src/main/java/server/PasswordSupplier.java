@@ -28,7 +28,7 @@ public class PasswordSupplier {
     private String generatePassword(){
         Random rand = randomSupplier.getRandom();
         int passSize = rand.nextInt(5) + 15;
-        String[] allChars = "abcdeghijklmnopqrstuvwxyz1234567890$%&?!".split("");
+        String[] allChars = "abcdefghijklmnopqrstuvwxyz1234567890$%&?!".split("");
 
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < passSize; i++) {
