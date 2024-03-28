@@ -26,6 +26,9 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     @FXML
     private Button abortButton;
 
+    @FXML
+    private ScrollPane scrollPlane;
+
     private ArrayList<Debt> debts;
 
     private ArrayList<TitledPane> panes;
@@ -55,6 +58,8 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
                 expenseCommunicator, mainCtrl);
         this.debts = debtsBuilder.getDebts();
         noDebtMessage.setVisible(debts.isEmpty());
+        accordionDebts.setVisible(!debts.isEmpty());
+        scrollPlane.setVisible(!debts.isEmpty());
         this.panes = debtsBuilder.getPanes();
         updateAccordion();
     }
