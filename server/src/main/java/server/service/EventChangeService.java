@@ -1,6 +1,5 @@
 package server.service;
 
-import commons.Event;
 import commons.EventChange;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -21,8 +20,13 @@ public class EventChangeService {
         this.longPolls = new HashMap<>();
     }
 
-    public void addLongPoll(Event event, DeferredResult<EventChange> result) {
-        longPolls.getOrDefault(event.getId(), new HashSet<>()).add(result);
+    public void addLongPoll(Long eventId, DeferredResult<EventChange> result) {
+        longPolls.putIfAbsent(eventId, new HashSet<>());
+        longPolls.get(eventId).add(result);
+    }
+
+    public void removeLongPoll(Long eventId, DeferredResult<EventChange> result) {
+        longPolls.get(eventId).remove(result);
     }
 
     public void sendChange(EventChange change) {
