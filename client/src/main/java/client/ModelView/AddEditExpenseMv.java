@@ -136,11 +136,9 @@ public class AddEditExpenseMv {
      * @return the amount in euro cents right now
      */
     private long getPriceFieldValue() {
-        // Code should be moved to a different class, so it can be tested
         long res = 0;
         String value = priceField.getValue();
         String[] values = value.split(",|\\.");
-
         try{
             res += Long.parseLong(values[0]) * 100;
 
@@ -152,10 +150,10 @@ public class AddEditExpenseMv {
                 throw new NumberFormatException();
             }
 
-        }catch (NumberFormatException e){
+        }
+        catch (NumberFormatException e){
             throw new IllegalArgumentException("PriceFieldInvalid");
         }
-
         return res;
     }
 
@@ -168,8 +166,8 @@ public class AddEditExpenseMv {
         try{
             return  dateField.getValue();
 
-        }catch (DateTimeParseException e){
-            // Not a very nice solution, but will work for now
+        }
+        catch (DateTimeParseException e){
             return LocalDate.now();
         }
     }

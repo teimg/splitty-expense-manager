@@ -97,7 +97,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Title-label"));
         totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StatisticsScreen.Total-Cost-label") + " " + this.totalPrice);
+                "StatisticsScreen.Total-Cost-label") + " " + this.totalPrice + "$");
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(

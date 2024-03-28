@@ -428,6 +428,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     public void handleDeleteTag() {
         try{
             addEditExpenseMv.deleteTag();
+            initTag();
         }catch (Exception e){
             handleException(e);
         }
