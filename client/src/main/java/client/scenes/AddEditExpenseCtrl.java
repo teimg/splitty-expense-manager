@@ -158,6 +158,7 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
         List<Participant> participants = this.event.getParticipants();
         debtorSelector = new DebtorSelector(participants);
 
+        clearFields();
         initWhoPaid();
         initTag();
         initCheckbox();
@@ -179,6 +180,14 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
         if(this.isEdit){
             setEdit();
         }
+    }
+
+    private void clearFields() {
+        dateField.setValue(LocalDate.now());
+        descriptionField.setText("");
+        priceField.setText("");
+        tagField.setValue(null);
+        innerCheckboxes.getChildren().clear();
     }
 
     private static class InnerCheckbox{
@@ -234,6 +243,7 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
     public void initWhoPaid(){
         this.whoPaidSelector = new WhoPaidSelector(this.event.getParticipants());
         this.whoPaidField.setVisibleRowCount(3);
+        whoPaidField.getItems().clear();
         whoPaidField.getItems().addAll(
                 this.event.getParticipants()
                         .stream()
@@ -311,7 +321,8 @@ public class AddEditExpenseCtrl  implements LanguageSwitch, SceneController {
      */
 
     public void initCurrency(){
-        currencyField.setValue("EUR");
+        currencyField.getItems().clear();
+        // TODO: Currency
         currencyField.getItems().add("EUR");
     }
 
