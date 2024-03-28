@@ -1,23 +1,24 @@
 package client.utils;
 
 import commons.Participant;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WhoPaidSelector  {
+public class WhoPaidSelector  extends StringConverter<Participant> {
 
     private List<Participant> participants;
-    private List<String> optionalParticipants;
+    private List<Participant> optionalParticipants;
 
     public WhoPaidSelector(List<Participant> participants) {
         this.participants = participants;
         optionalParticipants = new ArrayList<>();
     }
 
-    public List<String> query(String query){
+    public List<Participant> query(String query){
         if(query == null || query.isEmpty()){
-            return participants.stream().map(Participant::getName).toList();
+            return new ArrayList<>(participants);
         }
 
         optionalParticipants = new ArrayList<>();
@@ -27,7 +28,7 @@ public class WhoPaidSelector  {
             String name = participant.getName().toLowerCase();
 
             if(name.startsWith(query)){
-                optionalParticipants.add(name.substring(0, 1).toUpperCase() + name.substring(1));
+                optionalParticipants.add(participant);
             }
         }
 
@@ -48,4 +49,19 @@ public class WhoPaidSelector  {
         return  null;
     }
 
+    public WhoPaidSelector() {
+        super();
+    }
+
+    @Override
+    public String toString(Participant object) {
+        if(object == null) return null;
+        return object.getName();
+    }
+
+    @Override
+    public Participant fromString(String string) {
+        if(string == null || string.isEmpty()) return null;
+        return getCurrentPayer(string);
+    }
 }

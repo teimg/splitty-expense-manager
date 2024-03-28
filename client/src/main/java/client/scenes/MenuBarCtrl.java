@@ -2,7 +2,10 @@ package client.scenes;
 
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
+import client.utils.communicators.implementations.EmailCommunicator;
+import client.utils.communicators.interfaces.IEmailCommunicator;
 import com.google.inject.Inject;
+import commons.EmailRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -71,7 +74,12 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     @FXML
     private MenuItem addExpense;
 
+    @FXML
+    private MenuItem defaultEmail;
+
     private final MainCtrl mainCtrl;
+
+    private final IEmailCommunicator emailCommunicator;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -125,8 +133,9 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
 
     @Inject
-    public MenuBarCtrl(MainCtrl mainCtrl) {
+    public MenuBarCtrl(MainCtrl mainCtrl, EmailCommunicator emailCommunicator) {
         this.mainCtrl = mainCtrl;
+        this.emailCommunicator = emailCommunicator;
     }
 
     public void showQuoteOverview(ActionEvent actionEvent) {
@@ -142,7 +151,7 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     }
 
     public void showAddEditExpense(ActionEvent actionEvent) {
-        mainCtrl.showAddEditExpense();
+        // you should navigate to the invitations screen through the event overview screen=
     }
 
     public void showInvitations(ActionEvent actionEvent) {
@@ -193,6 +202,8 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
             "MenuBar.Admin-Menu"));
         adminLogIn.setText(mainCtrl.getTranslator().getTranslation(
             "MenuBar.Management-Button"));
+        defaultEmail.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.DefaultEmail-Button"));
     }
 
     public void goToAdminLogIn(ActionEvent actionEvent) {
@@ -224,4 +235,13 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         persistTemplate(saveLocation);
 
     }
+
+    public void checkDefaultEmail(ActionEvent actionEvent) {
+        EmailRequest defaultEmail = new EmailRequest();
+        defaultEmail.setTo(defaultEmail.getUsername());
+        defaultEmail.setSubject("Default Email");
+        defaultEmail.setBody("Default Body - Checking Credentials/Delivery");
+        emailCommunicator.sendEmail(defaultEmail);
+    }
+
 }

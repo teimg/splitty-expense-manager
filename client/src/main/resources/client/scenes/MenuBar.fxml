@@ -25,9 +25,10 @@
             <MenuItem fx:id="templateBtn" mnemonicParsing="false" onAction="#downloadTemplateBtn" text="Template" />
             </items>
         </Menu>
-        <Menu fx:id="adminMenu" mnemonicParsing="false" text="Admin">
+        <Menu fx:id="adminMenu" mnemonicParsing="false" text="Settings">
             <items>
                 <MenuItem fx:id="adminLogIn" mnemonicParsing="false" onAction="#goToAdminLogIn" text="Management Overview" />
+                <MenuItem fx:id="defaultEmail" mnemonicParsing="false" onAction="#checkDefaultEmail" text="Check Default Email" />
             </items>
         </Menu>
     </menus>

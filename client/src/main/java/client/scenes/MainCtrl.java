@@ -23,6 +23,7 @@ import client.utils.SceneController;
 import client.utils.SceneWrapper;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Expense;
 import commons.Participant;
 import commons.Tag;
 import javafx.collections.ObservableList;
@@ -175,16 +176,16 @@ public class MainCtrl {
     }
 
      // TODO: ADD CUSTOM METHODS SUCH AS SEEN ABOVE TO EACH OF THESE.
-     // TODO: ALSO ADDING ANY NEW SCENES
-
-    public void showAddEditExpense() {
-        show("AddEditExpense");
-        this.currentCtrl.getValue().setLanguage();
-    }
-
+     // TODO: ALSO ADDING ANY NEW SCENE
     public void showAddEditExpense(Event event) {
         show("AddEditExpense");
         ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event);
+        this.currentCtrl.getValue().setLanguage();
+    }
+
+    public void showAddEditExpense(Event event, Expense expense) {
+        show("AddEditExpense");
+        ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event, expense);
         this.currentCtrl.getValue().setLanguage();
     }
 

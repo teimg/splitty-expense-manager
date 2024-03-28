@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -93,7 +94,11 @@ public class EventCommunicator implements IEventCommunicator {
 
     @Override
     public Event updateEvent(Event event) {
-        return null;
+        return ClientBuilder.newClient()
+            .target(origin).path("api/event/update/{id}")
+            .resolveTemplate("id", event.getId())
+            .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+            .put(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
     @Override
@@ -114,7 +119,9 @@ public class EventCommunicator implements IEventCommunicator {
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
-        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+        converter.getObjectMapper().registerModule(new JavaTimeModule());
+        stomp.setMessageConverter(converter);
         try {
             return stomp.connect(url, new StompSessionHandlerAdapter() {
             }).get();
