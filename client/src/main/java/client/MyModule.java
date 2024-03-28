@@ -33,27 +33,14 @@ public class MyModule implements Module {
     @Override
     public void configure(Binder binder) {
         configureScenes(binder);
+        configureNonSceneCtrl(binder);
+        configureConfigs(binder);
+        configureCommunicatorInterfaces(binder);
+        configureConstructors(binder);
 
-        binder.bind(MenuBarCtrl.class).in(Scopes.SINGLETON);
+    }
 
-        binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
-        binder.bind(Translator.class).in(Scopes.SINGLETON);
-        binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
-
-
-        binder.bind(IEventCommunicator.class)
-            .to(EventCommunicator.class).in(Scopes.SINGLETON);
-        binder.bind(IParticipantCommunicator.class)
-            .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
-        binder.bind(IExpenseCommunicator.class)
-            .to(ExpenseCommunicator.class).in(Scopes.SINGLETON);
-        binder.bind(ITagCommunicator.class)
-            .to(TagCommunicator.class).in(Scopes.SINGLETON);
-        binder.bind(IParticipantCommunicator.class)
-            .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
-        binder.bind(IAdminCommunicator.class)
-            .to(AdminCommunicator.class).in(Scopes.SINGLETON);
-
+    private static void configureConstructors(Binder binder) {
         try {
             binder.bind(StartScreenMv.class).toConstructor(
                 StartScreenMv.class.getConstructor(
@@ -80,8 +67,31 @@ public class MyModule implements Module {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private static void configureConfigs(Binder binder) {
+        binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
+        binder.bind(Translator.class).in(Scopes.SINGLETON);
+        binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
+    }
 
+    private static void configureNonSceneCtrl(Binder binder) {
+        binder.bind(MenuBarCtrl.class).in(Scopes.SINGLETON);
+    }
+
+    private static void configureCommunicatorInterfaces(Binder binder) {
+        binder.bind(IEventCommunicator.class)
+            .to(EventCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(IParticipantCommunicator.class)
+            .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(IExpenseCommunicator.class)
+            .to(ExpenseCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(ITagCommunicator.class)
+            .to(TagCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(IParticipantCommunicator.class)
+            .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(IAdminCommunicator.class)
+            .to(AdminCommunicator.class).in(Scopes.SINGLETON);
     }
 
     private static void configureScenes(Binder binder) {

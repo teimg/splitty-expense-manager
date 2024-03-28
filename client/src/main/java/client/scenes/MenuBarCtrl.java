@@ -136,7 +136,8 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
 
     @Inject
-    public MenuBarCtrl(MainCtrl mainCtrl, EmailCommunicator emailCommunicator, AdminLogInMv adminLogInMv) {
+    public MenuBarCtrl(MainCtrl mainCtrl,
+                       EmailCommunicator emailCommunicator, AdminLogInMv adminLogInMv) {
         this.mainCtrl = mainCtrl;
         this.emailCommunicator = emailCommunicator;
         this.adminLogInMv = adminLogInMv;

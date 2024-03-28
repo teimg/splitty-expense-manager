@@ -6,7 +6,7 @@ import server.PasswordSupplier;
 @Service
 public class AdminService {
 
-    PasswordSupplier passwordSupplier;
+    private final PasswordSupplier passwordSupplier;
     public AdminService(PasswordSupplier passwordSupplier) {
         this.passwordSupplier = passwordSupplier;
     }

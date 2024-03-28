@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import com.google.inject.Inject;

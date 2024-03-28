@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.ModelView.InvitationMv;
 import client.dialog.ConfPopup;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.SceneController;
 import com.google.inject.Inject;

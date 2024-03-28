@@ -1,7 +1,5 @@
 package client.ModelView;
 
-import client.utils.communicators.implementations.AdminCommunicator;
-import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IAdminCommunicator;
 import jakarta.inject.Inject;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,11 +7,11 @@ import javafx.beans.property.StringProperty;
 
 public class AdminLogInMv {
 
-    IAdminCommunicator adminCommunicator;
+    private IAdminCommunicator adminCommunicator;
 
-    StringProperty passwordField;
+    private StringProperty passwordField;
 
-    boolean isLoggedIn;
+    private boolean isLoggedIn;
 
     @Inject
     public AdminLogInMv(IAdminCommunicator adminCommunicator) {

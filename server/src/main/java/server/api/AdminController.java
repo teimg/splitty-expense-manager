@@ -1,21 +1,16 @@
 package server.api;
 
-import commons.Participant;
 import commons.PasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import server.PasswordSupplier;
 import server.service.AdminService;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    AdminService adminService;
+    private AdminService adminService;
 
     @Autowired
     public AdminController(AdminService adminService) {
