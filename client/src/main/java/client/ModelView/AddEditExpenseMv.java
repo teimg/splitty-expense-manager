@@ -37,15 +37,12 @@ public class AddEditExpenseMv {
 
     private ObjectProperty<Tag> tagField;
 
-
     private ExpenseBuilder expenseBuilder;
 
     private Event event;
 
-
     // Only used when there is an edit going on
     private Expense expense;
-
 
     private final IExpenseCommunicator expenseCommunicator;
     private final IEventCommunicator eventCommunicator;
@@ -68,8 +65,6 @@ public class AddEditExpenseMv {
         whoPaidField = new SimpleObjectProperty<>();
         tagField = new SimpleObjectProperty<>(null);
         debtors = new SimpleObjectProperty<>(FXCollections.observableArrayList());
-
-
     }
 
     public void loadInfo(Event event) {
@@ -122,7 +117,6 @@ public class AddEditExpenseMv {
         for(var x : event.getParticipants()){
             debtors.get().removeLast();
         }
-
 
         descriptionField.setValue("");
         priceField.setValue("");
@@ -182,7 +176,6 @@ public class AddEditExpenseMv {
     }
 
     public  Participant getPayer(){
-
         Participant res = whoPaidField.getValue();
 
         if(res == null){
@@ -227,7 +220,6 @@ public class AddEditExpenseMv {
     }
 
     private Expense updateExpense() {
-
         Expense res = expenseBuilder.build();
 
         expense.setAmount(getPriceFieldValue());
@@ -237,7 +229,6 @@ public class AddEditExpenseMv {
         this.event = eventCommunicator.updateEvent(event);
 
         return res;
-
     }
 
 
@@ -247,7 +238,6 @@ public class AddEditExpenseMv {
      * @return an expense
      */
     public Expense createExpense(){
-
         expenseBuilder.setPayer(getPayer());
         expenseBuilder.setPurchase(getPurchase());
         expenseBuilder.setDate(getDateFieldValue());
@@ -273,7 +263,6 @@ public class AddEditExpenseMv {
         this.tagCommunicator.deleteTag(getTag().getId());
     }
 
-
     public StringProperty priceFieldProperty() {
         return priceField;
     }
@@ -282,11 +271,9 @@ public class AddEditExpenseMv {
         return currencyField;
     }
 
-
     public StringProperty descriptionFieldProperty() {
         return descriptionField;
     }
-
 
     public ObjectProperty<LocalDate> dateFieldProperty() {
         return dateField;
@@ -315,6 +302,7 @@ public class AddEditExpenseMv {
     public List<Tag> getTags(){
         return tagCommunicator.getAllTags();
     }
+
     public Event getEvent() {
         return event;
     }

@@ -13,15 +13,10 @@ import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.Reflection;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
 
@@ -70,7 +65,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
         }
         addLabels(entries);
         pieChart.setLegendVisible(false);
-        totalCostLabel.setText("The total cost of this event is: " + totalPrice);
+        totalCostLabel.setText("The total cost of this event is: " + totalPrice + "$");
     }
 
     private void addLabels(Map<Tag, Double> entries) {
@@ -90,7 +85,6 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
                             + entry.getKey().getBlue()  + ");");
                 }
             });
-
             data.add(slice);
         }
         for (PieChart.Data aspect : data) {
