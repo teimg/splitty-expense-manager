@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -32,6 +32,9 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
     @FXML
     private Label totalCostLabel;
 
+    @FXML
+    private Label noExpensesLabel;
+
     private final MainCtrl mainCtrl;
 
     private Event event;
@@ -46,6 +49,12 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
     public void loadInfo(Event event) {
         this.event = event;
         fillChart();
+        toggleVisibility();
+    }
+
+    private void toggleVisibility() {
+        pieChart.setVisible(!event.getExpenses().isEmpty());
+        noExpensesLabel.setVisible(event.getExpenses().isEmpty());
     }
 
     private void fillChart() {
@@ -55,12 +64,13 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
         for (Expense expense : event.getExpenses()) {
             totalPrice = totalPrice + expense.getAmount();
             Tag tag = expense.getTag();
-            if (entries.containsKey(tag)) {
-                double currentSum = entries.get(tag);
-                entries.put(tag, currentSum + expense.getAmount());
-            }
-            else {
-                entries.put(tag, expense.getAmount());
+            if (tag != null) {
+                if (entries.containsKey(tag)) {
+                    double currentSum = entries.get(tag);
+                    entries.put(tag, currentSum + expense.getAmount());
+                } else {
+                    entries.put(tag, expense.getAmount());
+                }
             }
         }
         addLabels(entries);
@@ -102,9 +112,12 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
                 "StatisticsScreen.PieChart-Title"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Back-Button"));
+        noExpensesLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.NoExpense-label"));
     }
 
     public void handleBack(ActionEvent actionEvent) {
         mainCtrl.showEventOverview(event);
     }
+
 }

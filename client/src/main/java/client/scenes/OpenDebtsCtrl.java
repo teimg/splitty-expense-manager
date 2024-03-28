@@ -2,7 +2,7 @@ package client.scenes;
 
 import client.language.LanguageSwitch;
 import client.utils.DebtsBuilder;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
@@ -53,12 +53,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     public void abortButtonPressed() {
         Event res = this.event;
         this.event = null;
-        clearScene();
         mainCtrl.showEventOverview(res);
-    }
-
-    private void clearScene() {
-        // TODO clear all fields, lists, etc when quiting
     }
 
     @Override

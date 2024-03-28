@@ -1,4 +1,4 @@
-package client.utils;
+package client.utils.scene;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,7 +19,6 @@ public class SceneWrapper {
         this.scene = new Scene(this.parent);
 
     }
-
 
     public SceneController getSceneController() {
         return sceneController;

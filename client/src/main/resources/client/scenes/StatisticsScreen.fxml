@@ -28,6 +28,7 @@
                               <PieChart fx:id="pieChart" layoutX="4.0" layoutY="68.0" prefHeight="248.0" prefWidth="443.0" title="Pie Chart of Expenses" />
                               <Label fx:id="totalCostLabel" layoutX="15.0" layoutY="43.0" text="The total cost of the trip is:  " />
                               <Button fx:id="backButton" layoutX="18.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="26.0" prefWidth="87.0" text="Go Back" />
+                              <Label fx:id="noExpensesLabel" layoutX="14.0" layoutY="68.0" prefHeight="17.0" prefWidth="411.0" text="You have no expenses currently." AnchorPane.leftAnchor="14.0" />
                            </children>
                         </AnchorPane>
                      </children>
