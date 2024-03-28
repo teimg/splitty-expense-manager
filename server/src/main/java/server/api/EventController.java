@@ -1,12 +1,15 @@
 package server.api;
 
 import commons.Event;
+import commons.EventChange;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
+import server.service.EventChangeService;
 import server.service.EventService;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,16 +17,20 @@ import java.util.Optional;
 @RequestMapping("/api/event")
 public class EventController {
     private final EventService service;
+    private final EventChangeService eventChangeService;
     private final SimpMessagingTemplate msgs;
 
     /**
      * constructor for event controller
      *
-     * @param service event service
+     * @param service            event service
+     * @param eventChangeService
      * @param msgs
      */
-    public EventController(EventService service, SimpMessagingTemplate msgs) {
+    public EventController(EventService service, EventChangeService eventChangeService,
+                           SimpMessagingTemplate msgs) {
         this.service = service;
+        this.eventChangeService = eventChangeService;
         this.msgs = msgs;
     }
 
@@ -37,28 +44,20 @@ public class EventController {
         }
     }
 
-    /**
-     * Checks for updates to an event by its ID.
-     * @param id The ID of the event.
-     * @return ResponseEntity with the updated event if there's an update, or an empty body if not.
-     */
     @GetMapping("/checkUpdates/{id}")
-    public ResponseEntity<Event> checkForUpdates(@PathVariable long id) {
-        Optional<Event> currentEvent = service.getById(id);
-        if (currentEvent.isPresent()) {
-            Event event = currentEvent.get();
-            // Example logic: return the event if it has been updated within the last 5 minutes.
-            long lastUpdateTime = event.getLastActivity().getTime();
-            long now = new Date().getTime();
-            if (now - lastUpdateTime < 300000) { // 5 minutes in milliseconds
-                return ResponseEntity.ok(event);
-            } else {
-                return ResponseEntity.noContent().build();
-            }
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public DeferredResult<ResponseEntity<EventChange>> checkForUpdates(@PathVariable long id) {
+        var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var res = new DeferredResult<ResponseEntity<EventChange>>(5000L, noContent);
+
+        eventChangeService.addLongPoll(id, res);
+        res.onCompletion(()->{
+            eventChangeService.removeLongPoll(id, res);
+        });
+
+        return res;
     }
+
+
 
     /**
      * standard
