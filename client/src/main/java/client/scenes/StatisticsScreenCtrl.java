@@ -1,22 +1,24 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Expense;
+import commons.Tag;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.util.Pair;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.HashMap;
+import java.util.Map;
 
-public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, SceneController {
+public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private Button backButton;
@@ -30,69 +32,74 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, Scen
     @FXML
     private Label totalCostLabel;
 
+    @FXML
+    private Label noExpensesLabel;
+
     private final MainCtrl mainCtrl;
 
     private Event event;
+
+    private double totalPrice;
 
     @Inject
     public StatisticsScreenCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
 
-    /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *                  the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void loadInfo(Event event) {
+        this.event = event;
+        fillChart();
+        toggleVisibility();
+    }
 
-        /**
-         * NEED TO USE BACKEND API TO FIND THE PAYMENTS
-         * OF AN EVENT (GETTING THEM ALL)
-         */
+    private void toggleVisibility() {
+        pieChart.setVisible(!event.getExpenses().isEmpty());
+        noExpensesLabel.setVisible(event.getExpenses().isEmpty());
+    }
 
-        /**
-         * ArrayList<Pair<String, Integer>> = ... ---> here we add the
-         * end point of getting all 'subjects' and their assigned weight.
-         */
-
-        /**
-         * int totalPrice = ... --> here we add the endpoint for the total
-         * price of the event/trip
-         */
-
-        /**
-         * For now, I will use a hardCoded event:
-         */
-
-        ArrayList<Pair<String, Integer>> tags = new ArrayList<>();
-
-        tags.add(new Pair<>("Test 30", 30));
-        tags.add(new Pair<>("Test 70", 70));
-
-        int totalPrice = 100;
-
-        totalCostLabel.setText("The total cost of this event is: " + totalPrice);
-
-        ArrayList<PieChart.Data> data = new ArrayList<>();
-
-        for (Pair<String, Integer> map : tags) {
-            data.add(new PieChart.Data(map.getKey(), map.getValue()));
+    private void fillChart() {
+        pieChart.getData().clear();
+        Map<Tag, Double> entries = new HashMap<>();
+        this.totalPrice = 0;
+        for (Expense expense : event.getExpenses()) {
+            totalPrice = totalPrice + expense.getAmount();
+            Tag tag = expense.getTag();
+            if (tag != null) {
+                if (entries.containsKey(tag)) {
+                    double currentSum = entries.get(tag);
+                    entries.put(tag, currentSum + expense.getAmount());
+                } else {
+                    entries.put(tag, expense.getAmount());
+                }
+            }
         }
+        addLabels(entries);
+        pieChart.setLegendVisible(false);
+        totalCostLabel.setText("The total cost of this event is: " + totalPrice + "$");
+    }
 
+    private void addLabels(Map<Tag, Double> entries) {
+        ArrayList<PieChart.Data> data = new ArrayList<>();
+        for (Map.Entry<Tag, Double>  entry: entries.entrySet()) {
+            String legend = entry.getKey().getName() + " "
+                    + (double) Math.round((entry.getValue()/totalPrice)*10000)/100
+                    + "% " + entry.getValue() + "$";
+            PieChart.Data slice = new PieChart.Data(legend, entry.getValue());
+            //For some reason this is required. This is as the PieChart.Data
+            //is lazy and isn't immediately constructed. Very weird.
+            Platform.runLater(() -> {
+                Node node = slice.getNode();
+                if (node != null) {
+                    node.setStyle("-fx-pie-color: rgb(" + entry.getKey().getRed()
+                            + ", " + entry.getKey().getGreen() + ", "
+                            + entry.getKey().getBlue()  + ");");
+                }
+            });
+            data.add(slice);
+        }
         for (PieChart.Data aspect : data) {
             pieChart.getData().add(aspect);
         }
-
-    }
-
-    public void loadInfo(Event event) {
-        this.event = event;
     }
 
     @Override
@@ -100,14 +107,17 @@ public class StatisticsScreenCtrl implements Initializable, LanguageSwitch, Scen
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Title-label"));
         totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StatisticsScreen.Total-Cost-label"));
+                "StatisticsScreen.Total-Cost-label") + " " + this.totalPrice + "$");
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Back-Button"));
+        noExpensesLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.NoExpense-label"));
     }
 
     public void handleBack(ActionEvent actionEvent) {
         mainCtrl.showEventOverview(event);
     }
+
 }

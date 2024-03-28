@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
