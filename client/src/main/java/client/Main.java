@@ -22,8 +22,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import client.scenes.*;
+import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
 
+import commons.Tag;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -34,6 +36,8 @@ public class Main extends Application {
 
     private static MainCtrl mainCtrl;
 
+    private static TagCommunicator tagCommunicator;
+
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
@@ -42,7 +46,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-//        var debug = INJECTOR.getInstance(StartScreenMv.class);
+
+        tagCommunicator = INJECTOR.getInstance(TagCommunicator.class);
 
         HashMap<String, Object> sceneMap = new HashMap<>();
 
@@ -50,7 +55,6 @@ public class Main extends Application {
             FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml"));
         sceneMap.put("AddQuote",
             FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml"));
-
         sceneMap.put("AddEditExpense",
             FXML.load(AddEditExpenseCtrl.class, "client", "scenes", "AddEditExpense.fxml"));
         sceneMap.put("Invitation",
@@ -75,6 +79,10 @@ public class Main extends Application {
                 FXML.load(TagScreenCtrl.class, "client", "scenes", "TagScreen.fxml"));
 
         mainCtrl.initialize(primaryStage, sceneMap);
+
+        tagCommunicator.saveOrUpdateTag(new Tag("Food", 82, 168, 50));
+        tagCommunicator.saveOrUpdateTag(new Tag("Entrance Fees", 50, 52, 168));
+        tagCommunicator.saveOrUpdateTag(new Tag("Travel", 204, 22, 41));
     }
 
     /**

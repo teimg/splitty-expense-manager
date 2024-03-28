@@ -123,6 +123,16 @@ public class Tag {
         return Objects.equals(name, tag.name);
     }
 
+    public boolean standTagEquals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+
+        if ((red != tag.red)|| (green != tag.green) || (blue != tag.blue)) return false;
+        return Objects.equals(name, tag.name);
+    }
+
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));

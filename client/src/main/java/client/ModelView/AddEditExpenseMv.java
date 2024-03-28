@@ -111,8 +111,7 @@ public class AddEditExpenseMv {
         tagField.set(expense.getTag());
     }
 
-
-
+    @SuppressWarnings("unchecked")
     public void clear(){
         for(var x : event.getParticipants()){
             debtors.get().removeLast();

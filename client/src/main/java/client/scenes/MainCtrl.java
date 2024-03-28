@@ -49,9 +49,11 @@ public class MainCtrl {
     private final ClientConfiguration config;
 
     private MenuBarCtrl menuBarCtrl;
+
     private Parent menuBar;
 
     private final RecentEventTracker recentEventTracker;
+
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
@@ -60,7 +62,6 @@ public class MainCtrl {
         this.translator = translator;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
-
         }
         this.recentEventTracker = recentEventTracker;
     }
