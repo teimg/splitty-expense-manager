@@ -186,18 +186,9 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
             invitationMv.emailAdd();
 
         }catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
 
-    }
-
-    void handleException(Exception e){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
-        String msg = mainCtrl.getTranslator().getTranslation(
-            "Popup." + e.getMessage()
-        );
-        (new Popup(msg, type)).show();
     }
 
 }
