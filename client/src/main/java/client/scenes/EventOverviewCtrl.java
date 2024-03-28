@@ -8,6 +8,7 @@ import client.utils.communicators.interfaces.IParticipantCommunicator;
 import client.utils.communicators.implementations.ParticipantCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.EventChange;
 import commons.Expense;
 
 import commons.Participant;
@@ -333,13 +334,20 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             @Override
             protected Void call() {
                 try {
-                    eventCommunicator.requestEventUpdates(eventId, updatedEvent -> {
-                        if (!isCancelled() && updatedEvent != null) {
-                            updateUI(updatedEvent);
-                            startEventUpdatesLongPolling(eventId); // Restart listening for updates
+                    while (!isCancelled()) {
+                        EventChange eventChange = eventCommunicator.checkForEventUpdates(eventId);
+                        if (eventChange != null) {
+                            if (eventChange.getType() == EventChange.Type.MODIFICATION) {
+                                Platform.runLater(() -> updateUI(eventChange.getEvent()));
+                            } else if (eventChange.getType() == EventChange.Type.DELETION) {
+                                Platform.runLater(() -> {
+                                    //pop-up to show event deleted
+                                });
+                            }
                         }
-                    });
-                } catch (Exception e) {
+                        Thread.sleep(5000); // 5 seconds
+                    }
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 return null;

@@ -4,6 +4,7 @@ import client.utils.ClientConfiguration;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.EventChange;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -72,16 +73,22 @@ public class EventCommunicator implements IEventCommunicator {
                     .get(Event.class);
     }
 
-    public void requestEventUpdates(long eventId, Consumer<Event> onUpdate) {
-        Response response = ClientBuilder.newClient()
-                .target(origin).path("api/event/checkUpdates/{id}")
-                .resolveTemplate("id", eventId)
-                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
-                .get();
+    public EventChange checkForEventUpdates(long id) {
+        try {
+            Response response = ClientBuilder.newClient()
+                    .target(origin).path("api/event/checkUpdates/{id}")
+                    .resolveTemplate("id", id)
+                    .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                    .get();
 
-        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-            Event updatedEvent = response.readEntity(Event.class);
-            onUpdate.accept(updatedEvent);
+            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+                return response.readEntity(EventChange.class);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println("Error checking for event updates: " + e.getMessage());
+            return null;
         }
     }
 
