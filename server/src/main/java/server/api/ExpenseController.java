@@ -1,6 +1,7 @@
 package server.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import commons.Expense;
@@ -94,6 +95,13 @@ public class ExpenseController {
             expenseService.deleteExpense(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // should intercept a error in with duplicated id
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handle(Exception e) {
+        e.printStackTrace();
     }
 
 }

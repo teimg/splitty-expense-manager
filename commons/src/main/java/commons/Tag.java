@@ -120,8 +120,7 @@ public class Tag {
 
         if ((id != tag.id) || (red != tag.red)|| (green != tag.green)) return false;
         if (blue != tag.blue) return false;
-        if (!Objects.equals(name, tag.name)) return false;
-        return Objects.equals(expenses, tag.expenses);
+        return Objects.equals(name, tag.name);
     }
 
     @Override

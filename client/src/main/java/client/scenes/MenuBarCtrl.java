@@ -151,7 +151,7 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     }
 
     public void showAddEditExpense(ActionEvent actionEvent) {
-        mainCtrl.showAddEditExpense();
+        // you should navigate to the invitations screen through the event overview screen=
     }
 
     public void showInvitations(ActionEvent actionEvent) {

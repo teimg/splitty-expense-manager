@@ -1,23 +1,24 @@
 package client.utils;
 
 import commons.Tag;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WhichTagSelector {
+public class WhichTagSelector extends StringConverter<Tag> {
 
     private List<Tag> tags;
-    private List<String> optionalTags;
+    private List<Tag> optionalTags;
 
     public WhichTagSelector(List<Tag> tag) {
         this.tags = tag;
         optionalTags = new ArrayList<>();
     }
 
-    public List<String> query(String query){
+    public List<Tag> query(String query){
         if(query == null || query.isEmpty()){
-            return tags.stream().map(Tag::getName).toList();
+            return new ArrayList<>(tags);
         }
 
         optionalTags = new ArrayList<>();
@@ -27,7 +28,7 @@ public class WhichTagSelector {
             String name = tag.getName().toLowerCase();
 
             if(name.startsWith(query)){
-                optionalTags.add(name.substring(0, 1).toUpperCase() + name.substring(1));
+                optionalTags.add(tag);
             }
         }
 
@@ -48,4 +49,15 @@ public class WhichTagSelector {
         return  null;
     }
 
+    @Override
+    public String toString(Tag object) {
+        if(object == null) return null;
+        return object.getName();
+    }
+
+    @Override
+    public Tag fromString(String string) {
+        if(string == null || string.isEmpty()) return null;
+        return getCurrentTag(string);
+    }
 }
