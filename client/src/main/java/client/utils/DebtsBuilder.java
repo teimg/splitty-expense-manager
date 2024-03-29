@@ -275,8 +275,9 @@ public class DebtsBuilder {
             public void run() {
                 try {
                     EmailRequest emailRequest = new EmailRequest(debt.getDebtor().getEmail(),
-                            "Debt Reminder", "This is a reminder for an open debt. " +
-                            "You owe " + debt.getCreditor().getName() + " " + debt.getAmount() + "$.");
+                            "Debt Reminder", "This is a reminder for " +
+                            "an open debt. " + "You owe " + debt.getCreditor().getName()
+                            + " " + debt.getAmount() + "$.");
                     emailCommunicator.sendEmail(emailRequest);
                 }
                 catch (Exception e) {
