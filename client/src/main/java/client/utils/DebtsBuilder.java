@@ -1,10 +1,12 @@
 package client.utils;
 
+import client.dialog.Popup;
 import client.language.Translator;
 import client.scenes.MainCtrl;
 import client.utils.communicators.implementations.EmailCommunicator;
 import client.utils.communicators.implementations.ExpenseCommunicator;
 import commons.*;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -267,15 +269,26 @@ public class DebtsBuilder {
     }
 
     private void handleEmailButtonClick(Debt debt) {
-        try {
-            EmailRequest emailRequest = new EmailRequest(debt.getDebtor().getEmail(),
-                    "Debt Reminder", "This is a reminder for an open debt. " +
-                    "You owe " + debt.getCreditor().getName() + " " + debt.getAmount() + "$.");
-            emailCommunicator.sendEmail(emailRequest);
-        }
-        catch (Exception e) {
-            System.out.println("Something went wrong");
-        }
+
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EmailRequest emailRequest = new EmailRequest(debt.getDebtor().getEmail(),
+                            "Debt Reminder", "This is a reminder for an open debt. " +
+                            "You owe " + debt.getCreditor().getName() + " " + debt.getAmount() + "$.");
+                    emailCommunicator.sendEmail(emailRequest);
+                }
+                catch (Exception e) {
+                    Platform.runLater( () -> {
+                        (new Popup("Unable to send the email", Popup.TYPE.ERROR)).show();
+                    });
+                }
+
+            }
+        })).start();
+
     }
+
 
 }
