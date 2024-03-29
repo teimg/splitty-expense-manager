@@ -66,6 +66,12 @@ public class DebtTest {
     }
 
     @Test
+    public void testHasPaidSetter() {
+        debtThree.setHasPaid(false);
+        assertFalse(debtThree.isHasPaid());
+    }
+
+    @Test
     public void testEquals() {
         assertEquality();
     }
