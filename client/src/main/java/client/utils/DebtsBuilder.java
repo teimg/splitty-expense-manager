@@ -129,6 +129,7 @@ public class DebtsBuilder {
             }
         }
         if (negative.isEmpty()) {
+            debts = new ArrayList<>();
             return;
         }
         Participant selected = negative.get(0);
