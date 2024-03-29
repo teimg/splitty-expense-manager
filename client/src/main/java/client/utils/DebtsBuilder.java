@@ -19,6 +19,8 @@ import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DebtsBuilder {
 
@@ -49,6 +51,7 @@ public class DebtsBuilder {
         this.mainCtrl = mainCtrl;
         findDebts();
         simplifyDebts();
+        simplifyTransitiveNature();
         buildPanes();
     }
 
@@ -100,6 +103,27 @@ public class DebtsBuilder {
             }
         }
         debts = simplifiedDebts;
+    }
+
+    private void simplifyTransitiveNature() {
+        Map<Participant, Double> balanceChange = new HashMap<>();
+        for (Debt debt : debts) {
+            if (balanceChange.containsKey(debt.getCreditor())) {
+                balanceChange.replace(debt.getCreditor(),
+                        balanceChange.get(debt.getCreditor()) + debt.getAmount());
+            }
+            else {
+                balanceChange.put(debt.getCreditor(), debt.getAmount());
+            }
+            if (balanceChange.containsKey(debt.getDebtor())) {
+                balanceChange.replace(debt.getDebtor(),
+                        balanceChange.get(debt.getDebtor()) - debt.getAmount());
+            }
+            else {
+                balanceChange.put(debt.getDebtor(), -1*debt.getAmount());
+            }
+        }
+        
     }
 
     private boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {
