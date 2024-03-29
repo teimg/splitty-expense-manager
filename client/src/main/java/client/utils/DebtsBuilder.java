@@ -51,7 +51,6 @@ public class DebtsBuilder {
         this.mainCtrl = mainCtrl;
         findDebts();
         simplifyDebts();
-        simplifyTransitiveNature();
         buildPanes();
     }
 
@@ -84,16 +83,16 @@ public class DebtsBuilder {
                         event.getParticipants().get(j)));
             }
         }
+        debts = simplifier(allPossiblePairs);
+        simplifyTransitiveNature();
+    }
+
+    private ArrayList<Debt> simplifier(ArrayList<Pair<Participant, Participant>> allPossiblePairs) {
         ArrayList<Debt> simplifiedDebts = new ArrayList<>();
         for (Pair<Participant, Participant> pair : allPossiblePairs) {
             double amount = 0.0;
             for (Debt debt : debts) {
-                if (containsParticipantsSame(debt, pair)) {
-                    amount = amount + debt.getAmount();
-                }
-                else if (containsParticipantsOpposite(debt, pair)) {
-                    amount = amount - debt.getAmount();
-                }
+                amount = amount + amountFinder(debt, pair);
             }
             if (amount > 0) {
                 simplifiedDebts.add(new Debt(pair.getKey(), pair.getValue(), amount));
@@ -102,10 +101,50 @@ public class DebtsBuilder {
                 simplifiedDebts.add(new Debt(pair.getValue(), pair.getKey(), (-1*amount)));
             }
         }
-        debts = simplifiedDebts;
+        return simplifiedDebts;
+    }
+
+    private double amountFinder(Debt debt, Pair<Participant, Participant> pair) {
+        double amount = 0;
+        if (containsParticipantsSame(debt, pair)) {
+            amount = amount + debt.getAmount();
+        }
+        else if (containsParticipantsOpposite(debt, pair)) {
+            amount = amount - debt.getAmount();
+        }
+        return amount;
     }
 
     private void simplifyTransitiveNature() {
+        Map<Participant, Double> balanceChange = findBalanceChange();
+        ArrayList<Debt> transitiveDebts = new ArrayList<>();
+        ArrayList<Participant> negative = new ArrayList<>();
+        ArrayList<Participant> nonNegative = new ArrayList<>();
+        for (Map.Entry<Participant, Double> entry : balanceChange.entrySet()) {
+            if (entry.getValue() < 0) {
+                negative.add(entry.getKey());
+            }
+            else {
+                nonNegative.add(entry.getKey());
+            }
+        }
+        if (negative.isEmpty()) {
+            return;
+        }
+        Participant selected = negative.get(0);
+        for (int i = 1; i < negative.size(); i++) {
+            Participant debtor = negative.get(i);
+            transitiveDebts.add(new Debt(selected, debtor, Math.abs(balanceChange.get(debtor))));
+        }
+        for (Participant creditor : nonNegative) {
+            transitiveDebts.add(new Debt(creditor, selected,
+                    Math.abs(balanceChange.get(creditor))));
+        }
+        transitiveDebts.removeIf(debt -> debt.getAmount() == 0);
+        debts = transitiveDebts;
+    }
+
+    private Map<Participant, Double> findBalanceChange() {
         Map<Participant, Double> balanceChange = new HashMap<>();
         for (Debt debt : debts) {
             if (balanceChange.containsKey(debt.getCreditor())) {
@@ -123,7 +162,7 @@ public class DebtsBuilder {
                 balanceChange.put(debt.getDebtor(), -1*debt.getAmount());
             }
         }
-        
+        return balanceChange;
     }
 
     private boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {
