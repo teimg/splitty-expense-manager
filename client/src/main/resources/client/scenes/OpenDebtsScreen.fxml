@@ -29,7 +29,7 @@
                               </Label>
                               <VBox layoutX="17.0" layoutY="74.0" prefHeight="283.0" prefWidth="411.0">
                                  <children>
-                                    <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                                    <ScrollPane fx:id="scrollPlane" prefHeight="200.0" prefWidth="200.0">
                                        <content>
                                           <Accordion fx:id="accordionDebts" prefWidth="409.0" />
                                        </content>

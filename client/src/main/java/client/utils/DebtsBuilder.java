@@ -1,19 +1,28 @@
 package client.utils;
 
+import client.dialog.Popup;
 import client.language.Translator;
-import commons.Debt;
-import commons.Event;
-import commons.Expense;
-import commons.Participant;
+import client.scenes.MainCtrl;
+import client.utils.communicators.implementations.EmailCommunicator;
+import client.utils.communicators.implementations.ExpenseCommunicator;
+import commons.*;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.util.Pair;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DebtsBuilder {
 
@@ -25,12 +34,25 @@ public class DebtsBuilder {
 
     private final Translator translator;
 
-    public DebtsBuilder(Event event, Translator translator) {
+    private final EmailCommunicator emailCommunicator;
+
+    private final ExpenseCommunicator expenseCommunicator;
+
+    private final MainCtrl mainCtrl;
+
+    public DebtsBuilder(Event event, Translator translator,
+                        EmailCommunicator emailCommunicator,
+                        ExpenseCommunicator expenseCommunicator,
+                        MainCtrl mainCtrl) {
         this.event = event;
         this.debts = new ArrayList<>();
         this.panes = new ArrayList<>();
         this.translator = translator;
+        this.emailCommunicator = emailCommunicator;
+        this.expenseCommunicator = expenseCommunicator;
+        this.mainCtrl = mainCtrl;
         findDebts();
+        simplifyDebts();
         buildPanes();
     }
 
@@ -55,13 +77,106 @@ public class DebtsBuilder {
         }
     }
 
-    private boolean containsSameParticipants(Debt firstDebt, Debt secondDebt) {
-        return (firstDebt.getCreditor().equals(secondDebt.getCreditor()) &&
-                firstDebt.getDebtor().equals(secondDebt.getDebtor())) ||
-                (firstDebt.getCreditor().equals(secondDebt.getDebtor()) &&
-                        firstDebt.getDebtor().equals(secondDebt.getCreditor()));
+    private void simplifyDebts() {
+        ArrayList<Pair<Participant, Participant>> allPossiblePairs = new ArrayList<>();
+        for (int i = 0; i < event.getParticipants().size(); i++) {
+            for (int j = i + 1; j < event.getParticipants().size(); j++) {
+                allPossiblePairs.add(new Pair<>(event.getParticipants().get(i),
+                        event.getParticipants().get(j)));
+            }
+        }
+        debts = simplifier(allPossiblePairs);
+        simplifyTransitiveNature();
     }
 
+    private ArrayList<Debt> simplifier(ArrayList<Pair<Participant, Participant>> allPossiblePairs) {
+        ArrayList<Debt> simplifiedDebts = new ArrayList<>();
+        for (Pair<Participant, Participant> pair : allPossiblePairs) {
+            double amount = 0.0;
+            for (Debt debt : debts) {
+                amount = amount + amountFinder(debt, pair);
+            }
+            if (amount > 0) {
+                simplifiedDebts.add(new Debt(pair.getKey(), pair.getValue(), amount));
+            }
+            else if (amount < 0) {
+                simplifiedDebts.add(new Debt(pair.getValue(), pair.getKey(), (-1*amount)));
+            }
+        }
+        return simplifiedDebts;
+    }
+
+    private double amountFinder(Debt debt, Pair<Participant, Participant> pair) {
+        double amount = 0;
+        if (containsParticipantsSame(debt, pair)) {
+            amount = amount + debt.getAmount();
+        }
+        else if (containsParticipantsOpposite(debt, pair)) {
+            amount = amount - debt.getAmount();
+        }
+        return amount;
+    }
+
+    private void simplifyTransitiveNature() {
+        Map<Participant, Double> balanceChange = findBalanceChange();
+        ArrayList<Debt> transitiveDebts = new ArrayList<>();
+        ArrayList<Participant> negative = new ArrayList<>();
+        ArrayList<Participant> nonNegative = new ArrayList<>();
+        for (Map.Entry<Participant, Double> entry : balanceChange.entrySet()) {
+            if (entry.getValue() < 0) {
+                negative.add(entry.getKey());
+            }
+            else {
+                nonNegative.add(entry.getKey());
+            }
+        }
+        if (negative.isEmpty()) {
+            debts = new ArrayList<>();
+            return;
+        }
+        Participant selected = negative.get(0);
+        for (int i = 1; i < negative.size(); i++) {
+            Participant debtor = negative.get(i);
+            transitiveDebts.add(new Debt(selected, debtor, Math.abs(balanceChange.get(debtor))));
+        }
+        for (Participant creditor : nonNegative) {
+            transitiveDebts.add(new Debt(creditor, selected,
+                    Math.abs(balanceChange.get(creditor))));
+        }
+        transitiveDebts.removeIf(debt -> debt.getAmount() == 0);
+        debts = transitiveDebts;
+    }
+
+    private Map<Participant, Double> findBalanceChange() {
+        Map<Participant, Double> balanceChange = new HashMap<>();
+        for (Debt debt : debts) {
+            if (balanceChange.containsKey(debt.getCreditor())) {
+                balanceChange.replace(debt.getCreditor(),
+                        balanceChange.get(debt.getCreditor()) + debt.getAmount());
+            }
+            else {
+                balanceChange.put(debt.getCreditor(), debt.getAmount());
+            }
+            if (balanceChange.containsKey(debt.getDebtor())) {
+                balanceChange.replace(debt.getDebtor(),
+                        balanceChange.get(debt.getDebtor()) - debt.getAmount());
+            }
+            else {
+                balanceChange.put(debt.getDebtor(), -1*debt.getAmount());
+            }
+        }
+        return balanceChange;
+    }
+
+    private boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {
+        return ((debt.getCreditor().equals(pair.getKey()) &&
+                debt.getDebtor().equals(pair.getValue())));
+    }
+
+    private boolean containsParticipantsOpposite(Debt debt, Pair<Participant, Participant> pair) {
+        return (debt.getCreditor().equals(pair.getValue()) &&
+                debt.getDebtor().equals(pair.getKey()));
+    }
 
     private void buildPanes() {
         for (Debt debt : debts) {
@@ -96,12 +211,44 @@ public class DebtsBuilder {
                 contents.getChildren().addAll(new Label(label));
                 title.getChildren().add(prepareIcons("NoMailIcon"));
             }
+            Region spacer = new Region();
+            HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+            spacer.setMaxWidth(Double.MAX_VALUE);
+            title.getChildren().add(spacer);
+            title.setAlignment(Pos.CENTER);
+            Button settleButton = createButton(debt);
+            title.getChildren().add(settleButton);
             TitledPane titledPane = new TitledPane();
             titledPane.setText(null);
             titledPane.setGraphic(title);
             titledPane.setContent(contents);
             panes.add(titledPane);
         }
+    }
+
+    private Button createButton(Debt debt) {
+        Button settleButton = new Button(translator
+                .getTranslation("OpenDebts.SettleDebt-Button"));
+        settleButton.setOnAction(event -> settleDebt(debt));
+        settleButton.setFont(Font.font(12));
+        settleButton.setPrefWidth(120);
+        settleButton.setPrefHeight(5);
+        settleButton.setMaxWidth(Double.MAX_VALUE);
+        settleButton.setMaxHeight(Double.MAX_VALUE);
+        settleButton.setStyle("-fx-background-color: rgb(" +
+                "" + 180 + ", " + 180 + ", " + 180 + ");");
+        return settleButton;
+    }
+
+    private void settleDebt(Debt debt) {
+        ArrayList<Participant> debtor = new ArrayList<>();
+        debtor.add(debt.getCreditor());
+        Expense newExpense = new Expense(event.getId(),
+                "Debt Settlement", debt.getAmount(), debt.getDebtor(),
+                debtor, LocalDate.now(), null);
+        event.addExpense(newExpense);
+        expenseCommunicator.createExpense(newExpense);
+        mainCtrl.showOpenDebts(event);
     }
 
     private String getSummary(Debt debt) {
@@ -122,8 +269,27 @@ public class DebtsBuilder {
     }
 
     private void handleEmailButtonClick(Debt debt) {
-        // TODO: Send the email
-        System.out.println(debt.getDebtor().getEmail());
+
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EmailRequest emailRequest = new EmailRequest(debt.getDebtor().getEmail(),
+                            "Debt Reminder", "This is a reminder for " +
+                            "an open debt. " + "You owe " + debt.getCreditor().getName()
+                            + " " + debt.getAmount() + "$.");
+                    emailCommunicator.sendEmail(emailRequest);
+                }
+                catch (Exception e) {
+                    Platform.runLater( () -> {
+                        (new Popup("Unable to send the email", Popup.TYPE.ERROR)).show();
+                    });
+                }
+
+            }
+        })).start();
+
     }
+
 
 }
