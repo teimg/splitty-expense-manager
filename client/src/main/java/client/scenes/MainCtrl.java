@@ -129,7 +129,7 @@ public class MainCtrl {
      * @return the window title in right language
      */
 
-    public String getTitle(String sceneName){
+    private String getTitle(String sceneName){
         String prefix = "Titles.";
         return translator.getTranslation(prefix + sceneName);
 
@@ -142,7 +142,7 @@ public class MainCtrl {
      * @param title window title of the new scene
      */
 
-    public void show(String scene, String title){
+    private void show(String scene, String title){
         SceneWrapper currentSceneWrapper = this.scenes.get(scene);
 
         if (currentSceneWrapper == null){
@@ -162,7 +162,7 @@ public class MainCtrl {
 
     }
 
-    public void show(String scene){
+    private void show(String scene){
         show(scene, getTitle(scene));
     }
 
