@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.ModelView.InvitationMv;
 import client.dialog.ConfPopup;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
@@ -186,18 +185,9 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
             invitationMv.emailAdd();
 
         }catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
 
-    }
-
-    void handleException(Exception e){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
-        String msg = mainCtrl.getTranslator().getTranslation(
-            "Popup." + e.getMessage()
-        );
-        (new Popup(msg, type)).show();
     }
 
 }

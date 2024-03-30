@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.ModelView.AdminLogInMv;
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.communicators.implementations.EmailCommunicator;
@@ -81,6 +82,8 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     private final IEmailCommunicator emailCommunicator;
 
+    private final AdminLogInMv adminLogInMv;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initLanguageMenu();
@@ -133,9 +136,12 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
 
     @Inject
-    public MenuBarCtrl(MainCtrl mainCtrl, EmailCommunicator emailCommunicator) {
+    public MenuBarCtrl(MainCtrl mainCtrl,
+                       EmailCommunicator emailCommunicator, AdminLogInMv adminLogInMv) {
         this.mainCtrl = mainCtrl;
         this.emailCommunicator = emailCommunicator;
+        this.adminLogInMv = adminLogInMv;
+
     }
 
     public void showQuoteOverview(ActionEvent actionEvent) {
@@ -207,6 +213,10 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     }
 
     public void goToAdminLogIn(ActionEvent actionEvent) {
+        if(adminLogInMv.isLoggedIn()){
+            mainCtrl.showAdminScreen();
+            return;
+        }
         mainCtrl.showAdminLogIn();
     }
 
