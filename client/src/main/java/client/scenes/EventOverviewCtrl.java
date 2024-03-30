@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
+import client.language.Translator;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
@@ -19,8 +20,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.Optional;
@@ -43,52 +46,62 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private Task<Void> longPollingTask = null;
     private Thread pollingThread = null;
 
-    private class ExpenseCellFactory
-            implements Callback<ListView<Expense>, ListCell<Expense>> {
-        /**
-         * Should return a new ListCell usable in the expense ListView.
-         * @param listView the expense ListView
-         * @return a usable ListCell
-         */
-        @Override
-        public ListCell<Expense> call(ListView<Expense> listView) {
-            return new ListCell<>() {
-                /**
-                 * Ran when a cell is shown with a new items or is shown emptied.
-                 * @param expense The new item for the cell.
-                 * @param empty whether this cell represents data from the list. If it
-                 *        is empty, then it does not represent any domain data, but is a cell
-                 *        being used to render an "empty" row.
-                 */
-                @Override
-                public void updateItem(Expense expense, boolean empty) {
-                    super.updateItem(expense, empty);
-                    if (empty) {
-                        setText(null);
-                        return;
-                    }
-                    setText(expenseDescription(expense));
-                }
+    private class ExpenseListCell extends ListCell<Expense> {
+        private HBox container;
+        private Text content;
+        private Pane filler;
+        private Button editButton;
 
-                private String expenseDescription(Expense expense) {
-                    StringBuilder desc = new StringBuilder(expense.getDate().toString() + "    "
-                            + expense.getPayer().getName() + " " + mainCtrl.getTranslator()
-                            .getTranslation("EventOverview.ExpenseLabel-paid")
-                            + " " + expense.getAmount() + "$ " + mainCtrl.getTranslator()
-                            .getTranslation("EventOverview.ExpenseLabel-for") +
-                            " " + expense.getPurchase() + "\n");
-                    desc.append(" ".repeat(32));
-                    desc.append(mainCtrl.getTranslator()
-                            .getTranslation("EventOverview.ExpenseLabel-debtors"));
-                    for (int i = 0; i < expense.getDebtors().size() - 1; i++) {
-                        desc.append(expense.getDebtors().get(i).getName()).append(", ");
-                    }
-                    desc.append(expense.getDebtors().get(expense.getDebtors().size()-1).getName());
-                    return desc.toString();
-                }
-            };
+        public ExpenseListCell() {
+            super();
+            container = new HBox();
+            content = new Text();
+            filler = new Pane();
+            editButton = new Button();
+            HBox.setHgrow(filler, Priority.ALWAYS);
+            container.getChildren().addAll(content, filler, editButton);
+        }
+
+        private void setLanguage(Translator translator) {
+            editButton.setText(translator
+                    .getTranslation("EventOverview.EditExpense-Button"));
+        }
+
+        @Override
+        public void updateItem(Expense expense, boolean empty) {
+            super.updateItem(expense, empty);
+            if (empty) {
+                setGraphic(null);
+                return;
+            }
+
+            setLanguage(mainCtrl.getTranslator());
+
+            content.setText(expenseDescription(expense));
+            editButton.setOnAction(actionEvent -> {
+                mainCtrl.showAddEditExpense(event, expense);
+            });
+            setGraphic(container);
+        }
+
+        private String expenseDescription(Expense expense) {
+            StringBuilder desc = new StringBuilder(expense.getDate().toString() + "    "
+                    + expense.getPayer().getName() + " " + mainCtrl.getTranslator()
+                    .getTranslation("EventOverview.ExpenseLabel-paid")
+                    + " " + expense.getAmount() + "$ " + mainCtrl.getTranslator()
+                    .getTranslation("EventOverview.ExpenseLabel-for") +
+                    " " + expense.getPurchase() + "\n");
+            desc.append(" ".repeat(32));
+            desc.append(mainCtrl.getTranslator()
+                    .getTranslation("EventOverview.ExpenseLabel-debtors"));
+            for (int i = 0; i < expense.getDebtors().size() - 1; i++) {
+                desc.append(expense.getDebtors().get(i).getName()).append(", ");
+            }
+            desc.append(expense.getDebtors().get(expense.getDebtors().size()-1).getName());
+            return desc.toString();
         }
     }
+
 
     @FXML
     private Text eventTitle;
@@ -222,7 +235,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         expenseSelectorIncluding.setToggleGroup(expenseSelectorToggle);
         expenseSelectorAll.setSelected(true);
         // Populate expense list
-        expensesList.setCellFactory(new ExpenseCellFactory());
+        expensesList.setCellFactory(expensesList -> new ExpenseListCell());
     }
 
     public void loadEvent(Event event) {
