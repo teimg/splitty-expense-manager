@@ -113,6 +113,7 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
             quitScene();
         }catch (IllegalArgumentException e){
             e.printStackTrace();
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 

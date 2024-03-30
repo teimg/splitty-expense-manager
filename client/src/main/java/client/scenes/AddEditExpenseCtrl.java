@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import client.utils.scene.SceneController;
@@ -417,7 +416,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
         }catch (Exception e){
             e.printStackTrace();
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -431,7 +430,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             addEditExpenseMv.deleteTag();
             initTag();
         }catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -439,7 +438,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -447,13 +446,5 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), null);
     }
 
-    void handleException(Exception e){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
-        String msg = mainCtrl.getTranslator().getTranslation(
-            "Popup." + e.getMessage()
-        );
-        (new Popup(msg, type)).show();
-    }
 
 }
