@@ -33,6 +33,8 @@ public class EventTest {
         assertNotNull(constructorTest);
         Event constructorTestTwo = new Event();
         assertNotNull(constructorTestTwo);
+        Event constructorTestThree = new Event("Name");
+        assertNotNull(constructorTestThree);
     }
 
     @Test
@@ -162,11 +164,8 @@ public class EventTest {
 
     @Test
     public void testToString() {
-//        assertEquals("Event{name='Test', " +
-//                "inviteCode='InviteCode', participants=[Participant{id=0, " +
-//                "name='Tester Fester', bankAccount=null}], creationDate=Sun " +
-//                "Feb 10 00:00:00 CET 3924, lastActivity=Mon Mar 10 00:00:00 CET 3924}",
-//                firstEvent.toString());
+        assertEquals("Event{id=0, name='Test', inviteCode='InviteCode', participants=[Participant{id=0, name='Tester Fester', bankAccount=null}], creationDate=Sun Feb 10 00:00:00 CET 3924, lastActivity=Mon Mar 10 00:00:00 CET 3924}",
+                firstEvent.toString());
     }
 
 }
