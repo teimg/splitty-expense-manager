@@ -1,10 +1,10 @@
 package client.scenes;
 
+import client.ModelView.StatisticsScreenMv;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
-import commons.Expense;
 import commons.Tag;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
@@ -37,52 +36,40 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
 
     private final MainCtrl mainCtrl;
 
-    private Event event;
-
-    private double totalPrice;
+    private StatisticsScreenMv statisticsScreenMv;
 
     @Inject
-    public StatisticsScreenCtrl(MainCtrl mainCtrl) {
+    public StatisticsScreenCtrl(MainCtrl mainCtrl, StatisticsScreenMv statisticsScreenMv) {
         this.mainCtrl = mainCtrl;
+        this.statisticsScreenMv = statisticsScreenMv;
     }
 
     public void loadInfo(Event event) {
-        this.event = event;
+        statisticsScreenMv.setEvent(event);
         fillChart();
         toggleVisibility();
     }
 
     private void toggleVisibility() {
-        pieChart.setVisible(!event.getExpenses().isEmpty());
-        noExpensesLabel.setVisible(event.getExpenses().isEmpty());
+        pieChart.setVisible(!statisticsScreenMv.getEvent().getExpenses().isEmpty());
+        noExpensesLabel.setVisible(statisticsScreenMv.getEvent().getExpenses().isEmpty());
     }
 
     private void fillChart() {
         pieChart.getData().clear();
-        Map<Tag, Double> entries = new HashMap<>();
-        this.totalPrice = 0;
-        for (Expense expense : event.getExpenses()) {
-            totalPrice = totalPrice + expense.getAmount();
-            Tag tag = expense.getTag();
-            if (tag != null) {
-                if (entries.containsKey(tag)) {
-                    double currentSum = entries.get(tag);
-                    entries.put(tag, currentSum + expense.getAmount());
-                } else {
-                    entries.put(tag, expense.getAmount());
-                }
-            }
-        }
+        Map<Tag, Double> entries = statisticsScreenMv.fillEntries();
         addLabels(entries);
         pieChart.setLegendVisible(false);
-        totalCostLabel.setText("The total cost of this event is: " + totalPrice + "$");
+        totalCostLabel.setText("The total cost of this event is: "
+                + statisticsScreenMv.getTotalPrice() + "$");
     }
 
     private void addLabels(Map<Tag, Double> entries) {
         ArrayList<PieChart.Data> data = new ArrayList<>();
         for (Map.Entry<Tag, Double>  entry: entries.entrySet()) {
             String legend = entry.getKey().getName() + " "
-                    + (double) Math.round((entry.getValue()/totalPrice)*10000)/100
+                    + (double) Math.round((entry.getValue()
+                        /statisticsScreenMv.getTotalPrice())*10000)/100
                     + "% " + entry.getValue() + "$";
             PieChart.Data slice = new PieChart.Data(legend, entry.getValue());
             //For some reason this is required. This is as the PieChart.Data
@@ -107,7 +94,8 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Title-label"));
         totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StatisticsScreen.Total-Cost-label") + " " + this.totalPrice + "$");
+                "StatisticsScreen.Total-Cost-label")
+                + " " + statisticsScreenMv.getTotalPrice() + "$");
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
@@ -117,7 +105,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
     }
 
     public void handleBack(ActionEvent actionEvent) {
-        mainCtrl.showEventOverview(event);
+        mainCtrl.showEventOverview(statisticsScreenMv.getEvent());
     }
 
 }
