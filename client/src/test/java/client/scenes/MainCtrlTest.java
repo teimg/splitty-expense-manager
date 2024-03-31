@@ -189,6 +189,16 @@ public class MainCtrlTest {
     }
 
     @Test
+    public void updateLanguage() {
+        when(translator.getCurrentLanguage()).thenReturn("french");
+
+        mainCtrl.updateLanguage("french");
+
+        verify(translator).setCurrentLanguage("french");
+        verify(clientConfiguration).setStartupLanguage("french");
+    }
+
+    @Test
     public void showAddEditExpenseA() {
         Event ev = new Event();
         mainCtrl.showAddEditExpense(ev);
