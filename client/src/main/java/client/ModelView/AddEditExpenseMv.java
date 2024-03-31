@@ -169,7 +169,8 @@ public class AddEditExpenseMv {
 
         }
         catch (DateTimeParseException e){
-            new Popup("Invalid date time! Going to use current time. " , Popup.TYPE.ERROR).showAndWait();
+            new Popup("Invalid date time! Going to use current time. " ,
+                    Popup.TYPE.ERROR).showAndWait();
             return LocalDate.now();
         }
     }

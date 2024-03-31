@@ -417,7 +417,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             return;
 
         }catch (Exception e){
-            new Popup("Failed to add/edit expense: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
+            new Popup("Failed to add/edit expense: " + e.getMessage(),
+                    Popup.TYPE.ERROR).showAndWait();
         }
     }
 

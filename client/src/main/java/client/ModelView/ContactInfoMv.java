@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import commons.BankAccount;
 import commons.Event;
 import commons.Participant;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

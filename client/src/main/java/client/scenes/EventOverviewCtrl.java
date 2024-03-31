@@ -301,7 +301,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         Optional<Participant> optionalParticipant = event.getParticipants().stream()
                 .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
                 .findFirst();
-        boolean confirmed = ConfPopup.isConfirmed("Are you sure you want to delete this participant?");
+        boolean confirmed = ConfPopup.isConfirmed
+                ("Are you sure you want to delete this participant?");
         if (confirmed) {
             if (optionalParticipant.isPresent()) {
                 participantCommunicator.deleteParticipant(optionalParticipant.get().getId());
@@ -357,7 +358,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                         Thread.sleep(5000); // sleep 5 seconds in case polling infinitely
                     }
                 } catch (Exception e) {
-                    new Popup("Server polling error: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
+                    new Popup("Server polling error: " +
+                            e.getMessage(), Popup.TYPE.ERROR).showAndWait();
                 }
                 return null;
             }
@@ -382,7 +384,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
      */
     private void updateUI(Event updatedEvent) {
         if (updatedEvent == null) {
-            new Popup("The updated event is null, cannot update UI.", Popup.TYPE.ERROR).showAndWait();
+            new Popup("The updated event is null, cannot update UI.",
+                    Popup.TYPE.ERROR).showAndWait();
             return;
         }
 

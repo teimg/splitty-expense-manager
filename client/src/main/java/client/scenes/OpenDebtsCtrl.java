@@ -90,7 +90,8 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
         // Reset the visibility and text of the noDebtMessage
         noDebtMessage.setVisible(true);
-        noDebtMessage.setText(mainCtrl.getTranslator().getTranslation("OpenDebts.NoDebtsMessage-label"));
+        noDebtMessage.setText(mainCtrl.getTranslator().
+                getTranslation("OpenDebts.NoDebtsMessage-label"));
 
         // Reset the visibility of the accordion and scroll pane
         accordionDebts.setVisible(false);

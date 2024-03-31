@@ -4,6 +4,7 @@ package client.dialog;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+
 public class ConfPopup extends Alert {
 
     public ConfPopup(String question) {
@@ -12,6 +13,7 @@ public class ConfPopup extends Alert {
     }
     /**
      *
+     * @param question question to ask the user
      * @return true if yes was pressed
      */
     public static boolean isConfirmed(String question) {
@@ -23,7 +25,7 @@ public class ConfPopup extends Alert {
 
     /**
      * Create popup without calling new (for efficient calling)
-     * @param question question to ask teh user
+     * @param question question to ask the user
      * @return new ConfPopup
      */
     public static ConfPopup create(String question){

@@ -87,6 +87,7 @@ public class Main extends Application {
         }
         catch (RuntimeException e) {
             System.out.println("Server Error/Offline - Cannot load Add/Edit Expense scene");
+            e.printStackTrace();
         }
 
     }
