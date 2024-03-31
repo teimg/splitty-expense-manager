@@ -1,5 +1,7 @@
 package commons;
 
+import java.util.Objects;
+
 public class EventChange {
     public enum Type {
         CREATION,
@@ -22,5 +24,23 @@ public class EventChange {
 
     public Event getEvent() {
         return event;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EventChange that = (EventChange) o;
+
+        if (type != that.type) return false;
+        return Objects.equals(event, that.event);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = type != null ? type.hashCode() : 0;
+        result = 31 * result + (event != null ? event.hashCode() : 0);
+        return result;
     }
 }
