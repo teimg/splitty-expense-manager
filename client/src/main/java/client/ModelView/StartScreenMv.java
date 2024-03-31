@@ -1,7 +1,6 @@
 package client.ModelView;
 
 
-import client.dialog.Popup;
 import client.utils.JoinableEvent;
 import client.utils.RecentEventTracker;
 import client.utils.communicators.interfaces.IEventCommunicator;

@@ -1,6 +1,5 @@
 package client.ModelView;
 
-import client.dialog.Popup;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import com.google.inject.Inject;

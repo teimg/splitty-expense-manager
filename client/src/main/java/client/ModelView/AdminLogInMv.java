@@ -1,6 +1,5 @@
 package client.ModelView;
 
-import client.dialog.Popup;
 import client.utils.communicators.interfaces.IAdminCommunicator;
 import jakarta.inject.Inject;
 import javafx.beans.property.SimpleStringProperty;
