@@ -45,7 +45,7 @@ public interface IEventCommunicator {
     void establishWebSocketConnection();
 
     <T> void subscribeForWebSocketMessages(String dest, Class<T> type, Consumer<T> consumer);
-    Event checkForEventUpdates(long id);
+    EventChange checkForEventUpdates(long id);
 
     void closeWebSocketConnection();
 }
