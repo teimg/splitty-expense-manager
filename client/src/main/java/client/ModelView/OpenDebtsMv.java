@@ -36,11 +36,14 @@ public class OpenDebtsMv {
     }
 
     public boolean checkVisibility() {
-        return debts.isEmpty();
+        return getDebts().isEmpty();
     }
 
     public ArrayList<TitledPane> getPanes() {
         return panes;
     }
 
+    public ArrayList<Debt> getDebts() {
+        return debts;
+    }
 }

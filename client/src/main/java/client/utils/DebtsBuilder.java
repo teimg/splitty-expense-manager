@@ -65,7 +65,10 @@ public class DebtsBuilder {
     }
 
     private void findDebts() {
-        ArrayList<Expense> expenses = (ArrayList<Expense>) event.getExpenses();
+        ArrayList<Expense> expenses = new ArrayList<>();
+        for (Expense ex : event.getExpenses()) {
+            expenses.add(ex);
+        }
         for (Expense expense : expenses) {
             int numDebtors = expense.getDebtors().size();
             for (Participant debtor : expense.getDebtors()) {
