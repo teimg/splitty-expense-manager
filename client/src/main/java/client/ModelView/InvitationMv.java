@@ -1,6 +1,5 @@
 package client.ModelView;
 
-import client.dialog.Popup;
 import client.utils.communicators.implementations.EmailCommunicator;
 import client.utils.communicators.implementations.ParticipantCommunicator;
 import client.utils.communicators.interfaces.IEmailCommunicator;
@@ -58,7 +57,7 @@ public class InvitationMv {
             throw new IllegalArgumentException("EmptyEmailField");
         }
         if (isAlreadyAdded(res)){
-            throw new IllegalArgumentException("AlreadyEntered!");
+            throw new IllegalArgumentException("AlreadyEntered");
         }
 
         emails.get().addAll(res);
@@ -96,7 +95,7 @@ public class InvitationMv {
                         event, email.split("@")[0], email, null);
                 event.addParticipant(new Participant(email.split("@")[0], email));
             } else {
-                new Popup("Invalid email!", Popup.TYPE.ERROR).showAndWait();
+                return;
             }
         }
     }

@@ -69,7 +69,8 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch {
         }
         else {
             if (tagNameField.getText().isEmpty()) {
-                new Popup("Empty tag name field! " , Popup.TYPE.ERROR).showAndWait();
+                new Popup(mainCtrl.getTranslator().getTranslation
+                        ("Popup.emptyTagNameField") , Popup.TYPE.ERROR).showAndWait();
             }
             else {
                 Tag updated = new Tag(tagNameField.getText(),

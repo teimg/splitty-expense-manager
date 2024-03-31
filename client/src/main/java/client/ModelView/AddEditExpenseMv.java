@@ -1,6 +1,5 @@
 package client.ModelView;
 
-import client.dialog.Popup;
 import client.utils.ExpenseBuilder;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
@@ -19,6 +18,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class AddEditExpenseMv {
 
@@ -169,11 +169,11 @@ public class AddEditExpenseMv {
 
         }
         catch (DateTimeParseException e){
-            new Popup("Invalid date time! Going to use current time. " ,
-                    Popup.TYPE.ERROR).showAndWait();
-            return LocalDate.now();
+            e.printStackTrace();
+            return null;
         }
     }
+
 
     public  Participant getPayer(){
         Participant res = whoPaidField.getValue();

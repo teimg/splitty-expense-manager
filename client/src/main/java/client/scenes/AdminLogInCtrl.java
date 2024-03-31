@@ -54,7 +54,8 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch, SceneContr
         try {
             adminLogInMv.validatePassword();
             mainCtrl.showAdminScreen();
-            new Popup("Welcome to admin!", Popup.TYPE.INFO).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.adminWelcome"), Popup.TYPE.INFO).showAndWait();
         }catch (Exception e){
             handleException(e, mainCtrl.getTranslator());
         }

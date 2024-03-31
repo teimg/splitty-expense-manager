@@ -413,7 +413,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             addEditExpenseMv.clear();
             clear();
             mainCtrl.showEventOverview(res);
-            new Popup("Expense added successfully!", Popup.TYPE.INFO).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.ExpenseAddSuccessful"), Popup.TYPE.INFO).showAndWait();
             return;
 
         }catch (Exception e){

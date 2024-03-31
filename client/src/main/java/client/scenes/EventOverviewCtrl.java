@@ -277,7 +277,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             selectedPayer = optionalParticipant.get();
         }
         else {
-            new Popup("Database error!" , Popup.TYPE.ERROR).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
         }
         if (expenseSelectorAll.isSelected()) {
             shownExpenses.setAll(event.getExpenses());
@@ -302,12 +303,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
                 .findFirst();
         boolean confirmed = ConfPopup.isConfirmed
-                ("Are you sure you want to delete this participant?");
+                (mainCtrl.getTranslator().getTranslation
+                        ("Popup.sureRemoveDatabase"));
         if (confirmed) {
             if (optionalParticipant.isPresent()) {
                 participantCommunicator.deleteParticipant(optionalParticipant.get().getId());
             }else {
-                new Popup("No participant ID selected" , Popup.TYPE.ERROR).showAndWait();
+                new Popup(mainCtrl.getTranslator().getTranslation
+                        ("Popup.NoParticipantIDSelected") , Popup.TYPE.ERROR).showAndWait();
             }
         } else {
             return;
@@ -325,7 +328,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 .findFirst();
         optionalParticipant.ifPresent(participant -> mainCtrl.showContactInfo(event, participant));
         if (optionalParticipant.isEmpty()) {
-            new Popup("No participant selected!", Popup.TYPE.ERROR).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.NoparticipantSelected"), Popup.TYPE.ERROR).showAndWait();
         }
     }
 
@@ -383,7 +387,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
      */
     private void updateUI(Event updatedEvent) {
         if (updatedEvent == null) {
-            new Popup("The updated event is null, cannot update UI.",
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.updateEventIsNull"),
                     Popup.TYPE.ERROR).showAndWait();
             return;
         }
@@ -408,7 +413,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             // Replace the local event object with the updated one
             this.event = updatedEvent;
 
-            new Popup("Event update successful!", Popup.TYPE.INFO).show();
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.successfulEventUpdate"), Popup.TYPE.INFO).show();
         });
     }
 
