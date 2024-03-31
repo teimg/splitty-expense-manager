@@ -31,6 +31,7 @@ public class OpenDebtsMv {
     public void loadInfo(Event event, Translator translator, MainCtrl mainCtrl) {
         DebtsBuilder debtsBuilder = new DebtsBuilder(event, translator,
                 emailCommunicator, expenseCommunicator, mainCtrl);
+        debtsBuilder.buildPanes();
         this.debts = debtsBuilder.getDebts();
         this.panes = debtsBuilder.getPanes();
     }
