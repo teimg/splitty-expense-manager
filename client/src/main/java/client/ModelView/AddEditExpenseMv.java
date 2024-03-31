@@ -1,5 +1,6 @@
 package client.ModelView;
 
+import client.dialog.Popup;
 import client.utils.ExpenseBuilder;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
@@ -152,7 +153,7 @@ public class AddEditExpenseMv {
 
         }
         catch (NumberFormatException e){
-            throw new IllegalArgumentException("PriceFieldInvalid");
+            new Popup("Price field invalid!" , Popup.TYPE.ERROR).showAndWait();
         }
         return res;
     }
@@ -168,6 +169,7 @@ public class AddEditExpenseMv {
 
         }
         catch (DateTimeParseException e){
+            new Popup("Invalid date time! Going to use current time. " , Popup.TYPE.ERROR).showAndWait();
             return LocalDate.now();
         }
     }
@@ -176,7 +178,7 @@ public class AddEditExpenseMv {
         Participant res = whoPaidField.getValue();
 
         if(res == null){
-            throw new IllegalArgumentException("PayerFieldInvalid");
+            new Popup("Payer field invalid!" , Popup.TYPE.ERROR).showAndWait();
         }
 
         return res;
@@ -186,7 +188,7 @@ public class AddEditExpenseMv {
         String res = descriptionField.getValue();
 
         if(res == null || res.isEmpty()){
-            throw new IllegalArgumentException("PurchaseLeftEmpty");
+            new Popup("Purchase field empty! " , Popup.TYPE.ERROR).showAndWait();
         }
         return  res;
     }
@@ -210,7 +212,7 @@ public class AddEditExpenseMv {
         Tag res = tagField.getValue();
 
         if(res == null){
-            throw new IllegalArgumentException("TagInvalid");
+            new Popup("Tag field invalid! " , Popup.TYPE.ERROR).showAndWait();
         }
 
         return res;

@@ -1,6 +1,7 @@
 package client.ModelView;
 
 
+import client.dialog.Popup;
 import client.utils.JoinableEvent;
 import client.utils.RecentEventTracker;
 import client.utils.communicators.interfaces.IEventCommunicator;
@@ -40,16 +41,16 @@ public class StartScreenMv {
     public Event createEvent() {
         String name = newEvent.getValue();
         if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("EventNameEmpty");
+            new Popup("Empty event name! " , Popup.TYPE.ERROR).showAndWait();
         }
         try{
             Event event = new Event(name);
             event = server.createEvent(event);
             return event;
         }catch (ProcessingException e){
-            throw new ProcessingException("ServerOffline");
+            new Popup("Server offline! " , Popup.TYPE.ERROR).showAndWait();
         }
-
+        return null;
     }
 
     public Event joinEvent() {
@@ -58,20 +59,22 @@ public class StartScreenMv {
         try{
             return server.getEventByInviteCode(inviteCode);
         }catch (NotFoundException e){
-            throw new NotFoundException("CodeNotFound");
+            new Popup("Code not found! " , Popup.TYPE.ERROR).showAndWait();
         }catch (ProcessingException e){
-            throw new ProcessingException("ServerOffline");
+            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
         }
+        return null;
     }
 
     public Event getRecentEvent(long id){
         try {
             return server.getEvent(id);
         }catch (NotFoundException e){
-            throw new NotFoundException("CodeNotFound");
+            new Popup("Code not found! " , Popup.TYPE.ERROR).showAndWait();
         }catch (ProcessingException e){
-            throw new ProcessingException("ServerOffline");
+            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
         }
+        return null;
     }
 
     public void deleteEvent(JoinableEvent eventt){

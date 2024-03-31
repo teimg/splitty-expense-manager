@@ -1,5 +1,6 @@
 package client.ModelView;
 
+import client.dialog.Popup;
 import client.utils.communicators.interfaces.IAdminCommunicator;
 import jakarta.inject.Inject;
 import javafx.beans.property.SimpleStringProperty;
@@ -25,7 +26,7 @@ public class AdminLogInMv {
             return;
         }
         passwordField.setValue("");
-        throw  new IllegalArgumentException("InvalidPass");
+        new Popup("Price invalid!" , Popup.TYPE.ERROR).showAndWait();
 
         // For debugging the Admin page just comment out everything above except this line.
         //  return true;

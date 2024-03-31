@@ -1,5 +1,6 @@
 package client.ModelView;
 
+import client.dialog.Popup;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import com.google.inject.Inject;
@@ -51,7 +52,7 @@ public class ContactInfoMv {
         try {
             return eventServer.getEventByInviteCode(inviteCode);
         } catch (ProcessingException e) {
-            throw new ProcessingException("ServerOffLine");
+            new Popup("Server offline! " , Popup.TYPE.ERROR).showAndWait();
         }
     }
 
@@ -92,9 +93,9 @@ public class ContactInfoMv {
         try {
             participantServer.createParticipant(event, name, email, bankAccount);
         }catch (jakarta.ws.rs.NotFoundException e) {
-            throw new NotFoundException("CodeNotFound");
+            new Popup("Code not found! " , Popup.TYPE.ERROR).showAndWait();
         }catch (ProcessingException e) {
-            throw new ProcessingException("ServerOffline");
+            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
         }
     }
 
@@ -102,9 +103,9 @@ public class ContactInfoMv {
         try {
             participantServer.updateParticipant(participant);
         }catch (jakarta.ws.rs.NotFoundException e) {
-            throw new NotFoundException("CodeNotFound");
+            new Popup("Code not found!" , Popup.TYPE.ERROR).showAndWait();
         }catch (ProcessingException e) {
-            throw new ProcessingException("ServerOffline");
+            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
         }
     }
 
@@ -126,8 +127,7 @@ public class ContactInfoMv {
 
     public void addButtonPressed(ActionEvent event) {
         if (!validInput()) {
-            System.out.println("Error");
-            throw new IllegalArgumentException("Error");
+            new Popup("Invalid input! " , Popup.TYPE.ERROR).showAndWait();
         }
 
         Event currentEvent = getCurrentEvent();
