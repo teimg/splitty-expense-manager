@@ -13,12 +13,6 @@ public class StatisticsScreenMv {
 
     private double totalPrice;
 
-
-    public StatisticsScreenMv(Event event, double totalPrice) {
-        this.event = event;
-        this.totalPrice = totalPrice;
-    }
-
     public Event getEvent() {
         return event;
     }
