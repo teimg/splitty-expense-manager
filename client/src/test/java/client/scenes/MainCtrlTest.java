@@ -15,34 +15,100 @@
  */
 package client.scenes;
 
+import client.language.Translator;
 import client.utils.ClientConfiguration;
+import client.utils.RecentEventTracker;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
+import commons.Event;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
+import javafx.util.Pair;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class MainCtrlTest {
 
-    private MainCtrl sut;
+    @Mock
+    private ClientConfiguration clientConfiguration;
+    @Mock
+    private Translator translator;
+    @Mock
+    private RecentEventTracker recentEventTracker;
 
-    private ClientConfiguration config;
+    private MainCtrl mainCtrl;
 
-//    /**
-//     * Setting dependency of config file for testing
-//     * @param config - config injected
-//     */
-//    @Inject
-//    public void setClientConfig(ClientConfiguration config) {
-//        this.config = config;
-//    }
+
+    @Mock
+    private Parent fakeParent;
+
+    @Mock
+    private StartScreenCtrl startScreen;
+    @Mock
+    private EventOverviewCtrl eventOverview;
+    @Mock
+    private MenuBarCtrl menuBar;
+
+    @Mock
+    private Stage primaryStage;
 
     @BeforeEach
     public void setup() {
-//        sut = new MainCtrl(config, );
+        HashMap<String, Object> sceneMap = new HashMap<>(Map.of(
+                "StartScreen", new Pair<>(startScreen, fakeParent),
+                "EventOverview", new Pair<>(eventOverview, fakeParent),
+                "MenuBar", new Pair<>(menuBar, fakeParent)
+        ));
+
+        when(clientConfiguration.getStartupLanguage()).thenReturn("english");
+
+        mainCtrl = new MainCtrl(clientConfiguration, translator, recentEventTracker);
+        mainCtrl.initialize(primaryStage, sceneMap);
     }
 
     @Test
-    public void writeSomeTests() {
-        // TODO create replacement objects and write some tests
-        // sut.initialize(null, null, null);
+    public void setupTest() {
+        verify(translator).setCurrentLanguage("english");
+        verify(menuBar).setLanguage();
+    }
+
+    @Test
+    public void getPrimaryStage() {
+        assertEquals(primaryStage, mainCtrl.getPrimaryStage());
+    }
+
+    @Test
+    public void getTranslator() {
+        assertEquals(translator, mainCtrl.getTranslator());
+    }
+
+    @Test
+    public void recentEvents() {
+        Event evA = new Event("A");
+        Event evB = new Event("B");
+
+        mainCtrl.showStartScreen();
+        mainCtrl.showEventOverview(evA);
+        mainCtrl.showStartScreen();
+        mainCtrl.showEventOverview(evB);
+        mainCtrl.showStartScreen();
+
+        mainCtrl.stop();
+
+        verify(recentEventTracker).registerEvent(evA);
+        verify(recentEventTracker).registerEvent(evB);
+        verify(recentEventTracker).persistEvents();
     }
 }
