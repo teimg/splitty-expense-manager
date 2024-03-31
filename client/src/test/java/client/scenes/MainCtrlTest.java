@@ -146,6 +146,14 @@ public class MainCtrlTest {
 
     @Test
     public void stopTest() {
+        when(primaryStage.getHeight()).thenReturn(1000.);
+        when(primaryStage.getWidth()).thenReturn(2000.);
 
+        verify(clientConfiguration).setWindowHeight(1000.);
+        verify(clientConfiguration).setWindowWidth(2000.);
+
+        verify(clientConfiguration).save();
+
+        verify(recentEventTracker).persistEvents();
     }
 }
