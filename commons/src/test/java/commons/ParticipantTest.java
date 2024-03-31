@@ -17,7 +17,6 @@ public class ParticipantTest {
         Participant participantThree = new Participant("Fester Aester");
         participantOne.setEmail("Test");
         participantOne.setBankAccount(new BankAccount("A", "A"));
-//        participantOne.setEvent(new Event());
         this.participantOne = participantOne;
         this.participantTwo = participantTwo;
         this.participantThree = participantThree;
@@ -70,7 +69,11 @@ public class ParticipantTest {
         assertEquals(new BankAccount("Changed", "C"), participantOne.getBankAccount());
     }
 
-    // TODO: Add test for eventId
+   @Test
+   public void setEventId() {
+        participantOne.setEventId(12L);
+        assertEquals(12L, participantOne.getEventId());
+   }
 
     @Test
     public void getEmail() {
