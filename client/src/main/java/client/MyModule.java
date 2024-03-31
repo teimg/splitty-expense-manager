@@ -18,6 +18,7 @@ package client;
 import client.ModelView.AdminLogInMv;
 import client.ModelView.ContactInfoMv;
 import client.ModelView.StartScreenMv;
+import client.ModelView.StatisticsScreenMv;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
@@ -64,6 +65,14 @@ public class MyModule implements Module {
                     AdminLogInMv.class.getConstructor(
                         IAdminCommunicator.class))
                 .in(Scopes.SINGLETON);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            binder.bind(StatisticsScreenMv.class)
+                    .toConstructor(StatisticsScreenMv.class.getConstructor())
+                    .in(Scopes.SINGLETON);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

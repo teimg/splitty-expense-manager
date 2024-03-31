@@ -36,7 +36,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
 
     private final MainCtrl mainCtrl;
 
-    private StatisticsScreenMv statisticsScreenMv;
+    private final StatisticsScreenMv statisticsScreenMv;
 
     @Inject
     public StatisticsScreenCtrl(MainCtrl mainCtrl, StatisticsScreenMv statisticsScreenMv) {
