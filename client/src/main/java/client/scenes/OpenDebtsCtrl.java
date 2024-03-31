@@ -77,7 +77,24 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     }
 
     private void clearScene() {
-        // TODO clear all fields, lists, etc when quiting
+        // Clear the debts list
+        if (debts != null) {
+            debts.clear();
+        }
+
+        // Clear the panes in the accordion
+        if (panes != null) {
+            panes.clear();
+        }
+        accordionDebts.getPanes().clear();
+
+        // Reset the visibility and text of the noDebtMessage
+        noDebtMessage.setVisible(true);
+        noDebtMessage.setText(mainCtrl.getTranslator().getTranslation("OpenDebts.NoDebtsMessage-label"));
+
+        // Reset the visibility of the accordion and scroll pane
+        accordionDebts.setVisible(false);
+        scrollPlane.setVisible(false);
     }
 
     @Override
