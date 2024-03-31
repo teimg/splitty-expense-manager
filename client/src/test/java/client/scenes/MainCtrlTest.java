@@ -21,6 +21,9 @@ import client.utils.RecentEventTracker;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
 import commons.Event;
+import commons.Expense;
+import commons.Participant;
+import commons.Tag;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -33,7 +36,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -61,16 +64,50 @@ public class MainCtrlTest {
     private EventOverviewCtrl eventOverview;
     @Mock
     private MenuBarCtrl menuBar;
+    @Mock
+    private AddEditExpenseCtrl addEditExpense;
+    @Mock
+    private InvitationCtrl invitation;
+    @Mock
+    private OpenDebtsCtrl openDebts;
+    @Mock
+    private StatisticsScreenCtrl statisticsScreen;
+    @Mock
+    private ContactInfoCtrl contactInfo;
+    @Mock
+    private AdminLogInCtrl adminLogIn;
+    @Mock
+    private AdminScreenCtrl adminScreen;
+    @Mock
+    private TagScreenCtrl tagScreen;
+
 
     @Mock
     private Stage primaryStage;
 
     private HashMap<String, Object> fakeSceneMap() {
-        return new HashMap<>(Map.of(
-                "StartScreen", new Pair<>(startScreen, fakeParent),
-                "EventOverview", new Pair<>(eventOverview, fakeParent),
-                "MenuBar", new Pair<>(menuBar, fakeParent)
-        ));
+        List<Pair<String, Object>> pairs = List.of(
+                new Pair<>("StartScreen", startScreen),
+                new Pair<>("EventOverview", eventOverview),
+                new Pair<>("MenuBar", menuBar),
+
+                new Pair<>("AddEditExpense", addEditExpense),
+                new Pair<>("Invitation", invitation),
+                new Pair<>("OpenDebts", openDebts),
+                new Pair<>("Statistics", statisticsScreen),
+                new Pair<>("ContactInfo", contactInfo),
+                new Pair<>("AdminLogIn", adminLogIn),
+                new Pair<>("AdminScreen", adminScreen),
+                new Pair<>("TagScreen", tagScreen)
+        );
+
+        HashMap<String, Object> sceneMap = new HashMap<>();
+
+        for (Pair<String, Object> pair : pairs) {
+            sceneMap.put(pair.getKey(), new Pair<>(pair.getValue(), fakeParent));
+        }
+
+        return sceneMap;
     }
 
     private SceneWrapper mockedSceneWrapper(SceneController sceneController,
@@ -149,5 +186,76 @@ public class MainCtrlTest {
         verify(clientConfiguration).save();
 
         verify(recentEventTracker).persistEvents();
+    }
+
+    @Test
+    public void showAddEditExpenseA() {
+        Event ev = new Event();
+        mainCtrl.showAddEditExpense(ev);
+        verify(addEditExpense).loadInfo(ev);
+        verify(addEditExpense).setLanguage();
+    }
+
+    @Test
+    public void showAddEditExpenseB() {
+        Event ev = new Event();
+        Expense ex = new Expense();
+        mainCtrl.showAddEditExpense(ev, ex);
+        verify(addEditExpense).loadInfo(ev, ex);
+        verify(addEditExpense).setLanguage();
+    }
+
+    @Test
+    public void showInvitation() {
+        Event ev = new Event();
+        mainCtrl.showInvitation(ev);
+        verify(invitation).loadEvent(ev);
+        verify(invitation).setLanguage();
+    }
+
+    @Test
+    public void showOpenDebts() {
+        Event ev = new Event();
+        mainCtrl.showOpenDebts(ev);
+        verify(openDebts).loadInfo(ev);
+        verify(openDebts).setLanguage();
+    }
+
+    @Test
+    public void showStatistics() {
+        Event ev = new Event();
+        mainCtrl.showStatistics(ev);
+        verify(statisticsScreen).loadInfo(ev);
+        verify(statisticsScreen).setLanguage();
+    }
+
+    @Test
+    public void showContactInfo() {
+        Event ev = new Event();
+        Participant pa = new Participant();
+        mainCtrl.showContactInfo(ev, pa);
+        verify(contactInfo).loadInfo(ev, pa);
+        verify(contactInfo).setLanguage();
+    }
+
+    @Test
+    public void showAdminLogIn() {
+        mainCtrl.showAdminLogIn();
+        verify(adminLogIn).setLanguage();
+    }
+
+    @Test
+    public void showAdminScreen() {
+        mainCtrl.showAdminScreen();
+        verify(adminScreen).initializeScene();
+        verify(adminScreen).setLanguage();
+    }
+
+    @Test
+    public void showTagScreen() {
+        Event ev = new Event();
+        Tag tag = new Tag();
+        mainCtrl.showTagScreen(ev, tag);
+        verify(tagScreen).loadInfo(ev, tag);
     }
 }
