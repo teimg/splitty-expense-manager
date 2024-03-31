@@ -141,6 +141,8 @@ public class MainCtrlTest {
         when(primaryStage.getHeight()).thenReturn(1000.);
         when(primaryStage.getWidth()).thenReturn(2000.);
 
+        mainCtrl.stop();
+
         verify(clientConfiguration).setWindowHeight(1000.);
         verify(clientConfiguration).setWindowWidth(2000.);
 
