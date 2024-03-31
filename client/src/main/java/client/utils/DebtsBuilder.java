@@ -53,7 +53,7 @@ public class DebtsBuilder {
         this.mainCtrl = mainCtrl;
         findDebts();
         simplifyDebts();
-        buildPanes();
+        simplifyTransitiveNature();
     }
 
     public ArrayList<Debt> getDebts() {
@@ -64,8 +64,11 @@ public class DebtsBuilder {
         return panes;
     }
 
-    private void findDebts() {
-        ArrayList<Expense> expenses = (ArrayList<Expense>) event.getExpenses();
+    public ArrayList<Debt> findDebts() {
+        ArrayList<Expense> expenses = new ArrayList<>();
+        for (Expense ex : event.getExpenses()) {
+            expenses.add(ex);
+        }
         for (Expense expense : expenses) {
             int numDebtors = expense.getDebtors().size();
             for (Participant debtor : expense.getDebtors()) {
@@ -75,9 +78,10 @@ public class DebtsBuilder {
                 }
             }
         }
+        return debts;
     }
 
-    private void simplifyDebts() {
+    public ArrayList<Debt> simplifyDebts() {
         ArrayList<Pair<Participant, Participant>> allPossiblePairs = new ArrayList<>();
         for (int i = 0; i < event.getParticipants().size(); i++) {
             for (int j = i + 1; j < event.getParticipants().size(); j++) {
@@ -86,10 +90,10 @@ public class DebtsBuilder {
             }
         }
         debts = simplifier(allPossiblePairs);
-        simplifyTransitiveNature();
+        return debts;
     }
 
-    private ArrayList<Debt> simplifier(ArrayList<Pair<Participant, Participant>> allPossiblePairs) {
+    public ArrayList<Debt> simplifier(ArrayList<Pair<Participant, Participant>> allPossiblePairs) {
         ArrayList<Debt> simplifiedDebts = new ArrayList<>();
         for (Pair<Participant, Participant> pair : allPossiblePairs) {
             double amount = 0.0;
@@ -106,7 +110,7 @@ public class DebtsBuilder {
         return simplifiedDebts;
     }
 
-    private double amountFinder(Debt debt, Pair<Participant, Participant> pair) {
+    public double amountFinder(Debt debt, Pair<Participant, Participant> pair) {
         double amount = 0;
         if (containsParticipantsSame(debt, pair)) {
             amount = amount + debt.getAmount();
@@ -117,7 +121,7 @@ public class DebtsBuilder {
         return amount;
     }
 
-    private void simplifyTransitiveNature() {
+    public ArrayList<Debt> simplifyTransitiveNature() {
         Map<Participant, Double> balanceChange = findBalanceChange();
         ArrayList<Debt> transitiveDebts = new ArrayList<>();
         ArrayList<Participant> negative = new ArrayList<>();
@@ -132,7 +136,7 @@ public class DebtsBuilder {
         }
         if (negative.isEmpty()) {
             debts = new ArrayList<>();
-            return;
+            return debts;
         }
         Participant selected = negative.get(0);
         for (int i = 1; i < negative.size(); i++) {
@@ -145,9 +149,10 @@ public class DebtsBuilder {
         }
         transitiveDebts.removeIf(debt -> debt.getAmount() == 0);
         debts = transitiveDebts;
+        return debts;
     }
 
-    private Map<Participant, Double> findBalanceChange() {
+    public Map<Participant, Double> findBalanceChange() {
         Map<Participant, Double> balanceChange = new HashMap<>();
         for (Debt debt : debts) {
             if (balanceChange.containsKey(debt.getCreditor())) {
@@ -168,17 +173,17 @@ public class DebtsBuilder {
         return balanceChange;
     }
 
-    private boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {
+    public boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {
         return ((debt.getCreditor().equals(pair.getKey()) &&
                 debt.getDebtor().equals(pair.getValue())));
     }
 
-    private boolean containsParticipantsOpposite(Debt debt, Pair<Participant, Participant> pair) {
+    public boolean containsParticipantsOpposite(Debt debt, Pair<Participant, Participant> pair) {
         return (debt.getCreditor().equals(pair.getValue()) &&
                 debt.getDebtor().equals(pair.getKey()));
     }
 
-    private void buildPanes() {
+    public ArrayList<TitledPane> buildPanes() {
         for (Debt debt : debts) {
             HBox title = new HBox();
             VBox contents = new VBox();
@@ -197,7 +202,7 @@ public class DebtsBuilder {
                         "OpenDebts.NoBankInfo-label") + "\n";
                 title.getChildren().add(prepareIcons("NoBankIcon"));
             }
-            if (!debt.getDebtor().getEmail().isEmpty()) {
+            if (debt.getDebtor().getEmail() != null && !debt.getDebtor().getEmail().isEmpty()) {
                 label = label + "\n" + translator.getTranslation("OpenDebts.Email-label")  ;
                 Button button = new Button(translator
                         .getTranslation("OpenDebts.ReminderEmail-Button"));
@@ -224,9 +229,10 @@ public class DebtsBuilder {
             titledPane.setContent(contents);
             panes.add(titledPane);
         }
+        return panes;
     }
 
-    private Button createButton(Debt debt) {
+    public Button createButton(Debt debt) {
         Button settleButton = new Button(translator
                 .getTranslation("OpenDebts.SettleDebt-Button"));
         settleButton.setOnAction(event -> settleDebt(debt));
@@ -240,7 +246,7 @@ public class DebtsBuilder {
         return settleButton;
     }
 
-    private void settleDebt(Debt debt) {
+    public void settleDebt(Debt debt) {
         ArrayList<Participant> debtor = new ArrayList<>();
         debtor.add(debt.getCreditor());
         Expense newExpense = new Expense(event.getId(),
@@ -251,7 +257,7 @@ public class DebtsBuilder {
         mainCtrl.showOpenDebts(event);
     }
 
-    private String getSummary(Debt debt) {
+    public String getSummary(Debt debt) {
         return debt.getDebtor().getName() + " " +
                 translator.getTranslation("OpenDebts.Summary-owes")
                 + " " + (Math.round(debt.getAmount() * 100.0) / 100.0)
@@ -259,7 +265,7 @@ public class DebtsBuilder {
                 + " " + debt.getCreditor().getName();
     }
 
-    private ImageView prepareIcons(String path) {
+    public ImageView prepareIcons(String path) {
         String iconPath = "file:client/src/main/resources/client/icons/debt/" + path + ".png";
         Image image = new Image(iconPath);
         ImageView imageView = new ImageView(image);
@@ -268,7 +274,7 @@ public class DebtsBuilder {
         return imageView;
     }
 
-    private void handleEmailButtonClick(Debt debt) {
+    public void handleEmailButtonClick(Debt debt) {
 
         (new Thread(new Runnable() {
             @Override
