@@ -24,8 +24,10 @@ import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
 import client.utils.communicators.implementations.*;
 import client.utils.communicators.interfaces.*;
+import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
+import client.utils.scene.SimpleMenuBarInjector;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -39,6 +41,7 @@ public class MyModule implements Module {
         configureConfigs(binder);
         configureCommunicatorInterfaces(binder);
         configureConstructors(binder);
+        configureUtils(binder);
 
     }
 
@@ -69,8 +72,11 @@ public class MyModule implements Module {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private static void configureUtils(Binder binder) {
         binder.bind(SceneWrapperFactory.class).toInstance(SceneWrapper::new);
+        binder.bind(MenuBarInjector.class).to(SimpleMenuBarInjector.class);
     }
 
     private static void configureConfigs(Binder binder) {

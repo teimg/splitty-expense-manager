@@ -19,6 +19,7 @@ import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
+import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
@@ -56,12 +57,13 @@ public class MainCtrl {
     private final RecentEventTracker recentEventTracker;
 
     private final SceneWrapperFactory sceneWrapperFactory;
+    private final MenuBarInjector menuBarInjector;
 
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
                     RecentEventTracker recentEventTracker,
-                    SceneWrapperFactory sceneWrapperFactory) {
+                    SceneWrapperFactory sceneWrapperFactory, MenuBarInjector menuBarInjector) {
         this.config = config;
         this.translator = translator;
         if (config != null){
@@ -69,6 +71,7 @@ public class MainCtrl {
         }
         this.recentEventTracker = recentEventTracker;
         this.sceneWrapperFactory = sceneWrapperFactory;
+        this.menuBarInjector = menuBarInjector;
     }
 
     @SuppressWarnings("unchecked")
@@ -154,11 +157,8 @@ public class MainCtrl {
         if (currentSceneWrapper == null){
             throw new IllegalArgumentException("No such scene: " + scene);
         }
-        ObservableList<Node> allNodes =
-            ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren();
-        if(allNodes.getFirst() != menuBar){
-            allNodes.addFirst(menuBar);
-        }
+
+        menuBarInjector.accept(currentSceneWrapper, menuBar);
 
         this.currentCtrl =
             new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
