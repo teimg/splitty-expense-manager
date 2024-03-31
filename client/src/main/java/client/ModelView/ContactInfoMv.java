@@ -54,6 +54,7 @@ public class ContactInfoMv {
         } catch (ProcessingException e) {
             new Popup("Server offline! " , Popup.TYPE.ERROR).showAndWait();
         }
+        return null;
     }
 
     public void clearScene(){

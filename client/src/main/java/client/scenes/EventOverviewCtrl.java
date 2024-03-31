@@ -354,6 +354,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                         if (updatedEvent != null && !updatedEvent.equals(event)) {
                             updateUI(updatedEvent);
                         }
+                        Thread.sleep(5000); // sleep 5 seconds in case polling infinitely
                     }
                 } catch (Exception e) {
                     new Popup("Server polling error: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();

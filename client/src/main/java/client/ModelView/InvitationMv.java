@@ -95,8 +95,9 @@ public class InvitationMv {
                 participantCommunicator.createParticipant(
                         event, email.split("@")[0], email, null);
                 event.addParticipant(new Participant(email.split("@")[0], email));
+            } else {
+                new Popup("Invalid email!", Popup.TYPE.ERROR).showAndWait();
             }
-            new Popup("Invalid email!" , Popup.TYPE.ERROR).showAndWait();
         }
     }
 
@@ -113,7 +114,7 @@ public class InvitationMv {
             );
             emailCommunicator.sendEmail(request);
         }
-        System.out.println();
+        new Popup("Invitation sent!" , Popup.TYPE.INFO).showAndWait();
     }
 
     public ObjectProperty<ObservableList<String>> emailsProperty() {
