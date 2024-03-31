@@ -21,6 +21,7 @@ import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
+import client.utils.scene.SceneWrapperFactory;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -54,16 +55,20 @@ public class MainCtrl {
 
     private final RecentEventTracker recentEventTracker;
 
+    private final SceneWrapperFactory sceneWrapperFactory;
+
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
-                    RecentEventTracker recentEventTracker) {
+                    RecentEventTracker recentEventTracker,
+                    SceneWrapperFactory sceneWrapperFactory) {
         this.config = config;
         this.translator = translator;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
         }
         this.recentEventTracker = recentEventTracker;
+        this.sceneWrapperFactory = sceneWrapperFactory;
     }
 
     @SuppressWarnings("unchecked")
@@ -103,7 +108,8 @@ public class MainCtrl {
             }
 
             SceneController currentSceneController = (SceneController) current.getKey();
-            this.scenes.put(x, new SceneWrapper(currentSceneController, current.getValue()));
+            this.scenes.put(x,
+                    sceneWrapperFactory.apply(currentSceneController, current.getValue()));
 
 
         }

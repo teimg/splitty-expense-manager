@@ -24,6 +24,8 @@ import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
 import client.utils.communicators.implementations.*;
 import client.utils.communicators.interfaces.*;
+import client.utils.scene.SceneWrapper;
+import client.utils.scene.SceneWrapperFactory;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -67,6 +69,8 @@ public class MyModule implements Module {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+
+        binder.bind(SceneWrapperFactory.class).toInstance(SceneWrapper::new);
     }
 
     private static void configureConfigs(Binder binder) {
