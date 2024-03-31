@@ -277,7 +277,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             selectedPayer = optionalParticipant.get();
         }
         else {
-            System.out.println("Database error");
+            new Popup("Database error!" , Popup.TYPE.ERROR).showAndWait();
         }
         if (expenseSelectorAll.isSelected()) {
             shownExpenses.setAll(event.getExpenses());
@@ -323,8 +323,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
                 .findFirst();
         optionalParticipant.ifPresent(participant -> mainCtrl.showContactInfo(event, participant));
-        // TODO: if no participant is selected
-        if (optionalParticipant.isEmpty()) System.out.println("Error");
+        if (optionalParticipant.isEmpty()) {
+            new Popup("No participant selected!", Popup.TYPE.ERROR).showAndWait();
+        }
     }
 
     public void handleAddExpense() {
