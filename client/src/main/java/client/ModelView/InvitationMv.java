@@ -55,10 +55,10 @@ public class InvitationMv {
         String res = emailEntered.getValue();
 
         if(isEmpty(res)){
-            new Popup("Empty email field" , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("EmptyEmailField");
         }
         if (isAlreadyAdded(res)){
-            new Popup("Already entered!" , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("AlreadyEntered!");
         }
 
         emails.get().addAll(res);
@@ -114,7 +114,7 @@ public class InvitationMv {
             );
             emailCommunicator.sendEmail(request);
         }
-        new Popup("Invitation sent!" , Popup.TYPE.INFO).showAndWait();
+        System.out.println();
     }
 
     public ObjectProperty<ObservableList<String>> emailsProperty() {

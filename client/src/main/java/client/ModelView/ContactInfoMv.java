@@ -11,6 +11,7 @@ import jakarta.ws.rs.ProcessingException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,9 +52,8 @@ public class ContactInfoMv {
         try {
             return eventServer.getEventByInviteCode(inviteCode);
         } catch (ProcessingException e) {
-            new Popup("Server offline! " , Popup.TYPE.ERROR).showAndWait();
+            throw new ProcessingException("ServerOffLine");
         }
-        return null;
     }
 
     public void clearScene(){
@@ -93,9 +93,9 @@ public class ContactInfoMv {
         try {
             participantServer.createParticipant(event, name, email, bankAccount);
         }catch (jakarta.ws.rs.NotFoundException e) {
-            new Popup("Code not found! " , Popup.TYPE.ERROR).showAndWait();
+            throw new NotFoundException("CodeNotFound");
         }catch (ProcessingException e) {
-            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
+            throw new ProcessingException("ServerOffline");
         }
     }
 
@@ -103,9 +103,9 @@ public class ContactInfoMv {
         try {
             participantServer.updateParticipant(participant);
         }catch (jakarta.ws.rs.NotFoundException e) {
-            new Popup("Code not found!" , Popup.TYPE.ERROR).showAndWait();
+            throw new NotFoundException("CodeNotFound");
         }catch (ProcessingException e) {
-            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
+            throw new ProcessingException("ServerOffline");
         }
     }
 
@@ -127,7 +127,7 @@ public class ContactInfoMv {
 
     public void addButtonPressed(ActionEvent event) {
         if (!validInput()) {
-            new Popup("Invalid input! " , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("InvalidInput");
         }
 
         Event currentEvent = getCurrentEvent();

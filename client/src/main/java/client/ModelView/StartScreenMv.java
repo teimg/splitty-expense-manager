@@ -41,16 +41,15 @@ public class StartScreenMv {
     public Event createEvent() {
         String name = newEvent.getValue();
         if (name == null || name.isEmpty()) {
-            new Popup("Empty event name! " , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("EventNameEmpty");
         }
         try{
             Event event = new Event(name);
             event = server.createEvent(event);
             return event;
         }catch (ProcessingException e){
-            new Popup("Server offline! " , Popup.TYPE.ERROR).showAndWait();
+            throw new ProcessingException("ServerOffline");
         }
-        return null;
     }
 
     public Event joinEvent() {
@@ -59,22 +58,20 @@ public class StartScreenMv {
         try{
             return server.getEventByInviteCode(inviteCode);
         }catch (NotFoundException e){
-            new Popup("Code not found! " , Popup.TYPE.ERROR).showAndWait();
+            throw new NotFoundException("CodeNotFound");
         }catch (ProcessingException e){
-            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
+            throw new ProcessingException("ServerOffline");
         }
-        return null;
     }
 
     public Event getRecentEvent(long id){
         try {
             return server.getEvent(id);
         }catch (NotFoundException e){
-            new Popup("Code not found! " , Popup.TYPE.ERROR).showAndWait();
+            throw new NotFoundException("CodeNotFound");
         }catch (ProcessingException e){
-            new Popup("Server offline!" , Popup.TYPE.ERROR).showAndWait();
+            throw new ProcessingException("ServerOffline");
         }
-        return null;
     }
 
     public void deleteEvent(JoinableEvent eventt){

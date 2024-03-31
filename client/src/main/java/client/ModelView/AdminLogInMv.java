@@ -26,7 +26,7 @@ public class AdminLogInMv {
             return;
         }
         passwordField.setValue("");
-        new Popup("Price invalid!" , Popup.TYPE.ERROR).showAndWait();
+        throw  new IllegalArgumentException("InvalidPass");
 
         // For debugging the Admin page just comment out everything above except this line.
         //  return true;

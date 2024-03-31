@@ -153,7 +153,7 @@ public class AddEditExpenseMv {
 
         }
         catch (NumberFormatException e){
-            new Popup("Price field invalid!" , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("PriceFieldInvalid");
         }
         return res;
     }
@@ -179,7 +179,7 @@ public class AddEditExpenseMv {
         Participant res = whoPaidField.getValue();
 
         if(res == null){
-            new Popup("Payer field invalid!" , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("PayerFieldInvalid");
         }
 
         return res;
@@ -189,7 +189,7 @@ public class AddEditExpenseMv {
         String res = descriptionField.getValue();
 
         if(res == null || res.isEmpty()){
-            new Popup("Purchase field empty! " , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("PurchaseLeftEmpty");
         }
         return  res;
     }
@@ -213,7 +213,7 @@ public class AddEditExpenseMv {
         Tag res = tagField.getValue();
 
         if(res == null){
-            new Popup("Tag field invalid! " , Popup.TYPE.ERROR).showAndWait();
+            throw new IllegalArgumentException("TagInvalid");
         }
 
         return res;
