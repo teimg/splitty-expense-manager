@@ -28,10 +28,7 @@ import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import commons.Tag;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
