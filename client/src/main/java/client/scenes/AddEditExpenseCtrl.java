@@ -417,8 +417,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             return;
 
         }catch (Exception e){
-            new Popup("Failed to add/edit expense: " + e.getMessage(),
-                    Popup.TYPE.ERROR).showAndWait();
             handleException(e, mainCtrl.getTranslator());
         }
     }
@@ -433,7 +431,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             addEditExpenseMv.deleteTag();
             initTag();
         }catch (Exception e){
-            new Popup("Failed to delete Tag: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
             handleException(e, mainCtrl.getTranslator());
         }
     }
@@ -442,7 +439,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            new Popup("Failed to edit tag: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
             handleException(e, mainCtrl.getTranslator());
         }
     }

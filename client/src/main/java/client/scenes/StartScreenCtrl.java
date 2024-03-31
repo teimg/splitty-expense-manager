@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.StartScreenMv;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import client.utils.scene.SceneController;
@@ -128,7 +127,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
                 startScreenMv.createEvent()
             );
         }catch (Exception e){
-            new Popup("Event creation failed:" + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
             handleException(e, mainCtrl.getTranslator());
         }
     }
@@ -139,7 +137,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
                 startScreenMv.joinEvent()
             );
         } catch (Exception e){
-            new Popup("Failed to join event: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
             handleException(e, mainCtrl.getTranslator());
         }
     }
