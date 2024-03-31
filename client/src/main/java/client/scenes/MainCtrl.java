@@ -19,17 +19,16 @@ import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
+import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
+import client.utils.scene.SceneWrapperFactory;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import commons.Tag;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -54,16 +53,22 @@ public class MainCtrl {
 
     private final RecentEventTracker recentEventTracker;
 
+    private final SceneWrapperFactory sceneWrapperFactory;
+    private final MenuBarInjector menuBarInjector;
+
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
-                    RecentEventTracker recentEventTracker) {
+                    RecentEventTracker recentEventTracker,
+                    SceneWrapperFactory sceneWrapperFactory, MenuBarInjector menuBarInjector) {
         this.config = config;
         this.translator = translator;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
         }
         this.recentEventTracker = recentEventTracker;
+        this.sceneWrapperFactory = sceneWrapperFactory;
+        this.menuBarInjector = menuBarInjector;
     }
 
     @SuppressWarnings("unchecked")
@@ -103,7 +108,8 @@ public class MainCtrl {
             }
 
             SceneController currentSceneController = (SceneController) current.getKey();
-            this.scenes.put(x, new SceneWrapper(currentSceneController, current.getValue()));
+            this.scenes.put(x,
+                    sceneWrapperFactory.apply(currentSceneController, current.getValue()));
 
 
         }
@@ -129,7 +135,7 @@ public class MainCtrl {
      * @return the window title in right language
      */
 
-    public String getTitle(String sceneName){
+    private String getTitle(String sceneName){
         String prefix = "Titles.";
         return translator.getTranslation(prefix + sceneName);
 
@@ -142,17 +148,14 @@ public class MainCtrl {
      * @param title window title of the new scene
      */
 
-    public void show(String scene, String title){
+    private void show(String scene, String title){
         SceneWrapper currentSceneWrapper = this.scenes.get(scene);
 
         if (currentSceneWrapper == null){
             throw new IllegalArgumentException("No such scene: " + scene);
         }
-        ObservableList<Node> allNodes =
-            ((Pane) (currentSceneWrapper.getScene().getRoot())).getChildren();
-        if(allNodes.getFirst() != menuBar){
-            allNodes.addFirst(menuBar);
-        }
+
+        menuBarInjector.accept(currentSceneWrapper, menuBar);
 
         this.currentCtrl =
             new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
@@ -162,7 +165,7 @@ public class MainCtrl {
 
     }
 
-    public void show(String scene){
+    private void show(String scene){
         show(scene, getTitle(scene));
     }
 
