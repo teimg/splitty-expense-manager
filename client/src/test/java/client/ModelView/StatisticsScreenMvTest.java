@@ -20,14 +20,15 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class StatisticsScreenMvTest {
 
-    StatisticsScreenMv statisticsScreenMv;
+    private StatisticsScreenMv statisticsScreenMv;
 
     @Mock
-    Event event;
+    private Event event;
 
     @BeforeEach
     void setup() {
-        statisticsScreenMv = new StatisticsScreenMv(event, 0.0);
+        statisticsScreenMv = new StatisticsScreenMv();
+        statisticsScreenMv.setEvent(event);
     }
 
     @Test
