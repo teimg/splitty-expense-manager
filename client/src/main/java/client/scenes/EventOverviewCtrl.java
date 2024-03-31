@@ -360,6 +360,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 } catch (Exception e) {
                     new Popup("Server polling error: " +
                             e.getMessage(), Popup.TYPE.ERROR).showAndWait();
+                    handleException(e, mainCtrl.getTranslator());
                 }
                 return null;
             }

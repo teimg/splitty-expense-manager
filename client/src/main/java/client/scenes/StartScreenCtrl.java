@@ -129,6 +129,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
             );
         }catch (Exception e){
             new Popup("Event creation failed:" + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -139,6 +140,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
             );
         } catch (Exception e){
             new Popup("Failed to join event: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 

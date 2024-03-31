@@ -187,6 +187,7 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
 
         }catch (Exception e){
             new Popup("Failed to add email: " + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
+            handleException(e, mainCtrl.getTranslator());
         }
 
     }
