@@ -1,7 +1,7 @@
 package client.scenes;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -56,6 +57,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
     @FXML
     private Button backButton;
+    private ToggleGroup orderByToggle;
 
     private final MainCtrl mainCtrl;
 
@@ -77,7 +79,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         @Override
         public void run() {
             shownEvents.add(event);
-            eventListView.refresh();
+            sortShownEvents();
             System.out.println("websockets: event created");
         }
     }
@@ -89,9 +91,8 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         }
         @Override
         public void run() {
-            shownEvents.removeIf(e -> e.getId() == event.getId());
-            shownEvents.add(event);
-            eventListView.refresh();
+            shownEvents.replaceAll(e -> e.getId() == event.getId() ? event : e);
+            sortShownEvents();
             System.out.println("websockets: event modified");
         }
     }
@@ -111,16 +112,18 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
     @Override
     public void initialize (URL location, ResourceBundle resources) {
-        ToggleGroup orderByToggle = new ToggleGroup();
+        orderByToggle = new ToggleGroup();
         titleRadioButton.setToggleGroup(orderByToggle);
         creationRadioButton.setToggleGroup(orderByToggle);
         activityRadioButton.setToggleGroup(orderByToggle);
         eventListView.setCellFactory(new AdminScreenCtrl.EventCellFactory());
+    }
 
+    public void initializeScene() {
         shownEvents = FXCollections.observableArrayList(eventCommunicator.getAll());
         eventListView.setItems(shownEvents);
-
-        eventCommunicator.registerForWebSocketMessages(
+        eventCommunicator.establishWebSocketConnection();
+        eventCommunicator.subscribeForWebSocketMessages(
                 "/topic/events",
                 EventChange.class,
                 change -> {
@@ -130,6 +133,19 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
                         case DELETION -> Platform.runLater(new DeleteEvent(change.getEvent()));
                     }
                 });
+        orderByToggle.selectToggle(titleRadioButton);
+        sortShownEvents();
+    }
+
+    public void sortShownEvents() {
+        if (titleRadioButton.isSelected()) {
+            shownEvents.sort(Comparator.comparing(Event::getName));
+        } else if (creationRadioButton.isSelected()) {
+            shownEvents.sort(Comparator.comparing(Event::getCreationDate).reversed());
+        } else if (activityRadioButton.isSelected()) {
+            shownEvents.sort(Comparator.comparing(Event::getLastActivity).reversed());
+        }
+        eventListView.refresh();
     }
 
     @Override
@@ -160,19 +176,8 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     public void handleDownload(ActionEvent actionEvent) {
     }
 
-    // TODO: Implement sorting (probably done after web sockets
-    //  as data structures are not yet determined
     public void handleOrderBy(ActionEvent actionEvent) {
-        if (titleRadioButton.isSelected()) {
-            // TODO: implement sorting
-        }
-        else if (creationRadioButton.isSelected()) {
-            // TODO: implement sorting
-        }
-        else if (activityRadioButton.isSelected()) {
-            // TODO: implement sorting
-        }
-        eventListView.setItems(shownEvents);
+        sortShownEvents();
     }
 
     // TODO: Import JSON
@@ -190,6 +195,8 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     }
 
     public void handleBack(ActionEvent actionEvent) {
+        eventCommunicator.closeWebSocketConnection();
+        shownEvents.clear();
         mainCtrl.showStartScreen();
     }
 

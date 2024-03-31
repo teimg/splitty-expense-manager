@@ -2,7 +2,7 @@ package client.scenes;
 
 import client.ModelView.ContactInfoMv;
 import client.language.LanguageSwitch;
-import client.utils.*;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Participant;
@@ -113,6 +113,7 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
             quitScene();
         }catch (IllegalArgumentException e){
             e.printStackTrace();
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 

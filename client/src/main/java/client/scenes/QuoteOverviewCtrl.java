@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import client.language.LanguageSwitch;
-import client.utils.SceneController;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 
 import client.utils.communicators.implementations.ServerUtils;

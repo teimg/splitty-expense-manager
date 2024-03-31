@@ -77,6 +77,24 @@ public class TagController {
         return ResponseEntity.badRequest().build();
     }
 
+    @PostMapping(path = {"/saveOrUpdate"})
+    public ResponseEntity<Tag> saveOrUpdate(@RequestBody Tag tag) {
+        List<Tag> tags = getAll();
+        Tag existingTag = null;
+        for (Tag standTag : tags) {
+            if (standTag.standTagEquals(tag)) {
+                existingTag = standTag;
+                break;
+            }
+        }
+        if (existingTag != null) {
+            tag.setId(existingTag.getId());
+            return update(tag.getId(), tag);
+        } else {
+            return add(tag);
+        }
+    }
+
     /**
      * Utility method
      * @param s - string to be checked

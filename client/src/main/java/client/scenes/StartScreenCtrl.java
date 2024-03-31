@@ -1,9 +1,9 @@
 package client.scenes;
 
 import client.ModelView.StartScreenMv;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;
@@ -127,7 +127,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
                 startScreenMv.createEvent()
             );
         }catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -137,17 +137,8 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
                 startScreenMv.joinEvent()
             );
         } catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
-    }
-
-    void handleException(Exception e){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
-        String msg = mainCtrl.getTranslator().getTranslation(
-            "Popup." + e.getMessage()
-        );
-        (new Popup(msg, type)).show();
     }
 
     public void loadInfo() {

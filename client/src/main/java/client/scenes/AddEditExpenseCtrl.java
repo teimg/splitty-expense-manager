@@ -1,9 +1,9 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
+import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
@@ -19,6 +19,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
 import java.net.URL;
@@ -91,6 +93,10 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     @FXML
     private Button addTagButton;
 
+    @FXML
+    private Rectangle tagColor;
+
+
     private WhoPaidSelector whoPaidSelector;
 
     private WhichTagSelector whichTagSelector;
@@ -99,11 +105,9 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     private final MainCtrl mainCtrl;
 
-
     private final AddEditExpenseMv addEditExpenseMv;
 
-
-    private class InnerCheckBoxManger
+    private static class InnerCheckBoxManger
         extends VBox implements ListChangeListener<Pair<Participant, BooleanProperty>>{
         private ObjectProperty<ObservableList<Pair<Participant, BooleanProperty>>> state;
 
@@ -175,24 +179,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     }
 
-    public void loadInfo(Event event, Expense expense) {
-        loadInfo(event);
-
-        addEditExpenseMv.loadExpense(expense);
-    }
-
-
-    public void loadInfo(Event event) {
-        addEditExpenseMv.loadInfo(event);
-
-        initWhoPaid();
-        initTag();
-        initCheckbox();
-        initCurrency();
-        initDateField();
-
-    }
-
     /**
      *
      * @param location
@@ -207,11 +193,28 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     public void initialize(URL location, ResourceBundle resources) {
 
         InnerCheckBoxManger innerCheckBoxManger =
-            new InnerCheckBoxManger(addEditExpenseMv.debtorsProperty());
+                new InnerCheckBoxManger(addEditExpenseMv.debtorsProperty());
         scrollPane.setContent(innerCheckBoxManger);
-
+        tagField.setOnAction(this::handleTagColorUpdate);
         initBindings();
 
+    }
+
+    public void loadInfo(Event event, Expense expense) {
+        loadInfo(event);
+
+        addEditExpenseMv.loadExpense(expense);
+    }
+
+    public void loadInfo(Event event) {
+        addEditExpenseMv.loadInfo(event);
+
+        initWhoPaid();
+        initTag();
+        initCheckbox();
+        initCurrency();
+        initDateField();
+        tagColor.setFill(Color.rgb(150, 150, 150));
     }
 
     public void initBindings() {
@@ -237,7 +240,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         whoPaidField.setConverter(whoPaidSelector);
 
         whoPaidField.getItems().addAll(addEditExpenseMv.getParticipants());
-
 
         this.whoPaidField.setCellFactory(call -> new ListCell<Participant>(){
             @Override
@@ -318,6 +320,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
      */
 
     public void initCurrency(){
+        currencyField.getItems().clear();
         currencyField.setValue("EUR");
         currencyField.getItems().add("EUR");
     }
@@ -380,6 +383,16 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         return res;
     }
 
+    private void handleTagColorUpdate(ActionEvent actionEvent) {
+        Tag curTag = tagField.getValue();
+        if (curTag != null) {
+            tagColor.setFill(Color.rgb(curTag.getRed(), curTag.getGreen(), curTag.getBlue()));
+        }
+        else {
+            tagColor.setFill(Color.rgb(150, 150, 150));
+        }
+    }
+
     public void addButtonPressed(){
         createExpense();
 
@@ -403,7 +416,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
         }catch (Exception e){
             e.printStackTrace();
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -415,8 +428,9 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     public void handleDeleteTag() {
         try{
             addEditExpenseMv.deleteTag();
+            initTag();
         }catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -424,7 +438,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            handleException(e);
+            handleException(e, mainCtrl.getTranslator());
         }
     }
 
@@ -432,13 +446,5 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), null);
     }
 
-    void handleException(Exception e){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
-        String msg = mainCtrl.getTranslator().getTranslation(
-            "Popup." + e.getMessage()
-        );
-        (new Popup(msg, type)).show();
-    }
 
 }

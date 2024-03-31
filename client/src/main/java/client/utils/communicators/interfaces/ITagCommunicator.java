@@ -17,4 +17,6 @@ public interface ITagCommunicator {
 
     Tag updateTag(Tag tag);
 
+    Tag saveOrUpdateTag(Tag tag);
+
 }
