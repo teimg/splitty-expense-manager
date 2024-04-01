@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.TagCommunicator;
@@ -56,7 +55,8 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch {
     public void handleSubmit(ActionEvent actionEvent) {
         if (tag == null) {
             if (tagNameField.getText().isEmpty()) {
-                new Popup("Empty tag name field! " , Popup.TYPE.ERROR).showAndWait();
+                // TODO: Error handling
+                System.out.println("Error");
             }
 
             else {
@@ -69,8 +69,8 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch {
         }
         else {
             if (tagNameField.getText().isEmpty()) {
-                new Popup(mainCtrl.getTranslator().getTranslation
-                        ("Popup.emptyTagNameField") , Popup.TYPE.ERROR).showAndWait();
+                // TODO: Error handling
+                System.out.println("Error");
             }
             else {
                 Tag updated = new Tag(tagNameField.getText(),

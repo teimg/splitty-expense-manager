@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import client.utils.scene.SceneController;
@@ -413,11 +412,10 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             addEditExpenseMv.clear();
             clear();
             mainCtrl.showEventOverview(res);
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.ExpenseAddSuccessful"), Popup.TYPE.INFO).showAndWait();
             return;
 
         }catch (Exception e){
+            e.printStackTrace();
             handleException(e, mainCtrl.getTranslator());
         }
     }

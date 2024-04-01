@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.AdminLogInMv;
-import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
@@ -54,8 +53,6 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch, SceneContr
         try {
             adminLogInMv.validatePassword();
             mainCtrl.showAdminScreen();
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.adminWelcome"), Popup.TYPE.INFO).showAndWait();
         }catch (Exception e){
             handleException(e, mainCtrl.getTranslator());
         }

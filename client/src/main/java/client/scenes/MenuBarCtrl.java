@@ -3,7 +3,6 @@ package client.scenes;
 import client.ModelView.AdminLogInMv;
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
-import client.language.Translator;
 import client.utils.communicators.implementations.EmailCommunicator;
 import client.utils.communicators.interfaces.IEmailCommunicator;
 import com.google.inject.Inject;
@@ -233,17 +232,8 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
             Files.copy(templateLocation, saveLocation.toPath(),
                 StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            handleException(e, mainCtrl.getTranslator());
+            (new Popup("Could not save file", Popup.TYPE.ERROR)).show();
         }
-    }
-
-    private void handleException(Exception e, Translator translator){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
-        String msg = translator.getTranslation(
-                "Popup." + e.getMessage()
-        );
-        (new Popup(msg, type)).show();
     }
 
     private void downloadTemplate() {
