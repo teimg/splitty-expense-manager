@@ -6,11 +6,11 @@ import com.google.inject.Inject;
 import commons.BankAccount;
 import commons.Event;
 import commons.Participant;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.ProcessingException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,8 +126,7 @@ public class ContactInfoMv {
 
     public void addButtonPressed(ActionEvent event) {
         if (!validInput()) {
-            System.out.println("Error");
-            throw new IllegalArgumentException("Error");
+            throw new IllegalArgumentException("InvalidInput");
         }
 
         Event currentEvent = getCurrentEvent();

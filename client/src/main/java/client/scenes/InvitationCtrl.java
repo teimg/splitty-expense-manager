@@ -170,7 +170,7 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
         boolean res = ConfPopup
             .create(mainCtrl.getTranslator().getTranslation("Conf.ClearEverything"))
             .display()
-            .isConfirmed();
+            .isConfirmed("");
         if(res){
             invitationMv.clear();
         }
