@@ -8,29 +8,34 @@ import javafx.scene.text.Font;
 
 public class Popup extends Dialog<String> {
 
-    public enum TYPE {
-        ERROR("Error", "file:client/src/main/resources/client/icons/error.png"),
-        INFO("Info", "file:client/src/main/resources/client/icons/info.png");
+    public enum TYPE{
+        ERROR (){
+            public String  toString(){
+                return "Error";
+            }
 
-        private final String text;
-        private final Image image;
+            public Image getImage(){
+                return  new Image("file:client/src/main/resources/client/icons/error.png", true);
+            }
+        },
+        INFO(){
+            public String  toString(){
+                return "Info";
+            }
 
-        TYPE(String text, String imagePath) {
-            this.text = text;
-            this.image = new Image(imagePath, 50, 50, true, true);
+            public Image getImage(){
+                return  new Image("file:client/src/main/resources/client/icons/info.png", true);
+            }
+        };
+
+        public Image getImage(){
+            return  null;
+        }
+        public String  toString(){
+            return "No type";
         }
 
-        @Override
-        public String toString() {
-            return text;
-        }
-
-        public Image getImage() {
-            return image;
-        }
     }
-
-        
 
     private TYPE type;
     private DialogPane dialogPane;

@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import client.dialog.Popup;
 import client.scenes.*;
 import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
@@ -86,9 +85,8 @@ public class Main extends Application {
             tagCommunicator.saveOrUpdateTag(new Tag("Entrance Fees", 50, 52, 168));
             tagCommunicator.saveOrUpdateTag(new Tag("Travel", 204, 22, 41));
         }
-        catch (Exception e) {
-            new Popup("Server Error/Offline - Cannot load Add/Edit Expense scene:"
-                    + e.getMessage(), Popup.TYPE.ERROR).showAndWait();
+        catch (RuntimeException e) {
+            System.out.println("Server Error/Offline - Cannot load Add/Edit Expense scene");
         }
 
     }
