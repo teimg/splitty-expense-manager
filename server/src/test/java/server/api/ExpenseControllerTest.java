@@ -10,9 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import server.database.ExpenseRepository;
 import server.service.ExpenseService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,7 +68,7 @@ public class ExpenseControllerTest {
     }
 
     @Test
-    public void updateExpenseTest() {
+    public void updateExpenseSuccessTest() {
         Expense updatedExpense = new Expense(null, "Dinner", 25.0, null, new ArrayList<>(), LocalDate.now(), null);
         when(expenseService.getExpenseById(1L)).thenReturn(Optional.of(expense));
         when(expenseService.saveExpense(expense)).thenReturn(updatedExpense);
@@ -80,9 +79,29 @@ public class ExpenseControllerTest {
     }
 
     @Test
+    public void updateExpenseFailTest() {
+        Expense updatedExpense = new Expense(null, "Dinner", 25.0, null, new ArrayList<>(), LocalDate.now(), null);
+        when(expenseService.getExpenseById(1L)).thenReturn(Optional.empty());
+        ResponseEntity<Expense> response = expenseController.updateExpense(1L, updatedExpense);
+        assertEquals(ResponseEntity.notFound().build(), response);
+        assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
+    }
+
+    @Test
     public void deleteExpenseTest() {
         when(expenseService.getExpenseById(1L)).thenReturn(Optional.of(expense));
         ResponseEntity<?> response = expenseController.deleteExpense(1L);
         assertEquals(200, response.getStatusCodeValue());
     }
+
+    @Test
+    public void testHandle() {
+        try {
+            expenseController.handle(new IllegalArgumentException());
+        }
+        catch (Exception ignored) {
+            System.out.println("Check");
+        }
+    }
+
 }
