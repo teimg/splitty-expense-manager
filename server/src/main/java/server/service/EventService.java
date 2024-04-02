@@ -23,7 +23,7 @@ public class EventService {
         this.eventChangeService = eventChangeService;
     }
 
-    private Event save(Event event) {
+    public Event save(Event event) {
         return repo.saveAndFlush(event);
     }
 
@@ -53,7 +53,7 @@ public class EventService {
         return randomPart + idPart;
     }
 
-    private static boolean isNullOrEmpty(String s) {
+    public boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 
