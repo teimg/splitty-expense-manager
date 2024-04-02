@@ -29,6 +29,8 @@ import commons.Expense;
 import commons.Participant;
 import commons.Tag;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -44,31 +46,31 @@ public class MainCtrl {
 
     private Pair<String, LanguageSwitch> currentCtrl;
 
-
     private final ClientConfiguration config;
 
     private MenuBarCtrl menuBarCtrl;
 
     private Parent menuBar;
 
+    private BorderPane baseScene;
+
     private final RecentEventTracker recentEventTracker;
 
-    private final SceneWrapperFactory sceneWrapperFactory;
-    private final MenuBarInjector menuBarInjector;
+//    private final SceneWrapperFactory sceneWrapperFactory;
+//    private final MenuBarInjector menuBarInjector;
 
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
-                    RecentEventTracker recentEventTracker,
-                    SceneWrapperFactory sceneWrapperFactory, MenuBarInjector menuBarInjector) {
+                    RecentEventTracker recentEventTracker) {
         this.config = config;
         this.translator = translator;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
         }
         this.recentEventTracker = recentEventTracker;
-        this.sceneWrapperFactory = sceneWrapperFactory;
-        this.menuBarInjector = menuBarInjector;
+//        this.sceneWrapperFactory = sceneWrapperFactory;
+//        this.menuBarInjector = menuBarInjector;
     }
 
     @SuppressWarnings("unchecked")
@@ -84,6 +86,7 @@ public class MainCtrl {
         this.menuBarCtrl.setLanguage();
 
         initScenes(sceneMap);
+        createBaseScene();
 
         primaryStage.setWidth(config.getWindowWidth());
         primaryStage.setHeight(config.getWindowHeight());
@@ -108,11 +111,16 @@ public class MainCtrl {
             }
 
             SceneController currentSceneController = (SceneController) current.getKey();
-            this.scenes.put(x,
-                    sceneWrapperFactory.apply(currentSceneController, current.getValue()));
+            this.scenes.put(x, new SceneWrapper(currentSceneController, current.getValue()));
 
 
         }
+    }
+
+    public void createBaseScene(){
+        this.baseScene = new BorderPane();
+        this.primaryStage.setScene(new Scene(this.baseScene));
+        this.baseScene.setTop(menuBar);
     }
 
     /**
@@ -155,13 +163,14 @@ public class MainCtrl {
             throw new IllegalArgumentException("No such scene: " + scene);
         }
 
-        menuBarInjector.accept(currentSceneWrapper, menuBar);
+//        menuBarInjector.accept(currentSceneWrapper, menuBar);
 
         this.currentCtrl =
             new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
 
         primaryStage.setTitle(title);
-        primaryStage.setScene(currentSceneWrapper.getScene());
+//        primaryStage.setScene(currentSceneWrapper.getScene());
+        this.baseScene.setCenter(currentSceneWrapper.getParent());
 
     }
 

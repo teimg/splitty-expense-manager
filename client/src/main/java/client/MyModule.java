@@ -28,7 +28,7 @@ import client.utils.communicators.interfaces.*;
 import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
-import client.utils.scene.SimpleMenuBarInjector;
+//import client.utils.scene.SimpleMenuBarInjector;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -85,7 +85,7 @@ public class MyModule implements Module {
 
     private static void configureUtils(Binder binder) {
         binder.bind(SceneWrapperFactory.class).toInstance(SceneWrapper::new);
-        binder.bind(MenuBarInjector.class).to(SimpleMenuBarInjector.class);
+//        binder.bind(MenuBarInjector.class).to(SimpleMenuBarInjector.class);
     }
 
     private static void configureConfigs(Binder binder) {
