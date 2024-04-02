@@ -6,8 +6,22 @@ import javafx.scene.control.ButtonType;
 
 public class ConfPopup extends Alert {
 
+    /**
+     *
+     * @param question question to ask the user
+     */
     public ConfPopup(String question) {
-        super(AlertType.CONFIRMATION, question , ButtonType.CANCEL, ButtonType.YES);
+        super(AlertType.CONFIRMATION, question, ButtonType.YES, ButtonType.NO);
+        setTitle("Confirmation");
+    }
+
+    /**
+     *
+     * @return true if yes was pressed
+     */
+    public boolean isConfirmed() {
+        this.showAndWait();
+        return this.getResult() == ButtonType.YES;
     }
 
 
@@ -30,12 +44,4 @@ public class ConfPopup extends Alert {
         return this;
     }
 
-    /**
-     *
-     * @return true if yes was pressed
-     */
-
-    public boolean isConfirmed(){
-        return this.getResult() == ButtonType.YES;
-    }
 }

@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.dialog.ConfPopup;
+import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.communicators.implementations.EventCommunicator;
@@ -299,13 +301,20 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         Optional<Participant> optionalParticipant = event.getParticipants().stream()
                 .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
                 .findFirst();
-        // TODO: give a "confirmation" pop-up
-        if (optionalParticipant.isPresent()) {
-            participantCommunicator.deleteParticipant(optionalParticipant.get().getId());
-        }
-        // TODO: if no participant is selected
-        else {
-            System.out.println("Error");
+        boolean confirmed = ConfPopup.create
+                (mainCtrl.getTranslator().getTranslation
+                        ("Popup.sureRemoveDatabase"))
+                .isConfirmed();
+        if (confirmed) {
+            if (optionalParticipant.isPresent()) {
+                participantCommunicator.deleteParticipant(optionalParticipant.get().getId());
+            } else {
+                new Popup(mainCtrl.getTranslator().getTranslation
+                        ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
+            }
+        } else {
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
         }
         loadEvent(eventCommunicator.getEvent(event.getId()));
     }
@@ -319,7 +328,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
                 .findFirst();
         optionalParticipant.ifPresent(participant -> mainCtrl.showContactInfo(event, participant));
-        // TODO: if no participant is selected
+        if (optionalParticipant.isEmpty()) {
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.NoparticipantSelected"), Popup.TYPE.ERROR).showAndWait();
+        }
         if (optionalParticipant.isEmpty()) System.out.println("Error");
     }
 
@@ -351,8 +363,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                         }
                         Thread.sleep(5000); // 5 seconds
                     }
-                } catch (InterruptedException e) {
-                    // Handle if the thread is interrupted
+                } catch (Exception e) {
+                    handleException(e, mainCtrl.getTranslator());
                 }
                 return null;
             }
@@ -377,7 +389,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
      */
     private void updateUI(Event updatedEvent) {
         if (updatedEvent == null) {
-            System.err.println("The updated event is null, cannot update UI.");
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.updateEventIsNull"),
+                    Popup.TYPE.ERROR).showAndWait();
             return;
         }
 
@@ -401,7 +415,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             // Replace the local event object with the updated one
             this.event = updatedEvent;
 
-            System.out.println("UI has been updated with new event data.");
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.successfulEventUpdate"), Popup.TYPE.INFO).show();
         });
     }
 
