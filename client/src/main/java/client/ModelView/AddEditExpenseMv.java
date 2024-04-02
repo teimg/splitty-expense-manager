@@ -19,7 +19,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AddEditExpenseMv {
 
     private StringProperty priceField;
@@ -169,11 +168,9 @@ public class AddEditExpenseMv {
 
         }
         catch (DateTimeParseException e){
-            e.printStackTrace();
-            return null;
+            return LocalDate.now();
         }
     }
-
 
     public  Participant getPayer(){
         Participant res = whoPaidField.getValue();

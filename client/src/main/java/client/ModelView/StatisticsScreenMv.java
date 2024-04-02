@@ -29,8 +29,6 @@ public class StatisticsScreenMv {
         this.totalPrice = totalPrice;
     }
 
-
-
     public Map<Tag, Double> fillEntries() {
         Map<Tag, Double> entries = new HashMap<>();
         this.totalPrice = 0;
