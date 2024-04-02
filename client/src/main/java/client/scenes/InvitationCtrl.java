@@ -167,9 +167,8 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
     }
 
     public void clearButtonPressed() {
-        boolean res = ConfPopup
+        boolean res=ConfPopup
             .create(mainCtrl.getTranslator().getTranslation("Conf.ClearEverything"))
-            .display()
             .isConfirmed();
         if(res){
             invitationMv.clear();
