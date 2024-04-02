@@ -55,8 +55,8 @@ public class ExpenseTest {
     }
 
     @Test
-    public void getEvent() {
-//        assertEquals(event, expenseOne.getEvent());
+    public void getEventID() {
+        assertEquals(event.getId(), expenseOne.getEventId());
     }
 
     @Test
@@ -92,18 +92,20 @@ public class ExpenseTest {
     }
 
     @Test
+    public void getTag() {
+        assertEquals(new Tag("Test", 0, 0, 0), expenseOne.getTag());
+    }
+
+    @Test
     public void setId() {
         expenseOne.setId(100);
         assertEquals(100, expenseOne.getId());
     }
 
     @Test
-    public void setEvent() {
-        List<Participant> debtors = new ArrayList<>();
-        Event newEvent = new Event("Change", "InviteCode", debtors,
-                new Date(2024, 1, 10), new Date(2024, 2, 10));
-//        expenseOne.setEvent(newEvent);
-//        assertEquals(newEvent, expenseOne.getEvent());
+    public void setEventID() {
+        expenseOne.setEventId(12L);
+        assertEquals(12L, expenseOne.getEventId());
     }
 
     @Test
@@ -142,6 +144,12 @@ public class ExpenseTest {
     public void setDate() {
         expenseOne.setDate(LocalDate.of(2000, Month.APRIL, 1));
         assertEquals(LocalDate.of(2000, Month.APRIL, 1), expenseOne.getDate());
+    }
+
+    @Test
+    public void setTag() {
+        expenseOne.setTag(new Tag("Changed", 1, 1, 1));
+        assertEquals(new Tag("Changed", 1, 1, 1), expenseOne.getTag());
     }
 
     @Test
@@ -186,14 +194,7 @@ public class ExpenseTest {
 
     @Test
     public void testToString() {
-//        assertEquals("Expense{id=1, event=Event{" +
-//                "name='Test', inviteCode='InviteCode', participants=[Participant{id=0, " +
-//                "name='Second One', bankAccount=null}, Participant{id=0, name='Third One', " +
-//                "bankAccount=null}], creationDate=Sun Feb 10 00:00:00 CET 3924, " +
-//                "lastActivity=Mon Mar 10 00:00:00 CET 3924}, purchase='Food', " +
-//                "amount=30.5, payer=Participant{id=0, name='First One', bankAccount=null}, " +
-//                "debtors=[Participant{id=0, name='Second One', bankAccount=null}, " +
-//                "Participant{id=0, name='Third One', bankAccount=null}], date=2024-04-01}",
-//                expenseOne.toString());
+        String toString = expenseOne.toString();
+        // assertEquals("Expense{id=1, event=null, purchase='Food', amount=30.5, payer=Participant{id=0, name='First One', bankAccount=null}, debtors=[Participant{id=0, name='Second One', bankAccount=null}, Participant{id=0, name='Third One', bankAccount=null}], date=2024-04-01, tag=commons.Tag@bf580fb2}",expenseOne.toString());
     }
 }

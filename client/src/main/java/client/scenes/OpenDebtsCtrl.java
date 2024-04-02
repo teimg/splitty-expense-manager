@@ -1,12 +1,9 @@
 package client.scenes;
 
+import client.ModelView.OpenDebtsMv;
 import client.language.LanguageSwitch;
-import client.utils.DebtsBuilder;
-import client.utils.communicators.implementations.EmailCommunicator;
-import client.utils.communicators.implementations.ExpenseCommunicator;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
-import commons.Debt;
 import commons.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -29,42 +26,28 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     @FXML
     private ScrollPane scrollPlane;
 
-    private ArrayList<Debt> debts;
-
-    private ArrayList<TitledPane> panes;
-
     private final MainCtrl mainCtrl;
-
-    private final EmailCommunicator emailCommunicator;
 
     private Event event;
 
-    private DebtsBuilder debtsBuilder;
-
-    private final ExpenseCommunicator expenseCommunicator;
+    private OpenDebtsMv openDebtsMv;
 
     @Inject
-    public OpenDebtsCtrl(MainCtrl mainCtrl, EmailCommunicator emailCommunicator,
-                         ExpenseCommunicator expenseCommunicator) {
+    public OpenDebtsCtrl(MainCtrl mainCtrl, OpenDebtsMv openDebtsMv) {
         this.mainCtrl = mainCtrl;
-        this.emailCommunicator = emailCommunicator;
-        this.expenseCommunicator = expenseCommunicator;
+        this.openDebtsMv = openDebtsMv;
     }
 
     public void loadInfo(Event event){
         this.event = event;
-        this.debtsBuilder = new DebtsBuilder(event,
-                mainCtrl.getTranslator(), emailCommunicator,
-                expenseCommunicator, mainCtrl);
-        this.debts = debtsBuilder.getDebts();
-        noDebtMessage.setVisible(debts.isEmpty());
-        accordionDebts.setVisible(!debts.isEmpty());
-        scrollPlane.setVisible(!debts.isEmpty());
-        this.panes = debtsBuilder.getPanes();
-        updateAccordion();
+        openDebtsMv.loadInfo(event, mainCtrl.getTranslator(), mainCtrl);
+        noDebtMessage.setVisible(openDebtsMv.checkVisibility());
+        accordionDebts.setVisible(!openDebtsMv.checkVisibility());
+        scrollPlane.setVisible(!openDebtsMv.checkVisibility());
+        updateAccordion(openDebtsMv.getPanes());
     }
 
-    private void updateAccordion() {
+    private void updateAccordion(ArrayList<TitledPane> panes) {
         accordionDebts.getPanes().clear();
         accordionDebts.getPanes().addAll(panes);
     }
@@ -72,12 +55,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     public void abortButtonPressed() {
         Event res = this.event;
         this.event = null;
-        clearScene();
         mainCtrl.showEventOverview(res);
-    }
-
-    private void clearScene() {
-        // TODO clear all fields, lists, etc when quiting
     }
 
     @Override
