@@ -367,8 +367,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                             //pop-up to show event deleted
                         }
                     }
-                } catch (Exception e) {
-                    handleException(e, mainCtrl.getTranslator());
                 }
                 return null;
             }
