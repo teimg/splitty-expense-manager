@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import server.service.BankAccountService;
 
@@ -52,11 +53,11 @@ public class BankAccountControllerTest {
         when(service.getById(1L)).thenReturn(Optional.of(b1));
         ResponseEntity<BankAccount> found = controller.getById(1L);
         verify(service).getById(1L);
-        assertEquals(200, found.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), found.getStatusCode());
         assertEquals(b1, found.getBody());
         ResponseEntity<BankAccount> notFound = controller.getById(-1L);
         assertEquals(ResponseEntity.badRequest().build(), notFound);
-        assertEquals(400, notFound.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(400), notFound.getStatusCode());
         assertNull(notFound.getBody());
     }
 
@@ -69,17 +70,17 @@ public class BankAccountControllerTest {
         assertNotSame(b2, savedAccount);
         ResponseEntity<BankAccount> notFound = controller.add(null);
         assertEquals(ResponseEntity.badRequest().build(), notFound);
-        assertEquals(400, notFound.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(400), notFound.getStatusCode());
     }
 
     @Test
     public void deleteTest() {
         when(service.remove(2L)).thenReturn(Optional.of(b2));
         ResponseEntity<BankAccount> ba2 = controller.delete(2L);
-        assertEquals(200, ba2.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), ba2.getStatusCode());
         ResponseEntity<BankAccount> notFound = controller.delete(-1L);
         assertEquals(ResponseEntity.badRequest().build(), notFound);
-        assertEquals(400, notFound.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(400), notFound.getStatusCode());
     }
 
     @Test
@@ -92,10 +93,10 @@ public class BankAccountControllerTest {
         verify(service).save(b1);
         assertEquals(updatedAccount.getBic(), ba1.getBody().getBic());
         assertEquals(updatedAccount.getIban(), ba1.getBody().getIban());
-        assertEquals(200, ba1.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), ba1.getStatusCode());
         ResponseEntity<BankAccount> ba2 = controller.update(-1L, new BankAccount("Test", "Test"));
         assertEquals(ba2, ResponseEntity.badRequest().build());
-        assertEquals(400, ba2.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(400), ba2.getStatusCode());
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import server.service.EventChangeService;
 import server.service.EventService;
@@ -59,7 +60,7 @@ public class EventControllerTest {
         when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
         ResponseEntity<Event> actual = controller.getByID(e1.getId());
         assertEquals(e1, actual.getBody());
-        assertEquals(200, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
     }
 
     @Test
@@ -73,7 +74,7 @@ public class EventControllerTest {
         when(service.getByInviteCode("inviteCode")).thenReturn(Optional.of(e1));
         ResponseEntity<Event> actual = controller.getByInviteCode("inviteCode");
         assertEquals(e1, actual.getBody());
-        assertEquals(200, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
     }
 
     @Test
@@ -87,7 +88,7 @@ public class EventControllerTest {
 
         when(service.getById(1L)).thenReturn(Optional.of(e1));
         ResponseEntity<?> actual = controller.delete(1L);
-        assertEquals(200, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
     }
 
     @Test
@@ -134,7 +135,7 @@ public class EventControllerTest {
         when(service.createEvent(e1)).thenReturn(e1);
         ResponseEntity<Event> actual = controller.createEvent(e1);
         assertEquals(e1, actual.getBody());
-        assertEquals(200, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
     }
 
     @Test
@@ -148,7 +149,7 @@ public class EventControllerTest {
         doThrow(IllegalArgumentException.class).when(service).createEvent(e1);
         ResponseEntity<Event> actual = controller.createEvent(e1);
         assertEquals(ResponseEntity.badRequest().build(), actual);
-        assertEquals(400, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(400), actual.getStatusCode());
     }
 
     @Test
@@ -162,7 +163,7 @@ public class EventControllerTest {
         when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
         ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
         assertEquals(e1, actual.getBody());
-        assertEquals(200, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
     }
 
     @Test
@@ -177,7 +178,7 @@ public class EventControllerTest {
         when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
         ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
         assertEquals(ResponseEntity.noContent().build(), actual);
-        assertEquals(204, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(204), actual.getStatusCode());
     }
 
     @Test
@@ -192,7 +193,7 @@ public class EventControllerTest {
         when(service.getById(e1.getId())).thenReturn(Optional.empty());
         ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
         assertEquals( ResponseEntity.notFound().build(), actual);
-        assertEquals(404, actual.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(404), actual.getStatusCode());
     }
 
 }

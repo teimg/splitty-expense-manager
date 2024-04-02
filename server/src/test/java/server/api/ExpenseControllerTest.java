@@ -91,7 +91,7 @@ public class ExpenseControllerTest {
     public void deleteExpenseTest() {
         when(expenseService.getExpenseById(1L)).thenReturn(Optional.of(expense));
         ResponseEntity<?> response = expenseController.deleteExpense(1L);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
     }
 
     @Test

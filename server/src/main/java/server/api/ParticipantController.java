@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/participants")
 public class ParticipantController {
-//    private final ParticipantRepository repo;
 
     private final ParticipantService service;
 
