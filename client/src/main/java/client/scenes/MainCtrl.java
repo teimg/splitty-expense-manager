@@ -19,7 +19,6 @@ import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
-import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
@@ -52,24 +51,25 @@ public class MainCtrl {
 
     private Parent menuBar;
 
-    private BorderPane baseScene;
+    protected BorderPane baseScene;
 
     private final RecentEventTracker recentEventTracker;
 
-//    private final SceneWrapperFactory sceneWrapperFactory;
+    private final SceneWrapperFactory sceneWrapperFactory;
 //    private final MenuBarInjector menuBarInjector;
 
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
-                    RecentEventTracker recentEventTracker) {
+                    RecentEventTracker recentEventTracker,
+                    SceneWrapperFactory sceneWrapperFactory) {
         this.config = config;
         this.translator = translator;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
         }
         this.recentEventTracker = recentEventTracker;
-//        this.sceneWrapperFactory = sceneWrapperFactory;
+        this.sceneWrapperFactory = sceneWrapperFactory;
 //        this.menuBarInjector = menuBarInjector;
     }
 
@@ -272,5 +272,7 @@ public class MainCtrl {
         return translator;
     }
 
-
+    public BorderPane getBaseScene() {
+        return baseScene;
+    }
 }

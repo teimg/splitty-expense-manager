@@ -20,11 +20,13 @@ import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
+import client.utils.scene.SceneWrapperFactory;
 import commons.Event;
 import commons.Expense;
 import commons.Participant;
 import commons.Tag;
 import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,6 +82,8 @@ public class MainCtrlTest {
     private AdminScreenCtrl adminScreen;
     @Mock
     private TagScreenCtrl tagScreen;
+    @Mock
+    private BorderPane mockBaseScene;
 
 
     @Mock
@@ -119,6 +123,17 @@ public class MainCtrlTest {
         return mockSceneWrapper;
     }
 
+    private class DummyMainCtrl extends MainCtrl{
+        public DummyMainCtrl(ClientConfiguration config, Translator translator, RecentEventTracker recentEventTracker, SceneWrapperFactory sceneWrapperFactory) {
+            super(config, translator, recentEventTracker, sceneWrapperFactory);
+        }
+
+        @Override
+        public void createBaseScene() {
+            this.baseScene = mockBaseScene;
+        }
+    }
+
     @BeforeEach
     public void setup() {
         HashMap<String, Object> sceneMap = fakeSceneMap();
@@ -127,9 +142,8 @@ public class MainCtrlTest {
         when(clientConfiguration.getWindowHeight()).thenReturn(320.);
         when(clientConfiguration.getWindowWidth()).thenReturn(640.);
 
-        mainCtrl = new MainCtrl(clientConfiguration, translator, recentEventTracker,
-                this::mockedSceneWrapper,
-                (sceneWrapper, node) -> {});
+        mainCtrl = new DummyMainCtrl(clientConfiguration, translator, recentEventTracker,
+                this::mockedSceneWrapper);
         mainCtrl.initialize(primaryStage, sceneMap);
     }
 

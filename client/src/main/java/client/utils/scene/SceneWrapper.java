@@ -1,7 +1,6 @@
 package client.utils.scene;
 
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 
 
 public class SceneWrapper {
