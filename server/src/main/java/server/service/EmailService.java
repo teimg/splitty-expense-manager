@@ -1,6 +1,5 @@
 package server.service;
 
-import commons.EmailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,11 +12,9 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-    private JavaMailSender javaMailSender;
-
     public void sendEmail(String to, String subject, String text,
                           String username, String password) {
-        this.javaMailSender = getJavaMailSender(username, password);
+        JavaMailSender javaMailSender = getJavaMailSender(username, password);
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -47,7 +44,4 @@ public class EmailService {
         return mailSender;
     }
 
-    public EmailRequest getAll() {
-        return new EmailRequest();
-    }
 }
