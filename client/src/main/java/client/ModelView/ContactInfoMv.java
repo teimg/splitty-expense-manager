@@ -1,5 +1,6 @@
 package client.ModelView;
 
+
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import com.google.inject.Inject;
@@ -126,8 +127,7 @@ public class ContactInfoMv {
 
     public void addButtonPressed(ActionEvent event) {
         if (!validInput()) {
-            System.out.println("Error");
-            throw new IllegalArgumentException("Error");
+            throw new IllegalArgumentException("InvalidInput");
         }
 
         Event currentEvent = getCurrentEvent();

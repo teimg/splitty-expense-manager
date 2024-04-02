@@ -9,7 +9,6 @@ public class ConfPopup extends Alert {
     /**
      *
      * @param question question to ask the user
-     * @return true if yes was pressed
      */
     public ConfPopup(String question) {
         super(AlertType.CONFIRMATION, question, ButtonType.YES, ButtonType.NO);
@@ -17,13 +16,12 @@ public class ConfPopup extends Alert {
     }
 
     /**
-     * @param question question to ask the user
+     *
      * @return true if yes was pressed
      */
-    public static boolean isConfirmed(String question) {
-        ConfPopup popup = new ConfPopup(question);
-        popup.showAndWait();
-        return popup.getResult() == ButtonType.YES;
+    public boolean isConfirmed() {
+        this.showAndWait();
+        return this.getResult() == ButtonType.YES;
     }
 
 

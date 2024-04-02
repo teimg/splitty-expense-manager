@@ -54,7 +54,7 @@ public class InvitationMv {
         String res = emailEntered.getValue();
 
         if(isEmpty(res)){
-            throw new IllegalArgumentException("Empty");
+            throw new IllegalArgumentException("EmptyEmailField");
         }
         if (isAlreadyAdded(res)){
             throw new IllegalArgumentException("AlreadyEntered");
@@ -94,6 +94,8 @@ public class InvitationMv {
                 participantCommunicator.createParticipant(
                         event, email.split("@")[0], email, null);
                 event.addParticipant(new Participant(email.split("@")[0], email));
+            } else {
+                throw new IllegalArgumentException("InvalidEmail");
             }
             // TODO: Error handling
         }
