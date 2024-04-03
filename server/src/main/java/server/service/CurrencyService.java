@@ -26,11 +26,8 @@ public class CurrencyService {
         this.connection = (HttpURLConnection) uri.toURL().openConnection();
     }
 
-    public Optional<String> getExchangeRate(double amount, String base, String conversion) {
-//        String url = "https://openexchangerates.org/api/" + "/convert/"
-//                + amount + "/" + base + "/" + conversion + "?app_id=Required&app_id="
-//                + "f6a144884bb44ed5ab06e0749ea59667";
-        String url = "https://openexchangerates.org/api/latest.json?app_id=78d7f7ea8bc34ebea95de1cb9cb5887b";
+    public Optional<String> getExchangeRate(int amount, String base, String conversion) {
+        String url = "https://openexchangerates.org/api/latest.json?app_id=78d7f7ea8bc34ebea95de1cb9cb5887b&base=" + base;
         StringBuilder jsonResponse = new StringBuilder();
         try {
             setUrl(url);

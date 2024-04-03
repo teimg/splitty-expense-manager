@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +21,14 @@ public class CurrencyController {
         this.currencyService = currencyService;
     }
 
-    @GetMapping(path = {"{amount}/{baseCurrency}/{conversionCurrency}"})
+    @GetMapping(path = {"/{amount}/{baseCurrency}/{conversionCurrency}"})
     public ResponseEntity<String> getExchangeRate(
-            @PathVariable("amount") double amount,
+            @PathVariable("amount") int amount,
             @PathVariable("baseCurrency") String base,
             @PathVariable("conversionCurrency") String conversion) {
 
-        if (base == null || !base.isEmpty()
-                || conversion == null || !conversion.isEmpty()) {
+        if (!((base == null || base.isEmpty())
+                || (conversion == null || conversion.isEmpty()))) {
             Optional<String> rate = currencyService.
                     getExchangeRate(amount, base, conversion);
             if (rate.isPresent()) {
