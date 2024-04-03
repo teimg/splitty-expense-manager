@@ -47,4 +47,6 @@ public interface IEventCommunicator {
     Event checkForEventUpdates(long id);
 
     void closeWebSocketConnection();
+
+    Event renameEvent(long id, String name);
 }
