@@ -16,6 +16,7 @@
 package client;
 
 import client.ModelView.*;
+import client.currency.Exchanger;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
@@ -99,6 +100,7 @@ public class MyModule implements Module {
     private static void configureConfigs(Binder binder) {
         binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
+        binder.bind(Exchanger.class).in(Scopes.SINGLETON);
         binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
     }
 
@@ -133,6 +135,7 @@ public class MyModule implements Module {
         binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StatisticsScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ContactInfoCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);

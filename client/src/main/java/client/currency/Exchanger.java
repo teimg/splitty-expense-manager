@@ -12,6 +12,8 @@ public class Exchanger {
 
     private ICurrencyCommunicator currencyCommunicator;
 
+    private String currency;
+
     @Inject
     public Exchanger(ICurrencyCommunicator currencyCommunicator) {
         this.currencyCommunicator = currencyCommunicator;
@@ -25,4 +27,15 @@ public class Exchanger {
         return (1/currencyCommunicator.getConversion(amount, currency, date));
     }
 
+    public void setCurrentCurrency(String amount) {
+        currency = amount;
+    }
+
+    public double getStandardConversion(double amount, LocalDate date) {
+        return currencyCommunicator.getConversion(amount, currency, date);
+    }
+
+    public String getCurrentCurreny() {
+        return currency;
+    }
 }

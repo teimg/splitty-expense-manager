@@ -70,6 +70,7 @@ public class MainCtrl {
         this.exchanger = exchanger;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
+            this.exchanger.setCurrentCurrency(config.getCurrency());
         }
         this.recentEventTracker = recentEventTracker;
         this.sceneWrapperFactory = sceneWrapperFactory;
@@ -272,5 +273,10 @@ public class MainCtrl {
         return exchanger;
     }
 
+    public void updateExchanger(String currency) {
+        exchanger.setCurrentCurrency(currency);
+        show(currentCtrl.getKey());
+        config.setCurrency(exchanger.getCurrentCurreny());
+    }
 
 }

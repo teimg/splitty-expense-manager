@@ -78,6 +78,21 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     @FXML
     private MenuItem defaultEmail;
 
+    @FXML
+    private Menu currency;
+
+    @FXML
+    private MenuItem usdButton;
+
+    @FXML
+    private MenuItem eurButton;
+
+    @FXML
+    private MenuItem chfButton;
+
+    @FXML
+    private MenuItem jpyButton;
+
     private final MainCtrl mainCtrl;
 
     private final IEmailCommunicator emailCommunicator;
@@ -254,4 +269,19 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         emailCommunicator.sendEmail(defaultEmail);
     }
 
+    public void setUSD(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("USD");
+    }
+
+    public void setEUR(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("EUR");
+    }
+
+    public void setCHF(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("CHF");
+    }
+
+    public void setJPY(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("JPY");
+    }
 }
