@@ -20,9 +20,6 @@ public class EventOverviewMv {
 
     private Participant selectedPayer;
 
-    private Task<Void> longPollingTask = null;
-    private Thread pollingThread = null;
-
     public EventOverviewMv(IEventCommunicator eventCommunicator,
                            IParticipantCommunicator participantCommunicator) {
         this.eventCommunicator = eventCommunicator;
@@ -35,6 +32,10 @@ public class EventOverviewMv {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public IEventCommunicator getEventCommunicator() {
+        return eventCommunicator;
     }
 
     public Participant getSelectedPayer() {

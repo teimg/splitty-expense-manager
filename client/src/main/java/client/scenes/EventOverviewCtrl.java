@@ -160,7 +160,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     private final MainCtrl mainCtrl;
 
     @Inject
-    public EventOverviewCtrl(MainCtrl mainCtrl, EventOverviewMv eventOverviewMv) {
+    public EventOverviewCtrl(MainCtrl mainCtrl, EventOverviewMv eventOverviewMv, Event event) {
         this.mainCtrl = mainCtrl;
         this.eventOverviewMv = eventOverviewMv;
     }
@@ -303,7 +303,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             new Popup(mainCtrl.getTranslator().getTranslation
                     ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
         }
-        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
+        loadEvent(eventOverviewMv.getEventCommunicator().getEvent(eventOverviewMv.getEvent().getId()));
+//        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 
     public void handleAddParticipant() {
