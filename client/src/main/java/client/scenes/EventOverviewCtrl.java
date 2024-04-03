@@ -303,7 +303,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             new Popup(mainCtrl.getTranslator().getTranslation
                     ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
         }
-        loadEvent(eventOverviewMv.getEventCommunicator().getEvent(eventOverviewMv.getEvent().getId()));
+        loadEvent(eventOverviewMv.getEventCommunicator()
+                .getEvent(eventOverviewMv.getEvent().getId()));
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 

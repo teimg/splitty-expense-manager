@@ -4,7 +4,6 @@ import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import commons.Event;
 import commons.Participant;
-import javafx.concurrent.Task;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
