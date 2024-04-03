@@ -375,24 +375,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         pollingThread.start();
     }
 
-    public void handleRenameEvent(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog(event.getName());
-        dialog.setTitle("Rename Event");
-        dialog.setHeaderText("Enter the new name for the event:");
-        dialog.setContentText("Name:");
-
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(name -> {
-            Event updatedEvent = eventCommunicator.renameEvent(event.getId(), name);
-            if (updatedEvent != null) {
-                loadEvent(updatedEvent);
-                new Popup("Event renamed successfully", Popup.TYPE.INFO).showAndWait();
-            } else {
-                new Popup("Failed to rename event", Popup.TYPE.ERROR).showAndWait();
-            }
-        });
-    }
-
     private void stopEventUpdatesLongPolling() {
         if (longPollingTask != null) {
             longPollingTask.cancel();
