@@ -370,15 +370,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     }
 
     public void handleRenameEvent(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog(eventOverviewMv.getEvent().getName());
+        TextInputDialog dialog = new TextInputDialog(event.getName());
         dialog.setTitle("Rename Event");
         dialog.setHeaderText("Enter the new name for the event:");
         dialog.setContentText("Name:");
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
-            Event updatedEvent = eventOverviewMv
-                    .eventCommRenameEvent(name);
+            Event updatedEvent = eventCommunicator.renameEvent(event.getId(), name);
             if (updatedEvent != null) {
                 loadEvent(updatedEvent);
                 new Popup("Event renamed successfully", Popup.TYPE.INFO).showAndWait();

@@ -61,10 +61,6 @@ public class EventOverviewMv {
         return eventCommunicator.checkForEventUpdates(eventId);
     }
 
-    public Event eventCommRenameEvent(String name) {
-        return eventCommunicator.renameEvent(event.getId(), name);
-    }
-
     public Event eventCommunicatorGetEvent() {
         return eventCommunicator.getEvent(event.getId());
     }
