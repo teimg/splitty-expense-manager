@@ -31,7 +31,7 @@ public class CurrencyService {
         this.connection = (HttpURLConnection) uri.toURL().openConnection();
     }
 
-    public Optional<String> getExchangeRate(double amount, String currency, LocalDate date) {
+    public Optional<Double> getExchangeRate(double amount, String currency, LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         String dateString = formatter.format(date);
         String url = "https://openexchangerates.org/api/historical/" + dateString  + ".json?app_id=78d7f7ea8bc34ebea95de1cb9cb5887b&base=" + "USD";
@@ -58,13 +58,11 @@ public class CurrencyService {
         }
         try {
             double val = findRate(jsonResponse.toString(), currency);
-            return Optional.of((val*amount) +"");
+            return Optional.of((val*amount));
         }
         catch (Exception e) {
-            System.out.println("Error");
+            return Optional.empty();
         }
-
-        return Optional.of(jsonResponse.toString());
     }
 
     public double findRate(String string, String currency) throws JsonProcessingException {

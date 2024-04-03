@@ -19,7 +19,7 @@ public class CurrencyCommunicator implements ICurrencyCommunicator {
     }
 
     @Override
-    public String getConversion(double amount, String currency, LocalDate date) {
+    public double getConversion(double amount, String currency, LocalDate date) {
         return ClientBuilder.newClient()
                 .target(origin)
                 .path("api/currency/{amount}/{currency}/{date}")
@@ -28,7 +28,7 @@ public class CurrencyCommunicator implements ICurrencyCommunicator {
                 .resolveTemplate("date", date)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(String.class);
+                .get(Double.class);
     }
 
 }

@@ -23,13 +23,13 @@ public class CurrencyController {
     }
 
     @GetMapping(path = {"/{amount}/{currency}/{date}"})
-    public ResponseEntity<String> getExchangeRate(
+    public ResponseEntity<Double> getExchangeRate(
             @PathVariable("amount") double amount,
             @PathVariable("currency") String currency,
             @PathVariable("date") LocalDate date) {
 
         if (!((currency == null || currency.isEmpty()) && amount != 0 && date != null)) {
-            Optional<String> rate = currencyService.
+            Optional<Double> rate = currencyService.
                     getExchangeRate(amount, currency, date);
             if (rate.isPresent()) {
                 return ResponseEntity.ok(rate.get());

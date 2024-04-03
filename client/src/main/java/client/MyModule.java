@@ -119,6 +119,8 @@ public class MyModule implements Module {
             .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
         binder.bind(IAdminCommunicator.class)
             .to(AdminCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(ICurrencyCommunicator.class)
+                .to(CurrencyCommunicator.class).in(Scopes.SINGLETON);
     }
 
     private static void configureScenes(Binder binder) {

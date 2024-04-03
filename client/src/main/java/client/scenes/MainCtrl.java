@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.currency.Exchanger;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
@@ -44,7 +45,6 @@ public class MainCtrl {
 
     private Pair<String, LanguageSwitch> currentCtrl;
 
-
     private final ClientConfiguration config;
 
     private MenuBarCtrl menuBarCtrl;
@@ -54,15 +54,20 @@ public class MainCtrl {
     private final RecentEventTracker recentEventTracker;
 
     private final SceneWrapperFactory sceneWrapperFactory;
+
     private final MenuBarInjector menuBarInjector;
 
+    private final Exchanger exchanger;
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
                     RecentEventTracker recentEventTracker,
-                    SceneWrapperFactory sceneWrapperFactory, MenuBarInjector menuBarInjector) {
+                    SceneWrapperFactory sceneWrapperFactory,
+                    MenuBarInjector menuBarInjector,
+                    Exchanger exchanger) {
         this.config = config;
         this.translator = translator;
+        this.exchanger = exchanger;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
         }
@@ -261,6 +266,10 @@ public class MainCtrl {
 
     public Translator getTranslator() {
         return translator;
+    }
+
+    public Exchanger getExchanger() {
+        return exchanger;
     }
 
 
