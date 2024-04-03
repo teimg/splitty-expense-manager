@@ -70,8 +70,13 @@ public class StartScreenCtrl extends SceneController implements Initializable, L
             }
             title.setText(joinableEvent.name());
             title.setOnAction(actionEvent -> {
-                Event event = startScreenMv.getRecentEvent(joinableEvent.id());
-                mainCtrl.showEventOverview(event);
+                try {
+                    Event event = startScreenMv.getRecentEvent(joinableEvent.id());
+                    mainCtrl.showEventOverview(event);
+                }catch (Exception e){
+                    handleException(e);
+                }
+
             });
             deleteButton.setOnAction(actionEvent -> {
                 startScreenMv.deleteEvent(joinableEvent);

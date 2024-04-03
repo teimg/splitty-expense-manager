@@ -8,22 +8,21 @@ import jakarta.ws.rs.ProcessingException;
 public abstract class SceneController {
     private final MainCtrl mainCtrl;
 
+    Popup.TYPE type = Popup.TYPE.ERROR;
+
     public SceneController(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
 
     private void handleNetworkException(Exception e){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
         String msg = mainCtrl.getTranslator().getTranslation(
             "Popup.ServerOffline"
         );
+
         mainCtrl.showStartScreen();
         (new Popup(msg, type)).show();
     }
     protected void handleException(Exception e){
-        Popup.TYPE type = Popup.TYPE.ERROR;
-
         if (e instanceof ProcessingException){
             handleNetworkException(e);
             return;
