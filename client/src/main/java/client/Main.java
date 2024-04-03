@@ -19,12 +19,10 @@ import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.HashMap;
 
 import client.dialog.Popup;
 import client.scenes.*;
-import client.utils.communicators.implementations.CurrencyCommunicator;
 import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
 
@@ -41,8 +39,6 @@ public class Main extends Application {
 
     private static TagCommunicator tagCommunicator;
 
-    private static CurrencyCommunicator curCommunicator;
-
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
@@ -53,14 +49,6 @@ public class Main extends Application {
             mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
             tagCommunicator = INJECTOR.getInstance(TagCommunicator.class);
-            curCommunicator = INJECTOR.getInstance(CurrencyCommunicator.class);
-
-            try {
-                System.out.println(curCommunicator.getConversion(100, "CHF", LocalDate.now()));
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
 
             HashMap<String, Object> sceneMap = new HashMap<>();
 
