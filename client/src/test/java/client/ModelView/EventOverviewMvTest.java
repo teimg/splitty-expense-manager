@@ -6,6 +6,7 @@ import commons.Event;
 import commons.Participant;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,6 +47,12 @@ public class EventOverviewMvTest {
     }
 
     @Test
+    void getEventCommunicator() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        assertNotNull(mv.getEventCommunicator());
+    }
+
+    @Test
     void testGetSetSelectedPayer() {
         EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
         mv.setSelectedPayer(participant);
@@ -58,7 +66,7 @@ public class EventOverviewMvTest {
 //        when(Clipboard.getSystemClipboard()).thenReturn(clipboardMock);
 //
 //        ClipboardContent contentMock = mock(ClipboardContent.class);
-//        when(clipboardMock.getContent()).thenReturn(contentMock);
+//        when(clipboardMock.getContent(DataFormat.PLAIN_TEXT)).thenReturn(contentMock);
 //
 //        mv.setEvent(event);
 //        when(event.getInviteCode()).thenReturn("invite code");
@@ -97,4 +105,6 @@ public class EventOverviewMvTest {
 
         assertEquals(event, mv.eventCommunicatorGetEvent());
     }
+
+
 }
