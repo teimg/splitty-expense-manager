@@ -93,7 +93,7 @@ public class ContactInfoMv {
         try {
             participantServer.createParticipant(event, name, email, bankAccount);
         }catch (jakarta.ws.rs.NotFoundException e) {
-            throw new NotFoundException("CodeNotFound");
+            throw new NotFoundException("NotFound");
         }catch (ProcessingException e) {
             throw new ProcessingException("ServerOffline");
         }
@@ -103,7 +103,7 @@ public class ContactInfoMv {
         try {
             participantServer.updateParticipant(participant);
         }catch (jakarta.ws.rs.NotFoundException e) {
-            throw new NotFoundException("CodeNotFound");
+            throw new NotFoundException("NotFound");
         }catch (ProcessingException e) {
             throw new ProcessingException("ServerOffline");
         }
@@ -127,7 +127,7 @@ public class ContactInfoMv {
 
     public void addButtonPressed(ActionEvent event) {
         if (!validInput()) {
-            throw new IllegalArgumentException("InvalidInput");
+            throw new IllegalArgumentException("InvalidInputParticipant");
         }
 
         Event currentEvent = getCurrentEvent();
