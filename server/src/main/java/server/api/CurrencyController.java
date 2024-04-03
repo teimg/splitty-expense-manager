@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.service.CurrencyService;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -21,16 +22,15 @@ public class CurrencyController {
         this.currencyService = currencyService;
     }
 
-    @GetMapping(path = {"/{amount}/{baseCurrency}/{conversionCurrency}"})
+    @GetMapping(path = {"/{amount}/{currency}/{date}"})
     public ResponseEntity<String> getExchangeRate(
-            @PathVariable("amount") int amount,
-            @PathVariable("baseCurrency") String base,
-            @PathVariable("conversionCurrency") String conversion) {
+            @PathVariable("amount") double amount,
+            @PathVariable("currency") String currency,
+            @PathVariable("date") LocalDate date) {
 
-        if (!((base == null || base.isEmpty())
-                || (conversion == null || conversion.isEmpty()))) {
+        if (!((currency == null || currency.isEmpty()) && amount != 0 && date != null)) {
             Optional<String> rate = currencyService.
-                    getExchangeRate(amount, base, conversion);
+                    getExchangeRate(amount, currency, date);
             if (rate.isPresent()) {
                 return ResponseEntity.ok(rate.get());
             }

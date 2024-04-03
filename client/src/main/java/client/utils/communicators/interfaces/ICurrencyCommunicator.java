@@ -1,8 +1,9 @@
 package client.utils.communicators.interfaces;
 
+import java.time.LocalDate;
+
 public interface ICurrencyCommunicator {
 
-    String getConversion(int amount, String base, String conversion);
+    String getConversion(double amount, String currency, LocalDate date);
 
-    String test(int amount);
 }

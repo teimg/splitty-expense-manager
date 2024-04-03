@@ -5,6 +5,8 @@ import client.utils.communicators.interfaces.ICurrencyCommunicator;
 import com.google.inject.Inject;
 import jakarta.ws.rs.client.ClientBuilder;
 
+import java.time.LocalDate;
+
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class CurrencyCommunicator implements ICurrencyCommunicator {
@@ -17,30 +19,16 @@ public class CurrencyCommunicator implements ICurrencyCommunicator {
     }
 
     @Override
-    public String getConversion(int amount, String base, String conversion) {
+    public String getConversion(double amount, String currency, LocalDate date) {
         return ClientBuilder.newClient()
                 .target(origin)
-                .path("api/currency/{amount}/{baseCurrency}/{conversionCurrency}")
+                .path("api/currency/{amount}/{currency}/{date}")
                 .resolveTemplate("amount", amount)
-                .resolveTemplate("baseCurrency", base)
-                .resolveTemplate("conversionCurrency", conversion)
+                .resolveTemplate("currency", currency)
+                .resolveTemplate("date", date)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(String.class);
     }
-
-    @Override
-    public String test(int amount) {
-        return ClientBuilder.newClient()
-                .target(origin)
-                .path("api/currency/{amount}/{baseCurrency}/{conversionCurrency}")
-                .resolveTemplate("baseCurrency", "USD")
-                .resolveTemplate("conversionCurrency", "CHF")
-                .resolveTemplate("amount", amount)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(String.class);
-    }
-
 
 }

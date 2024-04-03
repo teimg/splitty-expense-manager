@@ -3,9 +3,7 @@ package server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
 import java.net.*;
-import java.util.Random;
 
 @Configuration
 public class HttpUrlConnectionSupplier {

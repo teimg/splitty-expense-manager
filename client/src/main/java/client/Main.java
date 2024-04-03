@@ -19,6 +19,7 @@ import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 import client.dialog.Popup;
@@ -55,7 +56,7 @@ public class Main extends Application {
             curCommunicator = INJECTOR.getInstance(CurrencyCommunicator.class);
 
             try {
-                System.out.println(curCommunicator.getConversion(100, "USD", "CHF"));
+                System.out.println(curCommunicator.getConversion(100, "CHF", LocalDate.now()));
             }
             catch (Exception e) {
                 e.printStackTrace();
