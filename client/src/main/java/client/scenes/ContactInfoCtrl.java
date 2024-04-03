@@ -16,7 +16,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initializable {
+public class ContactInfoCtrl extends SceneController implements LanguageSwitch, Initializable {
 
     @FXML
     private Label titleLabel;
@@ -62,6 +62,7 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
     }
     @Inject
     public ContactInfoCtrl(MainCtrl mainCtrl, ContactInfoMv contactInfoMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.contactInfoMv = contactInfoMv;
     }
@@ -111,9 +112,9 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
         try {
             contactInfoMv.addButtonPressed(event);
             quitScene();
-        }catch (IllegalArgumentException e){
+        }catch (Exception e){
             e.printStackTrace();
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 

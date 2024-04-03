@@ -29,7 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 
-public class AddQuoteCtrl implements LanguageSwitch, SceneController {
+public class AddQuoteCtrl extends SceneController implements LanguageSwitch {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -45,6 +45,7 @@ public class AddQuoteCtrl implements LanguageSwitch, SceneController {
 
     @Inject
     public AddQuoteCtrl(ServerUtils server, MainCtrl mainCtrl) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.server = server;
 

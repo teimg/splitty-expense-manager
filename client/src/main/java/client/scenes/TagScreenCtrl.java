@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
-public class TagScreenCtrl implements SceneController, LanguageSwitch {
+public class TagScreenCtrl extends  SceneController implements LanguageSwitch {
 
     @FXML
     private Label titleLabel;
@@ -49,6 +49,7 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch {
 
     @Inject
     public TagScreenCtrl(MainCtrl mainCtrl, TagCommunicator tagCommunicator) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.tagCommunicator = tagCommunicator;
     }

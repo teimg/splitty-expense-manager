@@ -32,7 +32,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class QuoteOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
+public class QuoteOverviewCtrl extends SceneController implements Initializable, LanguageSwitch {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -50,6 +50,7 @@ public class QuoteOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 
     @Inject
     public QuoteOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+        super(mainCtrl);
         this.server = server;
         this.mainCtrl = mainCtrl;
     }

@@ -17,7 +17,7 @@ import javafx.scene.control.Label;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
+public class StatisticsScreenCtrl extends SceneController implements LanguageSwitch {
 
     @FXML
     private Button backButton;
@@ -40,6 +40,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
 
     @Inject
     public StatisticsScreenCtrl(MainCtrl mainCtrl, StatisticsScreenMv statisticsScreenMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.statisticsScreenMv = statisticsScreenMv;
     }

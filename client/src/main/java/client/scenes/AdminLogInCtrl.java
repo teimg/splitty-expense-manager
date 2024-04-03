@@ -15,7 +15,7 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminLogInCtrl implements Initializable, LanguageSwitch, SceneController {
+public class AdminLogInCtrl extends  SceneController implements Initializable, LanguageSwitch {
 
     @FXML
     private Label logInLabel;
@@ -35,6 +35,7 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch, SceneContr
 
     @Inject
     public AdminLogInCtrl(MainCtrl mainCtrl, AdminLogInMv adminLogInMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.adminLogInMv = adminLogInMv;
     }
@@ -57,7 +58,7 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch, SceneContr
             new Popup(mainCtrl.getTranslator().getTranslation
                     ("Popup.adminWelcome"), Popup.TYPE.INFO).showAndWait();
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 

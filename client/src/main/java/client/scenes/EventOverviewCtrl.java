@@ -35,7 +35,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
 
-public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
+public class EventOverviewCtrl extends SceneController implements Initializable, LanguageSwitch{
 
     private final IEventCommunicator eventCommunicator;
 
@@ -175,6 +175,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     @Inject
     public EventOverviewCtrl(EventCommunicator eventCommunicator, MainCtrl mainCtrl,
                              ParticipantCommunicator participantCommunicator) {
+        super(mainCtrl);
         this.eventCommunicator = eventCommunicator;
         this.participantCommunicator = participantCommunicator;
         this.mainCtrl = mainCtrl;
@@ -364,7 +365,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                         Thread.sleep(5000); // 5 seconds
                     }
                 } catch (Exception e) {
-                    handleException(e, mainCtrl.getTranslator());
+                    handleException(e);
                 }
                 return null;
             }

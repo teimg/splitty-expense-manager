@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initializable {
+public class AdminScreenCtrl extends SceneController implements LanguageSwitch, Initializable {
 
     @FXML
     private Label eventsLabel;
@@ -67,6 +67,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
 
     @Inject
     public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.eventCommunicator = eventCommunicator;
     }

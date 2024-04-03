@@ -15,7 +15,7 @@ import javafx.scene.layout.Priority;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneController {
+public class StartScreenCtrl extends SceneController implements Initializable, LanguageSwitch {
 
     private final MainCtrl mainCtrl;
 
@@ -82,6 +82,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
 
     @Inject
     public StartScreenCtrl(MainCtrl mainCtrl, StartScreenMv startScreenMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.startScreenMv = startScreenMv;
     }
@@ -127,7 +128,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
                 startScreenMv.createEvent()
             );
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 
@@ -137,7 +138,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
                 startScreenMv.joinEvent()
             );
         } catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 

@@ -29,7 +29,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
-public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, SceneController {
+public class AddEditExpenseCtrl extends SceneController implements Initializable, LanguageSwitch{
 
     @FXML
     private Label titleLabel;
@@ -175,6 +175,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     @Inject
     public AddEditExpenseCtrl (MainCtrl mainCtrl, AddEditExpenseMv addEditExpenseMv) {
+        super(mainCtrl);
         this.addEditExpenseMv = addEditExpenseMv;
         this.mainCtrl = mainCtrl;
 
@@ -419,7 +420,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
         }catch (Exception e){
             e.printStackTrace();
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 
@@ -433,7 +434,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
             addEditExpenseMv.deleteTag();
             initTag();
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 
@@ -441,7 +442,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 

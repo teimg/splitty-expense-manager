@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.ArrayList;
 
-public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
+public class OpenDebtsCtrl extends SceneController implements LanguageSwitch {
 
     @FXML
     private Label titleLabel;
@@ -34,6 +34,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
     @Inject
     public OpenDebtsCtrl(MainCtrl mainCtrl, OpenDebtsMv openDebtsMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.openDebtsMv = openDebtsMv;
     }
