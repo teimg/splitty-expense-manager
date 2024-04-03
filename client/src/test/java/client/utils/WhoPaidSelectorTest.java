@@ -56,4 +56,41 @@ class WhoPaidSelectorTest {
 
         assertNull(ds.getCurrentPayer("Flippie"));
     }
+
+    @Test
+    void queryWithEmptyString() {
+        assertEquals(9, ds.query("").size()); // Assuming the list has 9 participants as set up in @BeforeEach
+    }
+
+    @Test
+    void queryNoMatch() {
+        assertTrue(ds.query("xyz").isEmpty());
+    }
+
+    @Test
+    void toStringWithNullParticipant() {
+        assertNull(ds.toString(null));
+    }
+
+    @Test
+    void fromStringWithNull() {
+        assertNull(ds.fromString(null));
+    }
+
+    @Test
+    void fromStringWithEmpty() {
+        assertNull(ds.fromString(""));
+    }
+
+    @Test
+    void fromStringNoMatch() {
+        assertNull(ds.fromString("xyz"));
+    }
+
+    @Test
+    void constructorWithEmptyList() {
+        WhoPaidSelector emptySelector = new WhoPaidSelector(new ArrayList<>());
+        assertTrue(emptySelector.query("any").isEmpty());
+        assertNull(emptySelector.getCurrentPayer("any"));
+    }
 }

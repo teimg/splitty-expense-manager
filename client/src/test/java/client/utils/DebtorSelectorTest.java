@@ -31,36 +31,57 @@ class DebtorSelectorTest {
     }
 
     @Test
-    void add() {
-        ds.add("Abel");
-        assertArrayEquals( new Participant[]{new Participant("Abel")}, ds.getDebitors().toArray());
+    void addNonExistentParticipant() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> ds.add("NonExistent"));
+        assertNull(exception.getMessage());
     }
 
     @Test
-    void addAll() {
-        ds.addAll();
-
-        assertTrue(ds.getDebitors().contains(new Participant("Abel")));
-        assertTrue(ds.getDebitors().contains(new Participant("Piet")));
-        assertTrue(ds.getDebitors().contains(new Participant("Joost")));
-        assertTrue(ds.getDebitors().contains(new Participant("Barry")));
-        assertTrue(ds.getDebitors().contains(new Participant("Joe")));
+    void addNullParticipant() {
+        assertDoesNotThrow(() -> ds.add(null));
     }
 
     @Test
-    void remove() {
-        ds.add("Jan");
-        ds.add("Abel");
-        ds.remove("Jan");
-        assertArrayEquals(new Participant[]{new Participant("Abel")}, ds.getDebitors().toArray());
+    void removeNonExistentParticipant() {
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> ds.remove("NonExistent"));
+        assertNull(exception.getMessage());
     }
 
     @Test
-    void removeAll() {
-        ds.add("Jan");
-        ds.add("Abel");
+    void removeNullParticipant() {
+        assertDoesNotThrow(() -> ds.remove(null));
+    }
+
+    @Test
+    void getDebitorsWhenAllSelected() {
+        ds.setAllSelected(true);
+        assertEquals(9, ds.getDebitors().size());
+    }
+
+    @Test
+    void getDebitorsWhenNoneSelected() {
+        ds.setAllSelected(false);
         ds.removeAll();
-        assertArrayEquals(new Participant[]{}, ds.getDebitors().toArray());
+        assertTrue(ds.getDebitors().isEmpty());
+    }
 
+    @Test
+    void toggleAllSelected() {
+        ds.setAllSelected(false);
+        ds.add("Henk");
+        assertEquals(1, ds.getDebitors().size(), "Should only have one debtor when allSelected is false");
+
+        ds.setAllSelected(true);
+        assertEquals(9, ds.getDebitors().size(), "Should have all participants as debtors when allSelected is true");
+    }
+
+    void testIsAllSelected() {
+        ds.setAllSelected(true);
+        assertTrue(ds.isAllSelected(), "isAllSelected should return true after being set to true");
+
+        ds.setAllSelected(false);
+        assertFalse(ds.isAllSelected(), "isAllSelected should return false after being set to false");
     }
 }
