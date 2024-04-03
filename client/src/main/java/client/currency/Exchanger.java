@@ -4,12 +4,10 @@ import client.utils.communicators.interfaces.ICurrencyCommunicator;
 import com.google.inject.Inject;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class Exchanger {
 
     public Exchanger() {
-
     }
 
     private ICurrencyCommunicator currencyCommunicator;

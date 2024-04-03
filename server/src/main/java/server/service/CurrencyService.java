@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -21,9 +22,16 @@ public class CurrencyService {
 
     private HttpURLConnection connection;
 
+    private BufferedReader bufferedReader;
+
+    private BufferedWriter bufferedWriter;
+
     @Autowired
-    public CurrencyService(HttpURLConnection httpURLConnection) {
+    public CurrencyService(HttpURLConnection httpURLConnection,
+                           BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         this.connection = httpURLConnection;
+        this.bufferedReader = bufferedReader;
+        this.bufferedWriter = bufferedWriter;
     }
 
     public void setUrl(String url) throws URISyntaxException, IOException {
@@ -34,7 +42,12 @@ public class CurrencyService {
     public Optional<Double> getExchangeRate(double amount, String currency, LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         String dateString = formatter.format(date);
-        String url = "https://openexchangerates.org/api/historical/" + dateString  + ".json?app_id=78d7f7ea8bc34ebea95de1cb9cb5887b&base=" + "USD";
+        Optional<Double> cache = fetchInCache(amount, currency, dateString);
+        if (cache.isPresent()) {
+            return cache;
+        }
+        String url = "https://openexchangerates.org/api/historical/" + dateString
+                + ".json?app_id=78d7f7ea8bc34ebea95de1cb9cb5887b&base=" + "USD";
         StringBuilder jsonResponse = new StringBuilder();
         try {
             setUrl(url);
@@ -58,6 +71,7 @@ public class CurrencyService {
         }
         try {
             double val = findRate(jsonResponse.toString(), currency);
+            saveToCache(currency, dateString, val);
             return Optional.of((val*amount));
         }
         catch (Exception e) {
@@ -70,6 +84,39 @@ public class CurrencyService {
         JsonNode jsonNode = mapper.readTree(string);
         JsonNode ratesNode = jsonNode.get("rates");
         return ratesNode.get(currency).asDouble();
+    }
+
+    private Optional<Double> fetchInCache(double amount, String currency, String dateString) {
+        try {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.startsWith(dateString+"/"+currency + ":")) {
+                    String[] parts = line.split(":");
+                    if (parts.length == 2) {
+                        double value = Double.parseDouble(parts[1]);
+                        return Optional.of(value);
+                    }
+                    else {
+                        return Optional.empty();
+                    }
+                }
+            }
+        }
+        catch (IOException e) {
+            return Optional.empty();
+        }
+        return Optional.empty();
+    }
+
+    private void saveToCache(String currency, String dateString, double val) {
+        try {
+            bufferedWriter.newLine();
+            bufferedWriter.write(dateString+"/"+currency + ":" + val);
+            bufferedWriter.flush();
+        }
+        catch (IOException e) {
+            System.out.println("Caching Error - Could not save");
+        }
     }
 
 }
