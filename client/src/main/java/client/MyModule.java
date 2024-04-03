@@ -15,10 +15,7 @@
  */
 package client;
 
-import client.ModelView.AdminLogInMv;
-import client.ModelView.ContactInfoMv;
-import client.ModelView.StartScreenMv;
-import client.ModelView.StatisticsScreenMv;
+import client.ModelView.*;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
@@ -81,6 +78,17 @@ public class MyModule implements Module {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+
+        try {
+            binder.bind(EventOverviewMv.class)
+                    .toConstructor(EventOverviewMv.class.getConstructor(
+                            IEventCommunicator.class, IParticipantCommunicator.class
+                    ))
+                    .in(Scopes.SINGLETON);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static void configureUtils(Binder binder) {
