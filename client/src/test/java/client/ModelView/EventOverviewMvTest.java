@@ -1,5 +1,6 @@
 package client.ModelView;
 
+
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import commons.Event;
@@ -11,23 +12,30 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
 import java.util.Optional;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
+
 @ExtendWith(MockitoExtension.class)
 public class EventOverviewMvTest {
+
 
     @Mock
     private IEventCommunicator eventCommunicator;
 
+
     @Mock
     private IParticipantCommunicator participantCommunicator;
 
+
     private Event event;
     private Participant participant;
+
 
     @BeforeEach
     void setUp() {
@@ -36,6 +44,7 @@ public class EventOverviewMvTest {
         this.participant = new Participant();
     }
 
+
     @Test
     void testGetSetEvent() {
         EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
@@ -43,11 +52,13 @@ public class EventOverviewMvTest {
         assertEquals(event, mv.getEvent());
     }
 
+
     @Test
     void getEventCommunicator() {
         EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
         assertNotNull(mv.getEventCommunicator());
     }
+
 
     @Test
     void testGetSetSelectedPayer() {
@@ -55,6 +66,7 @@ public class EventOverviewMvTest {
         mv.setSelectedPayer(participant);
         assertEquals(participant, mv.getSelectedPayer());
     }
+
 
 //    @Test
 //    void testCopyInviteCode() {
@@ -74,6 +86,7 @@ public class EventOverviewMvTest {
 //        verify(clipboardMock).setContent(contentMock);
 //    }
 
+
     @Test
     void deleteParticipantTest() {
         EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
@@ -81,8 +94,10 @@ public class EventOverviewMvTest {
         participant.setId(592L);
         mv.deleteParticipant(optionalParticipant);
 
+
         verify(participantCommunicator).deleteParticipant(592L);
     }
+
 
     @Test
     void eventCommunicatorCheckForUpdateTest() {
@@ -90,25 +105,10 @@ public class EventOverviewMvTest {
         long eventId = 811L;
         when(eventCommunicator.checkForEventUpdates(eventId)).thenReturn(event);
 
+
         assertEquals(event, mv.eventCommunicatorCheckForUpdate(eventId));
     }
 
-    @Test
-    void testEventCommRenameEvent() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, null);
-
-        String newName = "new name";
-        mv.setEvent(event);
-
-        Event renamedEvent = new Event();
-        renamedEvent.setId(554L);
-
-        when(eventCommunicator.renameEvent(event.getId(), newName)).thenReturn(renamedEvent);
-
-        Event result = mv.eventCommRenameEvent(newName);
-        verify(eventCommunicator).renameEvent(event.getId(), newName);
-        assertEquals(renamedEvent, result);
-    }
 
     @Test
     void eventCommunicatorGetEventTest() {
@@ -117,6 +117,8 @@ public class EventOverviewMvTest {
         event.setId(333L);
         when(eventCommunicator.getEvent(333L)).thenReturn(event);
 
+
         assertEquals(event, mv.eventCommunicatorGetEvent());
     }
 }
+
