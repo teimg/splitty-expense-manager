@@ -102,15 +102,6 @@ public class EventCommunicator implements IEventCommunicator {
             .put(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
-    public Event renameEvent(long id, String newName) {
-        Event eventToUpdate = getEvent(id);
-        if (eventToUpdate != null) {
-            eventToUpdate.setName(newName);
-            return updateEvent(eventToUpdate);
-        }
-        return null;
-    }
-
     @Override
     public Event deleteEvent(long id) {
         return null;
