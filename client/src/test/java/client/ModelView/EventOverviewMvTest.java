@@ -88,13 +88,13 @@ public class EventOverviewMvTest {
         assertEquals(event, mv.eventCommunicatorCheckForUpdate(eventId));
     }
 
-//    @Test
-//    void eventCommunicatorGetEventTest() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
-////        when(event.getId()).thenReturn(333L);
-//        event.setId(333L);
-//        when(eventCommunicator.getEvent(333L)).thenReturn(event);
-//
-//        assertEquals(event, mv.eventCommunicatorGetEvent());
-//    }
+    @Test
+    void eventCommunicatorGetEventTest() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        mv.setEvent(event);
+        event.setId(333L);
+        when(eventCommunicator.getEvent(333L)).thenReturn(event);
+
+        assertEquals(event, mv.eventCommunicatorGetEvent());
+    }
 }
