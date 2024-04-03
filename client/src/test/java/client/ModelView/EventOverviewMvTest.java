@@ -102,6 +102,4 @@ public class EventOverviewMvTest {
 
         assertEquals(event, mv.eventCommunicatorGetEvent());
     }
-
-
 }
