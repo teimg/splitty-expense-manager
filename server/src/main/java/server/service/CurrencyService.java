@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.BufferedReaderSupplier;
+import server.BufferedWriterSupplier;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,16 +24,17 @@ public class CurrencyService {
 
     private HttpURLConnection connection;
 
-    private BufferedReader bufferedReader;
+    private BufferedReaderSupplier bufferedReaderSupplier;
 
-    private BufferedWriter bufferedWriter;
+    private BufferedWriterSupplier bufferedWriterSupplier;
 
     @Autowired
     public CurrencyService(HttpURLConnection httpURLConnection,
-                           BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
+                           BufferedReaderSupplier bufferedReader,
+                           BufferedWriterSupplier bufferedWriter) {
         this.connection = httpURLConnection;
-        this.bufferedReader = bufferedReader;
-        this.bufferedWriter = bufferedWriter;
+        this.bufferedReaderSupplier = bufferedReader;
+        this.bufferedWriterSupplier = bufferedWriter;
     }
 
     public void setUrl(String url) throws URISyntaxException, IOException {
@@ -88,19 +91,23 @@ public class CurrencyService {
 
     private Optional<Double> fetchInCache(double amount, String currency, String dateString) {
         try {
+            BufferedReader bufferedReader = bufferedReaderSupplier.getBufferedReader();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.startsWith(dateString+"/"+currency + ":")) {
+                if (line.startsWith(dateString+"/"+currency)) {
                     String[] parts = line.split(":");
                     if (parts.length == 2) {
                         double value = Double.parseDouble(parts[1]);
+                        bufferedReader.close();
                         return Optional.of(value);
                     }
                     else {
+                        bufferedReader.close();
                         return Optional.empty();
                     }
                 }
             }
+            bufferedReader.close();
         }
         catch (IOException e) {
             return Optional.empty();
@@ -110,9 +117,11 @@ public class CurrencyService {
 
     private void saveToCache(String currency, String dateString, double val) {
         try {
-            bufferedWriter.newLine();
+            BufferedWriter bufferedWriter = bufferedWriterSupplier.getBufferedWriter();
             bufferedWriter.write(dateString+"/"+currency + ":" + val);
+            bufferedWriter.newLine();
             bufferedWriter.flush();
+            bufferedWriter.close();
         }
         catch (IOException e) {
             System.out.println("Caching Error - Could not save");

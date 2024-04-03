@@ -1,12 +1,14 @@
 package server;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-@Configuration
+@Component
+@Scope("prototype")
 public class BufferedReaderSupplier {
 
     @Bean

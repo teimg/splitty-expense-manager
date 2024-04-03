@@ -20,10 +20,12 @@ public class Exchanger {
     }
 
     public double getExchangeAgainstBase(double amount, String currency, LocalDate date) {
+        if (currency.equals("USD")) return amount;
         return currencyCommunicator.getConversion(amount, currency, date);
     }
 
     public double getExchangeAgainstNew(double amount, String currency, LocalDate date) {
+        if (currency.equals("USD")) return amount;
         return (1/currencyCommunicator.getConversion(amount, currency, date));
     }
 
@@ -32,10 +34,22 @@ public class Exchanger {
     }
 
     public double getStandardConversion(double amount, LocalDate date) {
+        if (currency.equals("USD")) return amount;
         return currencyCommunicator.getConversion(amount, currency, date);
     }
 
-    public String getCurrentCurreny() {
+    public String getCurrentCurrency() {
         return currency;
     }
+
+    public String getCurrentSymbol() {
+        return switch (currency) {
+            case "USD" -> "$";
+            case "EUR" -> "€";
+            case "CHF" -> "fr.";
+            case "JPY" -> "¥";
+            default -> "ER";
+        };
+    }
+
 }

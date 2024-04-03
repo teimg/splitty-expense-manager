@@ -1,12 +1,14 @@
 package server;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
-@Configuration
+@Component
+@Scope("prototype")
 public class BufferedWriterSupplier {
 
     @Bean

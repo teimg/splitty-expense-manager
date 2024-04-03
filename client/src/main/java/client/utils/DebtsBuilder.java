@@ -260,8 +260,10 @@ public class DebtsBuilder {
     public String getSummary(Debt debt) {
         return debt.getDebtor().getName() + " " +
                 translator.getTranslation("OpenDebts.Summary-owes")
-                + " " + (Math.round(debt.getAmount() * 100.0) / 100.0)
-                + "$ " + translator.getTranslation("OpenDebts.Summary-to")
+                + " " + Math.round(mainCtrl.getExchanger().getStandardConversion(
+                        debt.getAmount(), LocalDate.of(2023, 10, 10))*100.0)/100.0
+                + mainCtrl.getExchanger().getCurrentSymbol() + " "
+                + translator.getTranslation("OpenDebts.Summary-to")
                 + " " + debt.getCreditor().getName();
     }
 
