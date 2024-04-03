@@ -49,8 +49,16 @@ public class CurrencyService {
         if (cache.isPresent()) {
             return cache;
         }
-        String url = "https://openexchangerates.org/api/historical/" + dateString
-                + ".json?app_id=78d7f7ea8bc34ebea95de1cb9cb5887b&base=" + "USD";
+        String url;
+        if (date.equals(LocalDate.now())) {
+            url = "https://openexchangerates.org/api/latest.json?" +
+                    "app_id=78d7f7ea8bc34ebea95de1cb9cb5887b&base=" + "USD";
+        }
+        else {
+            url = "https://openexchangerates.org/api/historical/" + dateString
+                    + ".json?app_id=78d7f7ea8bc34ebea95de1cb9cb5887b&base=" + "USD";
+        }
+
         StringBuilder jsonResponse = new StringBuilder();
         try {
             setUrl(url);

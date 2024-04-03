@@ -261,7 +261,7 @@ public class DebtsBuilder {
         return debt.getDebtor().getName() + " " +
                 translator.getTranslation("OpenDebts.Summary-owes")
                 + " " + Math.round(mainCtrl.getExchanger().getStandardConversion(
-                        debt.getAmount(), LocalDate.of(2023, 10, 10))*100.0)/100.0
+                        debt.getAmount(), LocalDate.now())*100.0)/100.0
                 + mainCtrl.getExchanger().getCurrentSymbol() + " "
                 + translator.getTranslation("OpenDebts.Summary-to")
                 + " " + debt.getCreditor().getName();

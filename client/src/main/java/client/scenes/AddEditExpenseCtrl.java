@@ -322,8 +322,12 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     public void initCurrency(){
         currencyField.getItems().clear();
-        currencyField.setValue("EUR");
+        currencyField.getItems().add("USD");
         currencyField.getItems().add("EUR");
+        currencyField.getItems().add("CHF");
+        currencyField.getItems().add("JPY");
+        currencyField.setValue("USD");
+
     }
 
 
