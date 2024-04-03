@@ -45,21 +45,6 @@ public class EventOverviewMv {
         this.selectedPayer = selectedPayer;
     }
 
-    public Task<Void> getLongPollingTask() {
-        return longPollingTask;
-    }
-
-    public void setLongPollingTask(Task<Void> longPollingTask) {
-        this.longPollingTask = longPollingTask;
-    }
-
-    public Thread getPollingThread() {
-        return pollingThread;
-    }
-
-    public void setPollingThread(Thread pollingThread) {
-        this.pollingThread = pollingThread;
-    }
 
     public void copyInviteCode() {
         Clipboard clipboard = Clipboard.getSystemClipboard();
