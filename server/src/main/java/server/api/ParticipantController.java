@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/participants")
 public class ParticipantController {
-//    private final ParticipantRepository repo;
 
     private final ParticipantService service;
 
@@ -34,8 +33,8 @@ public class ParticipantController {
         try {
             Participant res = service.getById(id);
             return ResponseEntity.ok(res);
-        }catch (IllegalArgumentException e){
-            System.out.println("not found");
+        }
+        catch (IllegalArgumentException e){
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

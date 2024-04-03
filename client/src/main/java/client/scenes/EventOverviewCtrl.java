@@ -1,5 +1,6 @@
 package client.scenes;
 
+
 import client.ModelView.EventOverviewMv;
 import client.dialog.ConfPopup;
 import client.dialog.Popup;
@@ -9,6 +10,7 @@ import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
+
 
 import commons.Participant;
 import javafx.application.Platform;
@@ -24,22 +26,28 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 
+
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 
+
+
 public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
+
 
     private Task<Void> longPollingTask = null;
     private Thread pollingThread = null;
     private EventOverviewMv eventOverviewMv;
+
 
     private class ExpenseListCell extends ListCell<Expense> {
         private HBox container;
         private Text content;
         private Pane filler;
         private Button editButton;
+
 
         public ExpenseListCell() {
             super();
@@ -51,10 +59,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             container.getChildren().addAll(content, filler, editButton);
         }
 
+
         private void setLanguage(Translator translator) {
             editButton.setText(translator
                     .getTranslation("EventOverview.EditExpense-Button"));
         }
+
 
         @Override
         public void updateItem(Expense expense, boolean empty) {
@@ -64,7 +74,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 return;
             }
 
+
             setLanguage(mainCtrl.getTranslator());
+
 
             content.setText(expenseDescription(expense));
             editButton.setOnAction(actionEvent -> {
@@ -72,6 +84,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             });
             setGraphic(container);
         }
+
 
         private String expenseDescription(Expense expense) {
             StringBuilder desc = new StringBuilder(expense.getDate().toString() + "    "
@@ -92,78 +105,106 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     }
 
 
+
+
     @FXML
     private Text eventTitle;
+
 
     @FXML
     private Text participantsList;
 
+
     @FXML
     private RadioButton expenseSelectorAll;
+
 
     @FXML
     private RadioButton expenseSelectorFrom;
 
+
     @FXML
     private RadioButton expenseSelectorIncluding;
+
 
     @FXML
     private ListView<Expense> expensesList;
 
+
     @FXML
     private Text inviteCode;
+
 
     @FXML
     private Button inviteCodeCopyBtn;
 
+
     @FXML
     private Button sendInviteButton;
+
 
     @FXML
     private Label participantsLabel;
 
+
     @FXML
     private Button removeParticipantButton;
+
 
     @FXML
     private Button addParticipantButton;
 
+
     @FXML
     private Label expensesLabel;
+
 
     @FXML
     private Label forLabel;
 
+
     @FXML
     private Label inviteCodeLabel;
+
 
     @FXML
     private Button addExpense;
 
+
     @FXML
     private Button editParticipantButton;
+
 
     @FXML
     private ChoiceBox<String> participantDropDown;
 
+
     @FXML
     private Button openDebtBtn;
+
 
     @FXML
     private Button statisticsButton;
 
+
     @FXML
     private Button backButton;
 
+
     private ObservableList<Expense> shownExpenses;
 
+
     private final MainCtrl mainCtrl;
+
 
     @Inject
     public EventOverviewCtrl(MainCtrl mainCtrl, EventOverviewMv eventOverviewMv, Event event) {
         this.mainCtrl = mainCtrl;
         this.eventOverviewMv = eventOverviewMv;
     }
+
+
+
 
 
 
@@ -196,13 +237,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         editParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.EditParticipant-Button"));
         openDebtBtn.setText(mainCtrl.getTranslator().getTranslation(
-            "EventOverview.OpenDebt-Button"));
+                "EventOverview.OpenDebt-Button"));
         statisticsButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.Statistics-Button"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.Back-Button"));
         loadEvent(eventOverviewMv.getEvent());
     }
+
 
     /**
      * Called to initialize a controller after its root element has been
@@ -225,6 +267,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         expensesList.setCellFactory(expensesList -> new ExpenseListCell());
     }
 
+
     public void loadEvent(Event event) {
         eventOverviewMv.setEvent(event);
         eventTitle.setText(event.getName());
@@ -243,9 +286,11 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         startEventUpdatesLongPolling(event.getId());
     }
 
+
     public void copyInviteCode() {
         eventOverviewMv.copyInviteCode();
     }
+
 
     /**
      * Changes the expenses shown in the ListView to match the selected toggle.
@@ -267,21 +312,23 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         } else if (expenseSelectorFrom.isSelected()) {
             shownExpenses.setAll(eventOverviewMv.getEvent().getExpenses().stream()
                     .filter(expense -> expense.getPayer()
-                    .equals(eventOverviewMv.getSelectedPayer())).toList());
+                            .equals(eventOverviewMv.getSelectedPayer())).toList());
         } else if (expenseSelectorIncluding.isSelected()) {
             shownExpenses.setAll(eventOverviewMv.getEvent().getExpenses().stream()
                     .filter(expense -> expense.getPayer()
-                    .equals(eventOverviewMv.getSelectedPayer())
+                            .equals(eventOverviewMv.getSelectedPayer())
                             || expense.getDebtors()
                             .contains(eventOverviewMv.getSelectedPayer())).toList());
         }
         expensesList.setItems(shownExpenses);
     }
 
+
     // TODO: implement these methods with proper server communication
     public void handleSendInvites() {
         mainCtrl.showInvitation(eventOverviewMv.getEvent());
     }
+
 
     public void handleRemoveParticipant() {
         Optional<Participant> optionalParticipant = eventOverviewMv
@@ -289,8 +336,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
                 .findFirst();
         boolean confirmed = ConfPopup.create
-                (mainCtrl.getTranslator().getTranslation
-                        ("Popup.sureRemoveDatabase"))
+                        (mainCtrl.getTranslator().getTranslation
+                                ("Popup.sureRemoveDatabase"))
                 .isConfirmed();
         if (confirmed) {
             if (optionalParticipant.isPresent()) {
@@ -308,9 +355,11 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 
+
     public void handleAddParticipant() {
         mainCtrl.showContactInfo(eventOverviewMv.getEvent(), null);
     }
+
 
     public void handleEditParticipant(ActionEvent actionEvent) {
         Optional<Participant> optionalParticipant = eventOverviewMv.getEvent()
@@ -327,21 +376,26 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         if (optionalParticipant.isEmpty()) System.out.println("Error");
     }
 
+
     public void handleAddExpense() {
         mainCtrl.showAddEditExpense(eventOverviewMv.getEvent());
     }
+
 
     public void handleOpenDebt() {
         mainCtrl.showOpenDebts(eventOverviewMv.getEvent());
     }
 
+
     public void handleBack(ActionEvent actionEvent) {
         mainCtrl.showStartScreen();
     }
 
+
     public void handleStatistics(ActionEvent actionEvent) {
         mainCtrl.showStatistics(eventOverviewMv.getEvent());
     }
+
 
     private void startEventUpdatesLongPolling(long eventId) {
         longPollingTask = new Task<Void>() {
@@ -364,16 +418,19 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             }
         };
 
+
         pollingThread = new Thread(longPollingTask);
         pollingThread.setDaemon(true);
         pollingThread.start();
     }
+
 
     public void handleRenameEvent(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog(eventOverviewMv.getEvent().getName());
         dialog.setTitle("Rename Event");
         dialog.setHeaderText("Enter the new name for the event:");
         dialog.setContentText("Name:");
+
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
@@ -387,12 +444,14 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         });
     }
 
+
     private void stopEventUpdatesLongPolling() {
         if (longPollingTask != null) {
             longPollingTask.cancel();
             pollingThread.interrupt();
         }
     }
+
 
     /**
      * Updates the UI components with the data from the updated event.
@@ -407,32 +466,40 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             return;
         }
 
+
         // Ensure UI updates are run on the JavaFX Application Thread
         Platform.runLater(() -> {
             // Update event title
             eventTitle.setText(updatedEvent.getName());
 
+
             // Update participants list
             participantsList.setText(String.join(", ", updatedEvent.getParticipants()
                     .stream().map(Participant::getName).toList()));
+
 
             // Update expenses list
             shownExpenses.clear();
             shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
             expensesList.setItems(shownExpenses);
 
+
             // Update other UI components as needed
             inviteCode.setText(updatedEvent.getInviteCode());
 
+
             // Replace the local event object with the updated one
             eventOverviewMv.setEvent(updatedEvent);
+
 
             new Popup(mainCtrl.getTranslator().getTranslation
                     ("Popup.successfulEventUpdate"), Popup.TYPE.INFO).show();
         });
     }
 
+
 //    public void stop() {
 //        stopEventUpdatesLongPolling();
 //    }
 }
+

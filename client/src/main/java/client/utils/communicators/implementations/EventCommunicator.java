@@ -64,6 +64,17 @@ public class EventCommunicator implements IEventCommunicator {
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
+
+    public Event renameEvent(long id, String newName) {
+        Event eventToUpdate = getEvent(id);
+        if (eventToUpdate != null) {
+            eventToUpdate.setName(newName);
+            return updateEvent(eventToUpdate);
+        }
+        return null;
+    }
+
+
     @Override
     public Event getEventByInviteCode(String inviteCode) {
         return ClientBuilder.newClient()
@@ -100,15 +111,6 @@ public class EventCommunicator implements IEventCommunicator {
             .resolveTemplate("id", event.getId())
             .request(APPLICATION_JSON).accept(APPLICATION_JSON)
             .put(Entity.entity(event, APPLICATION_JSON), Event.class);
-    }
-
-    public Event renameEvent(long id, String newName) {
-        Event eventToUpdate = getEvent(id);
-        if (eventToUpdate != null) {
-            eventToUpdate.setName(newName);
-            return updateEvent(eventToUpdate);
-        }
-        return null;
     }
 
     @Override
