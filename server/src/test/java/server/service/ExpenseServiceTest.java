@@ -25,7 +25,6 @@ public class ExpenseServiceTest {
     @Mock
     private EventService eventService;
 
-
     @InjectMocks
     private ExpenseService expenseService;
 
@@ -82,11 +81,20 @@ public class ExpenseServiceTest {
         verify(expenseRepository).findByEventId((long) event.getId());
     }
 
-//    TODO: fix the test for the new version of the service
-//    @Test
-//    void deleteExpenseTest() {
-//        doNothing().when(expenseRepository).deleteById(expense.getId());
-//        expenseService.deleteExpense(expense.getId());
-//        verify(expenseRepository).deleteById(expense.getId());
-//    }
+    @Test
+    void deleteSuccess() {
+        when(expenseRepository.findById(expense.getId())).thenReturn(Optional.of(expense));
+        expenseService.deleteExpense(expense.getId());
+        verify(expenseRepository).deleteById((expense.getId()));
+        verify(eventService).updateLastActivity((expense.getId()));
+    }
+
+    @Test
+    void deleteFail() {
+        when(expenseRepository.findById(expense.getId())).thenReturn(Optional.empty());
+        expenseService.deleteExpense(expense.getId());
+        verify(expenseRepository, times(0)).deleteById(expense.getId());
+    }
+
+
 }
