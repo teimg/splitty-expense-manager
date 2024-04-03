@@ -66,4 +66,22 @@ class DebtorSelectorTest {
         ds.removeAll();
         assertTrue(ds.getDebitors().isEmpty());
     }
+
+    @Test
+    void toggleAllSelected() {
+        ds.setAllSelected(false);
+        ds.add("Henk");
+        assertEquals(1, ds.getDebitors().size(), "Should only have one debtor when allSelected is false");
+
+        ds.setAllSelected(true);
+        assertEquals(9, ds.getDebitors().size(), "Should have all participants as debtors when allSelected is true");
+    }
+
+    void testIsAllSelected() {
+        ds.setAllSelected(true);
+        assertTrue(ds.isAllSelected(), "isAllSelected should return true after being set to true");
+
+        ds.setAllSelected(false);
+        assertFalse(ds.isAllSelected(), "isAllSelected should return false after being set to false");
+    }
 }
