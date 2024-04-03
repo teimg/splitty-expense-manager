@@ -94,6 +94,23 @@ public class EventOverviewMvTest {
     }
 
     @Test
+    void testEventCommRenameEvent() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, null);
+
+        String newName = "new name";
+        mv.setEvent(event);
+
+        Event renamedEvent = new Event();
+        renamedEvent.setId(554L);
+
+        when(eventCommunicator.renameEvent(event.getId(), newName)).thenReturn(renamedEvent);
+
+        Event result = mv.eventCommRenameEvent(newName);
+        verify(eventCommunicator).renameEvent(event.getId(), newName);
+        assertEquals(renamedEvent, result);
+    }
+
+    @Test
     void eventCommunicatorGetEventTest() {
         EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
         mv.setEvent(event);
