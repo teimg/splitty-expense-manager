@@ -24,9 +24,4 @@ public class EmailController {
         return ResponseEntity.ok(request);
     }
 
-    @GetMapping
-    public EmailRequest getAll() {
-        return service.getAll();
-    }
-
 }

@@ -120,16 +120,9 @@ public class EventController {
             Event updated = service.update(e);
 
             return ResponseEntity.ok(updated);
-        } else return ResponseEntity.notFound().build();
-    }
-    @PutMapping("/rename/{id}")
-    public ResponseEntity<Event> renameEvent(@PathVariable long id, @RequestBody String newName) {
-        return service.getById(id)
-                .map(event -> {
-                    event.setName(newName);
-                    Event updatedEvent = service.update(event);
-                    return ResponseEntity.ok(updatedEvent);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

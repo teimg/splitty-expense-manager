@@ -97,7 +97,7 @@ public class ExpenseController {
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // should intercept a error in with duplicated id
+    // should intercept an error in with duplicated id
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handle(Exception e) {

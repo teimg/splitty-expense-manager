@@ -36,7 +36,9 @@ public class TagService {
 
     public Optional<Tag> remove(long id) {
         Optional<Tag> tag = getById(id);
-        if (tag.isPresent()) repo.deleteById(id);
+        if (tag.isPresent()) {
+            repo.deleteById(id);
+        }
         return tag;
     }
 

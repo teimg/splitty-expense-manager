@@ -26,7 +26,6 @@
                            <children>
                               <ListView fx:id="expensesList" layoutX="21.0" layoutY="210.0" prefHeight="138.0" prefWidth="409.0" />
                               <Button fx:id="sendInviteButton" layoutX="340.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleSendInvites" text="Send Invites" AnchorPane.rightAnchor="25.0" />
-                              <Button fx:id="renameEventButton" layoutX="240" layoutY="10" mnemonicParsing="false" onAction="#handleRenameEvent" text="Rename Event"/>
                               <Label fx:id="participantsLabel" layoutX="14.0" layoutY="79.0" text="Participants">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
