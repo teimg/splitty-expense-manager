@@ -32,15 +32,6 @@ public class TagCommunicator implements ITagCommunicator {
     }
 
     @Override
-    public List<Tag> getAllTags() {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(origin).path("api/tags")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Tag>>() {});
-    }
-
-    @Override
     public Tag getTag(long id) {
         return ClientBuilder.newClient()
                 .target(origin).path("api/tags/{id}")

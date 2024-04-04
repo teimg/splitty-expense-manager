@@ -9,8 +9,6 @@ public interface ITagCommunicator {
 
     Tag createTag(Tag tag);
 
-    List<Tag> getAllTags();
-
     Tag getTag(long id);
 
     Tag deleteTag(long id);
