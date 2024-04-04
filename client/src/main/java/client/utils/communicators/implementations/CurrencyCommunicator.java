@@ -32,7 +32,7 @@ public class CurrencyCommunicator implements ICurrencyCommunicator {
                     .accept(APPLICATION_JSON)
                     .get(Double.class);
         }
-        catch (BadRequestException e) {
+        catch (Exception e) {
             throw new IllegalArgumentException("Currency Error - Cannot Convert");
         }
     }
