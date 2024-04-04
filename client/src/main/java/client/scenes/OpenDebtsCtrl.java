@@ -6,11 +6,9 @@ import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Participant;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
