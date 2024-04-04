@@ -49,6 +49,7 @@ public class AddEditExpenseMv {
     private final IEventCommunicator eventCommunicator;
     private final ITagCommunicator tagCommunicator;
 
+    private Exchanger exchanger;
 
     @Inject
     public AddEditExpenseMv(IExpenseCommunicator expenseCommunicator,
@@ -77,9 +78,10 @@ public class AddEditExpenseMv {
         }
     }
 
-    public void loadExpense( Expense expense) {
+    public void loadExpense(Expense expense, Exchanger exchanger) {
         this.event = event;
         this.expense = expense;
+        this.exchanger = exchanger;
 
         for(var x : debtors.get()){
 
@@ -107,9 +109,13 @@ public class AddEditExpenseMv {
         descriptionField.setValue(expense.getPurchase());
         whoPaidField.setValue(expense.getPayer());
         descriptionField.setValue(expense.getPurchase());
-        priceField.setValue(String.valueOf(expense.getAmount()));
+        priceField.setValue(String.valueOf(
+                Math.round(exchanger.getStandardConversion(
+                        expense.getAmount(), LocalDate.now()) * 100.0)/100.0
+        ));
         dateField.set(expense.getDate());
         tagField.set(expense.getTag());
+        currencyField.setValue(exchanger.getCurrentCurrency());
     }
 
     @SuppressWarnings("unchecked")
@@ -242,11 +248,9 @@ public class AddEditExpenseMv {
 
     /**
      * Creates expense
-     * @param exchanger - exchanger
      * @return expense
      */
-    public Expense createExpense(Exchanger exchanger){
-        String cur = getCur();
+    public Expense createExpense(){
         expenseBuilder.setPayer(getPayer());
         expenseBuilder.setPurchase(getPurchase());
         expenseBuilder.setDate(getDateFieldValue());

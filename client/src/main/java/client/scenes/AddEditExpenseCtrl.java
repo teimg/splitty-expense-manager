@@ -204,7 +204,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     public void loadInfo(Event event, Expense expense) {
         loadInfo(event);
 
-        addEditExpenseMv.loadExpense(expense);
+        addEditExpenseMv.loadExpense(expense, mainCtrl.getExchanger());
     }
 
     public void loadInfo(Event event) {
@@ -423,7 +423,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     public void createExpense(){
         try {
-            Expense added = addEditExpenseMv.createExpense(mainCtrl.getExchanger());
+            Expense added = addEditExpenseMv.createExpense();
             Event res = addEditExpenseMv.getEvent();
             addEditExpenseMv.clear();
             clear();
