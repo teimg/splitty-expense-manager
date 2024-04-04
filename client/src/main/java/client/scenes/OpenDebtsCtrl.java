@@ -17,7 +17,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     private Label titleLabel;
 
     @FXML
-    private Label positiveBalancesTitle;
+    private Label titleLabel1;
 
     @FXML
     private Label noDebtMessage;
@@ -32,9 +32,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     private ScrollPane scrollPlane;
 
     @FXML
-    private ListView<Participant> positiveBalanceParticipantsList;
-
-
+    private ListView<Participant> expensesList;
 
 
     private final MainCtrl mainCtrl;
@@ -55,8 +53,8 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         noDebtMessage.setVisible(openDebtsMv.checkVisibility());
         accordionDebts.setVisible(!openDebtsMv.checkVisibility());
         scrollPlane.setVisible(!openDebtsMv.checkVisibility());
-        positiveBalanceParticipantsList.setVisible(!openDebtsMv.checkVisibility());
-        positiveBalancesTitle.setVisible(!openDebtsMv.checkVisibility());
+        expensesList.setVisible(!openDebtsMv.checkVisibility());
+        titleLabel1.setVisible(!openDebtsMv.checkVisibility());
         updateAccordion(openDebtsMv.getPanes());
     }
 
@@ -79,7 +77,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
                 "OpenDebts.NoDebtsMessage-label"));;
         abortButton.setText(mainCtrl.getTranslator().getTranslation(
             "OpenDebts.Abort-button"));
-        positiveBalancesTitle.setText(mainCtrl.getTranslator().getTranslation(
+        titleLabel1.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.PositiveBalanceTitle-label"));
         loadInfo(event);
     }
