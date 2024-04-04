@@ -1,5 +1,6 @@
 package client.ModelView;
 
+import client.currency.Exchanger;
 import client.utils.ExpenseBuilder;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
@@ -59,7 +60,7 @@ public class AddEditExpenseMv {
 
         priceField = new SimpleStringProperty("");
         descriptionField = new SimpleStringProperty("");
-        currencyField = new SimpleStringProperty("");
+        currencyField = new SimpleStringProperty("USD");
         evenlyCheckbox = new SimpleBooleanProperty(true);
         dateField = new SimpleObjectProperty<>(LocalDate.now());
         whoPaidField = new SimpleObjectProperty<>();
@@ -216,6 +217,16 @@ public class AddEditExpenseMv {
         return res;
     }
 
+    public String getCur(){
+        String cur = currencyField.getValue();
+
+        if(cur == null || cur.isEmpty()){
+            throw new IllegalArgumentException("SelectACurrency");
+        }
+
+        return cur;
+    }
+
     private Expense updateExpense() {
         Expense res = expenseBuilder.build();
 
@@ -230,15 +241,19 @@ public class AddEditExpenseMv {
 
 
     /**
-     * create the final expense
-     *
-     * @return an expense
+     * Creates expense
+     * @param exchanger - exchanger
+     * @return expense
      */
-    public Expense createExpense(){
+    public Expense createExpense(Exchanger exchanger){
+        String cur = getCur();
         expenseBuilder.setPayer(getPayer());
         expenseBuilder.setPurchase(getPurchase());
         expenseBuilder.setDate(getDateFieldValue());
-        expenseBuilder.setAmount(getPriceFieldValue());
+        expenseBuilder.setAmount(
+                (long) exchanger.getExchangeAgainstNew(
+                        getPriceFieldValue(), getCur(), getDateFieldValue())
+        );
         expenseBuilder.setDebtors(getDebtors());
         expenseBuilder.setTag(getTag());
         expenseBuilder.setEventId(event.getId());

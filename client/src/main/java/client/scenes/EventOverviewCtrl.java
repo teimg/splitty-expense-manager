@@ -28,6 +28,7 @@ import javafx.scene.text.Text;
 
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -89,7 +90,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                     + expense.getPayer().getName() + " " + mainCtrl.getTranslator()
                     .getTranslation("EventOverview.ExpenseLabel-paid")
                     + " " + Math.round(mainCtrl.getExchanger().getStandardConversion(
-                            expense.getAmount(), expense.getDate()) * 100.0) / 100.0
+                            expense.getAmount(), LocalDate.now()) * 100.0) / 100.0
                     + mainCtrl.getExchanger().getCurrentSymbol() + " " + mainCtrl.getTranslator()
                     .getTranslation("EventOverview.ExpenseLabel-for") +
                     " " + expense.getPurchase() + "\n");

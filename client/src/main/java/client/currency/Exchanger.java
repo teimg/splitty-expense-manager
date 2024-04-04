@@ -26,7 +26,8 @@ public class Exchanger {
 
     public double getExchangeAgainstNew(double amount, String currency, LocalDate date) {
         if (currency.equals("USD")) return amount;
-        return (1/currencyCommunicator.getConversion(amount, currency, date));
+        double rate = amount/currencyCommunicator.getConversion(amount, currency, date);
+        return (rate*amount);
     }
 
     public void setCurrentCurrency(String amount) {
