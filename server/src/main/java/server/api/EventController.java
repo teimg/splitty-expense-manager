@@ -50,7 +50,7 @@ public class EventController {
 
     @PostMapping("/restoreEvent")
     public ResponseEntity<Event> restoreEvent(@RequestBody Event event) {
-        if (eventService.exists(event.getId())) {
+        if (eventService.existsByInviteCode(event.getInviteCode())) {
             return ResponseEntity.badRequest().build();
         }
 

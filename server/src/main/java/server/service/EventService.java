@@ -77,8 +77,8 @@ public class EventService {
         return repo.findById(id);
     }
 
-    public boolean exists(Long id) {
-        return repo.existsById(id);
+    public boolean existsByInviteCode(String inviteCode) {
+        return repo.existsByInviteCode(inviteCode);
     }
 
     public List<Event> getAll() {
