@@ -33,9 +33,9 @@ public class StatisticsScreenMv {
         Map<Tag, Double> entries = new HashMap<>();
         this.totalPrice = 0;
         for (Expense expense : event.getExpenses()) {
-            totalPrice = totalPrice + expense.getAmount();
             Tag tag = expense.getTag();
             if (tag != null) {
+                totalPrice = totalPrice + expense.getAmount();
                 if (entries.containsKey(tag)) {
                     double currentSum = entries.get(tag);
                     entries.put(tag, currentSum + expense.getAmount());
