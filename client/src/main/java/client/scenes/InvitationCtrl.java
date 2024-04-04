@@ -3,6 +3,7 @@ package client.scenes;
 import client.ModelView.InvitationMv;
 import client.dialog.ConfPopup;
 import client.language.LanguageSwitch;
+import client.nodes.UIIcon;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
@@ -65,7 +66,7 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
             container = new HBox();
             email = new Label();
             filler = new Pane();
-            deleteButton = new Button("Delete");
+            deleteButton = new Button("", UIIcon.icon(UIIcon.NAME.DELETE));
             HBox.setHgrow(filler, Priority.ALWAYS);
             container.getChildren().addAll(email, filler, deleteButton);
         }
