@@ -28,7 +28,7 @@ public class DebtsBuilder {
 
     private ArrayList<Debt> debts;
 
-    private Map<Participant, Double> positiveBalances;
+    private ArrayList<Participant> positiveBalances;
 
     private ArrayList<TitledPane> panes;
 
@@ -48,7 +48,8 @@ public class DebtsBuilder {
                         MainCtrl mainCtrl) {
         this.event = event;
         this.debts = new ArrayList<>();
-        this.positiveBalances = new HashMap<>();
+//        this.positiveBalances = new HashMap<>();
+        this.positiveBalances = new ArrayList<>();
         this.panes = new ArrayList<>();
         this.translator = translator;
         this.emailCommunicator = emailCommunicator;
@@ -66,6 +67,10 @@ public class DebtsBuilder {
 
     public ArrayList<TitledPane> getPanes() {
         return panes;
+    }
+
+    public ArrayList<Participant> getPositiveBalances() {
+        return positiveBalances;
     }
 
     public ArrayList<Debt> findDebts() {
@@ -177,18 +182,20 @@ public class DebtsBuilder {
         return balanceChange;
     }
 
-    public Map<Participant, Double> findPositiveBalances() {
+    public ArrayList<Participant> findPositiveBalances() {
         Map<Participant, Double> allBalances = findBalanceChange();
-        Map<Participant, Double> negative = new HashMap<>();
-        Map<Participant, Double> nonNegative = new HashMap<>();
+        ArrayList<Participant> negative = new ArrayList<>();
+        ArrayList<Participant> nonNegative = new ArrayList<>();
 
 
         for (Map.Entry<Participant, Double> entry : allBalances.entrySet()) {
             if (entry.getValue() < 0) {
-                negative.put(entry.getKey(), entry.getValue());
+//                negative.put(entry.getKey(), entry.getValue());
+                negative.add(entry.getKey());
             }
             else {
-                nonNegative.put(entry.getKey(), entry.getValue());
+//                nonNegative.put(entry.getKey(), entry.getValue());
+                nonNegative.add(entry.getKey());
             }
         }
         positiveBalances = nonNegative;

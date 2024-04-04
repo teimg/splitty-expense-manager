@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
@@ -56,12 +57,19 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         expensesList.setVisible(!openDebtsMv.checkVisibility());
         titleLabel1.setVisible(!openDebtsMv.checkVisibility());
         updateAccordion(openDebtsMv.getPanes());
+        updatePositiveBalances(openDebtsMv.getPositiveBalanceParticipants());
     }
 
     private void updateAccordion(ArrayList<TitledPane> panes) {
         accordionDebts.getPanes().clear();
         accordionDebts.getPanes().addAll(panes);
     }
+
+    private void updatePositiveBalances(ArrayList<Participant> list) {
+        expensesList.getItems().clear();
+        expensesList.getItems().addAll(list);
+    }
+
 
     public void abortButtonPressed() {
         Event res = this.event;
