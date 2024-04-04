@@ -14,6 +14,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -61,7 +62,9 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
         addLabels(entries);
         pieChart.setLegendVisible(false);
         totalCostLabel.setText("The total cost of this event is: "
-                + statisticsScreenMv.getTotalPrice() + "$");
+                + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
+                        statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
+                mainCtrl.getExchanger().getCurrentSymbol());
     }
 
     private void addLabels(Map<Tag, Double> entries) {
@@ -70,7 +73,10 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
             String legend = entry.getKey().getName() + " "
                     + (double) Math.round((entry.getValue()
                         /statisticsScreenMv.getTotalPrice())*10000)/100
-                    + "% " + entry.getValue() + "$";
+                    + "% " +
+                    statisticsScreenMv.rounder(mainCtrl.getExchanger().
+                            getStandardConversion(entry.getValue(),
+                            LocalDate.now())) + mainCtrl.getExchanger().getCurrentSymbol();
             PieChart.Data slice = new PieChart.Data(legend, entry.getValue());
             //For some reason this is required. This is as the PieChart.Data
             //is lazy and isn't immediately constructed. Very weird.
@@ -93,9 +99,10 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
     public void setLanguage() {
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Title-label"));
-        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StatisticsScreen.Total-Cost-label")
-                + " " + statisticsScreenMv.getTotalPrice() + "$");
+        totalCostLabel.setText("The total cost of this event is: "
+                + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
+                statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
+                mainCtrl.getExchanger().getCurrentSymbol());
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(

@@ -74,9 +74,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 return;
             }
 
-
             setLanguage(mainCtrl.getTranslator());
-
 
             content.setText(expenseDescription(expense));
             editButton.setOnAction(actionEvent -> {
@@ -90,7 +88,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             StringBuilder desc = new StringBuilder(expense.getDate().toString() + "    "
                     + expense.getPayer().getName() + " " + mainCtrl.getTranslator()
                     .getTranslation("EventOverview.ExpenseLabel-paid")
-                    + " " + expense.getAmount() + "$ " + mainCtrl.getTranslator()
+                    + " " + Math.round(mainCtrl.getExchanger().getStandardConversion(
+                            expense.getAmount(), expense.getDate()) * 100.0) / 100.0
+                    + mainCtrl.getExchanger().getCurrentSymbol() + " " + mainCtrl.getTranslator()
                     .getTranslation("EventOverview.ExpenseLabel-for") +
                     " " + expense.getPurchase() + "\n");
             desc.append(" ".repeat(32));
@@ -103,9 +103,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             return desc.toString();
         }
     }
-
-
-
 
     @FXML
     private Text eventTitle;

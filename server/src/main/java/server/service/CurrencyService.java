@@ -45,9 +45,9 @@ public class CurrencyService {
     public Optional<Double> getExchangeRate(double amount, String currency, LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         String dateString = formatter.format(date);
-        Optional<Double> cache = fetchInCache(amount, currency, dateString);
+        Optional<Double> cache = fetchInCache(currency, dateString);
         if (cache.isPresent()) {
-            return cache;
+            return Optional.of(cache.get()*amount);
         }
         String url;
         if (date.equals(LocalDate.now())) {
@@ -97,7 +97,7 @@ public class CurrencyService {
         return ratesNode.get(currency).asDouble();
     }
 
-    private Optional<Double> fetchInCache(double amount, String currency, String dateString) {
+    private Optional<Double> fetchInCache(String currency, String dateString) {
         try {
             BufferedReader bufferedReader = bufferedReaderSupplier.getBufferedReader();
             String line;

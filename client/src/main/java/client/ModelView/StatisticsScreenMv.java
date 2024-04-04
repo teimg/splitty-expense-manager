@@ -46,4 +46,9 @@ public class StatisticsScreenMv {
         }
         return entries;
     }
+
+    public double rounder(double amount) {
+        return Math.round(amount * 100.0)/100.0;
+    }
+
 }
