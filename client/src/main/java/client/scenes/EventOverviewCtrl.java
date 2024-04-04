@@ -10,7 +10,6 @@ import client.nodes.UIIcon;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
-import commons.EventChange;
 import commons.Expense;
 
 

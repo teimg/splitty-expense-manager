@@ -20,7 +20,7 @@ public class EventOverviewMv {
 
     private final IParticipantCommunicator participantCommunicator;
 
-    private final IExpenseCommunicator expenseComunicator;
+    private final IExpenseCommunicator expenseCommunicator;
 
 
     private Event event;
@@ -34,7 +34,7 @@ public class EventOverviewMv {
                            IExpenseCommunicator expenseCommunicator) {
         this.eventCommunicator = eventCommunicator;
         this.participantCommunicator = participantCommunicator;
-        this.expenseComunicator = expenseCommunicator;
+        this.expenseCommunicator = expenseCommunicator;
     }
 
 
@@ -87,7 +87,7 @@ public class EventOverviewMv {
     }
 
     public void deleteEvent(long id) {
-        expenseComunicator.deleteExpense(id);
+        expenseCommunicator.deleteExpense(id);
         eventCommunicator.updateEvent(event);
 
     }
