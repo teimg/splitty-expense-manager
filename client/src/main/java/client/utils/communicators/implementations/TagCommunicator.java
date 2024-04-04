@@ -6,10 +6,6 @@ import com.google.inject.Inject;
 import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.core.GenericType;
-import org.glassfish.jersey.client.ClientConfig;
-
-import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -29,15 +25,6 @@ public class TagCommunicator implements ITagCommunicator {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
-    }
-
-    @Override
-    public List<Tag> getAllTags() {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(origin).path("api/tags")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Tag>>() {});
     }
 
     @Override

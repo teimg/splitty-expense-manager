@@ -26,7 +26,6 @@ import client.scenes.*;
 import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
 
-import commons.Tag;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -81,10 +80,6 @@ public class Main extends Application {
                     FXML.load(TagScreenCtrl.class, "client", "scenes", "TagScreen.fxml"));
 
             mainCtrl.initialize(primaryStage, sceneMap);
-
-            tagCommunicator.saveOrUpdateTag(new Tag("Food", 82, 168, 50));
-            tagCommunicator.saveOrUpdateTag(new Tag("Entrance Fees", 50, 52, 168));
-            tagCommunicator.saveOrUpdateTag(new Tag("Travel", 204, 22, 41));
         }
         catch (RuntimeException e) {
             new Popup(mainCtrl.getTranslator().getTranslation

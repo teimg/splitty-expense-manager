@@ -188,8 +188,13 @@ public class MainCtrl {
      // TODO: ADD CUSTOM METHODS SUCH AS SEEN ABOVE TO EACH OF THESE.
      // TODO: ALSO ADDING ANY NEW SCENE
     public void showAddEditExpense(Event event) {
-        show("AddEditExpense");
-        ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event);
+        if ((this.currentCtrl.getValue()) instanceof TagScreenCtrl) {
+            show("AddEditExpense");
+            ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).updateTags(event);
+        } else {
+            show("AddEditExpense");
+            ((AddEditExpenseCtrl) (this.currentCtrl.getValue())).loadInfo(event);
+        }
         this.currentCtrl.getValue().setLanguage();
     }
 

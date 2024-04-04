@@ -69,12 +69,16 @@ public class AddEditExpenseMv {
         debtors = new SimpleObjectProperty<>(FXCollections.observableArrayList());
     }
 
-    public void loadInfo(Event event, Exchanger exchanger) {
+    public void updateEvent(Event event) {
+        this.event = eventCommunicator.getEvent(event.getId());
+    }
+
+    public void loadInfo(Event event) {
         this.event = event;
         this.exchanger = exchanger;
         expenseBuilder = new ExpenseBuilder();
 
-        for(var x : event.getParticipants()){
+        for (var x : event.getParticipants()){
             debtors.get().add(new Pair<>(x,  new SimpleBooleanProperty(false)));
         }
     }
@@ -317,7 +321,7 @@ public class AddEditExpenseMv {
     }
 
     public List<Tag> getTags(){
-        return tagCommunicator.getAllTags();
+        return event.getTags();
     }
 
     public Event getEvent() {
