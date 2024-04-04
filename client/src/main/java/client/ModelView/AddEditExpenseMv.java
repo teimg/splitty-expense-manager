@@ -211,6 +211,10 @@ public class AddEditExpenseMv {
             }
         }
 
+        if(res.isEmpty()){
+            throw  new IllegalArgumentException("NoSelectedDebtors");
+        }
+
         return res;
     }
 
