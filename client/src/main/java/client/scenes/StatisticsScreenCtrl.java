@@ -109,6 +109,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
                 "StatisticsScreen.Back-Button"));
         noExpensesLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.NoExpense-label"));
+        loadInfo(statisticsScreenMv.getEvent());
     }
 
     public void handleBack(ActionEvent actionEvent) {

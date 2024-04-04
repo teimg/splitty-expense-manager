@@ -200,11 +200,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         this.eventOverviewMv = eventOverviewMv;
     }
 
-
-
-
-
-
     @Override
     public void setLanguage() {
         inviteCodeLabel.setText(mainCtrl.getTranslator().getTranslation(

@@ -276,7 +276,7 @@ public class MainCtrl {
     public void updateExchanger(String currency) {
         exchanger.setCurrentCurrency(currency);
         config.setCurrency(exchanger.getCurrentCurrency());
-        SceneWrapper currentSceneWrapper = this.scenes.get(currentCtrl.getKey());
+        currentCtrl.getValue().setLanguage();
     }
 
 }
