@@ -69,7 +69,7 @@ public class ExpenseBuilderTest {
 
     @Test
     public void tagTest() {
-        Tag t = new Tag("Tag", 1,1 , 1);
+        Tag t = new Tag("Tag", 1,1 , 1, 1L);
         eb.setTag(t);
         assertEquals(t, eb.getTag());
     }
@@ -123,7 +123,7 @@ public class ExpenseBuilderTest {
         eb.setPayer(p);
         Participant p2 = new Participant("Name");
         Participant p3 = new Participant("Second");
-        Tag t = new Tag("Tag", 1,1 , 1);
+        Tag t = new Tag("Tag", 1,1 , 1, 1L);
         eb.setTag(t);
         eb.setDebtors(List.of(p2, p3));
         eb.setDate(LocalDate.of(1, 1, 1));
@@ -144,7 +144,7 @@ public class ExpenseBuilderTest {
         eb.setPayer(p);
         Participant p2 = new Participant("Name");
         Participant p3 = new Participant("Second");
-        Tag t = new Tag("Tag", 1,1 , 1);
+        Tag t = new Tag("Tag", 1,1 , 1, 1L);
         eb.setTag(t);
         eb.setDebtors(List.of(p2, p3));
         eb.setDate(LocalDate.of(1, 1, 1));

@@ -29,7 +29,7 @@ public class TagServiceTest {
 
     @BeforeEach
     public void setUp() {
-        this.tag = new Tag("Test", 10, 10, 10);
+        this.tag = new Tag("Test", 10, 10, 10, null);
     }
 
     @Test

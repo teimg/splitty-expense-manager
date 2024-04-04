@@ -64,7 +64,8 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch {
                 tagCommunicator.createTag(new Tag(tagNameField.getText(),
                         (int) Math.round(colorPicker.getValue().getRed()*255),
                         (int) Math.round(colorPicker.getValue().getGreen()*255),
-                        (int) Math.round(colorPicker.getValue().getBlue()*255)));
+                        (int) Math.round(colorPicker.getValue().getBlue()*255),
+                        event.getId()));
                 mainCtrl.showAddEditExpense(event);
             }
         }
@@ -77,7 +78,8 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch {
                 Tag updated = new Tag(tagNameField.getText(),
                         (int) Math.round(colorPicker.getValue().getRed()*255),
                         (int) Math.round(colorPicker.getValue().getGreen()*255),
-                        (int) Math.round(colorPicker.getValue().getBlue()*255));
+                        (int) Math.round(colorPicker.getValue().getBlue()*255),
+                        event.getId());
                 updated.setId(tag.getId());
                 tagCommunicator.updateTag(updated);
                 mainCtrl.showAddEditExpense(event);
