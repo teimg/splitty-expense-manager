@@ -208,7 +208,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     }
 
     public void loadInfo(Event event) {
-        addEditExpenseMv.loadInfo(event);
+        addEditExpenseMv.loadInfo(event, mainCtrl.getExchanger());
 
         initWhoPaid();
         initTag();
@@ -326,7 +326,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         currencyField.getItems().add("EUR");
         currencyField.getItems().add("CHF");
         currencyField.getItems().add("JPY");
-        currencyField.setValue("USD");
+        currencyField.setValue("");
 
     }
 
@@ -388,16 +388,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         return res;
     }
 
-    public String getCur(){
-        String cur = currencyField.getValue();
-
-        if(cur == null || cur.isEmpty()){
-            throw new IllegalArgumentException("currency");
-        }
-
-        return cur;
-    }
-
     private void handleTagColorUpdate(ActionEvent actionEvent) {
         Tag curTag = tagField.getValue();
         if (curTag != null) {
@@ -409,9 +399,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     }
 
     public void addButtonPressed(){
-        String cur = getCur();
         createExpense();
-
     }
 
     public void abortButtonPressed(ActionEvent actionEvent) {

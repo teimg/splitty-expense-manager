@@ -61,7 +61,7 @@ public class AddEditExpenseMv {
 
         priceField = new SimpleStringProperty("");
         descriptionField = new SimpleStringProperty("");
-        currencyField = new SimpleStringProperty("USD");
+        currencyField = new SimpleStringProperty("");
         evenlyCheckbox = new SimpleBooleanProperty(true);
         dateField = new SimpleObjectProperty<>(LocalDate.now());
         whoPaidField = new SimpleObjectProperty<>();
@@ -69,8 +69,9 @@ public class AddEditExpenseMv {
         debtors = new SimpleObjectProperty<>(FXCollections.observableArrayList());
     }
 
-    public void loadInfo(Event event) {
+    public void loadInfo(Event event, Exchanger exchanger) {
         this.event = event;
+        this.exchanger = exchanger;
         expenseBuilder = new ExpenseBuilder();
 
         for(var x : event.getParticipants()){
