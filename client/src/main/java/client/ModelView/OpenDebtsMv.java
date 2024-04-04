@@ -8,6 +8,7 @@ import client.utils.communicators.implementations.ExpenseCommunicator;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
+import commons.Participant;
 import javafx.scene.control.TitledPane;
 import java.util.ArrayList;
 
@@ -20,6 +21,8 @@ public class OpenDebtsMv {
     private ArrayList<Debt> debts;
 
     private ArrayList<TitledPane> panes;
+
+    private ArrayList<Participant> positiveBalanceParticipants;
 
     @Inject
     public OpenDebtsMv(EmailCommunicator emailCommunicator,
@@ -46,5 +49,13 @@ public class OpenDebtsMv {
 
     public ArrayList<Debt> getDebts() {
         return debts;
+    }
+
+    public ArrayList<Participant> getPositiveBalanceParticipants() {
+        return positiveBalanceParticipants;
+    }
+
+    public void setPositiveBalanceParticipants(ArrayList<Participant> positiveBalanceParticipants) {
+        this.positiveBalanceParticipants = positiveBalanceParticipants;
     }
 }

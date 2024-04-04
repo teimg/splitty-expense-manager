@@ -28,6 +28,8 @@ public class DebtsBuilder {
 
     private ArrayList<Debt> debts;
 
+    private Map<Participant, Double> positiveBalances;
+
     private ArrayList<TitledPane> panes;
 
     private final Event event;
@@ -46,6 +48,7 @@ public class DebtsBuilder {
                         MainCtrl mainCtrl) {
         this.event = event;
         this.debts = new ArrayList<>();
+        this.positiveBalances = new HashMap<>();
         this.panes = new ArrayList<>();
         this.translator = translator;
         this.emailCommunicator = emailCommunicator;
@@ -54,6 +57,7 @@ public class DebtsBuilder {
         findDebts();
         simplifyDebts();
         simplifyTransitiveNature();
+        findPositiveBalances();
     }
 
     public ArrayList<Debt> getDebts() {
@@ -171,6 +175,24 @@ public class DebtsBuilder {
             }
         }
         return balanceChange;
+    }
+
+    public Map<Participant, Double> findPositiveBalances() {
+        Map<Participant, Double> allBalances = findBalanceChange();
+        Map<Participant, Double> negative = new HashMap<>();
+        Map<Participant, Double> nonNegative = new HashMap<>();
+
+
+        for (Map.Entry<Participant, Double> entry : allBalances.entrySet()) {
+            if (entry.getValue() < 0) {
+                negative.put(entry.getKey(), entry.getValue());
+            }
+            else {
+                nonNegative.put(entry.getKey(), entry.getValue());
+            }
+        }
+        positiveBalances = nonNegative;
+        return positiveBalances;
     }
 
     public boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {

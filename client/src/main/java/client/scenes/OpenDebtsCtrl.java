@@ -5,6 +5,8 @@ import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Participant;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private Label titleLabel;
+
+    @FXML
+    private Label positiveBalancesTitle;
 
     @FXML
     private Label noDebtMessage;
@@ -25,6 +30,12 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
     @FXML
     private ScrollPane scrollPlane;
+
+    @FXML
+    private ListView<Participant> positiveBalanceParticipantsList;
+
+
+
 
     private final MainCtrl mainCtrl;
 
@@ -44,6 +55,8 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         noDebtMessage.setVisible(openDebtsMv.checkVisibility());
         accordionDebts.setVisible(!openDebtsMv.checkVisibility());
         scrollPlane.setVisible(!openDebtsMv.checkVisibility());
+        positiveBalanceParticipantsList.setVisible(!openDebtsMv.checkVisibility());
+        positiveBalancesTitle.setVisible(!openDebtsMv.checkVisibility());
         updateAccordion(openDebtsMv.getPanes());
     }
 
@@ -66,6 +79,8 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
                 "OpenDebts.NoDebtsMessage-label"));;
         abortButton.setText(mainCtrl.getTranslator().getTranslation(
             "OpenDebts.Abort-button"));
+        positiveBalancesTitle.setText(mainCtrl.getTranslator().getTranslation(
+                "OpenDebts.PositiveBalanceTitle-label"));
         loadInfo(event);
     }
 
