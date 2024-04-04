@@ -1,8 +1,8 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,8 +24,12 @@ public class Tag {
 
     private int blue;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Expense> expenses;
+    @JsonIgnore
+    @JoinColumn(name = "event_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Event event;
+    @Column(name = "event_id")
+    private Long eventId;
 
     /**
      * General constructor
@@ -35,27 +39,28 @@ public class Tag {
      * @param blue - int
      *
      */
-    public Tag(String name, int red, int green, int blue) {
+//    public Tag(String name, int red, int green, int blue) {
+//        this.name = name;
+//        this.red = red;
+//        this.green = green;
+//        this.blue = blue;
+//    }
+
+
+    public Tag(String name, int red, int green, int blue, Long eventId) {
         this.name = name;
         this.red = red;
         this.green = green;
         this.blue = blue;
+        this.eventId = eventId;
     }
 
-    /**
-     * Overloaded constructor
-     * @param name - label name
-     * @param red - int
-     * @param green - int
-     * @param blue - int
-     * @param expenses - list of expenses
-     */
-    public Tag(String name, int red, int green, int blue, List<Expense> expenses) {
-        this.name = name;
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.expenses = expenses;
+    public Tag(Tag tag) {
+        this.name = tag.name;
+        this.red = tag.red;
+        this.green = tag.green;
+        this.blue = tag.blue;
+        this.eventId = tag.eventId;
     }
 
     /**
@@ -103,12 +108,12 @@ public class Tag {
         this.id = id;
     }
 
-    public List<Expense> getExpenses() {
-        return expenses;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setExpenses(List<Expense> expenses) {
-        this.expenses = expenses;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     @Override
@@ -139,7 +144,6 @@ public class Tag {
         result = 31 * result + red;
         result = 31 * result + green;
         result = 31 * result + blue;
-        result = 31 * result + (expenses != null ? expenses.hashCode() : 0);
         return result;
     }
 }

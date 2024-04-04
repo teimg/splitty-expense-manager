@@ -3,6 +3,7 @@ package commons;
 import jakarta.persistence.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 @Entity
 public class Event {
@@ -18,6 +19,9 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tag> tags;
 
     private Date creationDate;
     private Date lastActivity;
@@ -39,12 +43,14 @@ public class Event {
         this.creationDate = creationDate;
         this.lastActivity = lastActivity;
         this.expenses = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     public Event(String name) {
         this.name = name;
         participants = new ArrayList<>();
         expenses = new ArrayList<>();
+        tags = new ArrayList<>();
     }
 
     public Event() {
@@ -162,6 +168,14 @@ public class Event {
      */
     public void addExpense(Expense expense) {
         expenses.add(expense);
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
+
+    public List<Tag> getTags() {
+        return tags;
     }
 
     @Override
