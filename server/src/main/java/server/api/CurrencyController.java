@@ -2,10 +2,7 @@ package server.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.service.CurrencyService;
 
 import java.time.LocalDate;
@@ -37,6 +34,15 @@ public class CurrencyController {
         }
         return ResponseEntity.badRequest().build();
 
+    }
+
+    @DeleteMapping(path = {"/cache"})
+    public ResponseEntity<String> clearCache() {
+        Optional<String> res = currencyService.clearCache();
+        if (res.isPresent()) {
+            return ResponseEntity.ok("Cache Cleared Successfully");
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 }

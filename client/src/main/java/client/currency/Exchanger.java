@@ -45,11 +45,11 @@ public class Exchanger {
 
     public String getCurrentSymbol() {
         return switch (currency) {
-            case "USD" -> "$";
-            case "EUR" -> "€";
+            case "USD" -> "\u0024";
+            case "EUR" -> "\u20AC";
             case "CHF" -> "fr.";
-            case "JPY" -> "¥";
-            default -> "ER";
+            case "JPY" -> "\u00A5";
+            default -> "ERROR";
         };
     }
 

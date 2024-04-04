@@ -37,4 +37,14 @@ public class CurrencyCommunicator implements ICurrencyCommunicator {
         }
     }
 
+    @Override
+    public String clearCache() {
+        return ClientBuilder.newClient()
+                .target(origin)
+                .path("api/currency/cache")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete(String.class);
+    }
+
 }

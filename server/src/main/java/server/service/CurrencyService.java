@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.BufferedClearerSupplier;
 import server.BufferedReaderSupplier;
 import server.BufferedWriterSupplier;
 
@@ -28,13 +29,17 @@ public class CurrencyService {
 
     private BufferedWriterSupplier bufferedWriterSupplier;
 
+    private BufferedClearerSupplier bufferedClearerSupplier;
+
     @Autowired
     public CurrencyService(HttpURLConnection httpURLConnection,
                            BufferedReaderSupplier bufferedReader,
-                           BufferedWriterSupplier bufferedWriter) {
+                           BufferedWriterSupplier bufferedWriter,
+                           BufferedClearerSupplier bufferedClearer) {
         this.connection = httpURLConnection;
         this.bufferedReaderSupplier = bufferedReader;
         this.bufferedWriterSupplier = bufferedWriter;
+        this.bufferedClearerSupplier = bufferedClearer;
     }
 
     public void setUrl(String url) throws URISyntaxException, IOException {
@@ -136,4 +141,15 @@ public class CurrencyService {
         }
     }
 
+    public Optional<String> clearCache() {
+        try {
+            BufferedWriter bufferedWriter = bufferedClearerSupplier.getBufferedClearer();
+            bufferedWriter.write("");
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            return Optional.of("Success");
+        } catch (IOException e) {
+            return Optional.empty();
+        }
+    }
 }

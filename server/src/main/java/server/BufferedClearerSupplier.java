@@ -9,14 +9,13 @@ import java.io.FileWriter;
 
 @Component
 @Scope("prototype")
-public class BufferedWriterSupplier {
+public class BufferedClearerSupplier {
 
     @Bean
-    public BufferedWriter getBufferedWriter() {
+    public BufferedWriter getBufferedClearer() {
         BufferedWriter bf = null;
         try {
-            bf = new BufferedWriter(new FileWriter(
-                    "server/src/main/resources/cache/cache.txt", true));
+            bf = new BufferedWriter(new FileWriter("server/src/main/resources/cache/cache.txt"));
         } catch (Exception e) {
             System.out.println("Error");
         }
