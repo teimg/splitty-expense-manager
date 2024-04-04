@@ -31,5 +31,13 @@
                 <MenuItem fx:id="defaultEmail" mnemonicParsing="false" onAction="#checkDefaultEmail" text="Check Default Email" />
             </items>
         </Menu>
+        <Menu fx:id="currency" mnemonicParsing="false" text="Currency">
+            <items>
+                <MenuItem fx:id="usdButton" mnemonicParsing="false" onAction="#setUSD" text="USD (Standard)" />
+                <MenuItem fx:id="eurButton" mnemonicParsing="false" onAction="#setEUR" text="EUR" />
+                <MenuItem fx:id="chfButton" mnemonicParsing="false" onAction="#setCHF" text="CHF" />
+                <MenuItem fx:id="jpyButton" mnemonicParsing="false" onAction="#setJPY" text="JPY" />
+            </items>
+        </Menu>
     </menus>
 </MenuBar>

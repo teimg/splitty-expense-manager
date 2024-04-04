@@ -2,6 +2,7 @@ package server.service;
 
 import commons.Event;
 import commons.EventChange;
+import commons.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,18 @@ public class EventService {
 
     private final EventRepository repo;
     private final EventChangeService eventChangeService;
+    private final List<Tag> defaultTags;
 
     @Autowired
     public EventService(EventRepository repo, EventChangeService eventChangeService) {
         this.repo = repo;
         this.eventChangeService = eventChangeService;
+        defaultTags = List.of(new Tag("Food", 82, 168, 50, null),
+                new Tag("Entrance Fees", 50, 52, 168, null),
+                new Tag("Travel", 204, 22, 41, null));
     }
 
-    private Event save(Event event) {
+    public Event save(Event event) {
         return repo.saveAndFlush(event);
     }
 
@@ -35,6 +40,11 @@ public class EventService {
         event.setLastActivity(event.getCreationDate());
         event = save(event);
         event.setInviteCode(generateInviteCode(event.getId()));
+        for (Tag defaultTag : defaultTags) {
+            Tag eventTag = new Tag(defaultTag);
+            eventTag.setEventId(event.getId());
+            event.addTag(eventTag);
+        }
         event = save(event);
         eventChangeService.sendChange(new EventChange(EventChange.Type.CREATION, event));
         return event;
@@ -53,7 +63,7 @@ public class EventService {
         return randomPart + idPart;
     }
 
-    private static boolean isNullOrEmpty(String s) {
+    public boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 

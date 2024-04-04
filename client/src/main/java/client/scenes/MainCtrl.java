@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.currency.Exchanger;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
@@ -56,17 +57,21 @@ public class MainCtrl {
     private final RecentEventTracker recentEventTracker;
 
     private final SceneWrapperFactory sceneWrapperFactory;
-//    private final MenuBarInjector menuBarInjector;
 
+
+    private final Exchanger exchanger;
 
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
                     RecentEventTracker recentEventTracker,
-                    SceneWrapperFactory sceneWrapperFactory) {
+                    SceneWrapperFactory sceneWrapperFactory,
+                    Exchanger exchanger) {
         this.config = config;
         this.translator = translator;
+        this.exchanger = exchanger;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
+            this.exchanger.setCurrentCurrency(config.getCurrency());
         }
         this.recentEventTracker = recentEventTracker;
         this.sceneWrapperFactory = sceneWrapperFactory;
@@ -191,8 +196,13 @@ public class MainCtrl {
      // TODO: ADD CUSTOM METHODS SUCH AS SEEN ABOVE TO EACH OF THESE.
      // TODO: ALSO ADDING ANY NEW SCENE
     public void showAddEditExpense(Event event) {
-        show("AddEditExpense");
-        ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).loadInfo(event);
+        if ((this.currentCtrl.getValue()) instanceof TagScreenCtrl) {
+            show("AddEditExpense");
+            ((AddEditExpenseCtrl)(this.currentCtrl.getValue())).updateTags(event);
+        } else {
+            show("AddEditExpense");
+            ((AddEditExpenseCtrl) (this.currentCtrl.getValue())).loadInfo(event);
+        }
         this.currentCtrl.getValue().setLanguage();
     }
 
@@ -275,4 +285,15 @@ public class MainCtrl {
     public BorderPane getBaseScene() {
         return baseScene;
     }
+
+    public Exchanger getExchanger() {
+        return exchanger;
+    }
+
+    public void updateExchanger(String currency) {
+        exchanger.setCurrentCurrency(currency);
+        config.setCurrency(exchanger.getCurrentCurrency());
+        currentCtrl.getValue().setLanguage();
+    }
+
 }

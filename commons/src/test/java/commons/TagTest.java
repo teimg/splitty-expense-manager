@@ -16,9 +16,9 @@ public class TagTest {
 
     @BeforeEach
     public void setUp() {
-        this.tag = new Tag("Tag", 10, 10, 10);
-        this.tagTwo = new Tag("Tag", 10, 10, 10);
-        this.tagThree = new Tag("Tag2", 10, 10, 101);
+        this.tag = new Tag("Tag", 10, 10, 10, null);
+        this.tagTwo = new Tag("Tag", 10, 10, 10, null);
+        this.tagThree = new Tag("Tag2", 10, 10, 101, null);
     }
 
     @Test
@@ -29,12 +29,6 @@ public class TagTest {
     @Test
     public void constructorJPATest() {
         Tag tag = new Tag();
-        assertNotNull(tag);
-    }
-
-    @Test
-    public void constructorExpenseTest() {
-        Tag tag = new Tag("hello", 12, 13, 14, new ArrayList<>());
         assertNotNull(tag);
     }
 
@@ -85,12 +79,6 @@ public class TagTest {
     public void testIDSetter() {
         this.tag.setId(873465087);
         assertEquals(this.tag.getId(), 873465087);
-    }
-
-    @Test
-    public void testExpenseSetter() {
-        this.tag.setExpenses(new ArrayList<>());
-        assertEquals(this.tag.getExpenses(), new ArrayList<>());
     }
 
     @Test

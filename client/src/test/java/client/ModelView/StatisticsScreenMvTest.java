@@ -33,8 +33,8 @@ public class StatisticsScreenMvTest {
 
     @Test
     public void testFillEntries() {
-        Tag tag1 = new Tag("Tag1", 1,1,1);
-        Tag tag2 = new Tag("Tag2",1,1,1);
+        Tag tag1 = new Tag("Tag1", 1,1,1, event.getId());
+        Tag tag2 = new Tag("Tag2",1,1,1, event.getId());
 
         Expense expense1 = new Expense(1L, "Expense 1", 100.0, null, null, null, tag1);
         Expense expense2 = new Expense(2L, "Expense 2", 200.0, null, null, null, tag2);

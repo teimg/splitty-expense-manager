@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.currency.Exchanger;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
@@ -53,13 +54,13 @@ public class MainCtrlTest {
     private Translator translator;
     @Mock
     private RecentEventTracker recentEventTracker;
+    @Mock
+    private Exchanger exchanger;
 
     private MainCtrl mainCtrl;
 
-
     @Mock
     private Parent fakeParent;
-
     @Mock
     private StartScreenCtrl startScreen;
     @Mock
@@ -124,8 +125,10 @@ public class MainCtrlTest {
     }
 
     private class DummyMainCtrl extends MainCtrl{
-        public DummyMainCtrl(ClientConfiguration config, Translator translator, RecentEventTracker recentEventTracker, SceneWrapperFactory sceneWrapperFactory) {
-            super(config, translator, recentEventTracker, sceneWrapperFactory);
+        public DummyMainCtrl(ClientConfiguration config, Translator translator,
+                             RecentEventTracker recentEventTracker,
+                             SceneWrapperFactory sceneWrapperFactory, Exchanger exchanger) {
+            super(config, translator, recentEventTracker, sceneWrapperFactory, exchanger);
         }
 
         @Override
@@ -143,7 +146,8 @@ public class MainCtrlTest {
         when(clientConfiguration.getWindowWidth()).thenReturn(640.);
 
         mainCtrl = new DummyMainCtrl(clientConfiguration, translator, recentEventTracker,
-                this::mockedSceneWrapper);
+                this::mockedSceneWrapper, exchanger);
+
         mainCtrl.initialize(primaryStage, sceneMap);
     }
 

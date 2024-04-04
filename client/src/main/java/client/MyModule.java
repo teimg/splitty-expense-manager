@@ -15,10 +15,8 @@
  */
 package client;
 
-import client.ModelView.AdminLogInMv;
-import client.ModelView.ContactInfoMv;
-import client.ModelView.StartScreenMv;
-import client.ModelView.StatisticsScreenMv;
+import client.ModelView.*;
+import client.currency.Exchanger;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
@@ -79,6 +77,17 @@ public class MyModule implements Module {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+
+        try {
+            binder.bind(EventOverviewMv.class)
+                    .toConstructor(EventOverviewMv.class.getConstructor(
+                            IEventCommunicator.class, IParticipantCommunicator.class
+                    ))
+                    .in(Scopes.SINGLETON);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private static void configureUtils(Binder binder) {
@@ -89,6 +98,7 @@ public class MyModule implements Module {
     private static void configureConfigs(Binder binder) {
         binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
+        binder.bind(Exchanger.class).in(Scopes.SINGLETON);
         binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
     }
 
@@ -109,6 +119,8 @@ public class MyModule implements Module {
             .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
         binder.bind(IAdminCommunicator.class)
             .to(AdminCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(ICurrencyCommunicator.class)
+                .to(CurrencyCommunicator.class).in(Scopes.SINGLETON);
     }
 
     private static void configureScenes(Binder binder) {
@@ -121,6 +133,7 @@ public class MyModule implements Module {
         binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StatisticsScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ContactInfoCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);

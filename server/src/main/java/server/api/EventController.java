@@ -120,6 +120,9 @@ public class EventController {
             Event updated = service.update(e);
 
             return ResponseEntity.ok(updated);
-        } else return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
