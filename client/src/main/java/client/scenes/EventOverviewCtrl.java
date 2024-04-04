@@ -416,8 +416,6 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
             // Replace the local event object with the updated one
             this.event = updatedEvent;
 
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.successfulEventUpdate"), Popup.TYPE.INFO).show();
         });
     }
 
