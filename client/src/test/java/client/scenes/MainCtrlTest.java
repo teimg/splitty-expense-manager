@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.currency.Exchanger;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
@@ -51,13 +52,13 @@ public class MainCtrlTest {
     private Translator translator;
     @Mock
     private RecentEventTracker recentEventTracker;
+    @Mock
+    private Exchanger exchanger;
 
     private MainCtrl mainCtrl;
 
-
     @Mock
     private Parent fakeParent;
-
     @Mock
     private StartScreenCtrl startScreen;
     @Mock
@@ -129,7 +130,7 @@ public class MainCtrlTest {
 
         mainCtrl = new MainCtrl(clientConfiguration, translator, recentEventTracker,
                 this::mockedSceneWrapper,
-                (sceneWrapper, node) -> {});
+                (sceneWrapper, node) -> {}, exchanger);
         mainCtrl.initialize(primaryStage, sceneMap);
     }
 

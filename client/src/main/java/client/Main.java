@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import client.dialog.Popup;
 import client.scenes.*;
+import client.utils.communicators.implementations.CurrencyCommunicator;
 import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
 
@@ -38,6 +39,8 @@ public class Main extends Application {
 
     private static TagCommunicator tagCommunicator;
 
+    private static CurrencyCommunicator curCommunicator;
+
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
@@ -46,11 +49,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         try {
             mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-
             tagCommunicator = INJECTOR.getInstance(TagCommunicator.class);
-
+            curCommunicator = INJECTOR.getInstance(CurrencyCommunicator.class);
+            clearCacheTxt();
             HashMap<String, Object> sceneMap = new HashMap<>();
-
             sceneMap.put("QuoteOverview",
                     FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml"));
             sceneMap.put("AddQuote",
@@ -82,9 +84,9 @@ public class Main extends Application {
             mainCtrl.initialize(primaryStage, sceneMap);
         }
         catch (RuntimeException e) {
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Server Error/Offline - Cannot load Add/Edit Expense scene:")
-                    + e.getMessage(), Popup.TYPE.ERROR).show();
+            new Popup(mainCtrl.getTranslator().getTranslation("Server Error/Offline"
+                    + " - Cannot load Add/Edit Expense scene:") + e.getMessage(),
+                    Popup.TYPE.ERROR).show();
         }
 
     }
@@ -94,8 +96,12 @@ public class Main extends Application {
      */
     @Override
     public void stop() {
-
+        clearCacheTxt();
         mainCtrl.stop();
-
     }
+
+    private void clearCacheTxt() {
+        System.out.println(curCommunicator.clearCache());
+    }
+
 }
