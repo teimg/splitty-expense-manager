@@ -3,7 +3,6 @@ package commons;
 import jakarta.persistence.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 
 @Entity
 public class Event {

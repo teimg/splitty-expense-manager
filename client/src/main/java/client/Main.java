@@ -26,7 +26,6 @@ import client.scenes.*;
 import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
 
-import commons.Tag;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

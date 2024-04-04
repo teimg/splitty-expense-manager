@@ -31,22 +31,6 @@ public class Tag {
     @Column(name = "event_id")
     private Long eventId;
 
-    /**
-     * General constructor
-     * @param name - label name
-     * @param red - int
-     * @param green - int
-     * @param blue - int
-     *
-     */
-//    public Tag(String name, int red, int green, int blue) {
-//        this.name = name;
-//        this.red = red;
-//        this.green = green;
-//        this.blue = blue;
-//    }
-
-
     public Tag(String name, int red, int green, int blue, Long eventId) {
         this.name = name;
         this.red = red;

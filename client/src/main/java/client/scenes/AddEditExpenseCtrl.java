@@ -102,8 +102,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     private WhichTagSelector whichTagSelector;
 
-    private Event event;
-
     private final MainCtrl mainCtrl;
 
     private final AddEditExpenseMv addEditExpenseMv;
@@ -203,7 +201,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     public void loadInfo(Event event, Expense expense) {
         loadInfo(event);
-
         addEditExpenseMv.loadExpense(expense);
     }
 
@@ -216,6 +213,11 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         initCurrency();
         initDateField();
         tagColor.setFill(Color.rgb(150, 150, 150));
+    }
+
+    public void updateTags(Event event) {
+        addEditExpenseMv.updateEvent(event);
+        initTag();
     }
 
     public void initBindings() {
