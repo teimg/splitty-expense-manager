@@ -73,7 +73,7 @@ public class AddEditExpenseMv {
         this.event = eventCommunicator.getEvent(event.getId());
     }
 
-    public void loadInfo(Event event) {
+    public void loadInfo(Event event, Exchanger exchanger) {
         this.event = event;
         this.exchanger = exchanger;
         expenseBuilder = new ExpenseBuilder();
@@ -84,7 +84,6 @@ public class AddEditExpenseMv {
     }
 
     public void loadExpense(Expense expense, Exchanger exchanger) {
-        this.event = event;
         this.expense = expense;
         this.exchanger = exchanger;
 
