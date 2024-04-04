@@ -25,7 +25,8 @@ public class UIIcon extends ImageView {
 
     public enum NAME {
         DELETE("delete.png"),
-        EDIT("edit.png");
+        EDIT("edit.png"),
+        CLIPBOARD("clipboard.png");
 
         private final String name;
 
