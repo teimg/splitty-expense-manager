@@ -2,11 +2,11 @@ package client.scenes;
 
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
+import client.utils.JsonUtils;
 import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
@@ -187,8 +187,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
         File file = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
+        ObjectMapper mapper = JsonUtils.getObjectMapper();
         try {
             mapper.writeValue(file, event);
         } catch (Exception e) {
