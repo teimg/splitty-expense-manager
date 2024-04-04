@@ -34,14 +34,5 @@ public class ConfPopup extends Alert {
         return new ConfPopup(question);
     }
 
-    /**
-     * displays the alert and waits for input
-     *
-     * @return the popup
-     */
-    public ConfPopup display(){
-        this.showAndWait();
-        return this;
-    }
 
 }

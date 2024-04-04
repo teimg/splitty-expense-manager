@@ -2,6 +2,7 @@ package client.ModelView;
 
 
 import client.utils.communicators.interfaces.IEventCommunicator;
+import client.utils.communicators.interfaces.IExpenseCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import commons.Event;
 import commons.Participant;
@@ -17,8 +18,9 @@ public class EventOverviewMv {
 
     private final IEventCommunicator eventCommunicator;
 
-
     private final IParticipantCommunicator participantCommunicator;
+
+    private final IExpenseCommunicator expenseComunicator;
 
 
     private Event event;
@@ -28,9 +30,11 @@ public class EventOverviewMv {
 
 
     public EventOverviewMv(IEventCommunicator eventCommunicator,
-                           IParticipantCommunicator participantCommunicator) {
+                           IParticipantCommunicator participantCommunicator,
+                           IExpenseCommunicator expenseCommunicator) {
         this.eventCommunicator = eventCommunicator;
         this.participantCommunicator = participantCommunicator;
+        this.expenseComunicator = expenseCommunicator;
     }
 
 
@@ -80,6 +84,12 @@ public class EventOverviewMv {
 
     public Event eventCommRenameEvent(String newName) {
         return eventCommunicator.renameEvent(event.getId(), newName);
+    }
+
+    public void deleteEvent(long id) {
+        expenseComunicator.deleteExpense(id);
+        eventCommunicator.updateEvent(event);
+
     }
 
 

@@ -10,6 +10,7 @@ import client.nodes.UIIcon;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.EventChange;
 import commons.Expense;
 
 
@@ -88,6 +89,30 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             content.setText(expenseDescription(expense));
             editButton.setOnAction(actionEvent -> {
                 mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), expense);
+            });
+
+            deleteButton.setOnAction(event -> {
+                boolean isConfirm = ConfPopup.create(
+                    mainCtrl.getTranslator().getTranslation(
+                        "Conf.DeleteExpense")
+                ).isConfirmed();
+
+                deleteButton.setDisable(true);
+                editButton.setDisable(true);
+
+                try {
+                    if(isConfirm){
+                        eventOverviewMv.deleteEvent(expense.getId());
+                        return;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    handleException(e, mainCtrl.getTranslator());
+                }
+
+                deleteButton.setDisable(false);
+                editButton.setDisable(false);
+
             });
             setGraphic(container);
         }
@@ -209,11 +234,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         this.mainCtrl = mainCtrl;
         this.eventOverviewMv = eventOverviewMv;
     }
-
-
-
-
-
 
     @Override
     public void setLanguage() {
