@@ -1,40 +1,102 @@
 package server.api;
 
 import commons.Event;
+import commons.Participant;
+import commons.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.EventService;
+import server.service.ExpenseService;
+import server.service.ParticipantService;
+import server.service.TagService;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
-    private final EventService service;
-    private final SimpMessagingTemplate msgs;
+    private final EventService eventService;
+    private final ParticipantService participantService;
+    private final ExpenseService expenseService;
+    private final TagService tagService;
 
     /**
      * constructor for event controller
      *
-     * @param service event service
-     * @param msgs
+     * @param eventService       event service
+     * @param participantService
+     * @param expenseService
+     * @param tagService
      */
-    public EventController(EventService service, SimpMessagingTemplate msgs) {
-        this.service = service;
-        this.msgs = msgs;
+    public EventController(EventService eventService,
+                           ParticipantService participantService,
+                           ExpenseService expenseService,
+                           TagService tagService) {
+        this.eventService = eventService;
+        this.participantService = participantService;
+        this.expenseService = expenseService;
+        this.tagService = tagService;
     }
 
     @PostMapping
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         try {
-            Event savedEvent = service.createEvent(event);
+            Event savedEvent = eventService.createEvent(event);
             return ResponseEntity.ok(savedEvent);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping("/restoreEvent")
+    public ResponseEntity<Event> restoreEvent(@RequestBody Event event) {
+        if (eventService.exists(event.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var participants = event.getParticipants();
+        event.setParticipants(null);
+        var tags = event.getTags();
+        event.setTags(null);
+        var expenses = event.getExpenses();
+        event.setExpenses(null);
+
+        Event savedEvent = eventService.save(event);
+
+        Map<Long, Participant> newParticipants = new HashMap<>();
+
+        participants.replaceAll(participant -> {
+            participant.setEventId(savedEvent.getId());
+            Long oldId = participant.getId();
+            Participant newParticipant = participantService.restore(participant);
+            newParticipants.put(oldId, newParticipant);
+            return newParticipant;
+        });
+
+        Map<Long, Tag> newTags = new HashMap<>();
+        tags.replaceAll(tag -> {
+            tag.setEventId(savedEvent.getId());
+            Long oldId = tag.getId();
+            Tag newTag = tagService.restore(tag);
+            newTags.put(oldId, newTag);
+            return newTag;
+        });
+
+        expenses.replaceAll(expense -> {
+            expense.setEventId(savedEvent.getId());
+            expense.setTag(newTags.get(expense.getTag().getId()));
+            expense.setPayer(newParticipants.get(expense.getPayer().getId()));
+            expense.getDebtors().replaceAll(debtor -> newParticipants.get(debtor.getId()));
+            return expenseService.restore(expense);
+        });
+
+        savedEvent.setParticipants(participants);
+        savedEvent.setTags(tags);
+        savedEvent.setExpenses(expenses);
+
+        Event restoredEvent = eventService.restore(savedEvent);
+
+        return ResponseEntity.ok(restoredEvent);
     }
 
     /**
@@ -44,7 +106,7 @@ public class EventController {
      */
     @GetMapping("/checkUpdates/{id}")
     public ResponseEntity<Event> checkForUpdates(@PathVariable long id) {
-        Optional<Event> currentEvent = service.getById(id);
+        Optional<Event> currentEvent = eventService.getById(id);
         if (currentEvent.isPresent()) {
             Event event = currentEvent.get();
             // Example logic: return the event if it has been updated within the last 5 minutes.
@@ -66,7 +128,7 @@ public class EventController {
      */
     @GetMapping(path = { "", "/" })
     public List<Event> getAll() {
-        return service.getAll();
+        return eventService.getAll();
     }
 
     /**
@@ -76,13 +138,13 @@ public class EventController {
      */
     @GetMapping(path = { "/{id}" })
     public ResponseEntity<Event> getByID(@PathVariable long id) {
-        return service.getById(id).map(ResponseEntity::ok)
+        return eventService.getById(id).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/byInviteCode/{inviteCode}")
     public ResponseEntity<Event> getByInviteCode(@PathVariable String inviteCode) {
-        return service.getByInviteCode(inviteCode)
+        return eventService.getByInviteCode(inviteCode)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -94,8 +156,8 @@ public class EventController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable long id) {
-        return service.getById(id).map(event -> {
-            service.delete(id);
+        return eventService.getById(id).map(event -> {
+            eventService.delete(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -110,14 +172,14 @@ public class EventController {
      */
     @PutMapping("/update/{id}")
     public ResponseEntity<Event> update(@PathVariable long id, @RequestBody Event newEvent) {
-        Optional<Event> oldEvent = service.getById(id);
+        Optional<Event> oldEvent = eventService.getById(id);
         if (oldEvent.isPresent()) {
             Event e = oldEvent.get();
             e.setName(newEvent.getName());
             e.setCreationDate(newEvent.getCreationDate());
             e.setInviteCode(newEvent.getInviteCode());
 
-            Event updated = service.update(e);
+            Event updated = eventService.update(e);
 
             return ResponseEntity.ok(updated);
         }
