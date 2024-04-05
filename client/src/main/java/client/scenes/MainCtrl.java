@@ -20,7 +20,6 @@ import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
-import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
@@ -30,6 +29,8 @@ import commons.Expense;
 import commons.Participant;
 import commons.Tag;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -51,11 +52,12 @@ public class MainCtrl {
 
     private Parent menuBar;
 
+    protected BorderPane baseScene;
+
     private final RecentEventTracker recentEventTracker;
 
     private final SceneWrapperFactory sceneWrapperFactory;
 
-    private final MenuBarInjector menuBarInjector;
 
     private final Exchanger exchanger;
 
@@ -63,7 +65,6 @@ public class MainCtrl {
     public MainCtrl(ClientConfiguration config, Translator translator,
                     RecentEventTracker recentEventTracker,
                     SceneWrapperFactory sceneWrapperFactory,
-                    MenuBarInjector menuBarInjector,
                     Exchanger exchanger) {
         this.config = config;
         this.translator = translator;
@@ -74,7 +75,7 @@ public class MainCtrl {
         }
         this.recentEventTracker = recentEventTracker;
         this.sceneWrapperFactory = sceneWrapperFactory;
-        this.menuBarInjector = menuBarInjector;
+//        this.menuBarInjector = menuBarInjector;
     }
 
     @SuppressWarnings("unchecked")
@@ -90,6 +91,7 @@ public class MainCtrl {
         this.menuBarCtrl.setLanguage();
 
         initScenes(sceneMap);
+        createBaseScene();
 
         primaryStage.setWidth(config.getWindowWidth());
         primaryStage.setHeight(config.getWindowHeight());
@@ -114,11 +116,16 @@ public class MainCtrl {
             }
 
             SceneController currentSceneController = (SceneController) current.getKey();
-            this.scenes.put(x,
-                    sceneWrapperFactory.apply(currentSceneController, current.getValue()));
+            this.scenes.put(x, new SceneWrapper(currentSceneController, current.getValue()));
 
 
         }
+    }
+
+    public void createBaseScene(){
+        this.baseScene = new BorderPane();
+        this.primaryStage.setScene(new Scene(this.baseScene));
+        this.baseScene.setTop(menuBar);
     }
 
     /**
@@ -161,13 +168,14 @@ public class MainCtrl {
             throw new IllegalArgumentException("No such scene: " + scene);
         }
 
-        menuBarInjector.accept(currentSceneWrapper, menuBar);
+//        menuBarInjector.accept(currentSceneWrapper, menuBar);
 
         this.currentCtrl =
             new Pair<> (scene, (LanguageSwitch) currentSceneWrapper.getSceneController());
 
         primaryStage.setTitle(title);
-        primaryStage.setScene(currentSceneWrapper.getScene());
+//        primaryStage.setScene(currentSceneWrapper.getScene());
+        this.baseScene.setCenter(currentSceneWrapper.getParent());
 
     }
 
@@ -272,6 +280,10 @@ public class MainCtrl {
 
     public Translator getTranslator() {
         return translator;
+    }
+
+    public BorderPane getBaseScene() {
+        return baseScene;
     }
 
     public Exchanger getExchanger() {
