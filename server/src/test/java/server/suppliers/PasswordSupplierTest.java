@@ -1,4 +1,4 @@
-package server;
+package server.suppliers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
