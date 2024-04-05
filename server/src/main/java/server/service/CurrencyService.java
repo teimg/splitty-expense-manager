@@ -5,17 +5,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import server.BufferedClearerSupplier;
-import server.BufferedReaderSupplier;
-import server.BufferedWriterSupplier;
+import server.suppliers.BufferedClearerSupplier;
+import server.suppliers.BufferedReaderSupplier;
+import server.suppliers.BufferedWriterSupplier;
+import server.suppliers.HttpUrlConnectionSupplier;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -23,28 +19,23 @@ import java.util.Optional;
 @Service
 public class CurrencyService {
 
-    private HttpURLConnection connection;
+    private final HttpUrlConnectionSupplier connectionSupplier;
 
-    private BufferedReaderSupplier bufferedReaderSupplier;
+    private final BufferedReaderSupplier bufferedReaderSupplier;
 
-    private BufferedWriterSupplier bufferedWriterSupplier;
+    private final BufferedWriterSupplier bufferedWriterSupplier;
 
-    private BufferedClearerSupplier bufferedClearerSupplier;
+    private final BufferedClearerSupplier bufferedClearerSupplier;
 
     @Autowired
-    public CurrencyService(HttpURLConnection httpURLConnection,
+    public CurrencyService(HttpUrlConnectionSupplier connectionSupplier,
                            BufferedReaderSupplier bufferedReader,
                            BufferedWriterSupplier bufferedWriter,
                            BufferedClearerSupplier bufferedClearer) {
-        this.connection = httpURLConnection;
         this.bufferedReaderSupplier = bufferedReader;
         this.bufferedWriterSupplier = bufferedWriter;
         this.bufferedClearerSupplier = bufferedClearer;
-    }
-
-    public void setUrl(String url) throws URISyntaxException, IOException {
-        URI uri = new URI(url);
-        this.connection = (HttpURLConnection) uri.toURL().openConnection();
+        this.connectionSupplier = connectionSupplier;
     }
 
     public Optional<Double> getExchangeRate(double amount, String currency, LocalDate date) {
@@ -66,12 +57,13 @@ public class CurrencyService {
 
         StringBuilder jsonResponse = new StringBuilder();
         try {
-            setUrl(url);
+            HttpURLConnection connection = connectionSupplier.getConnection(url);
             connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
+                InputStream is = connection.getInputStream();
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(connection.getInputStream()));
+                        new InputStreamReader(is));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     jsonResponse.append(inputLine);
@@ -102,7 +94,7 @@ public class CurrencyService {
         return ratesNode.get(currency).asDouble();
     }
 
-    private Optional<Double> fetchInCache(String currency, String dateString) {
+    public Optional<Double> fetchInCache(String currency, String dateString) {
         try {
             BufferedReader bufferedReader = bufferedReaderSupplier.getBufferedReader();
             String line;
@@ -128,7 +120,7 @@ public class CurrencyService {
         return Optional.empty();
     }
 
-    private void saveToCache(String currency, String dateString, double val) {
+    public void saveToCache(String currency, String dateString, double val) {
         try {
             BufferedWriter bufferedWriter = bufferedWriterSupplier.getBufferedWriter();
             bufferedWriter.write(dateString+"/"+currency + ":" + val);
