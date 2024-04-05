@@ -82,7 +82,7 @@ public class TagController {
         List<Tag> tags = getAll();
         Tag existingTag = null;
         for (Tag standTag : tags) {
-            if (standTag.standTagEquals(tag)) {
+            if (standTag.equals(tag)) {
                 existingTag = standTag;
                 break;
             }
