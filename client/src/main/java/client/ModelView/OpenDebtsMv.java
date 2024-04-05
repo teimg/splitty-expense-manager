@@ -11,6 +11,7 @@ import commons.Event;
 import commons.Participant;
 import javafx.scene.control.TitledPane;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class OpenDebtsMv {
 
@@ -22,7 +23,8 @@ public class OpenDebtsMv {
 
     private ArrayList<TitledPane> panes;
 
-    private ArrayList<Participant> positiveBalanceParticipants;
+//    private ArrayList<Participant> positiveBalanceParticipants;
+    private Map<Participant, Double> positiveBalanceParticipants;
 
     @Inject
     public OpenDebtsMv(EmailCommunicator emailCommunicator,
@@ -52,11 +54,8 @@ public class OpenDebtsMv {
         return debts;
     }
 
-    public ArrayList<Participant> getPositiveBalanceParticipants() {
+    public Map<Participant, Double> getPositiveBalanceParticipants() {
         return positiveBalanceParticipants;
     }
 
-    public void setPositiveBalanceParticipants(ArrayList<Participant> positiveBalanceParticipants) {
-        this.positiveBalanceParticipants = positiveBalanceParticipants;
-    }
 }

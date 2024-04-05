@@ -28,8 +28,9 @@ public class DebtsBuilder {
 
     private ArrayList<Debt> debts;
 
-    private ArrayList<Participant> positiveBalances;
+//    private ArrayList<Participant> positiveBalances;
 
+    private Map<Participant, Double> positiveBalances;
     private ArrayList<TitledPane> panes;
 
     private final Event event;
@@ -48,8 +49,8 @@ public class DebtsBuilder {
                         MainCtrl mainCtrl) {
         this.event = event;
         this.debts = new ArrayList<>();
-//        this.positiveBalances = new HashMap<>();
-        this.positiveBalances = new ArrayList<>();
+        this.positiveBalances = new HashMap<>();
+//        this.positiveBalances = new ArrayList<>();
         this.panes = new ArrayList<>();
         this.translator = translator;
         this.emailCommunicator = emailCommunicator;
@@ -69,7 +70,11 @@ public class DebtsBuilder {
         return panes;
     }
 
-    public ArrayList<Participant> getPositiveBalances() {
+//    public ArrayList<Participant> getPositiveBalances() {
+//        return positiveBalances;
+//    }
+
+    public Map<Participant, Double> getPositiveBalances() {
         return positiveBalances;
     }
 
@@ -182,20 +187,22 @@ public class DebtsBuilder {
         return balanceChange;
     }
 
-    public ArrayList<Participant> findPositiveBalances() {
+    public Map<Participant, Double> findPositiveBalances() {
         Map<Participant, Double> allBalances = findBalanceChange();
-        ArrayList<Participant> negative = new ArrayList<>();
-        ArrayList<Participant> nonNegative = new ArrayList<>();
+//        ArrayList<Participant> negative = new ArrayList<>();
+//        ArrayList<Participant> nonNegative = new ArrayList<>();
 
+        Map<Participant, Double> negative = new HashMap<>();
+        Map<Participant, Double> nonNegative = new HashMap<>();
 
         for (Map.Entry<Participant, Double> entry : allBalances.entrySet()) {
             if (entry.getValue() < 0) {
-//                negative.put(entry.getKey(), entry.getValue());
-                negative.add(entry.getKey());
+                negative.put(entry.getKey(), entry.getValue());
+//                negative.add(entry.getKey());
             }
             else {
-//                nonNegative.put(entry.getKey(), entry.getValue());
-                nonNegative.add(entry.getKey());
+                nonNegative.put(entry.getKey(), entry.getValue());
+//                nonNegative.add(entry.getKey());
             }
         }
         positiveBalances = nonNegative;
@@ -325,6 +332,5 @@ public class DebtsBuilder {
         })).start();
 
     }
-
 
 }

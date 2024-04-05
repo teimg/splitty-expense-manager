@@ -8,7 +8,11 @@ import commons.Event;
 import commons.Participant;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
 
@@ -31,7 +35,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
     private ScrollPane scrollPlane;
 
     @FXML
-    private ListView<Participant> expensesList;
+    private ListView<String> expensesList;
 
 
     private final MainCtrl mainCtrl;
@@ -63,9 +67,26 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         accordionDebts.getPanes().addAll(panes);
     }
 
-    private void updatePositiveBalances(ArrayList<Participant> list) {
+//    private void updatePositiveBalances(ArrayList<Participant> list) {
+//        expensesList.getItems().clear();
+//        expensesList.getItems().addAll(list);
+//    }
+
+    private void updatePositiveBalances(Map<Participant, Double> map) {
         expensesList.getItems().clear();
-        expensesList.getItems().addAll(list);
+        ArrayList<String> r = convertToStringList(map);
+        expensesList.getItems().addAll(r);
+    }
+
+    private ArrayList<String> convertToStringList(Map<Participant, Double> map) {
+        ArrayList<String> stringList = new ArrayList<>();
+        for (Map.Entry<Participant, Double> entry : map.entrySet()) {
+            String key = entry.getKey().getName();
+            Double value = entry.getValue();
+            String keyValueString = key + ", " + value;
+            stringList.add(keyValueString);
+        }
+        return stringList;
     }
 
 
