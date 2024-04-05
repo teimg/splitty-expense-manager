@@ -208,10 +208,6 @@ public class Event {
                 creationDate, lastActivity, expenses);
     }
 
-    /**
-     * To String method
-     * @return String representation of object
-     */
     @Override
     public String toString() {
         return "Event{" +
@@ -219,6 +215,8 @@ public class Event {
                 ", name='" + name + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
                 ", participants=" + participants +
+                ", expenses=" + expenses +
+                ", tags=" + tags +
                 ", creationDate=" + creationDate +
                 ", lastActivity=" + lastActivity +
                 '}';

@@ -12,7 +12,7 @@ import java.util.Properties;
 @Service
 public class EmailService {
 
-    public void sendEmail(String to, String subject, String text,
+    public boolean sendEmail(String to, String subject, String text,
                           String username, String password) {
         JavaMailSender javaMailSender = getJavaMailSender(username, password);
         try {
@@ -23,10 +23,11 @@ public class EmailService {
             helper.setSubject(subject);
             helper.setText(text, true);
             javaMailSender.send(message);
+            return true;
         }
         catch (MessagingException e) {
-            // TODO: error handling
             System.out.println("Failed to send message");
+            return false;
         }
     }
 

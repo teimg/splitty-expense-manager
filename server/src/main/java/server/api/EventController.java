@@ -24,9 +24,9 @@ public class EventController {
      * constructor for event controller
      *
      * @param eventService       event service
-     * @param participantService
-     * @param expenseService
-     * @param tagService
+     * @param participantService -
+     * @param expenseService -
+     * @param tagService -
      */
     public EventController(EventService eventService,
                            ParticipantService participantService,
