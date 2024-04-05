@@ -8,10 +8,8 @@ import commons.Event;
 import commons.Participant;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
