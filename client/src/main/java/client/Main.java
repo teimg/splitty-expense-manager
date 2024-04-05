@@ -88,7 +88,6 @@ public class Main extends Application {
      */
     @Override
     public void stop() {
-        clearCacheTxt();
         mainCtrl.stop();
     }
 
