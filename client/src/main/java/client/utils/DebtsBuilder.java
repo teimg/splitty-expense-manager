@@ -60,6 +60,7 @@ public class DebtsBuilder {
         simplifyDebts();
         simplifyTransitiveNature();
         findPositiveBalances();
+        removeImprecision();
     }
 
     public ArrayList<Debt> getDebts() {
@@ -80,9 +81,7 @@ public class DebtsBuilder {
 
     public ArrayList<Debt> findDebts() {
         ArrayList<Expense> expenses = new ArrayList<>();
-        for (Expense ex : event.getExpenses()) {
-            expenses.add(ex);
-        }
+        expenses.addAll(event.getExpenses());
         for (Expense expense : expenses) {
             int numDebtors = expense.getDebtors().size();
             for (Participant debtor : expense.getDebtors()) {
@@ -296,8 +295,10 @@ public class DebtsBuilder {
     public String getSummary(Debt debt) {
         return debt.getDebtor().getName() + " " +
                 translator.getTranslation("OpenDebts.Summary-owes")
-                + " " + (Math.round(debt.getAmount() * 100.0) / 100.0)
-                + "$ " + translator.getTranslation("OpenDebts.Summary-to")
+                + " " + Math.round(mainCtrl.getExchanger().getStandardConversion(
+                        debt.getAmount(), LocalDate.now())*100.0)/100.0
+                + mainCtrl.getExchanger().getCurrentSymbol() + " "
+                + translator.getTranslation("OpenDebts.Summary-to")
                 + " " + debt.getCreditor().getName();
     }
 
@@ -308,6 +309,10 @@ public class DebtsBuilder {
         imageView.setFitWidth(20);
         imageView.setFitHeight(20);
         return imageView;
+    }
+
+    private void removeImprecision() {
+        debts.removeIf(debt -> debt.getAmount() < 0.05);
     }
 
     public void handleEmailButtonClick(Debt debt) {

@@ -50,6 +50,12 @@ public class EventService {
         return event;
     }
 
+    public Event restore(Event event) {
+        event = save(event);
+        eventChangeService.sendChange(new EventChange(EventChange.Type.CREATION, event));
+        return event;
+    }
+
     public Event update(Event event) {
         event.setLastActivity(new Date());
         event = save(event);
@@ -69,6 +75,10 @@ public class EventService {
 
     public Optional<Event> getById(Long id) {
         return repo.findById(id);
+    }
+
+    public boolean existsByInviteCode(String inviteCode) {
+        return repo.existsByInviteCode(inviteCode);
     }
 
     public List<Event> getAll() {

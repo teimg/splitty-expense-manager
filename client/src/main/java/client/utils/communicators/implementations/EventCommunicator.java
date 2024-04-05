@@ -1,6 +1,7 @@
 package client.utils.communicators.implementations;
 
 import client.utils.ClientConfiguration;
+import client.utils.JsonUtils;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
@@ -14,7 +15,6 @@ import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -133,7 +133,7 @@ public class EventCommunicator implements IEventCommunicator {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.getObjectMapper().registerModule(new JavaTimeModule());
+        converter.setObjectMapper(JsonUtils.getObjectMapper());
         stomp.setMessageConverter(converter);
         try {
             session = stomp.connect(webSocketURL, new StompSessionHandlerAdapter() {

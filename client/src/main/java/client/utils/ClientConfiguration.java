@@ -72,4 +72,21 @@ public class ClientConfiguration extends ConfigProvider {
     public void setWindowHeight(double height) {
         set("height", String.valueOf(height));
     }
+
+    /**
+     * Gets the configured currency to use.
+     * @return the name of the currency, e.g. "USD"
+     */
+    public String getCurrency() {
+        return get("currency");
+    }
+
+    /**
+     * Sets the configured currency.
+     * @param currency = currency
+     */
+    public void setCurrency(String currency) {
+        set("currency", currency);
+    }
+
 }
