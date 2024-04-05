@@ -30,7 +30,12 @@ public class TagService {
         return repo.existsById(id);
     }
 
+    // TODO: update last activity of the event
     public Tag save(Tag tag) {
+        return repo.saveAndFlush(tag);
+    }
+
+    public Tag restore(Tag tag) {
         return repo.saveAndFlush(tag);
     }
 

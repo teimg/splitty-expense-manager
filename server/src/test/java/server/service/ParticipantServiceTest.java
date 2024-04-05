@@ -59,7 +59,7 @@ class ParticipantServiceTest {
 
     @Test
     void createParticipant() {
-        Mockito.when(mockedRepo.save(participant)).thenReturn(participant);
+        Mockito.when(mockedRepo.saveAndFlush(participant)).thenReturn(participant);
 
         assertEquals(participant, ps.createParticipant(participant));
     }
@@ -84,7 +84,7 @@ class ParticipantServiceTest {
     void updateParticipant() {
         participant.setEmail("test@gmail.com");
         Mockito.when(mockedRepo.findById(participant.getId())).thenReturn(Optional.of(participant));
-        Mockito.when(mockedRepo.save(participant)).thenReturn(participant);
+        Mockito.when(mockedRepo.saveAndFlush(participant)).thenReturn(participant);
 
         assertEquals(participant, ps.updateParticipant(participant.getId(), participant));
 

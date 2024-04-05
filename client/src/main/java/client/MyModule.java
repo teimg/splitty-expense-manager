@@ -16,16 +16,15 @@
 package client;
 
 import client.ModelView.*;
+import client.currency.Exchanger;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
 import client.utils.communicators.implementations.*;
 import client.utils.communicators.interfaces.*;
-import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
-import client.utils.scene.SimpleMenuBarInjector;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -94,12 +93,13 @@ public class MyModule implements Module {
 
     private static void configureUtils(Binder binder) {
         binder.bind(SceneWrapperFactory.class).toInstance(SceneWrapper::new);
-        binder.bind(MenuBarInjector.class).to(SimpleMenuBarInjector.class);
+//        binder.bind(MenuBarInjector.class).to(SimpleMenuBarInjector.class);
     }
 
     private static void configureConfigs(Binder binder) {
         binder.bind(ClientConfiguration.class).in(Scopes.SINGLETON);
         binder.bind(Translator.class).in(Scopes.SINGLETON);
+        binder.bind(Exchanger.class).in(Scopes.SINGLETON);
         binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
     }
 
@@ -120,6 +120,8 @@ public class MyModule implements Module {
             .to(ParticipantCommunicator.class).in(Scopes.SINGLETON);
         binder.bind(IAdminCommunicator.class)
             .to(AdminCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(ICurrencyCommunicator.class)
+                .to(CurrencyCommunicator.class).in(Scopes.SINGLETON);
     }
 
     private static void configureScenes(Binder binder) {
@@ -132,6 +134,7 @@ public class MyModule implements Module {
         binder.bind(StartScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StatisticsScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ContactInfoCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TagScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminScreenCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminLogInCtrl.class).in(Scopes.SINGLETON);

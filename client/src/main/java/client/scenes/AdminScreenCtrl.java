@@ -1,9 +1,12 @@
 package client.scenes;
 
+import client.dialog.Popup;
 import client.language.LanguageSwitch;
+import client.utils.JsonUtils;
 import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
@@ -16,8 +19,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
@@ -172,8 +177,22 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
                 "AdminScreen.Back-Button"));
     }
 
-    // TODO: JSON dump
     public void handleDownload(ActionEvent actionEvent) {
+        Event event = eventListView.getSelectionModel().getSelectedItem();
+        if (event == null) {
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.eventToDownloadNotSelected") , Popup.TYPE.INFO).showAndWait();
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        File file = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
+        ObjectMapper mapper = JsonUtils.getObjectMapper();
+        try {
+            mapper.writeValue(file, event);
+        } catch (Exception e) {
+            System.err.println("Error while saving an event: " + e.getMessage());
+        }
     }
 
     public void handleOrderBy(ActionEvent actionEvent) {

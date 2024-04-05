@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
     Optional<Event> findByInviteCode(String inviteCode);
+    boolean existsByInviteCode(String inviteCode);
 }
