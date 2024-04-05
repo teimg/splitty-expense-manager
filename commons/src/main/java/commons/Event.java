@@ -56,6 +56,18 @@ public class Event {
 
     }
 
+    public void setParticipants(List<Participant> participants) {
+        this.participants = participants;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     /**
      * Getter method for id
      * @return int id

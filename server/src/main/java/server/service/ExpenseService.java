@@ -26,6 +26,10 @@ public class ExpenseService {
         return expense;
     }
 
+    public Expense restore(Expense expense) {
+        return expenseRepository.saveAndFlush(expense);
+    }
+
     public Optional<Expense> getExpenseById(Long id) {
         return expenseRepository.findById(id);
     }
