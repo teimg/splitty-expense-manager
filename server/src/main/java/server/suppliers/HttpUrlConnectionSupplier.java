@@ -15,9 +15,7 @@ public class HttpUrlConnectionSupplier {
             URI uri = new URI(url);
             conn = (HttpURLConnection) uri.toURL().openConnection();
         }
-        catch (Exception e) {
-            System.out.println("Network Error");
-        }
+        catch (Exception ignored) {}
         return conn;
     }
 
