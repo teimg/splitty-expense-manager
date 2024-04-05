@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ParticipantServiceTest {
@@ -114,4 +116,12 @@ class ParticipantServiceTest {
 
         assertEquals(List.of(participant, participant1), ps.getAll());
     }
+
+    @Test
+    public void testRestore() {
+        when(mockedRepo.saveAndFlush(participant)).thenReturn(participant);
+        ps.restore(participant);
+        verify(mockedRepo).saveAndFlush(participant);
+    }
+
 }

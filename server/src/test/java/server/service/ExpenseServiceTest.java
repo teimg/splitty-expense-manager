@@ -96,5 +96,12 @@ public class ExpenseServiceTest {
         verify(expenseRepository, times(0)).deleteById(expense.getId());
     }
 
+    @Test
+    public void testRestore() {
+        when(expenseRepository.saveAndFlush(expense)).thenReturn(expense);
+        expenseService.restore(expense);
+        verify(expenseRepository).saveAndFlush(expense);
+    }
+
 
 }
