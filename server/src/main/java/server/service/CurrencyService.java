@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import server.BufferedClearerSupplier;
-import server.BufferedReaderSupplier;
-import server.BufferedWriterSupplier;
+import server.suppliers.BufferedClearerSupplier;
+import server.suppliers.BufferedReaderSupplier;
+import server.suppliers.BufferedWriterSupplier;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,4 +1,4 @@
-package server;
+package server.suppliers;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
