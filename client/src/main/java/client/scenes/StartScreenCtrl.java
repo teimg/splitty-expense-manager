@@ -147,34 +147,6 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
     public void loadInfo() {
         newEventField.setText("");
         joinEventField.setText("");
-        addKeyBoardListeners();
-    }
-
-    private void addKeyBoardListeners() {
-        final boolean[] ctrlCPressed = {false};
-        final boolean[] ctrlJPressed = {false};
-        newEventField.getScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            KeyCode keyCode = event.getCode();
-            if (event.isControlDown()) {
-                if (keyCode == KeyCode.C && !ctrlCPressed[0]) {
-                    ctrlCPressed[0] = true;
-                    createEvent();
-                }
-                if (keyCode == KeyCode.J && !ctrlJPressed[0]) {
-                    ctrlJPressed[0] = true;
-                    joinEvent();
-                }
-            }
-        });
-        newEventField.getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-            KeyCode keyCode = event.getCode();
-            if (keyCode == KeyCode.C) {
-                ctrlCPressed[0] = false;
-            }
-            if (keyCode == KeyCode.J) {
-                ctrlJPressed[0] = false;
-            }
-        });
     }
 
 }
