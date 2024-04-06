@@ -373,7 +373,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 try {
                     eventOverviewMv.deleteParticipant(optionalParticipant);
                 }
-                catch (jakarta.ws.rs.InternalServerErrorException e) {
+                catch (jakarta.ws.rs.BadRequestException e) {
                     new Popup(mainCtrl.getTranslator().getTranslation(
                             "Popup.ParticipantCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
                 }
