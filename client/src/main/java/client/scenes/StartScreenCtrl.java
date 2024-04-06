@@ -10,6 +10,8 @@ import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -95,9 +97,8 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
 
         initBinding();
         startScreenMv.init();
-
-
     }
+
     public void initBinding(){
         newEventField.textProperty().bindBidirectional(startScreenMv.newEventProperty());
         joinEventField.textProperty().bindBidirectional(startScreenMv.joinEventProperty());
@@ -146,6 +147,34 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
     public void loadInfo() {
         newEventField.setText("");
         joinEventField.setText("");
+        addKeyBoardListeners();
+    }
+
+    private void addKeyBoardListeners() {
+        final boolean[] ctrlCPressed = {false};
+        final boolean[] ctrlJPressed = {false};
+        newEventField.getScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            KeyCode keyCode = event.getCode();
+            if (event.isControlDown()) {
+                if (keyCode == KeyCode.C && !ctrlCPressed[0]) {
+                    ctrlCPressed[0] = true;
+                    createEvent();
+                }
+                if (keyCode == KeyCode.J && !ctrlJPressed[0]) {
+                    ctrlJPressed[0] = true;
+                    joinEvent();
+                }
+            }
+        });
+        newEventField.getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+            KeyCode keyCode = event.getCode();
+            if (keyCode == KeyCode.C) {
+                ctrlCPressed[0] = false;
+            }
+            if (keyCode == KeyCode.J) {
+                ctrlJPressed[0] = false;
+            }
+        });
     }
 
 }
