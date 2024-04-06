@@ -1,15 +1,20 @@
 package client.scenes;
 
 import client.ModelView.OpenDebtsMv;
+import client.keyBoardCtrl.KeyBoardListeners;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+
 import java.util.ArrayList;
 
-public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
+public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts {
 
     @FXML
     private Label titleLabel;
@@ -67,6 +72,12 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         abortButton.setText(mainCtrl.getTranslator().getTranslation(
             "OpenDebts.Abort-button"));
         loadInfo(event);
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = titleLabel.getScene();
+        KeyBoardListeners.addListener(s, KeyCode.B, this::abortButtonPressed);
     }
 
 }

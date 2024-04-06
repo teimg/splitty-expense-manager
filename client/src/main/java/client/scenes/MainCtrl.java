@@ -16,6 +16,8 @@
 package client.scenes;
 
 import client.currency.Exchanger;
+import client.keyBoardCtrl.KeyBoardListeners;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
@@ -163,6 +165,7 @@ public class MainCtrl {
      */
 
     private void show(String scene, String title){
+
         SceneWrapper currentSceneWrapper = this.scenes.get(scene);
 
         if (currentSceneWrapper == null){
@@ -177,7 +180,8 @@ public class MainCtrl {
         primaryStage.setTitle(title);
 //        primaryStage.setScene(currentSceneWrapper.getScene());
         this.baseScene.setCenter(currentSceneWrapper.getParent());
-
+        KeyBoardListeners.resetListeners();
+        ((ShortCuts) currentSceneWrapper.getSceneController()).listeners();
     }
 
     private void show(String scene){
