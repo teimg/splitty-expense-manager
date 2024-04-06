@@ -32,7 +32,7 @@ public class EventCommunicator implements IEventCommunicator {
     @Inject
     public EventCommunicator(ClientConfiguration config) {
         origin = config.getServer();
-        webSocketURL = "ws://localhost:8080/websocket";
+        webSocketURL = config.getServerWS() + "/websocket";
     }
 
     @Override
