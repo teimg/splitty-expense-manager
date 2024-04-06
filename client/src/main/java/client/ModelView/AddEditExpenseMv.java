@@ -1,5 +1,6 @@
 package client.ModelView;
 
+import client.currency.Exchanger;
 import client.utils.ExpenseBuilder;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
@@ -48,6 +49,7 @@ public class AddEditExpenseMv {
     private final IEventCommunicator eventCommunicator;
     private final ITagCommunicator tagCommunicator;
 
+    private Exchanger exchanger;
 
     @Inject
     public AddEditExpenseMv(IExpenseCommunicator expenseCommunicator,
@@ -71,8 +73,9 @@ public class AddEditExpenseMv {
         this.event = eventCommunicator.getEvent(event.getId());
     }
 
-    public void loadInfo(Event event) {
+    public void loadInfo(Event event, Exchanger exchanger) {
         this.event = event;
+        this.exchanger = exchanger;
         expenseBuilder = new ExpenseBuilder();
 
         for (var x : event.getParticipants()){
@@ -80,9 +83,9 @@ public class AddEditExpenseMv {
         }
     }
 
-    public void loadExpense(Expense expense) {
-        this.event = event;
+    public void loadExpense(Expense expense, Exchanger exchanger) {
         this.expense = expense;
+        this.exchanger = exchanger;
 
         for(var x : debtors.get()){
 
@@ -110,9 +113,13 @@ public class AddEditExpenseMv {
         descriptionField.setValue(expense.getPurchase());
         whoPaidField.setValue(expense.getPayer());
         descriptionField.setValue(expense.getPurchase());
-        priceField.setValue(String.valueOf(expense.getAmount()));
+        priceField.setValue(String.valueOf(
+                Math.round(exchanger.getStandardConversion(
+                        expense.getAmount(), LocalDate.now()) * 100.0)/100.0
+        ));
         dateField.set(expense.getDate());
         tagField.set(expense.getTag());
+        currencyField.setValue(exchanger.getCurrentCurrency());
     }
 
     @SuppressWarnings("unchecked")
@@ -220,6 +227,16 @@ public class AddEditExpenseMv {
         return res;
     }
 
+    public String getCur(){
+        String cur = currencyField.getValue();
+
+        if(cur == null || cur.isEmpty()){
+            throw new IllegalArgumentException("SelectACurrency");
+        }
+
+        return cur;
+    }
+
     private Expense updateExpense() {
         Expense res = expenseBuilder.build();
 
@@ -234,15 +251,17 @@ public class AddEditExpenseMv {
 
 
     /**
-     * create the final expense
-     *
-     * @return an expense
+     * Creates expense
+     * @return expense
      */
     public Expense createExpense(){
         expenseBuilder.setPayer(getPayer());
         expenseBuilder.setPurchase(getPurchase());
         expenseBuilder.setDate(getDateFieldValue());
-        expenseBuilder.setAmount(getPriceFieldValue());
+        expenseBuilder.setAmount(
+                (long) exchanger.getExchangeAgainstNew(
+                        getPriceFieldValue(), getCur(), getDateFieldValue())
+        );
         expenseBuilder.setDebtors(getDebtors());
         expenseBuilder.setTag(getTag());
         expenseBuilder.setEventId(event.getId());

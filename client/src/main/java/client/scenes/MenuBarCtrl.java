@@ -78,6 +78,21 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     @FXML
     private MenuItem defaultEmail;
 
+    @FXML
+    private Menu currency;
+
+    @FXML
+    private MenuItem usdButton;
+
+    @FXML
+    private MenuItem eurButton;
+
+    @FXML
+    private MenuItem chfButton;
+
+    @FXML
+    private MenuItem jpyButton;
+
     private final MainCtrl mainCtrl;
 
     private final IEmailCommunicator emailCommunicator;
@@ -210,6 +225,9 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
             "MenuBar.Management-Button"));
         defaultEmail.setText(mainCtrl.getTranslator().getTranslation(
                 "MenuBar.DefaultEmail-Button"));
+        currency.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Currency-Menu") + " ("
+                + mainCtrl.getExchanger().getCurrentCurrency() + ")");
     }
 
     public void goToAdminLogIn(ActionEvent actionEvent) {
@@ -253,5 +271,32 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         defaultEmail.setBody("Default Body - Checking Credentials/Delivery");
         emailCommunicator.sendEmail(defaultEmail);
     }
+
+    public void setUSD(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("USD");
+        setCurrencyMenu();
+    }
+
+    public void setEUR(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("EUR");
+        setCurrencyMenu();
+    }
+
+    public void setCHF(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("CHF");
+        setCurrencyMenu();
+    }
+
+    public void setJPY(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("JPY");
+        setCurrencyMenu();
+    }
+
+    public void setCurrencyMenu() {
+        currency.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Currency-Menu") + " ("
+                + mainCtrl.getExchanger().getCurrentCurrency() + ")");
+    }
+
 
 }
