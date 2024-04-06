@@ -18,11 +18,19 @@ public class ClientConfiguration extends ConfigProvider {
     }
 
     /**
-     * Gets the configured server URL.
+     * Gets an HTTP URL of the configured server.
      * @return the URL
      */
     public String getServer() {
-        return get("server");
+        return "http://" + get("server");
+    }
+
+    /**
+     * Gets a WS URL of the configured server .
+     * @return the URL
+     */
+    public String getServerWS() {
+        return "ws://" + get("server");
     }
 
     /**

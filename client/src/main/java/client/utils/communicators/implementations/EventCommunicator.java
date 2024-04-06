@@ -34,7 +34,7 @@ public class EventCommunicator implements IEventCommunicator {
     @Inject
     public EventCommunicator(ClientConfiguration config, ClientSupplier client) {
         this.origin = config.getServer();
-        this.webSocketURL = "ws://localhost:8080/websocket";
+        this.webSocketURL = config.getServerWS() + "/websocket";
         this.client = client;
     }
 
