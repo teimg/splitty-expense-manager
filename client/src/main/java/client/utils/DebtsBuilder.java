@@ -59,7 +59,10 @@ public class DebtsBuilder {
         findDebts();
         simplifyDebts();
         simplifyTransitiveNature();
-        findPositiveBalances();
+        //uncomment this one for only showing positive balances:
+//        findPositiveBalances();
+        //this one for showing all balances, both positive and negative
+        findBalanceChange();
     }
 
     public ArrayList<Debt> getDebts() {
@@ -70,9 +73,6 @@ public class DebtsBuilder {
         return panes;
     }
 
-//    public ArrayList<Participant> getPositiveBalances() {
-//        return positiveBalances;
-//    }
 
     public Map<Participant, Double> getPositiveBalances() {
         return positiveBalances;

@@ -39,7 +39,10 @@ public class OpenDebtsMv {
         debtsBuilder.buildPanes();
         this.debts = debtsBuilder.getDebts();
         this.panes = debtsBuilder.getPanes();
-        this.positiveBalanceParticipants = debtsBuilder.getPositiveBalances();
+        //this one to show only positive balance participants:
+//        this.positiveBalanceParticipants = debtsBuilder.getPositiveBalances();
+        //this one to show all balances
+        this.positiveBalanceParticipants = debtsBuilder.findBalanceChange();
     }
 
     public boolean checkVisibility() {
