@@ -2,10 +2,10 @@ package client.utils.communicators.implementations;
 
 import client.utils.ClientConfiguration;
 import client.utils.JsonUtils;
+import client.utils.communicators.ClientSupplier;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -29,10 +29,13 @@ public class EventCommunicator implements IEventCommunicator {
     private final String webSocketURL;
     private StompSession session;
 
+    private final ClientSupplier client;
+
     @Inject
-    public EventCommunicator(ClientConfiguration config) {
-        origin = config.getServer();
-        webSocketURL = "ws://localhost:8080/websocket";
+    public EventCommunicator(ClientConfiguration config, ClientSupplier client) {
+        this.origin = config.getServer();
+        this.webSocketURL = "ws://localhost:8080/websocket";
+        this.client = client;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class EventCommunicator implements IEventCommunicator {
      */
     @Override
     public Event getEvent(long id) {
-        return ClientBuilder.newClient()
+        return client.getClient()
                 .target(origin).path("api/event/{id}")
                 .resolveTemplate("id", id)
                 .request(APPLICATION_JSON).accept(APPLICATION_JSON)
@@ -57,7 +60,7 @@ public class EventCommunicator implements IEventCommunicator {
 
     @Override
     public Event createEvent(Event event) {
-        return ClientBuilder.newClient()
+        return client.getClient()
                 .target(origin).path("api/event")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -77,7 +80,7 @@ public class EventCommunicator implements IEventCommunicator {
 
     @Override
     public Event getEventByInviteCode(String inviteCode) {
-        return ClientBuilder.newClient()
+        return client.getClient()
                     .target(origin).path("api/event/byInviteCode/{inviteCode}")
                     .resolveTemplate("inviteCode", inviteCode)
                     .request(APPLICATION_JSON).accept(APPLICATION_JSON)
@@ -86,7 +89,7 @@ public class EventCommunicator implements IEventCommunicator {
 
     public Event checkForEventUpdates(long id) {
         try {
-            Response response = ClientBuilder.newClient()
+            Response response = client.getClient()
                     .target(origin).path("api/event/checkUpdates/{id}")
                     .resolveTemplate("id", id)
                     .request(APPLICATION_JSON).accept(APPLICATION_JSON)
@@ -106,7 +109,7 @@ public class EventCommunicator implements IEventCommunicator {
 
     @Override
     public Event updateEvent(Event event) {
-        return ClientBuilder.newClient()
+        return client.getClient()
             .target(origin).path("api/event/update/{id}")
             .resolveTemplate("id", event.getId())
             .request(APPLICATION_JSON).accept(APPLICATION_JSON)
@@ -120,7 +123,7 @@ public class EventCommunicator implements IEventCommunicator {
 
     @Override
     public List<Event> getAll() {
-        return ClientBuilder.newClient()
+        return client.getClient()
                 .target(origin).path("api/event")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)

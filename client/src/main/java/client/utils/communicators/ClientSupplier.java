@@ -4,10 +4,9 @@ import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @Configuration
-public class ClientBuilderSupplier {
+public class ClientSupplier {
 
     @Bean
     public Client getClient() {
