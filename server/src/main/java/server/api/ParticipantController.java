@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import server.service.ParticipantService;
-
 import java.util.List;
 
 @RestController
@@ -86,7 +85,7 @@ public class ParticipantController {
             service.deleteParticipant(id);
             return ResponseEntity.ok().build();
         }
-        catch (IllegalArgumentException e){
+        catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
 

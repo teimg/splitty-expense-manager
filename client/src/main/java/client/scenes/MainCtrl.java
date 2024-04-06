@@ -135,6 +135,7 @@ public class MainCtrl {
 
         config.setWindowWidth(primaryStage.getWidth());
         config.setWindowHeight(primaryStage.getHeight());
+        config.setCurrency(exchanger.getCurrentCurrency());
 
         config.save();
 
@@ -292,7 +293,7 @@ public class MainCtrl {
 
     public void updateExchanger(String currency) {
         exchanger.setCurrentCurrency(currency);
-        config.setCurrency(exchanger.getCurrentCurrency());
+        config.setCurrency(currency);
         currentCtrl.getValue().setLanguage();
     }
 

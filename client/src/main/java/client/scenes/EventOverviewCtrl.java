@@ -370,7 +370,13 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 .isConfirmed();
         if (confirmed) {
             if (optionalParticipant.isPresent()) {
-                eventOverviewMv.deleteParticipant(optionalParticipant);
+                try {
+                    eventOverviewMv.deleteParticipant(optionalParticipant);
+                }
+                catch (jakarta.ws.rs.BadRequestException e) {
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.ParticipantCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
+                }
             } else {
                 new Popup(mainCtrl.getTranslator().getTranslation
                         ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();

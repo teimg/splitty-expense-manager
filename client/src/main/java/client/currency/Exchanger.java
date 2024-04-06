@@ -30,8 +30,8 @@ public class Exchanger {
         return (rate*amount);
     }
 
-    public void setCurrentCurrency(String amount) {
-        currency = amount;
+    public void setCurrentCurrency(String currency) {
+        this.currency = currency;
     }
 
     public double getStandardConversion(double amount, LocalDate date) {
