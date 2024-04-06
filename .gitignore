@@ -47,4 +47,5 @@ out/
 .DS_Store
 
 ### Cache ###
+server/src/main/resources/cache/cache.txt
 cache.txt
