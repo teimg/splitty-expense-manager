@@ -4,6 +4,7 @@ import client.dialog.Popup;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.JsonUtils;
+import client.utils.RecentEventTracker;
 import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
@@ -76,10 +77,14 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
 
     private final IEventCommunicator eventCommunicator;
 
+    private final RecentEventTracker recentEventTracker;
+
     @Inject
-    public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator) {
+    public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator,
+                           RecentEventTracker recentEventTracker) {
         this.mainCtrl = mainCtrl;
         this.eventCommunicator = eventCommunicator;
+        this.recentEventTracker = recentEventTracker;
     }
 
     @Override
@@ -275,7 +280,10 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
         }
 
         // Add event to database
-        eventCommunicator.restoreEvent(event);
+        Event importedEvent = eventCommunicator.restoreEvent(event);
+
+        // Add event to recent events for quick navigation
+        recentEventTracker.registerEvent(importedEvent);
 
         // Success dialog
         new Popup("Event successfully imported from JSON file", Popup.TYPE.INFO).showAndWait();
