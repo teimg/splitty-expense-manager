@@ -27,6 +27,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AdminScreenCtrl implements LanguageSwitch, SceneController,
@@ -210,14 +211,29 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
     public void handleImport(ActionEvent actionEvent) {
     }
 
-    // TODO: Once web sockets are configured this is fairly elementary
-    //  must be sure to refresh page
     public void handleDelete(ActionEvent actionEvent) {
-        Event toBeDeleted = eventListView.getSelectionModel().getSelectedItem();
-        if (toBeDeleted != null) {
-            // TODO: Add Pop Up as well as actually delete item (using web sockets).
-            System.out.println(toBeDeleted.toString());
+        Event event = eventListView.getSelectionModel().getSelectedItem();
+
+        if (event == null) {
+            new Popup("No event selected!", Popup.TYPE.ERROR).showAndWait();
+            return;
         }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Delete event");
+        alert.setContentText("Are you sure you want to delete event "
+                + event.getName() + " from the database?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isEmpty() || result.get().equals(ButtonType.CANCEL)) {
+            new Popup("Deletion cancelled", Popup.TYPE.INFO).showAndWait();
+            return;
+        }
+
+        eventCommunicator.deleteEvent(event.getId());
+
+        new Popup("Event deleted", Popup.TYPE.INFO).showAndWait();
     }
 
     public void handleBack(ActionEvent actionEvent) {
