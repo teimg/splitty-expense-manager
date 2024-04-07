@@ -93,6 +93,9 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     @FXML
     private MenuItem jpyButton;
 
+    @FXML
+    private MenuItem shortCuts;
+
     private final MainCtrl mainCtrl;
 
     private final IEmailCommunicator emailCommunicator;
@@ -228,6 +231,8 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         currency.setText(mainCtrl.getTranslator().getTranslation(
                 "MenuBar.Currency-Menu") + " ("
                 + mainCtrl.getExchanger().getCurrentCurrency() + ")");
+        shortCuts.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.ShortCut-Button"));;
     }
 
     public void goToAdminLogIn(ActionEvent actionEvent) {
@@ -242,10 +247,23 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         downloadTemplate();
     }
 
-    private void persistTemplate(File saveLocation){
-        // Could be moved to a ModelView class later
+    public void downloadGuideBtn(ActionEvent actionEvent) {
+        downloadGuide();
+    }
+
+    private void downloadGuide() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Download ShortCut Manual");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Downloads"));
+        fileChooser.setInitialFileName("keyBoardShortCuts.md");
+        File saveLocation = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
         Path templateLocation = Paths.get(
-            "client", "src", "main", "resources", "languages", "template.properties");
+                "client", "src", "main", "resources", "guides", "keyBoardShortCuts.md");
+        persistTemplate(saveLocation, templateLocation);
+    }
+
+    private void persistTemplate(File saveLocation, Path templateLocation){
+        // Could be moved to a ModelView class later
         try {
             Files.copy(templateLocation, saveLocation.toPath(),
                 StandardCopyOption.REPLACE_EXISTING);
@@ -260,8 +278,9 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Downloads"));
         fileChooser.setInitialFileName("template.properties");
         File saveLocation = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
-        persistTemplate(saveLocation);
-
+        Path templateLocation = Paths.get(
+                "client", "src", "main", "resources", "languages", "template.properties");
+        persistTemplate(saveLocation, templateLocation);
     }
 
     public void checkDefaultEmail(ActionEvent actionEvent) {
@@ -297,6 +316,5 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
                 "MenuBar.Currency-Menu") + " ("
                 + mainCtrl.getExchanger().getCurrentCurrency() + ")");
     }
-
 
 }

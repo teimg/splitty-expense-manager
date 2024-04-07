@@ -4,6 +4,7 @@ package client.scenes;
 import client.ModelView.EventOverviewMv;
 import client.dialog.ConfPopup;
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.nodes.UIIcon;
@@ -15,6 +16,8 @@ import commons.Expense;
 
 import commons.Participant;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -22,7 +25,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -37,12 +42,14 @@ import java.util.ResourceBundle;
 
 
 
-public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneController {
+public class EventOverviewCtrl implements Initializable, LanguageSwitch,
+        SceneController, ShortCuts {
 
 
     private Task<Void> longPollingTask = null;
     private Thread pollingThread = null;
     private EventOverviewMv eventOverviewMv;
+    private Expense currentlySelectedExpense;
 
 
     private class ExpenseListCell extends ListCell<Expense> {
@@ -65,6 +72,26 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             HBox.setHgrow(filler, Priority.ALWAYS);
             HBox.setMargin(deleteButton, new Insets(0, 0, 0, 5));
             container.getChildren().addAll(content, filler, editButton, deleteButton);
+
+            // Not totally sure how this works, but it seems to. Had to use internet resources here.
+            editButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+                @Override
+                public void changed(ObservableValue<? extends Boolean>
+                                            observable, Boolean oldValue, Boolean newValue) {
+                    if (newValue) {
+                        Expense expenseToBeEdited = getItem();
+                        if (expenseToBeEdited != null) {
+                            currentlySelectedExpense = expenseToBeEdited;
+                        }
+                    }
+                    else {
+                        if (!expensesList.isFocused()) {
+                            currentlySelectedExpense = null;
+                        }
+                    }
+                }
+            });
         }
 
 
@@ -315,6 +342,20 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         startEventUpdatesLongPolling(event.getId());
     }
 
+    @Override
+    public void listeners() {
+        Scene s = editParticipantButton.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.S, this::handleStatistics);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.O, this::handleOpenDebt);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.A, this::handleAddExpense);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.P, this::handleAddParticipant);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.I, this::handleSendInvites);
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.E, () ->
+                mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), currentlySelectedExpense));
+    }
+
 
     public void copyInviteCode() {
         eventOverviewMv.copyInviteCode();
@@ -427,7 +468,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
     }
 
 
-    public void handleStatistics(ActionEvent actionEvent) {
+    public void handleStatistics() {
         mainCtrl.showStatistics(eventOverviewMv.getEvent());
     }
 

@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import client.utils.scene.SceneController;
@@ -18,7 +19,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -29,7 +32,8 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
-public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, SceneController {
+public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
+        SceneController, ShortCuts {
 
     @FXML
     private Label titleLabel;
@@ -453,6 +457,14 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     public void handleAddTag() {
         mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), null);
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = currencyField.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, this::createExpense);
     }
 
 

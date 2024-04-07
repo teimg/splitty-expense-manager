@@ -17,6 +17,7 @@ package client;
 
 import client.ModelView.*;
 import client.currency.Exchanger;
+import client.keyBoardCtrl.KeyBoardListeners;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
@@ -101,6 +102,7 @@ public class MyModule implements Module {
         binder.bind(Translator.class).in(Scopes.SINGLETON);
         binder.bind(Exchanger.class).in(Scopes.SINGLETON);
         binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
+        binder.bind(KeyBoardListeners.class).in(Scopes.SINGLETON);
     }
 
     private static void configureNonSceneCtrl(Binder binder) {
