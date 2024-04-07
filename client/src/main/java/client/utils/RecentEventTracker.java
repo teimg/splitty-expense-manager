@@ -37,7 +37,7 @@ public class RecentEventTracker {
 
     public void registerEvent(Event event) {
         joinableEvents.stream()
-                .filter(joinableEvent -> joinableEvent.id() == event.getId())
+                .filter(joinableEvent -> joinableEvent.inviteCode().equals(event.getInviteCode()))
                 .findFirst()
                 .ifPresent(joinableEvent -> joinableEvents.remove(joinableEvent));
         joinableEvents.addFirst(JoinableEvent.fromEvent(event));
