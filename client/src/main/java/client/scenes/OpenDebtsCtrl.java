@@ -9,6 +9,7 @@ import commons.Participant;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -81,7 +82,10 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         for (Map.Entry<Participant, Double> entry : map.entrySet()) {
             String key = entry.getKey().getName();
             Double value = entry.getValue();
-            String keyValueString = key + ", " + value;
+            Double converted = mainCtrl.getExchanger().getStandardConversion(value, LocalDate.now());
+//            String currentCurrValue = " " + Math.round(mainCtrl.getExchanger().getStandardConversion(
+//                    entry.getValue(), LocalDate.now())*100.0)/100.0;
+            String keyValueString = key + ", " + String.format("%.2f", converted) + mainCtrl.getExchanger().getCurrentSymbol();
             stringList.add(keyValueString);
         }
         return stringList;
