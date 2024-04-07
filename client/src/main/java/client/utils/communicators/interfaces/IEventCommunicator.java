@@ -35,9 +35,8 @@ public interface IEventCommunicator {
     /**
      * Deletes an existing event.
      * @param id event id
-     * @return the deleted event
      */
-    Event deleteEvent(long id);
+    void deleteEvent(long id);
 
     List<Event> getAll();
 
