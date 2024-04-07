@@ -23,7 +23,6 @@ public class OpenDebtsMv {
 
     private ArrayList<TitledPane> panes;
 
-//    private ArrayList<Participant> positiveBalanceParticipants;
     private Map<Participant, Double> positiveBalanceParticipants;
 
     @Inject
