@@ -1,4 +1,4 @@
-Below are the KeyBoard guide for all the scenes: (Admin screens do not support any shortcuts)
+Below are the KeyBoard guide for all the scenes: (Admin screens do not support any shortcuts - Use ENTER to exit Popups on recommended value)
 
 **Start Screen:**
 They all follow from CTRL + "CHARACTER" 
