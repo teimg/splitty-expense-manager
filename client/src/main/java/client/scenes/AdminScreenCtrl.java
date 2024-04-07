@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.JsonUtils;
 import client.utils.scene.SceneController;
@@ -28,7 +29,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initializable {
+public class AdminScreenCtrl implements LanguageSwitch, SceneController,
+        Initializable, ShortCuts {
 
     @FXML
     private Label eventsLabel;
@@ -74,6 +76,11 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController, Initial
     public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator) {
         this.mainCtrl = mainCtrl;
         this.eventCommunicator = eventCommunicator;
+    }
+
+    @Override
+    public void listeners() {
+
     }
 
     class AddEvent implements Runnable {
