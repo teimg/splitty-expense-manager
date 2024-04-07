@@ -215,25 +215,32 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
         Event event = eventListView.getSelectionModel().getSelectedItem();
 
         if (event == null) {
-            new Popup("No event selected!", Popup.TYPE.ERROR).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.NoEventSelected"
+            ), Popup.TYPE.ERROR).showAndWait();
             return;
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Delete event");
-        alert.setContentText("Are you sure you want to delete event "
-                + event.getName() + " from the database?");
+        alert.setContentText(mainCtrl.getTranslator().getTranslation(
+                "Conf.DeleteEvent"
+        ) + event.getName() + "?");
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isEmpty() || result.get().equals(ButtonType.CANCEL)) {
-            new Popup("Deletion cancelled", Popup.TYPE.INFO).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.EventDeletionCancelled"
+            ), Popup.TYPE.INFO).showAndWait();
             return;
         }
 
         eventCommunicator.deleteEvent(event.getId());
 
-        new Popup("Event deleted", Popup.TYPE.INFO).showAndWait();
+        new Popup(mainCtrl.getTranslator().getTranslation(
+                "Popup.EventDeleted"
+        ), Popup.TYPE.INFO).showAndWait();
     }
 
     public void handleBack(ActionEvent actionEvent) {
