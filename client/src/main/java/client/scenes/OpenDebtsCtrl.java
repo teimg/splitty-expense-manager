@@ -77,7 +77,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
     @Override
     public void listeners() {
         Scene s = titleLabel.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.B, this::abortButtonPressed);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, this::abortButtonPressed);
     }
 
 }

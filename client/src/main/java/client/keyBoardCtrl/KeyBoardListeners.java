@@ -13,7 +13,7 @@ public class KeyBoardListeners {
     private static final ArrayList<Pair<Scene,
             ArrayList<EventHandler<KeyEvent>>>> listeners = new ArrayList<>();
 
-    public static void addListener(Scene scene, KeyCode code, KeyPressedAction action) {
+    public void addListener(Scene scene, KeyCode code, KeyPressedAction action) {
         final boolean[] keyPressed = {false};
 
         EventHandler<KeyEvent> keyPressedHandler = event -> {
@@ -40,7 +40,7 @@ public class KeyBoardListeners {
         listeners.add(new Pair<>(scene, handlers));
     }
 
-    public static void resetListeners() {
+    public void resetListeners() {
         for (Pair<Scene, ArrayList<EventHandler<KeyEvent>>> pair : listeners) {
             Scene s = pair.getKey();
             for (EventHandler<KeyEvent> event : pair.getValue()) {

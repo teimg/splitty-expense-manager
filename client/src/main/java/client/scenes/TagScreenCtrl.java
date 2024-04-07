@@ -131,7 +131,7 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch, ShortCuts
     @Override
     public void listeners() {
         Scene s = titleLabel.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
-        KeyBoardListeners.addListener(s, KeyCode.ENTER, () -> handleSubmit(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, () -> handleSubmit(new ActionEvent()));
     }
 }

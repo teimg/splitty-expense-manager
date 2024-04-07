@@ -130,8 +130,8 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
     @Override
     public void listeners() {
         Scene s = nameField.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
-        KeyBoardListeners.addListener(s, KeyCode.ENTER, () -> addButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, () -> addButtonPressed(new ActionEvent()));
     }
 
 }

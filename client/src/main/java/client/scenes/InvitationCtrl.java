@@ -196,8 +196,8 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
     @Override
     public void listeners() {
         Scene s = inviteLabel.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.B, this::abortButtonPressed);
-        KeyBoardListeners.addListener(s, KeyCode.ENTER, this::handleSendInvites);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, this::abortButtonPressed);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, this::handleSendInvites);
     }
 
 }

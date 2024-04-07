@@ -346,13 +346,13 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
     @Override
     public void listeners() {
         Scene s = editParticipantButton.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.S, this::handleStatistics);
-        KeyBoardListeners.addListener(s, KeyCode.O, this::handleOpenDebt);
-        KeyBoardListeners.addListener(s, KeyCode.A, this::handleAddExpense);
-        KeyBoardListeners.addListener(s, KeyCode.P, this::handleAddParticipant);
-        KeyBoardListeners.addListener(s, KeyCode.I, this::handleSendInvites);
-        KeyBoardListeners.addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
-        KeyBoardListeners.addListener(s, KeyCode.E, () ->
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.S, this::handleStatistics);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.O, this::handleOpenDebt);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.A, this::handleAddExpense);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.P, this::handleAddParticipant);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.I, this::handleSendInvites);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.E, () ->
                 mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), currentlySelectedExpense));
     }
 

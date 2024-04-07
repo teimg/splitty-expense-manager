@@ -178,9 +178,9 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
     @Override
     public void listeners() {
         Scene s = newEventField.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.C, this::createEvent);
-        KeyBoardListeners.addListener(s, KeyCode.J, this::joinEvent);
-        KeyBoardListeners.addListener(s, KeyCode.E, () -> joinRecent(s));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.C, this::createEvent);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.J, this::joinEvent);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.E, () -> joinRecent(s));
     }
 
     private void joinRecent(Scene s) {

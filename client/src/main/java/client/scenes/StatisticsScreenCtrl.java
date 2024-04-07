@@ -125,6 +125,6 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
     @Override
     public void listeners() {
         Scene s = pieChart.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
     }
 }

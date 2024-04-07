@@ -60,6 +60,8 @@ public class MainCtrl {
 
     private final SceneWrapperFactory sceneWrapperFactory;
 
+    private final KeyBoardListeners keyBoardListeners;
+
 
     private final Exchanger exchanger;
 
@@ -67,10 +69,12 @@ public class MainCtrl {
     public MainCtrl(ClientConfiguration config, Translator translator,
                     RecentEventTracker recentEventTracker,
                     SceneWrapperFactory sceneWrapperFactory,
-                    Exchanger exchanger) {
+                    Exchanger exchanger,
+                    KeyBoardListeners keyBoardListeners) {
         this.config = config;
         this.translator = translator;
         this.exchanger = exchanger;
+        this.keyBoardListeners = keyBoardListeners;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
             this.exchanger.setCurrentCurrency(config.getCurrency());
@@ -180,7 +184,7 @@ public class MainCtrl {
         primaryStage.setTitle(title);
 //        primaryStage.setScene(currentSceneWrapper.getScene());
         this.baseScene.setCenter(currentSceneWrapper.getParent());
-        KeyBoardListeners.resetListeners();
+        keyBoardListeners.resetListeners();
         ((ShortCuts) currentSceneWrapper.getSceneController()).listeners();
     }
 
@@ -299,6 +303,10 @@ public class MainCtrl {
         exchanger.setCurrentCurrency(currency);
         config.setCurrency(currency);
         currentCtrl.getValue().setLanguage();
+    }
+
+    public KeyBoardListeners getKeyBoardListeners() {
+        return keyBoardListeners;
     }
 
 }

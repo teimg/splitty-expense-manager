@@ -463,8 +463,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
     @Override
     public void listeners() {
         Scene s = currencyField.getScene();
-        KeyBoardListeners.addListener(s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
-        KeyBoardListeners.addListener(s, KeyCode.ENTER, this::createExpense);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, this::createExpense);
     }
 
 
