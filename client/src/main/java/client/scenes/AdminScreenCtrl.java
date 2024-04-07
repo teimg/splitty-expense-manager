@@ -7,12 +7,15 @@ import client.utils.JsonUtils;
 import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
 import commons.Expense;
 import commons.Participant;
+import jakarta.ws.rs.NotFoundException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +30,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AdminScreenCtrl implements LanguageSwitch, SceneController,
@@ -211,8 +215,70 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
         sortShownEvents();
     }
 
-    // TODO: Import JSON
+    private Optional<Event> getEventFromFile() {
+
+        // Get file from user
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import");
+        fileChooser.getExtensionFilters().add(jsonExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(jsonExtensionFilter);
+        File file = fileChooser.showOpenDialog(mainCtrl.getPrimaryStage());
+
+        // Make sure file is selected
+        if (file == null) {
+            new Popup("No file selected!", Popup.TYPE.ERROR).showAndWait();
+            return Optional.empty();
+        }
+
+        // Read event from JSON
+        ObjectMapper mapper = JsonUtils.getObjectMapper();
+        Event event;
+        try {
+            event = mapper.readValue(file, Event.class);
+        } catch (Exception e) {
+            if (e instanceof StreamReadException || e instanceof DatabindException) {
+                new Popup("Malformed JSON!", Popup.TYPE.ERROR).showAndWait();
+            } else {
+                throw new RuntimeException(e);
+            }
+            return Optional.empty();
+        }
+
+        return Optional.of(event);
+    }
+
     public void handleImport(ActionEvent actionEvent) {
+
+        // Get event from JSON
+        Optional<Event> res = getEventFromFile();
+        if (res.isEmpty()) return;
+        Event event = res.get();
+
+        // Error if event with inviteCode already exists
+        try {
+            eventCommunicator.getEventByInviteCode(event.getInviteCode());
+            new Popup("Event already exists!", Popup.TYPE.ERROR).showAndWait();
+            return;
+        } catch (NotFoundException ignored) {}
+
+        // Confirmation dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Event import");
+        alert.setContentText("Are you sure you want to add event "
+                + event.getName() + " to the server?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isEmpty() || result.get().equals(ButtonType.CANCEL)) {
+            new Popup("Cancelled import", Popup.TYPE.INFO).showAndWait();
+            return;
+        }
+
+        // Add event to database
+        eventCommunicator.restoreEvent(event);
+
+        // Success dialog
+        new Popup("Event successfully imported from JSON file", Popup.TYPE.INFO).showAndWait();
     }
 
     // TODO: Once web sockets are configured this is fairly elementary
