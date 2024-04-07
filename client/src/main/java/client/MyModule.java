@@ -81,7 +81,8 @@ public class MyModule implements Module {
         try {
             binder.bind(EventOverviewMv.class)
                     .toConstructor(EventOverviewMv.class.getConstructor(
-                            IEventCommunicator.class, IParticipantCommunicator.class
+                            IEventCommunicator.class, IParticipantCommunicator.class,
+                        IExpenseCommunicator.class
                     ))
                     .in(Scopes.SINGLETON);
         } catch (NoSuchMethodException e) {

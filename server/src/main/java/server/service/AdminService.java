@@ -1,7 +1,7 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
-import server.PasswordSupplier;
+import server.suppliers.PasswordSupplier;
 
 @Service
 public class AdminService {

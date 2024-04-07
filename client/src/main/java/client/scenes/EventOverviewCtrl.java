@@ -6,6 +6,7 @@ import client.dialog.ConfPopup;
 import client.dialog.Popup;
 import client.language.LanguageSwitch;
 import client.language.Translator;
+import client.nodes.UIIcon;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
@@ -20,6 +21,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -48,6 +50,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
         private Text content;
         private Pane filler;
         private Button editButton;
+        private Button deleteButton;
 
 
         public ExpenseListCell() {
@@ -56,8 +59,12 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             content = new Text();
             filler = new Pane();
             editButton = new Button();
+            deleteButton = new Button();
+            deleteButton.setGraphic(UIIcon.icon(UIIcon.NAME.DELETE));
+            editButton.setGraphic(UIIcon.icon(UIIcon.NAME.EDIT));
             HBox.setHgrow(filler, Priority.ALWAYS);
-            container.getChildren().addAll(content, filler, editButton);
+            HBox.setMargin(deleteButton, new Insets(0, 0, 0, 5));
+            container.getChildren().addAll(content, filler, editButton, deleteButton);
         }
 
 
@@ -80,6 +87,30 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
             content.setText(expenseDescription(expense));
             editButton.setOnAction(actionEvent -> {
                 mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), expense);
+            });
+
+            deleteButton.setOnAction(event -> {
+                boolean isConfirm = ConfPopup.create(
+                    mainCtrl.getTranslator().getTranslation(
+                        "Conf.DeleteExpense")
+                ).isConfirmed();
+
+                deleteButton.setDisable(true);
+                editButton.setDisable(true);
+
+                try {
+                    if(isConfirm){
+                        eventOverviewMv.deleteEvent(expense.getId());
+                        return;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    handleException(e, mainCtrl.getTranslator());
+                }
+
+                deleteButton.setDisable(false);
+                editButton.setDisable(false);
+
             });
             setGraphic(container);
         }
@@ -251,6 +282,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        //UI init
+        inviteCodeCopyBtn.setGraphic(UIIcon.icon(UIIcon.NAME.CLIPBOARD));
+
         // Create toggle group for radio buttons
         ToggleGroup expenseSelectorToggle = new ToggleGroup();
         expenseSelectorAll.setToggleGroup(expenseSelectorToggle);
@@ -335,7 +370,13 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch, SceneCo
                 .isConfirmed();
         if (confirmed) {
             if (optionalParticipant.isPresent()) {
-                eventOverviewMv.deleteParticipant(optionalParticipant);
+                try {
+                    eventOverviewMv.deleteParticipant(optionalParticipant);
+                }
+                catch (jakarta.ws.rs.BadRequestException e) {
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.ParticipantCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
+                }
             } else {
                 new Popup(mainCtrl.getTranslator().getTranslation
                         ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
