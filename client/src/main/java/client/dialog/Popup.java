@@ -3,6 +3,8 @@ package client.dialog;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 
 
@@ -66,6 +68,13 @@ public class Popup extends Dialog<String> {
     private void initDialogPane(){
         this.dialogPane = new DialogPane();
         this.dialogPane.setContent(label);
+
+        this.dialogPane.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.setResult("ENTER_PRESSED");
+                this.close();
+            }
+        });
 
         this.dialogPane.getButtonTypes().add(
             new ButtonType("Ok", ButtonBar.ButtonData.CANCEL_CLOSE)

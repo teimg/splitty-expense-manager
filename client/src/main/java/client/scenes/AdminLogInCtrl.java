@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.ModelView.AdminLogInMv;
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
@@ -15,7 +16,8 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminLogInCtrl implements Initializable, LanguageSwitch, SceneController {
+public class AdminLogInCtrl implements Initializable, LanguageSwitch,
+        SceneController, ShortCuts {
 
     @FXML
     private Label logInLabel;
@@ -69,5 +71,10 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch, SceneContr
             "AdminLogIn.Password-label"));
         enterButton.setText(mainCtrl.getTranslator().getTranslation(
             "AdminLogIn.Enter-Button"));
+    }
+
+    @Override
+    public void listeners() {
+
     }
 }

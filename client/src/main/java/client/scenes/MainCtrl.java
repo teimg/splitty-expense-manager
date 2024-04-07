@@ -16,6 +16,8 @@
 package client.scenes;
 
 import client.currency.Exchanger;
+import client.keyBoardCtrl.KeyBoardListeners;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
@@ -58,6 +60,8 @@ public class MainCtrl {
 
     private final SceneWrapperFactory sceneWrapperFactory;
 
+    private final KeyBoardListeners keyBoardListeners;
+
 
     private final Exchanger exchanger;
 
@@ -65,10 +69,12 @@ public class MainCtrl {
     public MainCtrl(ClientConfiguration config, Translator translator,
                     RecentEventTracker recentEventTracker,
                     SceneWrapperFactory sceneWrapperFactory,
-                    Exchanger exchanger) {
+                    Exchanger exchanger,
+                    KeyBoardListeners keyBoardListeners) {
         this.config = config;
         this.translator = translator;
         this.exchanger = exchanger;
+        this.keyBoardListeners = keyBoardListeners;
         if (config != null){
             this.translator.setCurrentLanguage(config.getStartupLanguage());
             this.exchanger.setCurrentCurrency(config.getCurrency());
@@ -163,6 +169,7 @@ public class MainCtrl {
      */
 
     private void show(String scene, String title){
+
         SceneWrapper currentSceneWrapper = this.scenes.get(scene);
 
         if (currentSceneWrapper == null){
@@ -177,7 +184,8 @@ public class MainCtrl {
         primaryStage.setTitle(title);
 //        primaryStage.setScene(currentSceneWrapper.getScene());
         this.baseScene.setCenter(currentSceneWrapper.getParent());
-
+        keyBoardListeners.resetListeners();
+        ((ShortCuts) currentSceneWrapper.getSceneController()).listeners();
     }
 
     private void show(String scene){
@@ -295,6 +303,10 @@ public class MainCtrl {
         exchanger.setCurrentCurrency(currency);
         config.setCurrency(currency);
         currentCtrl.getValue().setLanguage();
+    }
+
+    public KeyBoardListeners getKeyBoardListeners() {
+        return keyBoardListeners;
     }
 
 }

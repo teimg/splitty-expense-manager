@@ -1,19 +1,23 @@
 package client.scenes;
 
 import client.ModelView.OpenDebtsMv;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Participant;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import javafx.scene.input.KeyCode;
+
 import java.util.ArrayList;
 import java.util.Map;
 
-public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
+public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts {
 
     @FXML
     private Label titleLabel;
@@ -110,6 +114,12 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController {
         titleLabel1.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.PositiveBalanceTitle-label"));
         loadInfo(event);
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = titleLabel.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, this::abortButtonPressed);
     }
 
 }

@@ -29,6 +29,7 @@
             <items>
                 <MenuItem fx:id="adminLogIn" mnemonicParsing="false" onAction="#goToAdminLogIn" text="Management Overview" />
                 <MenuItem fx:id="defaultEmail" mnemonicParsing="false" onAction="#checkDefaultEmail" text="Check Default Email" />
+                <MenuItem fx:id="shortCuts" mnemonicParsing="false" onAction="#downloadGuideBtn" text="Shortcuts Guide" />
             </items>
         </Menu>
         <Menu fx:id="currency" mnemonicParsing="false" text="Currency">
