@@ -87,17 +87,9 @@ public class AddEditExpenseMv {
             }
         }
 
-        initDefaultEvents();
-
         setBuilder();
         setFields();
 
-    }
-
-    private void initDefaultEvents() {
-        tagCommunicator.saveOrUpdateTag(new Tag("Food", 82, 168, 50));
-        tagCommunicator.saveOrUpdateTag(new Tag("Entrance Fees", 50, 52, 168));
-        tagCommunicator.saveOrUpdateTag(new Tag("Travel", 204, 22, 41));
     }
 
     public void setBuilder(){
