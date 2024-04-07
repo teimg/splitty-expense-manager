@@ -231,7 +231,9 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
 
         // Make sure file is selected
         if (file == null) {
-            new Popup("No file selected!", Popup.TYPE.ERROR).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.NoFileSelected"
+            ), Popup.TYPE.ERROR).showAndWait();
             return Optional.empty();
         }
 
@@ -242,7 +244,9 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
             event = mapper.readValue(file, Event.class);
         } catch (Exception e) {
             if (e instanceof StreamReadException || e instanceof DatabindException) {
-                new Popup("Malformed JSON!", Popup.TYPE.ERROR).showAndWait();
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.BadJSON"
+                ), Popup.TYPE.ERROR).showAndWait();
             } else {
                 throw new RuntimeException(e);
             }
@@ -262,7 +266,9 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
         // Error if event with inviteCode already exists
         try {
             eventCommunicator.getEventByInviteCode(event.getInviteCode());
-            new Popup("Event already exists!", Popup.TYPE.ERROR).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.EventExists"
+            ), Popup.TYPE.ERROR).showAndWait();
             return;
         } catch (NotFoundException ignored) {}
 
@@ -270,12 +276,15 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Event import");
-        alert.setContentText("Are you sure you want to add event "
-                + event.getName() + " to the server?");
+        alert.setContentText(mainCtrl.getTranslator().getTranslation(
+                "Conf.ImportEvent"
+        ) + event.getName() + "?");
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isEmpty() || result.get().equals(ButtonType.CANCEL)) {
-            new Popup("Cancelled import", Popup.TYPE.INFO).showAndWait();
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.ImportCancel"
+            ), Popup.TYPE.INFO).showAndWait();
             return;
         }
 
@@ -286,7 +295,9 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
         recentEventTracker.registerEvent(importedEvent);
 
         // Success dialog
-        new Popup("Event successfully imported from JSON file", Popup.TYPE.INFO).showAndWait();
+        new Popup(mainCtrl.getTranslator().getTranslation(
+                "Popup.ImportConfirm"
+        ), Popup.TYPE.INFO).showAndWait();
     }
 
     // TODO: Once web sockets are configured this is fairly elementary
