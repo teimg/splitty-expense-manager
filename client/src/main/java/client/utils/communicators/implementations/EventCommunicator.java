@@ -67,7 +67,16 @@ public class EventCommunicator implements IEventCommunicator {
                 .post(Entity.entity(event, APPLICATION_JSON), Event.class);
     }
 
+    @Override
+    public Event restoreEvent(Event event) {
+        return client.getClient()
+                .target(origin).path("api/event/restoreEvent")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(event, APPLICATION_JSON), Event.class);
+    }
 
+    @Override
     public Event renameEvent(long id, String newName) {
         Event eventToUpdate = getEvent(id);
         if (eventToUpdate != null) {

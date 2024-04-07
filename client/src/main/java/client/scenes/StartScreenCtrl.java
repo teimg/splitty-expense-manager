@@ -102,7 +102,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
             title.setText(joinableEvent.name());
             title.setOnAction(actionEvent -> {
                 try {
-                    Event event = startScreenMv.getRecentEvent(joinableEvent.id());
+                    Event event = startScreenMv.getRecentEvent(joinableEvent.inviteCode());
                     mainCtrl.showEventOverview(event);
                 } catch (NotFoundException e) {
                     new Popup("Event was not found!", Popup.TYPE.ERROR).showAndWait();
@@ -192,7 +192,7 @@ public class StartScreenCtrl implements Initializable, LanguageSwitch, SceneCont
     private void joinRecent(Scene s) {
         if (currentlySelectedJoinableEvent != null) {
             Event event = startScreenMv.getRecentEvent(
-                    currentlySelectedJoinableEvent.id());
+                    currentlySelectedJoinableEvent.inviteCode());
             mainCtrl.showEventOverview(event);
         }
     }
