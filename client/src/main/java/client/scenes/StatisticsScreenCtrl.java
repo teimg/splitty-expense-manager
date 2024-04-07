@@ -65,9 +65,10 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
         Map<Tag, Double> entries = statisticsScreenMv.fillEntries();
         addLabels(entries);
         pieChart.setLegendVisible(false);
-        totalCostLabel.setText("The total cost of this event is: "
+        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Total-Cost-label") + " "
                 + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
-                        statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
+                statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
                 mainCtrl.getExchanger().getCurrentSymbol());
     }
 
@@ -103,7 +104,8 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
     public void setLanguage() {
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Title-label"));
-        totalCostLabel.setText("The total cost of this event is: "
+        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
+                        "StatisticsScreen.Total-Cost-label") + " "
                 + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
                 statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
                 mainCtrl.getExchanger().getCurrentSymbol());
