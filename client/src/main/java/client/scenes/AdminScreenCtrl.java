@@ -184,6 +184,9 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
                 "AdminScreen.Back-Button"));
     }
 
+    private static final FileChooser.ExtensionFilter jsonExtensionFilter
+            = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+
     public void handleDownload(ActionEvent actionEvent) {
         Event event = eventListView.getSelectionModel().getSelectedItem();
         if (event == null) {
@@ -193,6 +196,8 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
         }
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().add(jsonExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(jsonExtensionFilter);
         File file = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
         ObjectMapper mapper = JsonUtils.getObjectMapper();
         try {
