@@ -10,7 +10,7 @@ import java.util.*;
 
 public class KeyBoardListeners {
 
-    private static final ArrayList<Pair<Scene,
+    private final ArrayList<Pair<Scene,
             ArrayList<EventHandler<KeyEvent>>>> listeners = new ArrayList<>();
 
     public void addListener(Scene scene, KeyCode code, KeyPressedAction action) {
