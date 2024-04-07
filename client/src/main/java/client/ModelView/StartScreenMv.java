@@ -64,9 +64,9 @@ public class StartScreenMv {
         }
     }
 
-    public Event getRecentEvent(long id){
+    public Event getRecentEvent(String inviteCode){
         try {
-            return server.getEvent(id);
+            return server.getEventByInviteCode(inviteCode);
         }catch (NotFoundException e){
             throw new NotFoundException("CodeNotFound");
         }catch (ProcessingException e){
