@@ -4,7 +4,6 @@ package client.scenes;
 import client.ModelView.EventOverviewMv;
 import client.dialog.ConfPopup;
 import client.dialog.Popup;
-import client.keyBoardCtrl.KeyBoardListeners;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.language.Translator;
@@ -351,7 +350,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.A, this::handleAddExpense);
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.P, this::handleAddParticipant);
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.I, this::handleSendInvites);
-        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.E, () ->
                 mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), currentlySelectedExpense));
     }

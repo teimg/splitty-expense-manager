@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.ModelView.InvitationMv;
 import client.dialog.ConfPopup;
-import client.keyBoardCtrl.KeyBoardListeners;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.nodes.UIIcon;

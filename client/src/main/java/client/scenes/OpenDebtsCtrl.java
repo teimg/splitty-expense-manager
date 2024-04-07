@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.OpenDebtsMv;
-import client.keyBoardCtrl.KeyBoardListeners;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;

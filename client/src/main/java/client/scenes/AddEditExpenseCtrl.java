@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
 import client.dialog.Popup;
-import client.keyBoardCtrl.KeyBoardListeners;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.*;
@@ -463,7 +462,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
     @Override
     public void listeners() {
         Scene s = currencyField.getScene();
-        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, this::createExpense);
     }
 

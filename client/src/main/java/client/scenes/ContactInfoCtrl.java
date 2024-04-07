@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.ContactInfoMv;
-import client.keyBoardCtrl.KeyBoardListeners;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
@@ -130,8 +129,10 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
     @Override
     public void listeners() {
         Scene s = nameField.getScene();
-        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
-        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, () -> addButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.ENTER, () -> addButtonPressed(new ActionEvent()));
     }
 
 }

@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.ModelView.StatisticsScreenMv;
-import client.keyBoardCtrl.KeyBoardListeners;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
@@ -125,6 +124,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
     @Override
     public void listeners() {
         Scene s = pieChart.getScene();
-        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
     }
 }

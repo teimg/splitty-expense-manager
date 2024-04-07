@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.dialog.Popup;
-import client.keyBoardCtrl.KeyBoardListeners;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
@@ -131,7 +130,9 @@ public class TagScreenCtrl implements SceneController, LanguageSwitch, ShortCuts
     @Override
     public void listeners() {
         Scene s = titleLabel.getScene();
-        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, () -> handleBack(new ActionEvent()));
-        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, () -> handleSubmit(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.ENTER, () -> handleSubmit(new ActionEvent()));
     }
 }

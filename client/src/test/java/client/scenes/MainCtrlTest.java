@@ -16,6 +16,7 @@
 package client.scenes;
 
 import client.currency.Exchanger;
+import client.keyBoardCtrl.KeyBoardListeners;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
@@ -56,6 +57,8 @@ public class MainCtrlTest {
     private RecentEventTracker recentEventTracker;
     @Mock
     private Exchanger exchanger;
+    @Mock
+    private KeyBoardListeners keyBoardListeners;
 
     private MainCtrl mainCtrl;
 
@@ -127,8 +130,10 @@ public class MainCtrlTest {
     private class DummyMainCtrl extends MainCtrl{
         public DummyMainCtrl(ClientConfiguration config, Translator translator,
                              RecentEventTracker recentEventTracker,
-                             SceneWrapperFactory sceneWrapperFactory, Exchanger exchanger) {
-            super(config, translator, recentEventTracker, sceneWrapperFactory, exchanger);
+                             SceneWrapperFactory sceneWrapperFactory, Exchanger exchanger,
+                             KeyBoardListeners keyBoardListeners) {
+            super(config, translator, recentEventTracker,
+                    sceneWrapperFactory, exchanger, keyBoardListeners);
         }
 
         @Override
@@ -146,7 +151,7 @@ public class MainCtrlTest {
         when(clientConfiguration.getWindowWidth()).thenReturn(640.);
 
         mainCtrl = new DummyMainCtrl(clientConfiguration, translator, recentEventTracker,
-                this::mockedSceneWrapper, exchanger);
+                this::mockedSceneWrapper, exchanger, keyBoardListeners);
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }
