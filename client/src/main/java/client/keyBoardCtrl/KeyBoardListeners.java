@@ -17,9 +17,10 @@ public class KeyBoardListeners {
         final boolean[] keyPressed = {false};
 
         EventHandler<KeyEvent> keyPressedHandler = event -> {
-            if (event.getCode() == code && !keyPressed[0]) {
+            if (event.getCode() == code && !keyPressed[0] && event.isControlDown()) {
                 keyPressed[0] = true;
                 action.execute();
+                event.consume();
             }
         };
 
