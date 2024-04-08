@@ -48,7 +48,6 @@ import java.util.ResourceBundle;
 public class EventOverviewCtrl implements Initializable, LanguageSwitch,
         SceneController, ShortCuts {
 
-
     private Task<Void> longPollingTask = null;
     private Thread pollingThread = null;
     private EventOverviewMv eventOverviewMv;
@@ -262,6 +261,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
     @FXML
     private Button backButton;
 
+    @FXML
+    private Button renameEventButton;
+
 
     private ObservableList<Expense> shownExpenses;
 
@@ -309,6 +311,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                 "EventOverview.Statistics-Button"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.Back-Button"));
+        renameEventButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.RenameEvent-Button"));
         loadEvent(eventOverviewMv.getEvent());
     }
 
@@ -516,19 +520,33 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
 
     public void handleRenameEvent(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog(eventOverviewMv.getEvent().getName());
-        dialog.setTitle("Rename Event");
-        dialog.setHeaderText("Enter the new name for the event:");
-        dialog.setContentText("Name:");
-
+        dialog.setTitle(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.RenameEvent-Button"));
+        dialog.setHeaderText(mainCtrl.getTranslator().getTranslation(
+                "Popup.EnterName"));
+        dialog.setContentText(mainCtrl.getTranslator().getTranslation(
+                "Popup.Name"));
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
-            Event updatedEvent = eventOverviewMv.eventCommRenameEvent(name);
-            if (updatedEvent != null) {
-                loadEvent(updatedEvent);
-                new Popup("Event renamed successfully", Popup.TYPE.INFO).showAndWait();
-            } else {
-                new Popup("Failed to rename event", Popup.TYPE.ERROR).showAndWait();
+            if (!name.isEmpty()) {
+                Event updatedEvent = eventOverviewMv.eventCommRenameEvent(name);
+                if (updatedEvent != null) {
+                    loadEvent(updatedEvent);
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.RenameSuccessful"
+                    ), Popup.TYPE.INFO).showAndWait();
+                }
+                else {
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.RenameFail"
+                    ), Popup.TYPE.ERROR).showAndWait();
+                }
+            }
+            else {
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.RenameCannotBeEmpty"
+                ), Popup.TYPE.ERROR).showAndWait();
             }
         });
     }
