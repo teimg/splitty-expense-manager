@@ -37,12 +37,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     private Menu languageMenu;
 
     @FXML
-    private Menu setSceneMenu;
-
-    @FXML
-    private MenuItem startScreen;
-
-    @FXML
     private MenuItem englishButton;
 
     @FXML
@@ -53,27 +47,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     @FXML
     private MenuItem templateBtn;
-
-    @FXML
-    private MenuItem quoteOverview;
-
-    @FXML
-    private MenuItem addQuote;
-
-    @FXML
-    private MenuItem invitation;
-
-    @FXML
-    private MenuItem openDebts;
-
-    @FXML
-    private MenuItem statistics;
-
-    @FXML
-    private MenuItem eventOverview;
-
-    @FXML
-    private MenuItem addExpense;
 
     @FXML
     private MenuItem defaultEmail;
@@ -162,36 +135,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     }
 
-    public void showQuoteOverview(ActionEvent actionEvent) {
-        mainCtrl.showOverview();
-    }
-
-    public void showAddQuote(ActionEvent actionEvent) {
-        mainCtrl.showAdd();
-    }
-
-    public void showStartScreen(ActionEvent actionEvent) {
-        mainCtrl.showStartScreen();
-    }
-
-    public void showAddEditExpense(ActionEvent actionEvent) {
-        // you should navigate to the invitations screen through the event overview screen=
-    }
-
-    public void showInvitations(ActionEvent actionEvent) {
-        // you should navigate to the invitations screen through the event overview screen
-    }
-
-    public void showOpenDebts(ActionEvent actionEvent) {
-        // you should navigate to the openDebt screen through the event overview screen
-    }
-
-    public void showStatistics(ActionEvent actionEvent) {
-        // can now be navigated through event overview page
-    }
-
-    public void showEventOverview(ActionEvent actionEvent) {}
-
     public void setEnglish(ActionEvent actionEvent) {
         mainCtrl.updateLanguage("english");
         setFlagLanguageMenu("uk.png");
@@ -214,8 +157,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     public void setLanguage() {
         languageMenu.setText(mainCtrl.getTranslator().getTranslation(
             "MenuBar.Language-Menu"));
-        setSceneMenu.setText(mainCtrl.getTranslator().getTranslation(
-            "MenuBar.SetScene-Menu"));
         englishButton.setText(mainCtrl.getTranslator().getTranslation(
             "MenuBar.English-Button"));
         dutchButton.setText(mainCtrl.getTranslator().getTranslation(

@@ -192,18 +192,6 @@ public class MainCtrl {
         show(scene, getTitle(scene));
     }
 
-    public void showOverview() {
-        show("QuoteOverview", "Overview");
-        this.currentCtrl.getValue().setLanguage();
-    }
-
-    public void showAdd() {
-        show("AddQuote", "Quote add");
-        this.currentCtrl.getValue().setLanguage();
-    }
-
-     // TODO: ADD CUSTOM METHODS SUCH AS SEEN ABOVE TO EACH OF THESE.
-     // TODO: ALSO ADDING ANY NEW SCENE
     public void showAddEditExpense(Event event) {
         if ((this.currentCtrl.getValue()) instanceof TagScreenCtrl) {
             show("AddEditExpense");
