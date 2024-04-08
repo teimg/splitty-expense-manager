@@ -320,7 +320,7 @@ public class AddEditExpenseMv {
     }
 
     public List<Tag> getTags(){
-        return event.getTags();
+        return eventCommunicator.getEvent(event.getId()).getTags();
     }
 
     public Event getEvent() {

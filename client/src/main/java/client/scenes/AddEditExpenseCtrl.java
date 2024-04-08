@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
+import client.dialog.ConfPopup;
 import client.dialog.Popup;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
@@ -450,11 +451,23 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
     }
 
     public void handleDeleteTag() {
-        try{
-            addEditExpenseMv.deleteTag();
-            initTag();
-        }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+        boolean confirmed = ConfPopup.create
+                        (mainCtrl.getTranslator().getTranslation
+                                ("Popup.sureRemoveDatabase"))
+                .isConfirmed();
+        if (confirmed) {
+            try {
+                addEditExpenseMv.deleteTag();
+                initTag();
+            }
+            catch (jakarta.ws.rs.BadRequestException e) {
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.TagCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
+            }
+            catch (Exception o) {
+                new Popup(mainCtrl.getTranslator().getTranslation
+                        ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
+            }
         }
     }
 
@@ -462,7 +475,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
         }
     }
 

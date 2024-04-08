@@ -436,12 +436,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                 new Popup(mainCtrl.getTranslator().getTranslation
                         ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
             }
-        } else {
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
+            loadEvent(eventOverviewMv.getEventCommunicator()
+                    .getEvent(eventOverviewMv.getEvent().getId()));
         }
-        loadEvent(eventOverviewMv.getEventCommunicator()
-                .getEvent(eventOverviewMv.getEvent().getId()));
+
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 
