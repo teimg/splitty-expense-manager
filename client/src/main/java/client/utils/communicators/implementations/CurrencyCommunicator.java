@@ -1,9 +1,9 @@
 package client.utils.communicators.implementations;
 
 import client.utils.ClientConfiguration;
+import client.utils.communicators.ClientSupplier;
 import client.utils.communicators.interfaces.ICurrencyCommunicator;
 import com.google.inject.Inject;
-import jakarta.ws.rs.client.ClientBuilder;
 
 import java.time.LocalDate;
 
@@ -13,16 +13,19 @@ public class CurrencyCommunicator implements ICurrencyCommunicator {
 
     private final String origin;
 
+    private final ClientSupplier client;
+
     @Inject
-    public CurrencyCommunicator(ClientConfiguration config) {
-        origin = config.getServer();
+    public CurrencyCommunicator(ClientConfiguration config, ClientSupplier client) {
+        this.origin = config.getServer();
+        this.client = client;
     }
 
     @Override
     public double getConversion(double amount, String currency, LocalDate date)
             throws IllegalArgumentException {
         try {
-            return ClientBuilder.newClient()
+            return client.getClient()
                     .target(origin)
                     .path("api/currency/{amount}/{currency}/{date}")
                     .resolveTemplate("amount", amount)
@@ -39,7 +42,7 @@ public class CurrencyCommunicator implements ICurrencyCommunicator {
 
     @Override
     public String clearCache() {
-        return ClientBuilder.newClient()
+        return client.getClient()
                 .target(origin)
                 .path("api/currency/cache")
                 .request(APPLICATION_JSON)

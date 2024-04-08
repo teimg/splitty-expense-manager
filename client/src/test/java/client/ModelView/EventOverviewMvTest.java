@@ -2,6 +2,7 @@ package client.ModelView;
 
 
 import client.utils.communicators.interfaces.IEventCommunicator;
+import client.utils.communicators.interfaces.IExpenseCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import commons.Event;
 import commons.Participant;
@@ -32,6 +33,9 @@ public class EventOverviewMvTest {
     @Mock
     private IParticipantCommunicator participantCommunicator;
 
+    @Mock
+    private IExpenseCommunicator expenseCommunicator;
+
 
     private Event event;
     private Participant participant;
@@ -47,7 +51,7 @@ public class EventOverviewMvTest {
 
     @Test
     void testGetSetEvent() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
         mv.setEvent(event);
         assertEquals(event, mv.getEvent());
     }
@@ -55,14 +59,14 @@ public class EventOverviewMvTest {
 
     @Test
     void getEventCommunicator() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
         assertNotNull(mv.getEventCommunicator());
     }
 
 
     @Test
     void testGetSetSelectedPayer() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
         mv.setSelectedPayer(participant);
         assertEquals(participant, mv.getSelectedPayer());
     }
@@ -89,7 +93,7 @@ public class EventOverviewMvTest {
 
     @Test
     void deleteParticipantTest() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
         Optional<Participant> optionalParticipant = Optional.of(participant);
         participant.setId(592L);
         mv.deleteParticipant(optionalParticipant);
@@ -101,7 +105,7 @@ public class EventOverviewMvTest {
 
     @Test
     void eventCommunicatorCheckForUpdateTest() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
         long eventId = 811L;
         when(eventCommunicator.checkForEventUpdates(eventId)).thenReturn(event);
 
@@ -111,7 +115,7 @@ public class EventOverviewMvTest {
 
     @Test
     void eventCommunicatorGetEventTest() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
         mv.setEvent(event);
         event.setId(333L);
         when(eventCommunicator.getEvent(333L)).thenReturn(event);

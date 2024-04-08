@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<MenuBar maxWidth="-Infinity" prefHeight="27.0" prefWidth="704.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
+<MenuBar maxWidth="1.7976931348623157E308" prefHeight="27.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MenuBarCtrl">
     <menus>
         <Menu fx:id="setSceneMenu" mnemonicParsing="false" text="Set Scene (Temporary)">
             <items>
@@ -29,6 +29,7 @@
             <items>
                 <MenuItem fx:id="adminLogIn" mnemonicParsing="false" onAction="#goToAdminLogIn" text="Management Overview" />
                 <MenuItem fx:id="defaultEmail" mnemonicParsing="false" onAction="#checkDefaultEmail" text="Check Default Email" />
+                <MenuItem fx:id="shortCuts" mnemonicParsing="false" onAction="#downloadGuideBtn" text="Shortcuts Guide" />
             </items>
         </Menu>
         <Menu fx:id="currency" mnemonicParsing="false" text="Currency">

@@ -86,4 +86,11 @@ public class TagServiceTest {
         service.remove(1L);
         verify(repository, times(0)).deleteById(tag.getId());
     }
+
+    @Test
+    public void testRestore() {
+        when(repository.saveAndFlush(tag)).thenReturn(tag);
+        service.restore(tag);
+        verify(repository).saveAndFlush(tag);
+    }
 }

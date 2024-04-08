@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import client.dialog.Popup;
 import client.scenes.*;
 import client.utils.communicators.implementations.CurrencyCommunicator;
 import client.utils.communicators.implementations.TagCommunicator;
@@ -47,47 +46,40 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        try {
-            mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            tagCommunicator = INJECTOR.getInstance(TagCommunicator.class);
-            curCommunicator = INJECTOR.getInstance(CurrencyCommunicator.class);
-            clearCacheTxt();
-            HashMap<String, Object> sceneMap = new HashMap<>();
-            sceneMap.put("QuoteOverview",
-                    FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml"));
-            sceneMap.put("AddQuote",
-                    FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml"));
-            sceneMap.put("AddEditExpense",
-                    FXML.load(AddEditExpenseCtrl.class, "client", "scenes", "AddEditExpense.fxml"));
-            sceneMap.put("Invitation",
-                    FXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml"));
-            sceneMap.put("OpenDebts",
-                    FXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebtsScreen.fxml"));
-            sceneMap.put("StartScreen",
-                    FXML.load(StartScreenCtrl.class, "client", "scenes", "StartScreen.fxml"));
-            sceneMap.put("Statistics",
-                    FXML.load(StatisticsScreenCtrl.class, "client", "scenes",
-                            "StatisticsScreen.fxml"));
-            sceneMap.put("ContactInfo",
-                    FXML.load(StatisticsScreenCtrl.class, "client", "scenes", "ContactInfo.fxml"));
-            sceneMap.put("EventOverview",
-                    FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml"));
-            sceneMap.put("MenuBar",
-                    FXML.load(MenuBarCtrl.class, "client", "scenes", "MenuBar.fxml"));
-            sceneMap.put("AdminLogIn",
-                    FXML.load(AdminLogInCtrl.class, "client", "scenes", "AdminLogIn.fxml"));
-            sceneMap.put("AdminScreen",
-                    FXML.load(AdminScreenCtrl.class, "client", "scenes", "AdminScreen.fxml"));
-            sceneMap.put("TagScreen",
-                    FXML.load(TagScreenCtrl.class, "client", "scenes", "TagScreen.fxml"));
 
-            mainCtrl.initialize(primaryStage, sceneMap);
-        }
-        catch (RuntimeException e) {
-            new Popup(mainCtrl.getTranslator().getTranslation("Server Error/Offline"
-                    + " - Cannot load Add/Edit Expense scene:") + e.getMessage(),
-                    Popup.TYPE.ERROR).show();
-        }
+        mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+
+        HashMap<String, Object> sceneMap = new HashMap<>();
+
+        sceneMap.put("QuoteOverview",
+            FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml"));
+        sceneMap.put("AddQuote",
+            FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml"));
+        sceneMap.put("AddEditExpense",
+            FXML.load(AddEditExpenseCtrl.class, "client", "scenes", "AddEditExpense.fxml"));
+        sceneMap.put("Invitation",
+            FXML.load(InvitationCtrl.class, "client", "scenes", "Invitation.fxml"));
+        sceneMap.put("OpenDebts",
+            FXML.load(OpenDebtsCtrl.class, "client", "scenes", "OpenDebtsScreen.fxml"));
+        sceneMap.put("StartScreen",
+            FXML.load(StartScreenCtrl.class, "client", "scenes", "StartScreen.fxml"));
+        sceneMap.put("Statistics",
+            FXML.load(StatisticsScreenCtrl.class, "client", "scenes",
+                "StatisticsScreen.fxml"));
+        sceneMap.put("ContactInfo",
+            FXML.load(StatisticsScreenCtrl.class, "client", "scenes", "ContactInfo.fxml"));
+        sceneMap.put("EventOverview",
+            FXML.load(EventOverviewCtrl.class, "client", "scenes", "EventOverview.fxml"));
+        sceneMap.put("MenuBar",
+            FXML.load(MenuBarCtrl.class, "client", "scenes", "MenuBar.fxml"));
+        sceneMap.put("AdminLogIn",
+            FXML.load(AdminLogInCtrl.class, "client", "scenes", "AdminLogIn.fxml"));
+        sceneMap.put("AdminScreen",
+            FXML.load(AdminScreenCtrl.class, "client", "scenes", "AdminScreen.fxml"));
+        sceneMap.put("TagScreen",
+            FXML.load(TagScreenCtrl.class, "client", "scenes", "TagScreen.fxml"));
+
+        mainCtrl.initialize(primaryStage, sceneMap);
 
     }
 
@@ -96,7 +88,6 @@ public class Main extends Application {
      */
     @Override
     public void stop() {
-        clearCacheTxt();
         mainCtrl.stop();
     }
 

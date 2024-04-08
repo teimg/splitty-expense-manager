@@ -1,4 +1,4 @@
-package server;
+package server.suppliers;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
@@ -9,13 +9,14 @@ import java.io.FileWriter;
 
 @Component
 @Scope("prototype")
-public class BufferedClearerSupplier {
+public class BufferedWriterSupplier {
 
     @Bean
-    public BufferedWriter getBufferedClearer() {
+    public BufferedWriter getBufferedWriter() {
         BufferedWriter bf = null;
         try {
-            bf = new BufferedWriter(new FileWriter("server/src/main/resources/cache/cache.txt"));
+            bf = new BufferedWriter(new FileWriter(
+                    "server/src/main/resources/cache/cache.txt", true));
         } catch (Exception e) {
             System.out.println("Error");
         }

@@ -17,16 +17,15 @@ package client;
 
 import client.ModelView.*;
 import client.currency.Exchanger;
+import client.keyBoardCtrl.KeyBoardListeners;
 import client.language.Translator;
 import client.scenes.*;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
 import client.utils.communicators.implementations.*;
 import client.utils.communicators.interfaces.*;
-import client.utils.scene.MenuBarInjector;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
-import client.utils.scene.SimpleMenuBarInjector;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -83,7 +82,8 @@ public class MyModule implements Module {
         try {
             binder.bind(EventOverviewMv.class)
                     .toConstructor(EventOverviewMv.class.getConstructor(
-                            IEventCommunicator.class, IParticipantCommunicator.class
+                            IEventCommunicator.class, IParticipantCommunicator.class,
+                        IExpenseCommunicator.class
                     ))
                     .in(Scopes.SINGLETON);
         } catch (NoSuchMethodException e) {
@@ -94,7 +94,7 @@ public class MyModule implements Module {
 
     private static void configureUtils(Binder binder) {
         binder.bind(SceneWrapperFactory.class).toInstance(SceneWrapper::new);
-        binder.bind(MenuBarInjector.class).to(SimpleMenuBarInjector.class);
+//        binder.bind(MenuBarInjector.class).to(SimpleMenuBarInjector.class);
     }
 
     private static void configureConfigs(Binder binder) {
@@ -102,6 +102,7 @@ public class MyModule implements Module {
         binder.bind(Translator.class).in(Scopes.SINGLETON);
         binder.bind(Exchanger.class).in(Scopes.SINGLETON);
         binder.bind(RecentEventTracker.class).in(Scopes.SINGLETON);
+        binder.bind(KeyBoardListeners.class).in(Scopes.SINGLETON);
     }
 
     private static void configureNonSceneCtrl(Binder binder) {
