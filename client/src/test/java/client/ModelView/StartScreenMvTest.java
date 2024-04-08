@@ -42,9 +42,6 @@ class StartScreenMvTest {
         Mockito.when(mockEventCommunicator.getEventByInviteCode(Mockito.anyString()))
             .thenThrow(new ProcessingException("Could not reach server"));
 
-        Mockito.when(mockEventCommunicator.getEvent(Mockito.anyLong()))
-                .thenThrow(new ProcessingException("Could not reach server"));
-
         assertThrows(ProcessingException.class, () ->{
             startScreenMv.joinEventProperty().setValue("Not empty");
             startScreenMv.joinEvent();
@@ -57,7 +54,7 @@ class StartScreenMvTest {
         }, "ServerOffline");
 
         assertThrows(ProcessingException.class, () ->{
-            startScreenMv.getRecentEvent(1);
+            startScreenMv.getRecentEvent("abc");
 
         }, "ServerOffline");
     }
@@ -114,7 +111,7 @@ class StartScreenMvTest {
     @Test
     void deleteEvent(){
         assertDoesNotThrow(() ->{
-            startScreenMv.deleteEvent(new JoinableEvent(1, "Henk"));
+            startScreenMv.deleteEvent(new JoinableEvent("abc", "Henk"));
         });
     }
 
@@ -130,17 +127,17 @@ class StartScreenMvTest {
         Event ext = new Event("testEvent");
         ext.setId(1);
 
-        var mockMeth = Mockito.when(mockEventCommunicator.getEvent(1))
+        var mockMeth = Mockito.when(mockEventCommunicator.getEventByInviteCode("abc"))
             .thenThrow(new NotFoundException("blbal bla not found"))
             .thenReturn(ext);
 
         assertThrows(NotFoundException.class, ()->{
-           startScreenMv.getRecentEvent(1);
+           startScreenMv.getRecentEvent("abc");
         }, "CodeNotFound");
 
         mockMeth.thenReturn(ext);
 
-        assertEquals(ext, startScreenMv.getRecentEvent(1));
+        assertEquals(ext, startScreenMv.getRecentEvent("abc"));
     }
 
     @Test
