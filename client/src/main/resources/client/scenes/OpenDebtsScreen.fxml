@@ -61,7 +61,7 @@
                                     <ListView fx:id="expensesList" prefHeight="198.0" prefWidth="409.0" />
                                  </children>
                               </VBox>
-                              <Label fx:id="titleLabel1" layoutX="17.0" layoutY="39.0" text="Positive Balances">
+                              <Label fx:id="titleLabel1" layoutX="17.0" layoutY="39.0" text="Balances">
                                  <font>
                                     <Font name="Al Bayan Bold" size="14.0" />
                                  </font>
