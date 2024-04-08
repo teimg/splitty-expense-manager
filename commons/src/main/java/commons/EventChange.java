@@ -8,10 +8,12 @@ public class EventChange {
         MODIFICATION,
         DELETION
     }
+
     private Type type;
     private Event event;
 
-    public EventChange() {}
+    public EventChange() {
+    }
 
     public EventChange(Type type, Event event) {
         this.type = type;
@@ -24,6 +26,16 @@ public class EventChange {
 
     public Event getEvent() {
         return event;
+    }
+
+    @Override
+    public String toString() {
+        return "EventChange{" +
+                "type=" + type +
+                ", event=Event{id=" + event.getId() +
+                ", name='" + event.getName() + '\'' +
+                ", inviteCode='" + event.getInviteCode() + "'}" +
+                '}';
     }
 
     @Override

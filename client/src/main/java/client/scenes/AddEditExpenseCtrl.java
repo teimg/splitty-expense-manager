@@ -102,8 +102,6 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
 
     private WhichTagSelector whichTagSelector;
 
-    private Event event;
-
     private final MainCtrl mainCtrl;
 
     private final AddEditExpenseMv addEditExpenseMv;
@@ -205,11 +203,11 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
     public void loadInfo(Event event, Expense expense) {
         loadInfo(event);
 
-        addEditExpenseMv.loadExpense(expense);
+        addEditExpenseMv.loadExpense(expense, mainCtrl.getExchanger());
     }
 
     public void loadInfo(Event event) {
-        addEditExpenseMv.loadInfo(event);
+        addEditExpenseMv.loadInfo(event, mainCtrl.getExchanger());
 
         initWhoPaid();
         initTag();
@@ -219,10 +217,15 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
         tagColor.setFill(Color.rgb(150, 150, 150));
     }
 
+    public void updateTags(Event event) {
+        addEditExpenseMv.updateEvent(event);
+        initTag();
+    }
+
     public void initBindings() {
         priceField.textProperty().bindBidirectional(
             addEditExpenseMv.priceFieldProperty());
-        currencyField.promptTextProperty().bindBidirectional(
+        currencyField.valueProperty().bindBidirectional(
             addEditExpenseMv.currencyFieldProperty());
         descriptionField.textProperty().bindBidirectional(
             addEditExpenseMv.descriptionFieldProperty());
@@ -323,8 +326,12 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
 
     public void initCurrency(){
         currencyField.getItems().clear();
-        currencyField.setValue("EUR");
+        currencyField.getItems().add("USD");
         currencyField.getItems().add("EUR");
+        currencyField.getItems().add("CHF");
+        currencyField.getItems().add("JPY");
+        currencyField.setValue("");
+
     }
 
 
@@ -397,7 +404,6 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
 
     public void addButtonPressed(){
         createExpense();
-
     }
 
     public void abortButtonPressed(ActionEvent actionEvent) {

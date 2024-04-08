@@ -22,7 +22,8 @@ public class EventChangeService {
     }
 
     public void addLongPoll(Event event, DeferredResult<EventChange> result) {
-        longPolls.getOrDefault(event.getId(), new HashSet<>()).add(result);
+        longPolls.putIfAbsent(event.getId(), new HashSet<>());
+        longPolls.get(event.getId()).add(result);
     }
 
     public void sendChange(EventChange change) {
@@ -37,4 +38,9 @@ public class EventChangeService {
             result.setResult(change);
         }
     }
+
+    public Map<Long, Set<DeferredResult<EventChange>>> getLongPolls() {
+        return longPolls;
+    }
+
 }

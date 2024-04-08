@@ -33,11 +33,14 @@ public class ParticipantService {
     }
 
     public Participant save(Participant participant) {
-        participant = repo.save(participant);
+        participant = repo.saveAndFlush(participant);
         eventService.updateLastActivity(participant.getEventId());
         return participant;
     }
 
+    public Participant restore(Participant participant) {
+        return repo.saveAndFlush(participant);
+    }
 
     public Participant createParticipant(Participant participant)
         throws IllegalArgumentException{

@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ParticipantServiceTest {
@@ -59,7 +61,7 @@ class ParticipantServiceTest {
 
     @Test
     void createParticipant() {
-        Mockito.when(mockedRepo.save(participant)).thenReturn(participant);
+        Mockito.when(mockedRepo.saveAndFlush(participant)).thenReturn(participant);
 
         assertEquals(participant, ps.createParticipant(participant));
     }
@@ -84,7 +86,7 @@ class ParticipantServiceTest {
     void updateParticipant() {
         participant.setEmail("test@gmail.com");
         Mockito.when(mockedRepo.findById(participant.getId())).thenReturn(Optional.of(participant));
-        Mockito.when(mockedRepo.save(participant)).thenReturn(participant);
+        Mockito.when(mockedRepo.saveAndFlush(participant)).thenReturn(participant);
 
         assertEquals(participant, ps.updateParticipant(participant.getId(), participant));
 
@@ -114,4 +116,12 @@ class ParticipantServiceTest {
 
         assertEquals(List.of(participant, participant1), ps.getAll());
     }
+
+    @Test
+    public void testRestore() {
+        when(mockedRepo.saveAndFlush(participant)).thenReturn(participant);
+        ps.restore(participant);
+        verify(mockedRepo).saveAndFlush(participant);
+    }
+
 }

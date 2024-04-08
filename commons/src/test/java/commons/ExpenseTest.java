@@ -28,13 +28,13 @@ public class ExpenseTest {
                 new Date(2024, 1, 10), new Date(2024, 2, 10));
         this.expenseOne = new Expense(event.getId(), "Food", 30.5,
                 participant1, debtors, LocalDate.of(2024, Month.APRIL, 1),
-                new Tag("Test", 0, 0, 0));
+                new Tag("Test", 0, 0, 0, event.getId()));
         this.expenseTwo = new Expense(event.getId(), "Food", 31.5,
                 participant2, debtors, LocalDate.of(2024, Month.APRIL, 2),
-                new Tag("Test", 0, 0, 0));
+                new Tag("Test", 0, 0, 0, event.getId()));
         this.expenseThree = new Expense(event.getId(), "Food", 30.5,
                 participant1, debtors, LocalDate.of(2024, Month.APRIL, 1),
-                new Tag("Test", 0, 0, 0));
+                new Tag("Test", 0, 0, 0, event.getId()));
         expenseOne.setId(1);
         expenseThree.setId(1);
         this.event = event;
@@ -93,7 +93,7 @@ public class ExpenseTest {
 
     @Test
     public void getTag() {
-        assertEquals(new Tag("Test", 0, 0, 0), expenseOne.getTag());
+        assertEquals(new Tag("Test", 0, 0, 0, event.getId()), expenseOne.getTag());
     }
 
     @Test
@@ -148,8 +148,8 @@ public class ExpenseTest {
 
     @Test
     public void setTag() {
-        expenseOne.setTag(new Tag("Changed", 1, 1, 1));
-        assertEquals(new Tag("Changed", 1, 1, 1), expenseOne.getTag());
+        expenseOne.setTag(new Tag("Changed", 1, 1, 1, event.getId()));
+        assertEquals(new Tag("Changed", 1, 1, 1, event.getId()), expenseOne.getTag());
     }
 
     @Test

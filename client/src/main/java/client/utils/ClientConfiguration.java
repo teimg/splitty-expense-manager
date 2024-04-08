@@ -18,11 +18,19 @@ public class ClientConfiguration extends ConfigProvider {
     }
 
     /**
-     * Gets the configured server URL.
+     * Gets an HTTP URL of the configured server.
      * @return the URL
      */
     public String getServer() {
-        return get("server");
+        return "http://" + get("server");
+    }
+
+    /**
+     * Gets a WS URL of the configured server .
+     * @return the URL
+     */
+    public String getServerWS() {
+        return "ws://" + get("server");
     }
 
     /**
@@ -72,4 +80,21 @@ public class ClientConfiguration extends ConfigProvider {
     public void setWindowHeight(double height) {
         set("height", String.valueOf(height));
     }
+
+    /**
+     * Gets the configured currency to use.
+     * @return the name of the currency, e.g. "USD"
+     */
+    public String getCurrency() {
+        return get("currency");
+    }
+
+    /**
+     * Sets the configured currency.
+     * @param currency = currency
+     */
+    public void setCurrency(String currency) {
+        set("currency", currency);
+    }
+
 }

@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.ModelView.StartScreenMv;
 import client.language.LanguageSwitch;
+import client.nodes.UIIcon;
 import client.utils.*;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
@@ -56,7 +57,8 @@ public class StartScreenCtrl extends SceneController implements Initializable, L
             container = new HBox();
             title = new Hyperlink();
             filler = new Pane();
-            deleteButton = new Button("Delete");
+            deleteButton = new Button();
+            deleteButton.setGraphic(UIIcon.icon(UIIcon.NAME.DELETE));
             HBox.setHgrow(filler, Priority.ALWAYS);
             container.getChildren().addAll(title, filler, deleteButton);
         }

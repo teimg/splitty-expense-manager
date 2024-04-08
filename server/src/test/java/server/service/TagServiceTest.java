@@ -29,7 +29,7 @@ public class TagServiceTest {
 
     @BeforeEach
     public void setUp() {
-        this.tag = new Tag("Test", 10, 10, 10);
+        this.tag = new Tag("Test", 10, 10, 10, null);
     }
 
     @Test
@@ -85,5 +85,12 @@ public class TagServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.empty());
         service.remove(1L);
         verify(repository, times(0)).deleteById(tag.getId());
+    }
+
+    @Test
+    public void testRestore() {
+        when(repository.saveAndFlush(tag)).thenReturn(tag);
+        service.restore(tag);
+        verify(repository).saveAndFlush(tag);
     }
 }

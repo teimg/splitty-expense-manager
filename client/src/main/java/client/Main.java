@@ -21,12 +21,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import client.dialog.Popup;
 import client.scenes.*;
+import client.utils.communicators.implementations.CurrencyCommunicator;
 import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
 
-import commons.Tag;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -39,6 +38,8 @@ public class Main extends Application {
 
     private static TagCommunicator tagCommunicator;
 
+    private static CurrencyCommunicator curCommunicator;
+
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
     }
@@ -48,7 +49,6 @@ public class Main extends Application {
 
         mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
-        tagCommunicator = INJECTOR.getInstance(TagCommunicator.class);
 
         HashMap<String, Object> sceneMap = new HashMap<>();
 
@@ -89,8 +89,11 @@ public class Main extends Application {
      */
     @Override
     public void stop() {
-
         mainCtrl.stop();
-
     }
+
+    private void clearCacheTxt() {
+        System.out.println(curCommunicator.clearCache());
+    }
+
 }

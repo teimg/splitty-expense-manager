@@ -1,20 +1,25 @@
 package server.service;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.util.Properties;
-
 @Service
 public class EmailService {
 
+    private final JavaMailSenderImpl javaMailSender;
+
+    @Autowired
+    public EmailService(JavaMailSenderImpl javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
     public void sendEmail(String to, String subject, String text,
                           String username, String password) {
-        JavaMailSender javaMailSender = getJavaMailSender(username, password);
+        javaMailSender.setUsername(username);
+        javaMailSender.setPassword(password);
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -24,24 +29,9 @@ public class EmailService {
             helper.setText(text, true);
             javaMailSender.send(message);
         }
-        catch (MessagingException e) {
-            // TODO: error handling
+        catch (Exception e) {
             System.out.println("Failed to send message");
         }
-    }
-
-    private JavaMailSender getJavaMailSender(String username, String password) {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-        mailSender.setUsername(username);
-        mailSender.setPassword(password);
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
-        return mailSender;
     }
 
 }
