@@ -13,9 +13,12 @@ public class TagService {
 
     private final TagRepository repo;
 
+    private final EventService eventService;
+
     @Autowired
-    public TagService(TagRepository tagRepository) {
+    public TagService(TagRepository tagRepository, EventService eventService) {
         this.repo = tagRepository;
+        this.eventService = eventService;
     }
 
     public List<Tag> getAll() {
@@ -32,6 +35,7 @@ public class TagService {
 
     // TODO: update last activity of the event
     public Tag save(Tag tag) {
+        eventService.updateLastActivity(tag.getEventId());
         return repo.saveAndFlush(tag);
     }
 
@@ -43,6 +47,7 @@ public class TagService {
         Optional<Tag> tag = getById(id);
         if (tag.isPresent()) {
             repo.deleteById(id);
+            eventService.updateLastActivity(tag.get().getEventId());
         }
         return tag;
     }

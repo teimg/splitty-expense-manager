@@ -121,6 +121,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             Tag tag = expense.getTag();
             if (tag == null) {
                 tagText.setText(" (Debt Settlement)   ");
+                tagText.setFill(Color.rgb(0, 0, 0));
             }
             else {
                 tagText.setText(" (" + tag.getName() + ")   ");
