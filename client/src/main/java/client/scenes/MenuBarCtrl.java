@@ -226,7 +226,7 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     public void checkDefaultEmail(ActionEvent actionEvent) {
         EmailRequest defaultEmail = new EmailRequest();
-        defaultEmail.setTo(defaultEmail.getUsername());
+        defaultEmail.setTo(defaultEmail.getDefaultEmail());
         defaultEmail.setSubject("Default Email");
         defaultEmail.setBody("Default Body - Checking Credentials/Delivery");
         emailCommunicator.sendEmail(defaultEmail);
