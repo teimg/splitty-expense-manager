@@ -35,8 +35,9 @@ public class TagService {
 
     // TODO: update last activity of the event
     public Tag save(Tag tag) {
+        tag = repo.saveAndFlush(tag);
         eventService.updateLastActivity(tag.getEventId());
-        return repo.saveAndFlush(tag);
+        return tag;
     }
 
     public Tag restore(Tag tag) {
