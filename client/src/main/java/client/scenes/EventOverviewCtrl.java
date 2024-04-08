@@ -12,9 +12,11 @@ import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
+import javafx.geometry.Insets;
 
 
 import commons.Participant;
+import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,6 +33,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 
@@ -55,6 +58,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
     private class ExpenseListCell extends ListCell<Expense> {
         private HBox container;
         private Text content;
+
+        private Text tagText;
         private Pane filler;
         private Button editButton;
         private Button deleteButton;
@@ -64,6 +69,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             super();
             container = new HBox();
             content = new Text();
+            tagText = new Text();
             filler = new Pane();
             editButton = new Button();
             deleteButton = new Button();
@@ -71,7 +77,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             editButton.setGraphic(UIIcon.icon(UIIcon.NAME.EDIT));
             HBox.setHgrow(filler, Priority.ALWAYS);
             HBox.setMargin(deleteButton, new Insets(0, 0, 0, 5));
-            container.getChildren().addAll(content, filler, editButton, deleteButton);
+            container.getChildren().addAll(content, tagText, filler, editButton, deleteButton);
 
             // Not totally sure how this works, but it seems to. Had to use internet resources here.
             editButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -112,6 +118,15 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             setLanguage(mainCtrl.getTranslator());
 
             content.setText(expenseDescription(expense));
+            Tag tag = expense.getTag();
+            if (tag == null) {
+                tagText.setText(" (Debt Settlement)   ");
+                tagText.setFill(Color.rgb(0, 0, 0));
+            }
+            else {
+                tagText.setText(" (" + tag.getName() + ")   ");
+                tagText.setFill(Color.rgb(tag.getRed(), tag.getGreen(), tag.getBlue()));
+            }
             editButton.setOnAction(actionEvent -> {
                 mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), expense);
             });
@@ -422,12 +437,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                 new Popup(mainCtrl.getTranslator().getTranslation
                         ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
             }
-        } else {
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
+            loadEvent(eventOverviewMv.getEventCommunicator()
+                    .getEvent(eventOverviewMv.getEvent().getId()));
         }
-        loadEvent(eventOverviewMv.getEventCommunicator()
-                .getEvent(eventOverviewMv.getEvent().getId()));
+
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 

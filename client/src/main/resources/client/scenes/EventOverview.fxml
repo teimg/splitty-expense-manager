@@ -37,11 +37,7 @@
                                  </font>
                               </Label>
                               <ChoiceBox fx:id="participantDropDown" layoutX="280.0" layoutY="153.0" prefWidth="150.0" />
-                              <Label fx:id="forLabel" layoutX="163.0" layoutY="156.0" prefHeight="20.0" prefWidth="86.0" text="for">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
+                              <Label fx:id="forLabel" layoutX="280.0" layoutY="127.0" prefHeight="20.0" prefWidth="150.0" text="Selected Participant:" AnchorPane.rightAnchor="20.0" />
                               <Button fx:id="addExpense" layoutX="16.0" layoutY="153.0" mnemonicParsing="false" onAction="#handleAddExpense" text="Add Expense" AnchorPane.leftAnchor="16.0" />
                               <RadioButton fx:id="expenseSelectorFrom" layoutX="150.0" layoutY="184.0" mnemonicParsing="false" onAction="#handleExpenseVisibilityChange" prefHeight="18.0" prefWidth="141.0" text="From NAME" />
                               <RadioButton fx:id="expenseSelectorIncluding" layoutX="313.0" layoutY="184.0" mnemonicParsing="false" onAction="#handleExpenseVisibilityChange" prefHeight="18.0" prefWidth="123.0" text="Including NAME" AnchorPane.rightAnchor="25.0" />

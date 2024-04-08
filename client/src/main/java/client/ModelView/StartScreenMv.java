@@ -67,7 +67,7 @@ public class StartScreenMv {
     public Event getRecentEvent(String inviteCode){
         try {
             return server.getEventByInviteCode(inviteCode);
-        }catch (NotFoundException e){
+        }catch (NotFoundException | NullPointerException e){
             throw new NotFoundException("CodeNotFound");
         }catch (ProcessingException e){
             throw new ProcessingException("ServerOffline");

@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
+import client.dialog.ConfPopup;
 import client.dialog.Popup;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
@@ -22,6 +23,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -305,6 +307,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
                         tagField.getEditor().getText()));
             tagField.show();
         });
+        this.tagField.setValue(null);
     }
 
 
@@ -398,10 +401,19 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
     private void handleTagColorUpdate(ActionEvent actionEvent) {
         Tag curTag = tagField.getValue();
         if (curTag != null) {
+            String rgbString = String.format("#%02X%02X%02X",
+                    (int) (curTag.getRed()),
+                    (int) (curTag.getGreen()),
+                    (int) (curTag.getBlue()));
             tagColor.setFill(Color.rgb(curTag.getRed(), curTag.getGreen(), curTag.getBlue()));
+            tagField.setBackground(Background.fill(Color.rgb(
+                    curTag.getRed(), curTag.getGreen(), curTag.getBlue())));
+            tagField.setStyle("-fx-border-color: " + rgbString + "; -fx-border-width: 1px;");
         }
         else {
             tagColor.setFill(Color.rgb(150, 150, 150));
+            tagField.setBackground(Background.fill(Color.WHITE));
+            tagField.setStyle("-fx-border-color: #969696; -fx-border-width: 0.5px;");
         }
     }
 
@@ -439,11 +451,23 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
     }
 
     public void handleDeleteTag() {
-        try{
-            addEditExpenseMv.deleteTag();
-            initTag();
-        }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+        boolean confirmed = ConfPopup.create
+                        (mainCtrl.getTranslator().getTranslation
+                                ("Popup.sureRemoveDatabase"))
+                .isConfirmed();
+        if (confirmed) {
+            try {
+                addEditExpenseMv.deleteTag();
+                initTag();
+            }
+            catch (jakarta.ws.rs.BadRequestException e) {
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.TagCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
+            }
+            catch (Exception o) {
+                new Popup(mainCtrl.getTranslator().getTranslation
+                        ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
+            }
         }
     }
 
@@ -451,7 +475,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
         }
     }
 
