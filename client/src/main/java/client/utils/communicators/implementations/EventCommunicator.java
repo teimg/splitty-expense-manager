@@ -7,7 +7,6 @@ import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;

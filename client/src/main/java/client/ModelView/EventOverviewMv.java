@@ -5,6 +5,7 @@ import client.utils.communicators.interfaces.IEventCommunicator;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
 import commons.Event;
+import commons.EventChange;
 import commons.Participant;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -78,7 +79,7 @@ public class EventOverviewMv {
     }
 
 
-    public Event eventCommunicatorCheckForUpdate(long eventId) {
+    public EventChange eventCommunicatorCheckForUpdate(long eventId) {
         return eventCommunicator.checkForEventUpdates(eventId);
     }
 

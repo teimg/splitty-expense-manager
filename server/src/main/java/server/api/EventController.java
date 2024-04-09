@@ -23,23 +23,26 @@ public class EventController {
     private final ParticipantService participantService;
     private final ExpenseService expenseService;
     private final TagService tagService;
+    private final EventChangeService eventChangeService;
 
     /**
      * constructor for event controller
      *
      * @param eventService       event service
      * @param participantService -
-     * @param expenseService -
-     * @param tagService -
+     * @param expenseService     -
+     * @param tagService         -
+     * @param eventChangeService -
      */
     public EventController(EventService eventService,
                            ParticipantService participantService,
                            ExpenseService expenseService,
-                           TagService tagService) {
+                           TagService tagService, EventChangeService eventChangeService) {
         this.eventService = eventService;
         this.participantService = participantService;
         this.expenseService = expenseService;
         this.tagService = tagService;
+        this.eventChangeService = eventChangeService;
     }
 
     @PostMapping

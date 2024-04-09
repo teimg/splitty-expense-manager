@@ -459,7 +459,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             @Override
             protected Void call() {
                 while (!isCancelled()) {
-                    EventChange eventChange = eventCommunicator.checkForEventUpdates(eventId);
+                    EventChange eventChange = eventOverviewMv
+                            .eventCommunicatorCheckForUpdate(eventId);
                     if (eventChange != null) {
                         if (eventChange.getType() == EventChange.Type.MODIFICATION) {
                             updateUI(eventChange.getEvent());
