@@ -42,7 +42,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class EventOverviewCtrl extends SceneController implements Initializable, LanguageSwitch, ShortCuts{
+public class EventOverviewCtrl extends SceneController
+    implements Initializable, LanguageSwitch, ShortCuts{
 
     private Task<Void> longPollingTask = null;
     private Thread pollingThread = null;

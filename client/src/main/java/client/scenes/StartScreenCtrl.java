@@ -21,7 +21,8 @@ import javafx.scene.layout.Priority;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class StartScreenCtrl extends SceneController implements Initializable, LanguageSwitch, ShortCuts {
+public class StartScreenCtrl extends SceneController
+    implements Initializable, LanguageSwitch, ShortCuts {
 
     private final MainCtrl mainCtrl;
 

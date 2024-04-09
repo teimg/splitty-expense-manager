@@ -34,7 +34,8 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
-public class AddEditExpenseCtrl extends SceneController implements Initializable, LanguageSwitch, ShortCuts{
+public class AddEditExpenseCtrl extends SceneController
+    implements Initializable, LanguageSwitch, ShortCuts{
 
     @FXML
     private Label titleLabel;

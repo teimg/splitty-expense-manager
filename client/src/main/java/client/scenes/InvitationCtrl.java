@@ -22,7 +22,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class InvitationCtrl extends  SceneController implements Initializable, LanguageSwitch, ShortCuts{
+public class InvitationCtrl extends  SceneController
+    implements Initializable, LanguageSwitch, ShortCuts{
 
 
     @FXML

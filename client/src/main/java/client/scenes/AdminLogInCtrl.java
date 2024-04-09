@@ -16,7 +16,8 @@ import javafx.scene.input.KeyCode;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminLogInCtrl extends  SceneController implements Initializable, LanguageSwitch, ShortCuts {
+public class AdminLogInCtrl extends  SceneController
+    implements Initializable, LanguageSwitch, ShortCuts {
 
     @FXML
     private Label logInLabel;

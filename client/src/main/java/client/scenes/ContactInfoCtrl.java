@@ -20,7 +20,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class ContactInfoCtrl extends SceneController implements LanguageSwitch, Initializable, ShortCuts {
+public class ContactInfoCtrl extends SceneController
+    implements LanguageSwitch, Initializable, ShortCuts {
 
     @FXML
     private Label titleLabel;

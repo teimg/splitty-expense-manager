@@ -34,7 +34,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AdminScreenCtrl extends SceneController implements LanguageSwitch, Initializable, ShortCuts {
+public class AdminScreenCtrl extends SceneController
+    implements LanguageSwitch, Initializable, ShortCuts {
     @FXML
     private Label eventsLabel;
 
