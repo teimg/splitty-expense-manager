@@ -2,12 +2,15 @@ package client.scenes;
 
 import client.ModelView.InvitationMv;
 import client.dialog.ConfPopup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
+import client.nodes.UIIcon;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
@@ -18,7 +21,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InvitationCtrl implements Initializable, LanguageSwitch, SceneController {
+public class InvitationCtrl implements Initializable, LanguageSwitch, SceneController, ShortCuts {
 
     @FXML
     private ListView<String> emailsField;
@@ -65,7 +68,7 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
             container = new HBox();
             email = new Label();
             filler = new Pane();
-            deleteButton = new Button("Delete");
+            deleteButton = new Button("", UIIcon.icon(UIIcon.NAME.DELETE));
             HBox.setHgrow(filler, Priority.ALWAYS);
             container.getChildren().addAll(email, filler, deleteButton);
         }
@@ -187,6 +190,13 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
             handleException(e, mainCtrl.getTranslator());
         }
 
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = inviteLabel.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.B, this::abortButtonPressed);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, this::handleSendInvites);
     }
 
 }

@@ -19,6 +19,9 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tag> tags;
+
     private Date creationDate;
     private Date lastActivity;
 
@@ -39,16 +42,30 @@ public class Event {
         this.creationDate = creationDate;
         this.lastActivity = lastActivity;
         this.expenses = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     public Event(String name) {
         this.name = name;
         participants = new ArrayList<>();
         expenses = new ArrayList<>();
+        tags = new ArrayList<>();
     }
 
     public Event() {
 
+    }
+
+    public void setParticipants(List<Participant> participants) {
+        this.participants = participants;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     /**
@@ -164,6 +181,14 @@ public class Event {
         expenses.add(expense);
     }
 
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -183,10 +208,6 @@ public class Event {
                 creationDate, lastActivity, expenses);
     }
 
-    /**
-     * To String method
-     * @return String representation of object
-     */
     @Override
     public String toString() {
         return "Event{" +
@@ -194,6 +215,8 @@ public class Event {
                 ", name='" + name + '\'' +
                 ", inviteCode='" + inviteCode + '\'' +
                 ", participants=" + participants +
+                ", expenses=" + expenses +
+                ", tags=" + tags +
                 ", creationDate=" + creationDate +
                 ", lastActivity=" + lastActivity +
                 '}';

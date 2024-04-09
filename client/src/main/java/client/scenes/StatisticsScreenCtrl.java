@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.ModelView.StatisticsScreenMv;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
@@ -10,14 +11,17 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
+public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, ShortCuts {
 
     @FXML
     private Button backButton;
@@ -60,8 +64,11 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
         Map<Tag, Double> entries = statisticsScreenMv.fillEntries();
         addLabels(entries);
         pieChart.setLegendVisible(false);
-        totalCostLabel.setText("The total cost of this event is: "
-                + statisticsScreenMv.getTotalPrice() + "$");
+        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Total-Cost-label") + " "
+                + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
+                statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
+                mainCtrl.getExchanger().getCurrentSymbol());
     }
 
     private void addLabels(Map<Tag, Double> entries) {
@@ -70,7 +77,10 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
             String legend = entry.getKey().getName() + " "
                     + (double) Math.round((entry.getValue()
                         /statisticsScreenMv.getTotalPrice())*10000)/100
-                    + "% " + entry.getValue() + "$";
+                    + "% " +
+                    statisticsScreenMv.rounder(mainCtrl.getExchanger().
+                            getStandardConversion(entry.getValue(),
+                            LocalDate.now())) + mainCtrl.getExchanger().getCurrentSymbol();
             PieChart.Data slice = new PieChart.Data(legend, entry.getValue());
             //For some reason this is required. This is as the PieChart.Data
             //is lazy and isn't immediately constructed. Very weird.
@@ -94,18 +104,27 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController {
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Title-label"));
         totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "StatisticsScreen.Total-Cost-label")
-                + " " + statisticsScreenMv.getTotalPrice() + "$");
+                        "StatisticsScreen.Total-Cost-label") + " "
+                + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
+                statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
+                mainCtrl.getExchanger().getCurrentSymbol());
         pieChart.setTitle(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.PieChart-Title"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Back-Button"));
         noExpensesLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.NoExpense-label"));
+        loadInfo(statisticsScreenMv.getEvent());
     }
 
     public void handleBack(ActionEvent actionEvent) {
         mainCtrl.showEventOverview(statisticsScreenMv.getEvent());
     }
 
+    @Override
+    public void listeners() {
+        Scene s = pieChart.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
+    }
 }

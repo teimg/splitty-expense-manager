@@ -36,9 +36,8 @@ public interface IEventCommunicator {
     /**
      * Deletes an existing event.
      * @param id event id
-     * @return the deleted event
      */
-    Event deleteEvent(long id);
+    void deleteEvent(long id);
 
     List<Event> getAll();
 
@@ -46,6 +45,10 @@ public interface IEventCommunicator {
 
     <T> void subscribeForWebSocketMessages(String dest, Class<T> type, Consumer<T> consumer);
     EventChange checkForEventUpdates(long id);
+
+    Event renameEvent(long id, String name);
+
+    Event restoreEvent(Event event);
 
     void closeWebSocketConnection();
 }

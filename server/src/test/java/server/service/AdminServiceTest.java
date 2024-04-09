@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import server.PasswordSupplier;
+import server.suppliers.PasswordSupplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -37,12 +37,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     private Menu languageMenu;
 
     @FXML
-    private Menu setSceneMenu;
-
-    @FXML
-    private MenuItem startScreen;
-
-    @FXML
     private MenuItem englishButton;
 
     @FXML
@@ -55,28 +49,25 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     private MenuItem templateBtn;
 
     @FXML
-    private MenuItem quoteOverview;
-
-    @FXML
-    private MenuItem addQuote;
-
-    @FXML
-    private MenuItem invitation;
-
-    @FXML
-    private MenuItem openDebts;
-
-    @FXML
-    private MenuItem statistics;
-
-    @FXML
-    private MenuItem eventOverview;
-
-    @FXML
-    private MenuItem addExpense;
-
-    @FXML
     private MenuItem defaultEmail;
+
+    @FXML
+    private Menu currency;
+
+    @FXML
+    private MenuItem usdButton;
+
+    @FXML
+    private MenuItem eurButton;
+
+    @FXML
+    private MenuItem chfButton;
+
+    @FXML
+    private MenuItem jpyButton;
+
+    @FXML
+    private MenuItem shortCuts;
 
     private final MainCtrl mainCtrl;
 
@@ -144,36 +135,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
 
     }
 
-    public void showQuoteOverview(ActionEvent actionEvent) {
-        mainCtrl.showOverview();
-    }
-
-    public void showAddQuote(ActionEvent actionEvent) {
-        mainCtrl.showAdd();
-    }
-
-    public void showStartScreen(ActionEvent actionEvent) {
-        mainCtrl.showStartScreen();
-    }
-
-    public void showAddEditExpense(ActionEvent actionEvent) {
-        // you should navigate to the invitations screen through the event overview screen=
-    }
-
-    public void showInvitations(ActionEvent actionEvent) {
-        // you should navigate to the invitations screen through the event overview screen
-    }
-
-    public void showOpenDebts(ActionEvent actionEvent) {
-        // you should navigate to the openDebt screen through the event overview screen
-    }
-
-    public void showStatistics(ActionEvent actionEvent) {
-        // can now be navigated through event overview page
-    }
-
-    public void showEventOverview(ActionEvent actionEvent) {}
-
     public void setEnglish(ActionEvent actionEvent) {
         mainCtrl.updateLanguage("english");
         setFlagLanguageMenu("uk.png");
@@ -196,8 +157,6 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     public void setLanguage() {
         languageMenu.setText(mainCtrl.getTranslator().getTranslation(
             "MenuBar.Language-Menu"));
-        setSceneMenu.setText(mainCtrl.getTranslator().getTranslation(
-            "MenuBar.SetScene-Menu"));
         englishButton.setText(mainCtrl.getTranslator().getTranslation(
             "MenuBar.English-Button"));
         dutchButton.setText(mainCtrl.getTranslator().getTranslation(
@@ -210,6 +169,11 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
             "MenuBar.Management-Button"));
         defaultEmail.setText(mainCtrl.getTranslator().getTranslation(
                 "MenuBar.DefaultEmail-Button"));
+        currency.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Currency-Menu") + " ("
+                + mainCtrl.getExchanger().getCurrentCurrency() + ")");
+        shortCuts.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.ShortCut-Button"));;
     }
 
     public void goToAdminLogIn(ActionEvent actionEvent) {
@@ -224,10 +188,23 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         downloadTemplate();
     }
 
-    private void persistTemplate(File saveLocation){
-        // Could be moved to a ModelView class later
+    public void downloadGuideBtn(ActionEvent actionEvent) {
+        downloadGuide();
+    }
+
+    private void downloadGuide() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Download ShortCut Manual");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Downloads"));
+        fileChooser.setInitialFileName("keyBoardShortCuts.md");
+        File saveLocation = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
         Path templateLocation = Paths.get(
-            "client", "src", "main", "resources", "languages", "template.properties");
+                "client", "src", "main", "resources", "guides", "keyBoardShortCuts.md");
+        persistTemplate(saveLocation, templateLocation);
+    }
+
+    private void persistTemplate(File saveLocation, Path templateLocation){
+        // Could be moved to a ModelView class later
         try {
             Files.copy(templateLocation, saveLocation.toPath(),
                 StandardCopyOption.REPLACE_EXISTING);
@@ -242,16 +219,43 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Downloads"));
         fileChooser.setInitialFileName("template.properties");
         File saveLocation = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
-        persistTemplate(saveLocation);
-
+        Path templateLocation = Paths.get(
+                "client", "src", "main", "resources", "languages", "template.properties");
+        persistTemplate(saveLocation, templateLocation);
     }
 
     public void checkDefaultEmail(ActionEvent actionEvent) {
         EmailRequest defaultEmail = new EmailRequest();
-        defaultEmail.setTo(defaultEmail.getUsername());
+        defaultEmail.setTo(defaultEmail.getDefaultEmail());
         defaultEmail.setSubject("Default Email");
         defaultEmail.setBody("Default Body - Checking Credentials/Delivery");
         emailCommunicator.sendEmail(defaultEmail);
+    }
+
+    public void setUSD(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("USD");
+        setCurrencyMenu();
+    }
+
+    public void setEUR(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("EUR");
+        setCurrencyMenu();
+    }
+
+    public void setCHF(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("CHF");
+        setCurrencyMenu();
+    }
+
+    public void setJPY(ActionEvent actionEvent) {
+        mainCtrl.updateExchanger("JPY");
+        setCurrencyMenu();
+    }
+
+    public void setCurrencyMenu() {
+        currency.setText(mainCtrl.getTranslator().getTranslation(
+                "MenuBar.Currency-Menu") + " ("
+                + mainCtrl.getExchanger().getCurrentCurrency() + ")");
     }
 
 }

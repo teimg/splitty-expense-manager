@@ -1,47 +1,106 @@
 package server.api;
 
 import commons.Event;
+import commons.Participant;
+import commons.Tag;
 import commons.EventChange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.service.EventChangeService;
 import server.service.EventService;
+import server.service.ExpenseService;
+import server.service.ParticipantService;
+import server.service.TagService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
-    private final EventService service;
-    private final EventChangeService eventChangeService;
-    private final SimpMessagingTemplate msgs;
+    private final EventService eventService;
+    private final ParticipantService participantService;
+    private final ExpenseService expenseService;
+    private final TagService tagService;
 
     /**
      * constructor for event controller
      *
-     * @param service            event service
-     * @param eventChangeService
-     * @param msgs
+     * @param eventService       event service
+     * @param participantService -
+     * @param expenseService -
+     * @param tagService -
      */
-    public EventController(EventService service, EventChangeService eventChangeService,
-                           SimpMessagingTemplate msgs) {
-        this.service = service;
-        this.eventChangeService = eventChangeService;
-        this.msgs = msgs;
+    public EventController(EventService eventService,
+                           ParticipantService participantService,
+                           ExpenseService expenseService,
+                           TagService tagService) {
+        this.eventService = eventService;
+        this.participantService = participantService;
+        this.expenseService = expenseService;
+        this.tagService = tagService;
     }
 
     @PostMapping
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         try {
-            Event savedEvent = service.createEvent(event);
+            Event savedEvent = eventService.createEvent(event);
             return ResponseEntity.ok(savedEvent);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping("/restoreEvent")
+    public ResponseEntity<Event> restoreEvent(@RequestBody Event event) {
+        if (eventService.existsByInviteCode(event.getInviteCode())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        var participants = event.getParticipants();
+        event.setParticipants(null);
+        var tags = event.getTags();
+        event.setTags(null);
+        var expenses = event.getExpenses();
+        event.setExpenses(null);
+
+        Event savedEvent = eventService.save(event);
+
+        Map<Long, Participant> newParticipants = new HashMap<>();
+
+        participants.replaceAll(participant -> {
+            participant.setEventId(savedEvent.getId());
+            Long oldId = participant.getId();
+            Participant newParticipant = participantService.restore(participant);
+            newParticipants.put(oldId, newParticipant);
+            return newParticipant;
+        });
+
+        Map<Long, Tag> newTags = new HashMap<>();
+        tags.replaceAll(tag -> {
+            tag.setEventId(savedEvent.getId());
+            Long oldId = tag.getId();
+            Tag newTag = tagService.restore(tag);
+            newTags.put(oldId, newTag);
+            return newTag;
+        });
+
+        expenses.replaceAll(expense -> {
+            expense.setEventId(savedEvent.getId());
+            expense.setTag(newTags.get(expense.getTag().getId()));
+            expense.setPayer(newParticipants.get(expense.getPayer().getId()));
+            expense.getDebtors().replaceAll(debtor -> newParticipants.get(debtor.getId()));
+            return expenseService.restore(expense);
+        });
+
+        savedEvent.setParticipants(participants);
+        savedEvent.setTags(tags);
+        savedEvent.setExpenses(expenses);
+
+        Event restoredEvent = eventService.restore(savedEvent);
+
+        return ResponseEntity.ok(restoredEvent);
     }
 
     @GetMapping("/checkUpdates/{id}")
@@ -57,15 +116,28 @@ public class EventController {
         return res;
     }
 
+    @PutMapping("/rename/{id}")
+    public ResponseEntity<Event> renameEvent(@PathVariable long id, @RequestBody String newName) {
+        if(newName == null || newName.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build(); // Return 400 Bad Request for invalid names
+        }
 
-
+        return eventService.getById(id)
+                .map(event -> {
+                    event.setName(newName.trim());
+                    Event updatedEvent = eventService.update(event);
+                    return ResponseEntity.ok(updatedEvent);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+        // Return 404 Not Found if the event doesn't exist
+    }
     /**
      * standard
      * @return all events
      */
     @GetMapping(path = { "", "/" })
     public List<Event> getAll() {
-        return service.getAll();
+        return eventService.getAll();
     }
 
     /**
@@ -75,13 +147,13 @@ public class EventController {
      */
     @GetMapping(path = { "/{id}" })
     public ResponseEntity<Event> getByID(@PathVariable long id) {
-        return service.getById(id).map(ResponseEntity::ok)
+        return eventService.getById(id).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/byInviteCode/{inviteCode}")
     public ResponseEntity<Event> getByInviteCode(@PathVariable String inviteCode) {
-        return service.getByInviteCode(inviteCode)
+        return eventService.getByInviteCode(inviteCode)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -93,8 +165,8 @@ public class EventController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable long id) {
-        return service.getById(id).map(event -> {
-            service.delete(id);
+        return eventService.getById(id).map(event -> {
+            eventService.delete(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -109,16 +181,19 @@ public class EventController {
      */
     @PutMapping("/update/{id}")
     public ResponseEntity<Event> update(@PathVariable long id, @RequestBody Event newEvent) {
-        Optional<Event> oldEvent = service.getById(id);
+        Optional<Event> oldEvent = eventService.getById(id);
         if (oldEvent.isPresent()) {
             Event e = oldEvent.get();
             e.setName(newEvent.getName());
             e.setCreationDate(newEvent.getCreationDate());
             e.setInviteCode(newEvent.getInviteCode());
 
-            Event updated = service.update(e);
+            Event updated = eventService.update(e);
 
             return ResponseEntity.ok(updated);
-        } else return ResponseEntity.notFound().build();
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

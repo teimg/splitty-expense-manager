@@ -20,13 +20,8 @@ public class EmailController {
     @PostMapping
     public ResponseEntity<EmailRequest> sendEmail(@RequestBody EmailRequest request) {
         service.sendEmail(request.getTo(), request.getSubject(), request.getBody(),
-                request.getUsername(), request.getPassword());
+                request.getUsername(), request.getPassword(), request.getDefaultEmail());
         return ResponseEntity.ok(request);
-    }
-
-    @GetMapping
-    public EmailRequest getAll() {
-        return service.getAll();
     }
 
 }

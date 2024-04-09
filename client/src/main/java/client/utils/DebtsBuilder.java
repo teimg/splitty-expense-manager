@@ -28,6 +28,7 @@ public class DebtsBuilder {
 
     private ArrayList<Debt> debts;
 
+    private Map<Participant, Double> positiveBalances;
     private ArrayList<TitledPane> panes;
 
     private final Event event;
@@ -46,6 +47,7 @@ public class DebtsBuilder {
                         MainCtrl mainCtrl) {
         this.event = event;
         this.debts = new ArrayList<>();
+        this.positiveBalances = new HashMap<>();
         this.panes = new ArrayList<>();
         this.translator = translator;
         this.emailCommunicator = emailCommunicator;
@@ -54,6 +56,10 @@ public class DebtsBuilder {
         findDebts();
         simplifyDebts();
         simplifyTransitiveNature();
+        //uncomment this one for only showing positive balances:
+//        findPositiveBalances();
+        //this one for showing all balances, both positive and negative
+        findBalanceChange();
     }
 
     public ArrayList<Debt> getDebts() {
@@ -64,11 +70,14 @@ public class DebtsBuilder {
         return panes;
     }
 
+
+    public Map<Participant, Double> getPositiveBalances() {
+        return positiveBalances;
+    }
+
     public ArrayList<Debt> findDebts() {
         ArrayList<Expense> expenses = new ArrayList<>();
-        for (Expense ex : event.getExpenses()) {
-            expenses.add(ex);
-        }
+        expenses.addAll(event.getExpenses());
         for (Expense expense : expenses) {
             int numDebtors = expense.getDebtors().size();
             for (Participant debtor : expense.getDebtors()) {
@@ -173,6 +182,24 @@ public class DebtsBuilder {
         return balanceChange;
     }
 
+    public Map<Participant, Double> findPositiveBalances() {
+        Map<Participant, Double> allBalances = findBalanceChange();
+
+        Map<Participant, Double> negative = new HashMap<>();
+        Map<Participant, Double> nonNegative = new HashMap<>();
+
+        for (Map.Entry<Participant, Double> entry : allBalances.entrySet()) {
+            if (entry.getValue() < 0) {
+                negative.put(entry.getKey(), entry.getValue());
+            }
+            else {
+                nonNegative.put(entry.getKey(), entry.getValue());
+            }
+        }
+        positiveBalances = nonNegative;
+        return positiveBalances;
+    }
+
     public boolean containsParticipantsSame(Debt debt, Pair<Participant, Participant> pair) {
         return ((debt.getCreditor().equals(pair.getKey()) &&
                 debt.getDebtor().equals(pair.getValue())));
@@ -260,8 +287,10 @@ public class DebtsBuilder {
     public String getSummary(Debt debt) {
         return debt.getDebtor().getName() + " " +
                 translator.getTranslation("OpenDebts.Summary-owes")
-                + " " + (Math.round(debt.getAmount() * 100.0) / 100.0)
-                + "$ " + translator.getTranslation("OpenDebts.Summary-to")
+                + " " + Math.round(mainCtrl.getExchanger().getStandardConversion(
+                        debt.getAmount(), LocalDate.now())*100.0)/100.0
+                + mainCtrl.getExchanger().getCurrentSymbol() + " "
+                + translator.getTranslation("OpenDebts.Summary-to")
                 + " " + debt.getCreditor().getName();
     }
 
@@ -272,6 +301,10 @@ public class DebtsBuilder {
         imageView.setFitWidth(20);
         imageView.setFitHeight(20);
         return imageView;
+    }
+
+    private void removeImprecision() {
+        debts.removeIf(debt -> debt.getAmount() < 0.05);
     }
 
     public void handleEmailButtonClick(Debt debt) {
@@ -296,6 +329,5 @@ public class DebtsBuilder {
         })).start();
 
     }
-
 
 }

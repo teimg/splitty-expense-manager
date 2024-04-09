@@ -1,7 +1,9 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
+import client.dialog.ConfPopup;
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import client.utils.scene.SceneController;
@@ -18,7 +20,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -29,7 +34,8 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
-public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, SceneController {
+public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
+        SceneController, ShortCuts {
 
     @FXML
     private Label titleLabel;
@@ -101,8 +107,6 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     private WhoPaidSelector whoPaidSelector;
 
     private WhichTagSelector whichTagSelector;
-
-    private Event event;
 
     private final MainCtrl mainCtrl;
 
@@ -204,11 +208,11 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     public void loadInfo(Event event, Expense expense) {
         loadInfo(event);
 
-        addEditExpenseMv.loadExpense(expense);
+        addEditExpenseMv.loadExpense(expense, mainCtrl.getExchanger());
     }
 
     public void loadInfo(Event event) {
-        addEditExpenseMv.loadInfo(event);
+        addEditExpenseMv.loadInfo(event, mainCtrl.getExchanger());
 
         initWhoPaid();
         initTag();
@@ -218,10 +222,15 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         tagColor.setFill(Color.rgb(150, 150, 150));
     }
 
+    public void updateTags(Event event) {
+        addEditExpenseMv.updateEvent(event);
+        initTag();
+    }
+
     public void initBindings() {
         priceField.textProperty().bindBidirectional(
             addEditExpenseMv.priceFieldProperty());
-        currencyField.promptTextProperty().bindBidirectional(
+        currencyField.valueProperty().bindBidirectional(
             addEditExpenseMv.currencyFieldProperty());
         descriptionField.textProperty().bindBidirectional(
             addEditExpenseMv.descriptionFieldProperty());
@@ -298,6 +307,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
                         tagField.getEditor().getText()));
             tagField.show();
         });
+        this.tagField.setValue(null);
     }
 
 
@@ -322,8 +332,12 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
 
     public void initCurrency(){
         currencyField.getItems().clear();
-        currencyField.setValue("EUR");
+        currencyField.getItems().add("USD");
         currencyField.getItems().add("EUR");
+        currencyField.getItems().add("CHF");
+        currencyField.getItems().add("JPY");
+        currencyField.setValue("");
+
     }
 
 
@@ -387,16 +401,24 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     private void handleTagColorUpdate(ActionEvent actionEvent) {
         Tag curTag = tagField.getValue();
         if (curTag != null) {
+            String rgbString = String.format("#%02X%02X%02X",
+                    (int) (curTag.getRed()),
+                    (int) (curTag.getGreen()),
+                    (int) (curTag.getBlue()));
             tagColor.setFill(Color.rgb(curTag.getRed(), curTag.getGreen(), curTag.getBlue()));
+            tagField.setBackground(Background.fill(Color.rgb(
+                    curTag.getRed(), curTag.getGreen(), curTag.getBlue())));
+            tagField.setStyle("-fx-border-color: " + rgbString + "; -fx-border-width: 1px;");
         }
         else {
             tagColor.setFill(Color.rgb(150, 150, 150));
+            tagField.setBackground(Background.fill(Color.WHITE));
+            tagField.setStyle("-fx-border-color: #969696; -fx-border-width: 0.5px;");
         }
     }
 
     public void addButtonPressed(){
         createExpense();
-
     }
 
     public void abortButtonPressed(ActionEvent actionEvent) {
@@ -429,11 +451,23 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
     }
 
     public void handleDeleteTag() {
-        try{
-            addEditExpenseMv.deleteTag();
-            initTag();
-        }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+        boolean confirmed = ConfPopup.create
+                        (mainCtrl.getTranslator().getTranslation
+                                ("Popup.sureRemoveDatabase"))
+                .isConfirmed();
+        if (confirmed) {
+            try {
+                addEditExpenseMv.deleteTag();
+                initTag();
+            }
+            catch (jakarta.ws.rs.BadRequestException e) {
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.TagCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
+            }
+            catch (Exception o) {
+                new Popup(mainCtrl.getTranslator().getTranslation
+                        ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
+            }
         }
     }
 
@@ -441,12 +475,21 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch, Scene
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            new Popup(mainCtrl.getTranslator().getTranslation
+                    ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
         }
     }
 
     public void handleAddTag() {
         mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), null);
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = currencyField.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, this::createExpense);
     }
 
 
