@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.ModelView.StatisticsScreenMv;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
@@ -10,15 +11,17 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class StatisticsScreenCtrl extends SceneController implements LanguageSwitch {
+public class StatisticsScreenCtrl extends SceneController implements LanguageSwitch, ShortCuts {
 
     @FXML
     private Button backButton;
@@ -62,9 +65,10 @@ public class StatisticsScreenCtrl extends SceneController implements LanguageSwi
         Map<Tag, Double> entries = statisticsScreenMv.fillEntries();
         addLabels(entries);
         pieChart.setLegendVisible(false);
-        totalCostLabel.setText("The total cost of this event is: "
+        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "StatisticsScreen.Total-Cost-label") + " "
                 + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
-                        statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
+                statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
                 mainCtrl.getExchanger().getCurrentSymbol());
     }
 
@@ -100,7 +104,8 @@ public class StatisticsScreenCtrl extends SceneController implements LanguageSwi
     public void setLanguage() {
         statisticsLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.Title-label"));
-        totalCostLabel.setText("The total cost of this event is: "
+        totalCostLabel.setText(mainCtrl.getTranslator().getTranslation(
+                        "StatisticsScreen.Total-Cost-label") + " "
                 + statisticsScreenMv.rounder(mainCtrl.getExchanger().getStandardConversion(
                 statisticsScreenMv.getTotalPrice(), LocalDate.now())) +
                 mainCtrl.getExchanger().getCurrentSymbol());
@@ -117,4 +122,10 @@ public class StatisticsScreenCtrl extends SceneController implements LanguageSwi
         mainCtrl.showEventOverview(statisticsScreenMv.getEvent());
     }
 
+    @Override
+    public void listeners() {
+        Scene s = pieChart.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
+    }
 }

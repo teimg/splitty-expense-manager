@@ -22,6 +22,9 @@ public class TagServiceTest {
     @Mock
     private TagRepository repository;
 
+    @Mock
+    private EventService eventService;
+
     @InjectMocks
     private TagService service;
 
@@ -76,8 +79,10 @@ public class TagServiceTest {
     @Test
     public void removeTest() {
         when(repository.findById(1L)).thenReturn(Optional.of(tag));
+        doNothing().when(eventService).updateLastActivity(tag.getEventId());
         service.remove(1L);
         verify(repository).deleteById(1L);
+        verify(eventService).updateLastActivity(tag.getEventId());
     }
 
     @Test

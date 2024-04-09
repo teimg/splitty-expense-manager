@@ -22,8 +22,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import client.scenes.*;
-import client.utils.communicators.implementations.CurrencyCommunicator;
-import client.utils.communicators.implementations.TagCommunicator;
 import com.google.inject.Injector;
 
 import javafx.application.Application;
@@ -35,10 +33,6 @@ public class Main extends Application {
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     private static MainCtrl mainCtrl;
-
-    private static TagCommunicator tagCommunicator;
-
-    private static CurrencyCommunicator curCommunicator;
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         launch();
@@ -52,10 +46,6 @@ public class Main extends Application {
 
         HashMap<String, Object> sceneMap = new HashMap<>();
 
-        sceneMap.put("QuoteOverview",
-            FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml"));
-        sceneMap.put("AddQuote",
-            FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml"));
         sceneMap.put("AddEditExpense",
             FXML.load(AddEditExpenseCtrl.class, "client", "scenes", "AddEditExpense.fxml"));
         sceneMap.put("Invitation",
@@ -92,8 +82,5 @@ public class Main extends Application {
         mainCtrl.stop();
     }
 
-    private void clearCacheTxt() {
-        System.out.println(curCommunicator.clearCache());
-    }
 
 }

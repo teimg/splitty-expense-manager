@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.ModelView.ContactInfoMv;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
@@ -9,14 +10,17 @@ import commons.Participant;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ContactInfoCtrl extends SceneController implements LanguageSwitch, Initializable {
+
+public class ContactInfoCtrl extends SceneController implements LanguageSwitch, Initializable, ShortCuts {
 
     @FXML
     private Label titleLabel;
@@ -124,4 +128,14 @@ public class ContactInfoCtrl extends SceneController implements LanguageSwitch, 
         ibanField.textProperty().bindBidirectional(contactInfoMv.ibanProperty());
         bicField.textProperty().bindBidirectional(contactInfoMv.bicProperty());
     }
+
+    @Override
+    public void listeners() {
+        Scene s = nameField.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.ENTER, () -> addButtonPressed(new ActionEvent()));
+    }
+
 }

@@ -18,6 +18,8 @@ public class EmailRequest {
 
     private String password;
 
+    private String defaultEmail;
+
     public EmailRequest() {
         loadProperties();
     }
@@ -43,6 +45,7 @@ public class EmailRequest {
         try {
             this.username = properties.getProperty("mail.username");
             this.password = properties.getProperty("mail.password");
+            this.defaultEmail=properties.getProperty("defaultToBeSentTo.username");
         }
         catch (Exception e) {
             System.out.println("Error");
@@ -87,6 +90,10 @@ public class EmailRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDefaultEmail() {
+        return defaultEmail;
     }
 
     @Override

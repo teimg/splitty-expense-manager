@@ -1,22 +1,27 @@
 package client.scenes;
 
 import client.ModelView.StartScreenMv;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.nodes.UIIcon;
 import client.utils.*;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class StartScreenCtrl extends SceneController implements Initializable, LanguageSwitch {
+public class StartScreenCtrl extends SceneController implements Initializable, LanguageSwitch, ShortCuts {
 
     private final MainCtrl mainCtrl;
 
@@ -46,6 +51,8 @@ public class StartScreenCtrl extends SceneController implements Initializable, L
 
     private final StartScreenMv startScreenMv;
 
+    private JoinableEvent currentlySelectedJoinableEvent;
+
     private class JoinableEventListCell extends ListCell<JoinableEvent> {
         private HBox container;
         private Hyperlink title;
@@ -61,6 +68,26 @@ public class StartScreenCtrl extends SceneController implements Initializable, L
             deleteButton.setGraphic(UIIcon.icon(UIIcon.NAME.DELETE));
             HBox.setHgrow(filler, Priority.ALWAYS);
             container.getChildren().addAll(title, filler, deleteButton);
+
+            // Not totally sure how this works, but it seems to. Had to use internet resources here.
+            title.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean>
+                                            observable, Boolean oldValue, Boolean newValue) {
+                    if (newValue) {
+                        JoinableEvent joinableEvent = getItem();
+                        if (joinableEvent != null) {
+                            currentlySelectedJoinableEvent = joinableEvent;
+                        }
+                    }
+                    else {
+                        if (!recentEventList.isFocused()) {
+                            currentlySelectedJoinableEvent = null;
+                        }
+                    }
+                }
+            });
+
         }
 
         @Override
@@ -73,12 +100,11 @@ public class StartScreenCtrl extends SceneController implements Initializable, L
             title.setText(joinableEvent.name());
             title.setOnAction(actionEvent -> {
                 try {
-                    Event event = startScreenMv.getRecentEvent(joinableEvent.id());
+                    Event event = startScreenMv.getRecentEvent(joinableEvent.inviteCode());
                     mainCtrl.showEventOverview(event);
                 }catch (Exception e){
                     handleException(e);
                 }
-
             });
             deleteButton.setOnAction(actionEvent -> {
                 startScreenMv.deleteEvent(joinableEvent);
@@ -101,9 +127,8 @@ public class StartScreenCtrl extends SceneController implements Initializable, L
 
         initBinding();
         startScreenMv.init();
-
-
     }
+
     public void initBinding(){
         newEventField.textProperty().bindBidirectional(startScreenMv.newEventProperty());
         joinEventField.textProperty().bindBidirectional(startScreenMv.joinEventProperty());
@@ -152,6 +177,22 @@ public class StartScreenCtrl extends SceneController implements Initializable, L
     public void loadInfo() {
         newEventField.setText("");
         joinEventField.setText("");
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = newEventField.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.C, this::createEvent);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.J, this::joinEvent);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.E, () -> joinRecent(s));
+    }
+
+    private void joinRecent(Scene s) {
+        if (currentlySelectedJoinableEvent != null) {
+            Event event = startScreenMv.getRecentEvent(
+                    currentlySelectedJoinableEvent.inviteCode());
+            mainCtrl.showEventOverview(event);
+        }
     }
 
 }

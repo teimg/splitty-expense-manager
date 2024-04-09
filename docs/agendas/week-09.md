@@ -1,11 +1,11 @@
-| Key          | Value                                                                                    |
-|--------------|------------------------------------------------------------------------------------------|
-| Date:        | 09/04/2024                                                                               |
-| Time:        | 15:45-16:45                                                                              |
-| Location:    | Drebbelweg cubicle 14                                                                    |
-| Chair        | Nick de Boer                                                                             |
-| Minute Taker | Teim Giesen                                                                              |
-| Attendees:   | Teim Giesen, Nick de Boer, Defne Kösecioğlu, Feiyang Liu, Jona Bedaux and Makar Kuleshov |
+| Key          | Value                                                                       |
+|--------------|-----------------------------------------------------------------------------|
+| Date:        | 09/04/2024                                                                  |
+| Time:        | 15:45-16:45                                                                 |
+| Location:    | Drebbelweg cubicle 14                                                       |
+| Chair        | Nick de Boer                                                                |
+| Minute Taker | Jona Bedaux                                                                 |
+| Attendees:   | Nick de Boer, Defne Kösecioğlu, Feiyang Liu, Jona Bedaux and Makar Kuleshov |
 
 **Agenda items:**
 

@@ -4,6 +4,7 @@ package client.scenes;
 import client.ModelView.EventOverviewMv;
 import client.dialog.ConfPopup;
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.nodes.UIIcon;
@@ -11,10 +12,14 @@ import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
+import javafx.geometry.Insets;
 
 
 import commons.Participant;
+import commons.Tag;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -22,10 +27,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 
@@ -34,20 +42,19 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
-
-
-public class EventOverviewCtrl extends SceneController implements Initializable, LanguageSwitch{
-
+public class EventOverviewCtrl extends SceneController implements Initializable, LanguageSwitch, ShortCuts{
 
     private Task<Void> longPollingTask = null;
     private Thread pollingThread = null;
     private EventOverviewMv eventOverviewMv;
+    private Expense currentlySelectedExpense;
 
 
     private class ExpenseListCell extends ListCell<Expense> {
         private HBox container;
         private Text content;
+
+        private Text tagText;
         private Pane filler;
         private Button editButton;
         private Button deleteButton;
@@ -57,6 +64,7 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
             super();
             container = new HBox();
             content = new Text();
+            tagText = new Text();
             filler = new Pane();
             editButton = new Button();
             deleteButton = new Button();
@@ -64,7 +72,27 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
             editButton.setGraphic(UIIcon.icon(UIIcon.NAME.EDIT));
             HBox.setHgrow(filler, Priority.ALWAYS);
             HBox.setMargin(deleteButton, new Insets(0, 0, 0, 5));
-            container.getChildren().addAll(content, filler, editButton, deleteButton);
+            container.getChildren().addAll(content, tagText, filler, editButton, deleteButton);
+
+            // Not totally sure how this works, but it seems to. Had to use internet resources here.
+            editButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+                @Override
+                public void changed(ObservableValue<? extends Boolean>
+                                            observable, Boolean oldValue, Boolean newValue) {
+                    if (newValue) {
+                        Expense expenseToBeEdited = getItem();
+                        if (expenseToBeEdited != null) {
+                            currentlySelectedExpense = expenseToBeEdited;
+                        }
+                    }
+                    else {
+                        if (!expensesList.isFocused()) {
+                            currentlySelectedExpense = null;
+                        }
+                    }
+                }
+            });
         }
 
 
@@ -85,6 +113,15 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
             setLanguage(mainCtrl.getTranslator());
 
             content.setText(expenseDescription(expense));
+            Tag tag = expense.getTag();
+            if (tag == null) {
+                tagText.setText(" (Debt Settlement)   ");
+                tagText.setFill(Color.rgb(0, 0, 0));
+            }
+            else {
+                tagText.setText(" (" + tag.getName() + ")   ");
+                tagText.setFill(Color.rgb(tag.getRed(), tag.getGreen(), tag.getBlue()));
+            }
             editButton.setOnAction(actionEvent -> {
                 mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), expense);
             });
@@ -220,6 +257,9 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
     @FXML
     private Button backButton;
 
+    @FXML
+    private Button renameEventButton;
+
 
     private ObservableList<Expense> shownExpenses;
 
@@ -268,6 +308,8 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
                 "EventOverview.Statistics-Button"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.Back-Button"));
+        renameEventButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.RenameEvent-Button"));
         loadEvent(eventOverviewMv.getEvent());
     }
 
@@ -314,6 +356,20 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
         inviteCode.setText(event.getInviteCode());
         stopEventUpdatesLongPolling();
         startEventUpdatesLongPolling(event.getId());
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = editParticipantButton.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.S, this::handleStatistics);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.O, this::handleOpenDebt);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.A, this::handleAddExpense);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.P, this::handleAddParticipant);
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.I, this::handleSendInvites);
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.E, () ->
+                mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), currentlySelectedExpense));
     }
 
 
@@ -382,12 +438,10 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
                 new Popup(mainCtrl.getTranslator().getTranslation
                         ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
             }
-        } else {
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
+            loadEvent(eventOverviewMv.getEventCommunicator()
+                    .getEvent(eventOverviewMv.getEvent().getId()));
         }
-        loadEvent(eventOverviewMv.getEventCommunicator()
-                .getEvent(eventOverviewMv.getEvent().getId()));
+
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 
@@ -428,7 +482,7 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
     }
 
 
-    public void handleStatistics(ActionEvent actionEvent) {
+    public void handleStatistics() {
         mainCtrl.showStatistics(eventOverviewMv.getEvent());
     }
 
@@ -463,19 +517,33 @@ public class EventOverviewCtrl extends SceneController implements Initializable,
 
     public void handleRenameEvent(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog(eventOverviewMv.getEvent().getName());
-        dialog.setTitle("Rename Event");
-        dialog.setHeaderText("Enter the new name for the event:");
-        dialog.setContentText("Name:");
-
+        dialog.setTitle(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.RenameEvent-Button"));
+        dialog.setHeaderText(mainCtrl.getTranslator().getTranslation(
+                "Popup.EnterName"));
+        dialog.setContentText(mainCtrl.getTranslator().getTranslation(
+                "Popup.Name"));
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
-            Event updatedEvent = eventOverviewMv.eventCommRenameEvent(name);
-            if (updatedEvent != null) {
-                loadEvent(updatedEvent);
-                new Popup("Event renamed successfully", Popup.TYPE.INFO).showAndWait();
-            } else {
-                new Popup("Failed to rename event", Popup.TYPE.ERROR).showAndWait();
+            if (!name.isEmpty()) {
+                Event updatedEvent = eventOverviewMv.eventCommRenameEvent(name);
+                if (updatedEvent != null) {
+                    loadEvent(updatedEvent);
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.RenameSuccessful"
+                    ), Popup.TYPE.INFO).showAndWait();
+                }
+                else {
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.RenameFail"
+                    ), Popup.TYPE.ERROR).showAndWait();
+                }
+            }
+            else {
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.RenameCannotBeEmpty"
+                ), Popup.TYPE.ERROR).showAndWait();
             }
         });
     }

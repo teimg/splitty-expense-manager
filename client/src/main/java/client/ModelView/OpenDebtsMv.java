@@ -8,8 +8,10 @@ import client.utils.communicators.implementations.ExpenseCommunicator;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
+import commons.Participant;
 import javafx.scene.control.TitledPane;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class OpenDebtsMv {
 
@@ -20,6 +22,8 @@ public class OpenDebtsMv {
     private ArrayList<Debt> debts;
 
     private ArrayList<TitledPane> panes;
+
+    private Map<Participant, Double> positiveBalanceParticipants;
 
     @Inject
     public OpenDebtsMv(EmailCommunicator emailCommunicator,
@@ -34,6 +38,10 @@ public class OpenDebtsMv {
         debtsBuilder.buildPanes();
         this.debts = debtsBuilder.getDebts();
         this.panes = debtsBuilder.getPanes();
+        //this one to show only positive balance participants:
+//        this.positiveBalanceParticipants = debtsBuilder.getPositiveBalances();
+        //this one to show all balances
+        this.positiveBalanceParticipants = debtsBuilder.findBalanceChange();
     }
 
     public boolean checkVisibility() {
@@ -47,4 +55,9 @@ public class OpenDebtsMv {
     public ArrayList<Debt> getDebts() {
         return debts;
     }
+
+    public Map<Participant, Double> getPositiveBalanceParticipants() {
+        return positiveBalanceParticipants;
+    }
+
 }

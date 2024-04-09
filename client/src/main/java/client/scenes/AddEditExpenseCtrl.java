@@ -1,7 +1,9 @@
 package client.scenes;
 
 import client.ModelView.AddEditExpenseMv;
+import client.dialog.ConfPopup;
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.*;
 import client.utils.scene.SceneController;
@@ -18,7 +20,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -29,7 +34,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
-public class AddEditExpenseCtrl extends SceneController implements Initializable, LanguageSwitch{
+public class AddEditExpenseCtrl extends SceneController implements Initializable, LanguageSwitch, ShortCuts{
 
     @FXML
     private Label titleLabel;
@@ -302,6 +307,7 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
                         tagField.getEditor().getText()));
             tagField.show();
         });
+        this.tagField.setValue(null);
     }
 
 
@@ -395,10 +401,19 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
     private void handleTagColorUpdate(ActionEvent actionEvent) {
         Tag curTag = tagField.getValue();
         if (curTag != null) {
+            String rgbString = String.format("#%02X%02X%02X",
+                    (int) (curTag.getRed()),
+                    (int) (curTag.getGreen()),
+                    (int) (curTag.getBlue()));
             tagColor.setFill(Color.rgb(curTag.getRed(), curTag.getGreen(), curTag.getBlue()));
+            tagField.setBackground(Background.fill(Color.rgb(
+                    curTag.getRed(), curTag.getGreen(), curTag.getBlue())));
+            tagField.setStyle("-fx-border-color: " + rgbString + "; -fx-border-width: 1px;");
         }
         else {
             tagColor.setFill(Color.rgb(150, 150, 150));
+            tagField.setBackground(Background.fill(Color.WHITE));
+            tagField.setStyle("-fx-border-color: #969696; -fx-border-width: 0.5px;");
         }
     }
 
@@ -436,11 +451,18 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
     }
 
     public void handleDeleteTag() {
-        try{
-            addEditExpenseMv.deleteTag();
-            initTag();
-        }catch (Exception e){
-            handleException(e);
+        boolean confirmed = ConfPopup.create
+                        (mainCtrl.getTranslator().getTranslation
+                                ("Popup.sureRemoveDatabase"))
+                .isConfirmed();
+        if (confirmed) {
+            try {
+                addEditExpenseMv.deleteTag();
+                initTag();
+            }
+            catch (Exception o) {
+                handleException(o);
+            }
         }
     }
 
@@ -454,6 +476,14 @@ public class AddEditExpenseCtrl extends SceneController implements Initializable
 
     public void handleAddTag() {
         mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), null);
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = currencyField.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> abortButtonPressed(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.ENTER, this::createExpense);
     }
 
 

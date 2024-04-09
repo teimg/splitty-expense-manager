@@ -1,17 +1,22 @@
 package client.scenes;
 
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.JsonUtils;
+import client.utils.RecentEventTracker;
 import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.EventCommunicator;
 import client.utils.communicators.interfaces.IEventCommunicator;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
 import commons.Expense;
 import commons.Participant;
+import jakarta.ws.rs.NotFoundException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,10 +31,10 @@ import java.io.File;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AdminScreenCtrl extends SceneController implements LanguageSwitch, Initializable {
-
+public class AdminScreenCtrl extends SceneController implements LanguageSwitch, Initializable, ShortCuts {
     @FXML
     private Label eventsLabel;
 
@@ -70,11 +75,20 @@ public class AdminScreenCtrl extends SceneController implements LanguageSwitch, 
 
     private final IEventCommunicator eventCommunicator;
 
+    private final RecentEventTracker recentEventTracker;
+
     @Inject
-    public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator) {
+    public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator,
+                           RecentEventTracker recentEventTracker) {
         super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.eventCommunicator = eventCommunicator;
+        this.recentEventTracker = recentEventTracker;
+    }
+
+    @Override
+    public void listeners() {
+
     }
 
     class AddEvent implements Runnable {
@@ -178,6 +192,9 @@ public class AdminScreenCtrl extends SceneController implements LanguageSwitch, 
                 "AdminScreen.Back-Button"));
     }
 
+    private static final FileChooser.ExtensionFilter jsonExtensionFilter
+            = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+
     public void handleDownload(ActionEvent actionEvent) {
         Event event = eventListView.getSelectionModel().getSelectedItem();
         if (event == null) {
@@ -187,6 +204,8 @@ public class AdminScreenCtrl extends SceneController implements LanguageSwitch, 
         }
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().add(jsonExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(jsonExtensionFilter);
         File file = fileChooser.showSaveDialog(mainCtrl.getPrimaryStage());
         ObjectMapper mapper = JsonUtils.getObjectMapper();
         try {
@@ -200,8 +219,84 @@ public class AdminScreenCtrl extends SceneController implements LanguageSwitch, 
         sortShownEvents();
     }
 
-    // TODO: Import JSON
+    private Optional<Event> getEventFromFile() {
+
+        // Get file from user
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import");
+        fileChooser.getExtensionFilters().add(jsonExtensionFilter);
+        fileChooser.setSelectedExtensionFilter(jsonExtensionFilter);
+        File file = fileChooser.showOpenDialog(mainCtrl.getPrimaryStage());
+
+        // Make sure file is selected
+        if (file == null) {
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.NoFileSelected"
+            ), Popup.TYPE.ERROR).showAndWait();
+            return Optional.empty();
+        }
+
+        // Read event from JSON
+        ObjectMapper mapper = JsonUtils.getObjectMapper();
+        Event event;
+        try {
+            event = mapper.readValue(file, Event.class);
+        } catch (Exception e) {
+            if (e instanceof StreamReadException || e instanceof DatabindException) {
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.BadJSON"
+                ), Popup.TYPE.ERROR).showAndWait();
+            } else {
+                throw new RuntimeException(e);
+            }
+            return Optional.empty();
+        }
+
+        return Optional.of(event);
+    }
+
     public void handleImport(ActionEvent actionEvent) {
+
+        // Get event from JSON
+        Optional<Event> res = getEventFromFile();
+        if (res.isEmpty()) return;
+        Event event = res.get();
+
+        // Error if event with inviteCode already exists
+        try {
+            eventCommunicator.getEventByInviteCode(event.getInviteCode());
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.EventExists"
+            ), Popup.TYPE.ERROR).showAndWait();
+            return;
+        } catch (NotFoundException ignored) {}
+
+        // Confirmation dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Event import");
+        alert.setContentText(mainCtrl.getTranslator().getTranslation(
+                "Conf.ImportEvent"
+        ) + event.getName() + "?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isEmpty() || result.get().equals(ButtonType.CANCEL)) {
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.ImportCancel"
+            ), Popup.TYPE.INFO).showAndWait();
+            return;
+        }
+
+        // Add event to database
+        Event importedEvent = eventCommunicator.restoreEvent(event);
+
+        // Add event to recent events for quick navigation
+        recentEventTracker.registerEvent(importedEvent);
+
+        // Success dialog
+        new Popup(mainCtrl.getTranslator().getTranslation(
+                "Popup.ImportConfirm"
+        ), Popup.TYPE.INFO).showAndWait();
     }
 
     // TODO: Once web sockets are configured this is fairly elementary

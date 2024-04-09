@@ -17,13 +17,14 @@ public class EmailService {
     }
 
     public void sendEmail(String to, String subject, String text,
-                          String username, String password) {
+                          String username, String password, String defaultEmail) {
         javaMailSender.setUsername(username);
         javaMailSender.setPassword(password);
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(to);
+            helper.setCc(defaultEmail);
             helper.setCc(username);
             helper.setSubject(subject);
             helper.setText(text, true);

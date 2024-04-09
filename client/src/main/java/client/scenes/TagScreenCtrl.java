@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.dialog.Popup;
+import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import client.utils.communicators.implementations.TagCommunicator;
@@ -10,13 +11,16 @@ import commons.Event;
 import commons.Tag;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
-public class TagScreenCtrl extends  SceneController implements LanguageSwitch {
+public class TagScreenCtrl extends  SceneController implements LanguageSwitch, ShortCuts {
+
 
     @FXML
     private Label titleLabel;
@@ -123,5 +127,14 @@ public class TagScreenCtrl extends  SceneController implements LanguageSwitch {
                 "TagScreen.Back-Button"));
         submitButton.setText(mainCtrl.getTranslator().getTranslation(
                 "TagScreen.Submit-Button"));
+    }
+
+    @Override
+    public void listeners() {
+        Scene s = titleLabel.getScene();
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.B, () -> handleBack(new ActionEvent()));
+        mainCtrl.getKeyBoardListeners().addListener(
+                s, KeyCode.ENTER, () -> handleSubmit(new ActionEvent()));
     }
 }
