@@ -12,9 +12,11 @@ import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
 import commons.Expense;
+import javafx.geometry.Insets;
 
 
 import commons.Participant;
+import commons.Tag;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,6 +33,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 
@@ -45,7 +48,6 @@ import java.util.ResourceBundle;
 public class EventOverviewCtrl implements Initializable, LanguageSwitch,
         SceneController, ShortCuts {
 
-
     private Task<Void> longPollingTask = null;
     private Thread pollingThread = null;
     private EventOverviewMv eventOverviewMv;
@@ -55,6 +57,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
     private class ExpenseListCell extends ListCell<Expense> {
         private HBox container;
         private Text content;
+
+        private Text tagText;
         private Pane filler;
         private Button editButton;
         private Button deleteButton;
@@ -64,6 +68,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             super();
             container = new HBox();
             content = new Text();
+            tagText = new Text();
             filler = new Pane();
             editButton = new Button();
             deleteButton = new Button();
@@ -71,7 +76,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             editButton.setGraphic(UIIcon.icon(UIIcon.NAME.EDIT));
             HBox.setHgrow(filler, Priority.ALWAYS);
             HBox.setMargin(deleteButton, new Insets(0, 0, 0, 5));
-            container.getChildren().addAll(content, filler, editButton, deleteButton);
+            container.getChildren().addAll(content, tagText, filler, editButton, deleteButton);
 
             // Not totally sure how this works, but it seems to. Had to use internet resources here.
             editButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -112,6 +117,15 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             setLanguage(mainCtrl.getTranslator());
 
             content.setText(expenseDescription(expense));
+            Tag tag = expense.getTag();
+            if (tag == null) {
+                tagText.setText(" (Debt Settlement)   ");
+                tagText.setFill(Color.rgb(0, 0, 0));
+            }
+            else {
+                tagText.setText(" (" + tag.getName() + ")   ");
+                tagText.setFill(Color.rgb(tag.getRed(), tag.getGreen(), tag.getBlue()));
+            }
             editButton.setOnAction(actionEvent -> {
                 mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), expense);
             });
@@ -247,6 +261,9 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
     @FXML
     private Button backButton;
 
+    @FXML
+    private Button renameEventButton;
+
 
     private ObservableList<Expense> shownExpenses;
 
@@ -294,6 +311,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                 "EventOverview.Statistics-Button"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
                 "EventOverview.Back-Button"));
+        renameEventButton.setText(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.RenameEvent-Button"));
         loadEvent(eventOverviewMv.getEvent());
     }
 
@@ -422,12 +441,10 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                 new Popup(mainCtrl.getTranslator().getTranslation
                         ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
             }
-        } else {
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.databaseError"), Popup.TYPE.ERROR).showAndWait();
+            loadEvent(eventOverviewMv.getEventCommunicator()
+                    .getEvent(eventOverviewMv.getEvent().getId()));
         }
-        loadEvent(eventOverviewMv.getEventCommunicator()
-                .getEvent(eventOverviewMv.getEvent().getId()));
+
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 
@@ -503,19 +520,33 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
 
     public void handleRenameEvent(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog(eventOverviewMv.getEvent().getName());
-        dialog.setTitle("Rename Event");
-        dialog.setHeaderText("Enter the new name for the event:");
-        dialog.setContentText("Name:");
-
+        dialog.setTitle(mainCtrl.getTranslator().getTranslation(
+                "EventOverview.RenameEvent-Button"));
+        dialog.setHeaderText(mainCtrl.getTranslator().getTranslation(
+                "Popup.EnterName"));
+        dialog.setContentText(mainCtrl.getTranslator().getTranslation(
+                "Popup.Name"));
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
-            Event updatedEvent = eventOverviewMv.eventCommRenameEvent(name);
-            if (updatedEvent != null) {
-                loadEvent(updatedEvent);
-                new Popup("Event renamed successfully", Popup.TYPE.INFO).showAndWait();
-            } else {
-                new Popup("Failed to rename event", Popup.TYPE.ERROR).showAndWait();
+            if (!name.isEmpty()) {
+                Event updatedEvent = eventOverviewMv.eventCommRenameEvent(name);
+                if (updatedEvent != null) {
+                    loadEvent(updatedEvent);
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.RenameSuccessful"
+                    ), Popup.TYPE.INFO).showAndWait();
+                }
+                else {
+                    new Popup(mainCtrl.getTranslator().getTranslation(
+                            "Popup.RenameFail"
+                    ), Popup.TYPE.ERROR).showAndWait();
+                }
+            }
+            else {
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.RenameCannotBeEmpty"
+                ), Popup.TYPE.ERROR).showAndWait();
             }
         });
     }

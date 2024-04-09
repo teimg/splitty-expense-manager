@@ -122,6 +122,21 @@ public class EventController {
         }
     }
 
+    @PutMapping("/rename/{id}")
+    public ResponseEntity<Event> renameEvent(@PathVariable long id, @RequestBody String newName) {
+        if(newName == null || newName.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build(); // Return 400 Bad Request for invalid names
+        }
+
+        return eventService.getById(id)
+                .map(event -> {
+                    event.setName(newName.trim());
+                    Event updatedEvent = eventService.update(event);
+                    return ResponseEntity.ok(updatedEvent);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+        // Return 404 Not Found if the event doesn't exist
+    }
     /**
      * standard
      * @return all events

@@ -34,10 +34,11 @@ public class EmailServiceTest {
         String text = "Test Email Content";
         String username = "sender@example.com";
         String password = "password123";
+        String defaultEmail = "blabla@gmail.com";
 
         when(javaMailSender.createMimeMessage()).thenReturn(helper().createMimeMessage());
 
-        emailService.sendEmail(to, subject, text, username, password);
+        emailService.sendEmail(to, subject, text, username, password, defaultEmail);
 
         verify(javaMailSender).setUsername(username);
         verify(javaMailSender).setPassword(password);
@@ -58,9 +59,10 @@ public class EmailServiceTest {
         String text = "Test Email Content";
         String username = "sender@example.com";
         String password = "password123";
+        String defaultEmail = "blabla@gmail.com";
         doThrow(new RuntimeException(new MessagingException("Simulated MessagingException")))
                 .when(javaMailSender).createMimeMessage();
-        emailService.sendEmail(to, subject, text, username, password);
+        emailService.sendEmail(to, subject, text, username, password, defaultEmail);
         verify(javaMailSender, times(0)).send(any(MimeMessage.class));
     }
 

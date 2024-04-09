@@ -1,4 +1,4 @@
-Below are the KeyBoard guide for all the scenes: (Admin screens do not support any shortcuts - Use ENTER to exit Popups on recommended value)
+Below are the KeyBoard guide for all the scenes: (Admin screens do not support any shortcuts - Use ENTER to exit Popups on recommended value). For drop downs, use ALT + ARROWDOWN to open them and then navigate through them using the arrows (press enter to select the currently selected item)
 
 **Start Screen:**
 They all follow from CTRL + "CHARACTER" 

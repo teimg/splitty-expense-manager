@@ -34,7 +34,7 @@ public class EmailControllerTest {
         EmailRequest res = emailController.sendEmail(er).getBody();
         assertEquals(res, er);
         verify(mockEmailService).sendEmail(eq(er.getTo()), eq(er.getSubject()), eq(er.getBody()),
-                any(), any());
+                any(), any(), any());
     }
 
 }

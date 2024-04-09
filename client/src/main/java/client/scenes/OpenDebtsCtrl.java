@@ -6,17 +6,24 @@ import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.Participant;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+
+import java.time.LocalDate;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts {
 
     @FXML
     private Label titleLabel;
+
+    @FXML
+    private Label titleLabel1;
 
     @FXML
     private Label noDebtMessage;
@@ -29,6 +36,10 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
 
     @FXML
     private ScrollPane scrollPlane;
+
+    @FXML
+    private ListView<String> expensesList;
+
 
     private final MainCtrl mainCtrl;
 
@@ -48,13 +59,43 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
         noDebtMessage.setVisible(openDebtsMv.checkVisibility());
         accordionDebts.setVisible(!openDebtsMv.checkVisibility());
         scrollPlane.setVisible(!openDebtsMv.checkVisibility());
+        expensesList.setVisible(!openDebtsMv.checkVisibility());
+        titleLabel1.setVisible(!openDebtsMv.checkVisibility());
         updateAccordion(openDebtsMv.getPanes());
+        updatePositiveBalances(openDebtsMv.getPositiveBalanceParticipants());
     }
 
     private void updateAccordion(ArrayList<TitledPane> panes) {
         accordionDebts.getPanes().clear();
         accordionDebts.getPanes().addAll(panes);
     }
+
+//    private void updatePositiveBalances(ArrayList<Participant> list) {
+//        expensesList.getItems().clear();
+//        expensesList.getItems().addAll(list);
+//    }
+
+    private void updatePositiveBalances(Map<Participant, Double> map) {
+        expensesList.getItems().clear();
+        ArrayList<String> r = convertToStringList(map);
+        expensesList.getItems().addAll(r);
+    }
+
+    private ArrayList<String> convertToStringList(Map<Participant, Double> map) {
+        ArrayList<String> stringList = new ArrayList<>();
+        for (Map.Entry<Participant, Double> entry : map.entrySet()) {
+            String key = entry.getKey().getName();
+            Double value = entry.getValue();
+            Double converted = mainCtrl
+                    .getExchanger().getStandardConversion(value, LocalDate.now());
+            String keyValueString = key + ", "
+                    + String.format("%.2f", converted)
+                    + mainCtrl.getExchanger().getCurrentSymbol();
+            stringList.add(keyValueString);
+        }
+        return stringList;
+    }
+
 
     public void abortButtonPressed() {
         Event res = this.event;
@@ -70,6 +111,8 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
                 "OpenDebts.NoDebtsMessage-label"));;
         abortButton.setText(mainCtrl.getTranslator().getTranslation(
             "OpenDebts.Abort-button"));
+        titleLabel1.setText(mainCtrl.getTranslator().getTranslation(
+                "OpenDebts.PositiveBalanceTitle-label"));
         loadInfo(event);
     }
 
