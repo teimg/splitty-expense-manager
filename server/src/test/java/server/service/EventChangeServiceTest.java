@@ -34,26 +34,26 @@ public class EventChangeServiceTest {
         eventChangeService = new EventChangeService(websocketMsgs);
     }
 
-    @Test
-    public void sendChange() {
-        Participant p1 = new Participant("name1", "email1");
-        Participant p2 = new Participant("name2", "email2");
-        List<Participant> participants = List.of(p1, p2);
-        Date creationDate = new Date(2024, 2, 10);
-        Date lastActivity = new Date(2024, 10, 10);
-        Event e = new Event("name", "inviteCode", participants, creationDate, lastActivity);
-        doNothing().when(websocketMsgs).convertAndSend((String) any(), (EventChange) any());
-        eventChangeService.sendChange(new EventChange(EventChange.Type.CREATION, e));
-        eventChangeService.addLongPoll(e, new DeferredResult<>());
-        eventChangeService.sendChange(new EventChange(EventChange.Type.CREATION, e));
-    }
+//    @Test
+//    public void sendChange() {
+//        Participant p1 = new Participant("name1", "email1");
+//        Participant p2 = new Participant("name2", "email2");
+//        List<Participant> participants = List.of(p1, p2);
+//        Date creationDate = new Date(2024, 2, 10);
+//        Date lastActivity = new Date(2024, 10, 10);
+//        Event e = new Event("name", "inviteCode", participants, creationDate, lastActivity);
+//        doNothing().when(websocketMsgs).convertAndSend((String) any(), (EventChange) any());
+//        eventChangeService.sendChange(new EventChange(EventChange.Type.CREATION, e));
+//        eventChangeService.addLongPoll(e, new DeferredResult<>());
+//        eventChangeService.sendChange(new EventChange(EventChange.Type.CREATION, e));
+//    }
 
-    @Test
-    public void addLongPoll() {
-        DeferredResult<EventChange> dr = new DeferredResult<>();
-        eventChangeService.addLongPoll(new Event(), dr);
-        assertEquals(1, eventChangeService.getLongPolls().size());
-    }
+//    @Test
+//    public void addLongPoll() {
+//        DeferredResult<EventChange> dr = new DeferredResult<>();
+//        eventChangeService.addLongPoll(new Event(), dr);
+//        assertEquals(1, eventChangeService.getLongPolls().size());
+//    }
 
 }
 

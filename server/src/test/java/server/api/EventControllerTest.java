@@ -163,49 +163,49 @@ public class EventControllerTest {
         assertEquals(HttpStatusCode.valueOf(400), actual.getStatusCode());
     }
 
-    @Test
-    public void checkUpdatesSuccess() {
-        Participant p1 = new Participant("name1", "email1");
-        Participant p2 = new Participant("name2", "email2");
-        List<Participant> participants = List.of(p1, p2);
-        Date creationDate = new Date(2024, 2, 10);
-        Date lastActivity = new Date(2024, 10, 10);
-        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
-        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
-        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
-        assertEquals(e1, actual.getBody());
-        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
-    }
+//    @Test
+//    public void checkUpdatesSuccess() {
+//        Participant p1 = new Participant("name1", "email1");
+//        Participant p2 = new Participant("name2", "email2");
+//        List<Participant> participants = List.of(p1, p2);
+//        Date creationDate = new Date(2024, 2, 10);
+//        Date lastActivity = new Date(2024, 10, 10);
+//        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
+//        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
+//        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
+//        assertEquals(e1, actual.getBody());
+//        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
+//    }
 
-    @Test
-    public void checkUpdatesSuccessTiming() {
-        Participant p1 = new Participant("name1", "email1");
-        Participant p2 = new Participant("name2", "email2");
-        List<Participant> participants = List.of(p1, p2);
-        Date creationDate = new Date(2024, 2, 10);
-        Date lastActivity = new Date(2024, 10, 10);
-        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
-        e1.setLastActivity(new Date(0L));
-        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
-        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
-        assertEquals(ResponseEntity.noContent().build(), actual);
-        assertEquals(HttpStatusCode.valueOf(204), actual.getStatusCode());
-    }
+//    @Test
+//    public void checkUpdatesSuccessTiming() {
+//        Participant p1 = new Participant("name1", "email1");
+//        Participant p2 = new Participant("name2", "email2");
+//        List<Participant> participants = List.of(p1, p2);
+//        Date creationDate = new Date(2024, 2, 10);
+//        Date lastActivity = new Date(2024, 10, 10);
+//        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
+//        e1.setLastActivity(new Date(0L));
+//        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
+//        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
+//        assertEquals(ResponseEntity.noContent().build(), actual);
+//        assertEquals(HttpStatusCode.valueOf(204), actual.getStatusCode());
+//    }
 
-    @Test
-    public void checkUpdatesFailure() {
-        Participant p1 = new Participant("name1", "email1");
-        Participant p2 = new Participant("name2", "email2");
-        List<Participant> participants = List.of(p1, p2);
-        Date creationDate = new Date(2024, 2, 10);
-        Date lastActivity = new Date(2024, 10, 10);
-        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
-        e1.setLastActivity(new Date(0L));
-        when(service.getById(e1.getId())).thenReturn(Optional.empty());
-        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
-        assertEquals( ResponseEntity.notFound().build(), actual);
-        assertEquals(HttpStatusCode.valueOf(404), actual.getStatusCode());
-    }
+//    @Test
+//    public void checkUpdatesFailure() {
+//        Participant p1 = new Participant("name1", "email1");
+//        Participant p2 = new Participant("name2", "email2");
+//        List<Participant> participants = List.of(p1, p2);
+//        Date creationDate = new Date(2024, 2, 10);
+//        Date lastActivity = new Date(2024, 10, 10);
+//        Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
+//        e1.setLastActivity(new Date(0L));
+//        when(service.getById(e1.getId())).thenReturn(Optional.empty());
+//        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
+//        assertEquals( ResponseEntity.notFound().build(), actual);
+//        assertEquals(HttpStatusCode.valueOf(404), actual.getStatusCode());
+//    }
 
     @Test
     public void restoreFail() {

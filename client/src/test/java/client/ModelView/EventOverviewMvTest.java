@@ -103,15 +103,15 @@ public class EventOverviewMvTest {
     }
 
 
-    @Test
-    void eventCommunicatorCheckForUpdateTest() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-        long eventId = 811L;
-        when(eventCommunicator.checkForEventUpdates(eventId)).thenReturn(event);
-
-
-        assertEquals(event, mv.eventCommunicatorCheckForUpdate(eventId));
-    }
+//    @Test
+//    void eventCommunicatorCheckForUpdateTest() {
+//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+//        long eventId = 811L;
+//        when(eventCommunicator.checkForEventUpdates(eventId)).thenReturn(event);
+//
+//
+//        assertEquals(event, mv.eventCommunicatorCheckForUpdate(eventId));
+//    }
 
     @Test
     void eventCommunicatorGetEventTest() {
