@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.util.function.Consumer;
@@ -23,6 +24,11 @@ public class LongPollingEventUpdateProvider implements IEventUpdateProvider {
     @Inject
     public LongPollingEventUpdateProvider(IEventCommunicator eventCommunicator) {
         this.eventCommunicator = eventCommunicator;
+    }
+
+    private void runInGUIThread(Consumer<EventChange> handler, EventChange change) {
+        if (handler != null)
+            Platform.runLater(() -> handler.accept(change));
     }
 
     @Override
@@ -43,11 +49,11 @@ public class LongPollingEventUpdateProvider implements IEventUpdateProvider {
                     switch (change.getType()) {
                         case MODIFICATION -> {
                             event = change.getEvent();
-                            if (updateHandler != null) updateHandler.accept(change);
+                            runInGUIThread(updateHandler, change);
                         }
                         case DELETION -> {
+                            runInGUIThread(deleteHandler, change);
                             stop();
-                            if (deleteHandler != null) deleteHandler.accept(change);
                         }
                     }
                 }

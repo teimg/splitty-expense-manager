@@ -49,8 +49,6 @@ import java.util.ResourceBundle;
 public class EventOverviewCtrl implements Initializable, LanguageSwitch,
         SceneController, ShortCuts {
 
-    private Task<Void> longPollingTask = null;
-    private Thread pollingThread = null;
     private EventOverviewMv eventOverviewMv;
     private Expense currentlySelectedExpense;
 
@@ -466,30 +464,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
         mainCtrl.showStatistics(eventOverviewMv.getEvent());
     }
 
-    private void startEventUpdatesLongPolling(long eventId) {
-        longPollingTask = new Task<Void>() {
-            @Override
-            protected Void call() {
-                while (!isCancelled()) {
-                    EventChange eventChange = eventOverviewMv
-                            .eventCommunicatorCheckForUpdate(eventId);
-                    if (eventChange != null) {
-                        if (eventChange.getType() == EventChange.Type.MODIFICATION) {
-                            updateUI(eventChange.getEvent());
-                        } else if (eventChange.getType() == EventChange.Type.DELETION) {
-                            //pop-up to show event deleted
-                        }
-                    }
-                }
-                return null;
-            }
-        };
-
-        pollingThread = new Thread(longPollingTask);
-        pollingThread.setDaemon(true);
-        pollingThread.start();
-    }
-
 
     public void handleRenameEvent(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog(eventOverviewMv.getEvent().getName());
@@ -522,14 +496,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                 ), Popup.TYPE.ERROR).showAndWait();
             }
         });
-    }
-
-
-    private void stopEventUpdatesLongPolling() {
-        if (longPollingTask != null) {
-            longPollingTask.cancel();
-            pollingThread.interrupt();
-        }
     }
 
     /**

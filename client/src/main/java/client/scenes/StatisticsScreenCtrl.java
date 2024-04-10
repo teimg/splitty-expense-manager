@@ -49,10 +49,8 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
     }
 
     private void updateUI() {
-        Platform.runLater(() -> {
-            fillChart();
-            toggleVisibility();
-        });
+        fillChart();
+        toggleVisibility();
     }
 
     public void loadInfo(Event ignored) {

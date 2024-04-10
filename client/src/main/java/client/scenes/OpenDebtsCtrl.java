@@ -53,7 +53,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
 
     public void loadInfo(){
         openDebtsMv.onUpdate(change -> {
-            Platform.runLater(this::loadInfo);
+            loadInfo();
         });
         openDebtsMv.loadInfo(mainCtrl.getTranslator(), mainCtrl);
         noDebtMessage.setVisible(openDebtsMv.checkVisibility());
