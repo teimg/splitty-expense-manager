@@ -46,9 +46,8 @@ public class OpenDebtsMvTest {
         MockitoAnnotations.openMocks(this);
         openDebtsMv = new OpenDebtsMv(emailCommunicator, expenseCommunicator,
                 eventUpdateProvider);
-        openDebtsMv.loadInfo(translator, mainCtrl);
-
         when(eventUpdateProvider.event()).thenReturn(event);
+        openDebtsMv.loadInfo(translator, mainCtrl);
     }
 
     @Test
