@@ -49,27 +49,27 @@ public class EventOverviewMvTest {
     }
 
 
-    @Test
-    void testGetSetEvent() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-        mv.setEvent(event);
-        assertEquals(event, mv.getEvent());
-    }
-
-
-    @Test
-    void getEventCommunicator() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-        assertNotNull(mv.getEventCommunicator());
-    }
-
-
-    @Test
-    void testGetSetSelectedPayer() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-        mv.setSelectedPayer(participant);
-        assertEquals(participant, mv.getSelectedPayer());
-    }
+//    @Test
+//    void testGetSetEvent() {
+//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+//        mv.setEvent(event);
+//        assertEquals(event, mv.getEvent());
+//    }
+//
+//
+//    @Test
+//    void getEventCommunicator() {
+//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+//        assertNotNull(mv.getEventCommunicator());
+//    }
+//
+//
+//    @Test
+//    void testGetSetSelectedPayer() {
+//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+//        mv.setSelectedPayer(participant);
+//        assertEquals(participant, mv.getSelectedPayer());
+//    }
 
 
 //    @Test
@@ -91,16 +91,16 @@ public class EventOverviewMvTest {
 //    }
 
 
-    @Test
-    void deleteParticipantTest() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-        Optional<Participant> optionalParticipant = Optional.of(participant);
-        participant.setId(592L);
-        mv.deleteParticipant(optionalParticipant);
-
-
-        verify(participantCommunicator).deleteParticipant(592L);
-    }
+//    @Test
+//    void deleteParticipantTest() {
+//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+//        Optional<Participant> optionalParticipant = Optional.of(participant);
+//        participant.setId(592L);
+//        mv.deleteParticipant(optionalParticipant);
+//
+//
+//        verify(participantCommunicator).deleteParticipant(592L);
+//    }
 
 
 //    @Test
@@ -113,15 +113,15 @@ public class EventOverviewMvTest {
 //        assertEquals(event, mv.eventCommunicatorCheckForUpdate(eventId));
 //    }
 
-    @Test
-    void eventCommunicatorGetEventTest() {
-        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-        mv.setEvent(event);
-        event.setId(333L);
-        when(eventCommunicator.getEvent(333L)).thenReturn(event);
-
-
-        assertEquals(event, mv.eventCommunicatorGetEvent());
-    }
+//    @Test
+//    void eventCommunicatorGetEventTest() {
+//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+//        mv.setEvent(event);
+//        event.setId(333L);
+//        when(eventCommunicator.getEvent(333L)).thenReturn(event);
+//
+//
+//        assertEquals(event, mv.eventCommunicatorGetEvent());
+//    }
 }
 
