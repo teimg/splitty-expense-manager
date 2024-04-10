@@ -29,7 +29,7 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch,
     private TextField passwordField;
 
     @FXML
-    public Button goBackBtn;
+    private Button goBackBtn;
 
 
     @FXML
