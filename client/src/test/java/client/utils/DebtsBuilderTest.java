@@ -122,7 +122,7 @@ public class DebtsBuilderTest {
         Expense expense = new Expense(0L, "Debt Settlement", 60.0, participants.get(1), d, LocalDate.now(), null);
         verify(event).addExpense(expense);
         verify(expenseCommunicator).createExpense(expense);
-        verify(mainCtrl).showOpenDebts(event);
+        verify(mainCtrl).showOpenDebts();
     }
 
 //    @Test
