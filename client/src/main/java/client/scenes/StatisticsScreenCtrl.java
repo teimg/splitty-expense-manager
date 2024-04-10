@@ -48,10 +48,18 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
         this.statisticsScreenMv = statisticsScreenMv;
     }
 
-    public void loadInfo(Event event) {
-        statisticsScreenMv.setEvent(event);
-        fillChart();
-        toggleVisibility();
+    private void updateUI() {
+        Platform.runLater(() -> {
+            fillChart();
+            toggleVisibility();
+        });
+    }
+
+    public void loadInfo(Event ignored) {
+        statisticsScreenMv.onUpdate(change -> {
+            updateUI();
+        });
+        updateUI();
     }
 
     private void toggleVisibility() {
@@ -114,7 +122,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
                 "StatisticsScreen.Back-Button"));
         noExpensesLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.NoExpense-label"));
-        loadInfo(statisticsScreenMv.getEvent());
+        updateUI();
     }
 
     public void handleBack(ActionEvent actionEvent) {

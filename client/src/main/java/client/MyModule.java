@@ -71,13 +71,7 @@ public class MyModule implements Module {
             throw new RuntimeException(e);
         }
 
-        try {
-            binder.bind(StatisticsScreenMv.class)
-                    .toConstructor(StatisticsScreenMv.class.getConstructor())
-                    .in(Scopes.SINGLETON);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        binder.bind(StatisticsScreenMv.class).in(Scopes.SINGLETON);
 
         binder.bind(EventOverviewMv.class).in(Scopes.SINGLETON);
 
