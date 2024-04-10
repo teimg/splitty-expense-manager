@@ -124,6 +124,8 @@ public class MyModule implements Module {
             .to(AdminCommunicator.class).in(Scopes.SINGLETON);
         binder.bind(ICurrencyCommunicator.class)
                 .to(CurrencyCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(IEventUpdateProvider.class)
+                .to(LongPollingEventUpdateProvider.class).in(Scopes.SINGLETON);
     }
 
     private static void configureScenes(Binder binder) {
