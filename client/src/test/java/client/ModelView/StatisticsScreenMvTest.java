@@ -1,5 +1,6 @@
 package client.ModelView;
 
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import commons.Event;
 import commons.Expense;
 import commons.Tag;
@@ -25,10 +26,13 @@ public class StatisticsScreenMvTest {
     @Mock
     private Event event;
 
+    @Mock
+    private IEventUpdateProvider eventUpdateProvider;
+
     @BeforeEach
     void setup() {
-        statisticsScreenMv = new StatisticsScreenMv();
-        statisticsScreenMv.setEvent(event);
+        statisticsScreenMv = new StatisticsScreenMv(eventUpdateProvider);
+        when(eventUpdateProvider.event()).thenReturn(event);
     }
 
     @Test
@@ -64,7 +68,7 @@ public class StatisticsScreenMvTest {
     @Test
     void testSetEvent() {
         Event newEvent = new Event();
-        statisticsScreenMv.setEvent(newEvent);
+        when(eventUpdateProvider.event()).thenReturn(newEvent);
         assertEquals(newEvent, statisticsScreenMv.getEvent());
     }
 
