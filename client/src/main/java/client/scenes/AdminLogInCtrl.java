@@ -29,6 +29,10 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch,
     private TextField passwordField;
 
     @FXML
+    public Button goBackBtn;
+
+
+    @FXML
     private Button enterButton;
 
     private final MainCtrl mainCtrl;
@@ -76,6 +80,9 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch,
             "AdminLogIn.Password-label"));
         enterButton.setText(mainCtrl.getTranslator().getTranslation(
             "AdminLogIn.Enter-Button"));
+        goBackBtn.setText(mainCtrl.getTranslator().getTranslation(
+            "AdminScreen.Back-Button"
+        ));
     }
 
     @Override
