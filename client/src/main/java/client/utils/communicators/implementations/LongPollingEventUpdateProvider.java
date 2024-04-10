@@ -27,6 +27,7 @@ public class LongPollingEventUpdateProvider implements IEventUpdateProvider {
 
     @Override
     public void start(long id) {
+        if (active) throw new RuntimeException("was already updating another event");
         // Initialize held event
         event = eventCommunicator.getEvent(id);
         if (event == null) throw new RuntimeException("invalid event id");
@@ -71,16 +72,18 @@ public class LongPollingEventUpdateProvider implements IEventUpdateProvider {
     public void stop() {
         if (!active) return;
         longPollingTask.cancel();
+        setUpdateHandler(null);
+        setDeleteHandler(null);
         active = false;
     }
 
     @Override
     public void setUpdateHandler(Consumer<EventChange> handler) {
-
+        updateHandler = handler;
     }
 
     @Override
     public void setDeleteHandler(Consumer<EventChange> handler) {
-
+        deleteHandler = handler;
     }
 }
