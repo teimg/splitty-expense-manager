@@ -32,11 +32,12 @@ public class StatisticsScreenMvTest {
     @BeforeEach
     void setup() {
         statisticsScreenMv = new StatisticsScreenMv(eventUpdateProvider);
-        when(eventUpdateProvider.event()).thenReturn(event);
     }
 
     @Test
     public void testFillEntries() {
+        when(eventUpdateProvider.event()).thenReturn(event);
+
         Tag tag1 = new Tag("Tag1", 1,1,1, event.getId());
         Tag tag2 = new Tag("Tag2",1,1,1, event.getId());
 
@@ -62,11 +63,13 @@ public class StatisticsScreenMvTest {
 
     @Test
     void testGetEvent() {
+        when(eventUpdateProvider.event()).thenReturn(event);
         assertEquals(event, statisticsScreenMv.getEvent());
     }
 
     @Test
     void testSetEvent() {
+        when(eventUpdateProvider.event()).thenReturn(event);
         Event newEvent = new Event();
         when(eventUpdateProvider.event()).thenReturn(newEvent);
         assertEquals(newEvent, statisticsScreenMv.getEvent());
