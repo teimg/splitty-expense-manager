@@ -126,8 +126,13 @@ public class EventCommunicator implements IEventCommunicator {
     }
 
     @Override
-    public Event deleteEvent(long id) {
-        return null;
+    public void deleteEvent(long id) {
+        client.getClient()
+                .target(origin).path("api/event/{id}")
+                .resolveTemplate("id", id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
     }
 
     @Override
