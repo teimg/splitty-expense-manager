@@ -63,6 +63,11 @@ public class AdminLogInCtrl implements Initializable, LanguageSwitch,
         }
     }
 
+    public void handleGoBackBtn() {
+        passwordField.textProperty().setValue("");
+        mainCtrl.showStartScreen();
+    }
+
     @Override
     public void setLanguage() {
         logInLabel.setText(mainCtrl.getTranslator().getTranslation(
