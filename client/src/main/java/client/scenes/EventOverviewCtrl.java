@@ -8,6 +8,7 @@ import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.nodes.UIIcon;
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
@@ -317,7 +318,18 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
     }
 
     public void loadEvent(Event event) {
-        eventOverviewMv.setEvent(event);
+        IEventUpdateProvider updateProvider = eventOverviewMv.getEventUpdateProvider();
+        updateProvider.stop();
+        updateProvider.start(event.getId());
+        updateProvider.setUpdateHandler(change -> {
+            updateUI(change.getEvent());
+        });
+        updateProvider.setDeleteHandler(change -> {
+            new Popup("event died :(",
+                    Popup.TYPE.ERROR).showAndWait();
+            mainCtrl.showStartScreen();
+        });
+
         eventTitle.setText(event.getName());
         participantsList.setText(String.join(", ", event.getParticipants()
                 .stream().map(Participant::getName).toList()));
@@ -330,8 +342,8 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
         shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
         inviteCode.setText(event.getInviteCode());
-        stopEventUpdatesLongPolling();
-        startEventUpdatesLongPolling(event.getId());
+//        stopEventUpdatesLongPolling();
+//        startEventUpdatesLongPolling(event.getId());
     }
 
     @Override
@@ -553,11 +565,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
 
             // Update other UI components as needed
             inviteCode.setText(updatedEvent.getInviteCode());
-
-
-            // Replace the local event object with the updated one
-            eventOverviewMv.setEvent(updatedEvent);
-
 
             new Popup(mainCtrl.getTranslator().getTranslation
                     ("Popup.successfulEventUpdate"), Popup.TYPE.INFO).show();

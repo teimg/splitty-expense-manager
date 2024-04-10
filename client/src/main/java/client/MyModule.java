@@ -79,16 +79,7 @@ public class MyModule implements Module {
             throw new RuntimeException(e);
         }
 
-        try {
-            binder.bind(EventOverviewMv.class)
-                    .toConstructor(EventOverviewMv.class.getConstructor(
-                            IEventCommunicator.class, IParticipantCommunicator.class,
-                        IExpenseCommunicator.class
-                    ))
-                    .in(Scopes.SINGLETON);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        binder.bind(EventOverviewMv.class).in(Scopes.SINGLETON);
 
     }
 

@@ -2,8 +2,10 @@ package client.ModelView;
 
 
 import client.utils.communicators.interfaces.IEventCommunicator;
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import client.utils.communicators.interfaces.IExpenseCommunicator;
 import client.utils.communicators.interfaces.IParticipantCommunicator;
+import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
 import commons.Participant;
@@ -23,29 +25,29 @@ public class EventOverviewMv {
 
     private final IExpenseCommunicator expenseCommunicator;
 
-
-    private Event event;
+    private final IEventUpdateProvider eventUpdateProvider;
 
 
     private Participant selectedPayer;
 
-
+    @Inject
     public EventOverviewMv(IEventCommunicator eventCommunicator,
                            IParticipantCommunicator participantCommunicator,
-                           IExpenseCommunicator expenseCommunicator) {
+                           IExpenseCommunicator expenseCommunicator,
+                           IEventUpdateProvider eventUpdateProvider) {
         this.eventCommunicator = eventCommunicator;
         this.participantCommunicator = participantCommunicator;
         this.expenseCommunicator = expenseCommunicator;
+        this.eventUpdateProvider = eventUpdateProvider;
     }
 
 
     public Event getEvent() {
-        return event;
+        return eventUpdateProvider.event();
     }
 
-
-    public void setEvent(Event event) {
-        this.event = event;
+    public IEventUpdateProvider getEventUpdateProvider() {
+        return eventUpdateProvider;
     }
 
 
@@ -69,7 +71,7 @@ public class EventOverviewMv {
     public void copyInviteCode() {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
-        content.putString(event.getInviteCode());
+        content.putString(getEvent().getInviteCode());
         clipboard.setContent(content);
     }
 
@@ -84,18 +86,18 @@ public class EventOverviewMv {
     }
 
     public Event eventCommRenameEvent(String newName) {
-        return eventCommunicator.renameEvent(event.getId(), newName);
+        return eventCommunicator.renameEvent(getEvent().getId(), newName);
     }
 
     public void deleteEvent(long id) {
         expenseCommunicator.deleteExpense(id);
-        eventCommunicator.updateEvent(event);
+        eventCommunicator.updateEvent(getEvent());
 
     }
 
 
     public Event eventCommunicatorGetEvent() {
-        return eventCommunicator.getEvent(event.getId());
+        return eventCommunicator.getEvent(getEvent().getId());
     }
 
 
