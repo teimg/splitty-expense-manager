@@ -6,7 +6,6 @@ import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Participant;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
