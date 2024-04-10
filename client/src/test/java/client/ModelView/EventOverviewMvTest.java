@@ -14,8 +14,7 @@ import javafx.scene.input.DataFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
@@ -90,21 +89,27 @@ public class EventOverviewMvTest {
     }
 
 
+    @Captor
+    ArgumentCaptor<ClipboardContent> clipboardContent;
+
     @Test
     void testCopyInviteCode() {
         Clipboard clipboardMock = mock(Clipboard.class);
-        when(Clipboard.getSystemClipboard()).thenReturn(clipboardMock);
 
-        ClipboardContent contentMock = mock(ClipboardContent.class);
-        when(clipboardMock.getContent(DataFormat.PLAIN_TEXT)).thenReturn(contentMock);
+        try (MockedStatic<Clipboard> mockClipboard = mockStatic(Clipboard.class)) {
+            mockClipboard.when(Clipboard::getSystemClipboard).thenReturn(clipboardMock);
 
-        when(eventUpdateProvider.event()).thenReturn(event);
-        when(event.getInviteCode()).thenReturn("invite code");
+            when(Clipboard.getSystemClipboard()).thenReturn(clipboardMock);
 
-        mv.copyInviteCode();
+            when(eventUpdateProvider.event()).thenReturn(event);
+            event.setInviteCode("invite code");
 
-        verify(contentMock).putString("invite code");
-        verify(clipboardMock).setContent(contentMock);
+            mv.copyInviteCode();
+
+            verify(clipboardMock).setContent(clipboardContent.capture());
+
+            assertEquals("invite code", clipboardContent.getValue().getString());
+        }
     }
 
 
