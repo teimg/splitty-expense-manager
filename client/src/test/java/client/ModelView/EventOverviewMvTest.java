@@ -49,79 +49,79 @@ public class EventOverviewMvTest {
     }
 
 
-//    @Test
-//    void testGetSetEvent() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-//        mv.setEvent(event);
-//        assertEquals(event, mv.getEvent());
-//    }
-//
-//
-//    @Test
-//    void getEventCommunicator() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-//        assertNotNull(mv.getEventCommunicator());
-//    }
-//
-//
-//    @Test
-//    void testGetSetSelectedPayer() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-//        mv.setSelectedPayer(participant);
-//        assertEquals(participant, mv.getSelectedPayer());
-//    }
+    @Test
+    void testGetSetEvent() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+        mv.setEvent(event);
+        assertEquals(event, mv.getEvent());
+    }
 
 
-//    @Test
-//    void testCopyInviteCode() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
-//        Clipboard clipboardMock = mock(Clipboard.class);
-//        when(Clipboard.getSystemClipboard()).thenReturn(clipboardMock);
-//
-//        ClipboardContent contentMock = mock(ClipboardContent.class);
-//        when(clipboardMock.getContent(DataFormat.PLAIN_TEXT)).thenReturn(contentMock);
-//
-//        mv.setEvent(event);
-//        when(event.getInviteCode()).thenReturn("invite code");
-//
-//        mv.copyInviteCode();
-//
-//        verify(contentMock).putString("invite code");
-//        verify(clipboardMock).setContent(contentMock);
-//    }
+    @Test
+    void getEventCommunicator() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+        assertNotNull(mv.getEventCommunicator());
+    }
 
 
-//    @Test
-//    void deleteParticipantTest() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-//        Optional<Participant> optionalParticipant = Optional.of(participant);
-//        participant.setId(592L);
-//        mv.deleteParticipant(optionalParticipant);
-//
-//
-//        verify(participantCommunicator).deleteParticipant(592L);
-//    }
+    @Test
+    void testGetSetSelectedPayer() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+        mv.setSelectedPayer(participant);
+        assertEquals(participant, mv.getSelectedPayer());
+    }
 
 
-//    @Test
-//    void eventCommunicatorCheckForUpdateTest() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-//        long eventId = 811L;
-//        when(eventCommunicator.checkForEventUpdates(eventId)).thenReturn(event);
-//
-//
-//        assertEquals(event, mv.eventCommunicatorCheckForUpdate(eventId));
-//    }
+    @Test
+    void testCopyInviteCode() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator);
+        Clipboard clipboardMock = mock(Clipboard.class);
+        when(Clipboard.getSystemClipboard()).thenReturn(clipboardMock);
 
-//    @Test
-//    void eventCommunicatorGetEventTest() {
-//        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
-//        mv.setEvent(event);
-//        event.setId(333L);
-//        when(eventCommunicator.getEvent(333L)).thenReturn(event);
-//
-//
-//        assertEquals(event, mv.eventCommunicatorGetEvent());
-//    }
+        ClipboardContent contentMock = mock(ClipboardContent.class);
+        when(clipboardMock.getContent(DataFormat.PLAIN_TEXT)).thenReturn(contentMock);
+
+        mv.setEvent(event);
+        when(event.getInviteCode()).thenReturn("invite code");
+
+        mv.copyInviteCode();
+
+        verify(contentMock).putString("invite code");
+        verify(clipboardMock).setContent(contentMock);
+    }
+
+
+    @Test
+    void deleteParticipantTest() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+        Optional<Participant> optionalParticipant = Optional.of(participant);
+        participant.setId(592L);
+        mv.deleteParticipant(optionalParticipant);
+
+
+        verify(participantCommunicator).deleteParticipant(592L);
+    }
+
+
+    @Test
+    void eventCommunicatorCheckForUpdateTest() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+        long eventId = 811L;
+        when(eventCommunicator.checkForEventUpdates(eventId)).thenReturn(event);
+
+
+        assertEquals(event, mv.eventCommunicatorCheckForUpdate(eventId));
+    }
+
+    @Test
+    void eventCommunicatorGetEventTest() {
+        EventOverviewMv mv = new EventOverviewMv(eventCommunicator, participantCommunicator, expenseCommunicator);
+        mv.setEvent(event);
+        event.setId(333L);
+        when(eventCommunicator.getEvent(333L)).thenReturn(event);
+
+
+        assertEquals(event, mv.eventCommunicatorGetEvent());
+    }
 }
 
