@@ -281,7 +281,7 @@ public class DebtsBuilder {
                 debtor, LocalDate.now(), null);
         event.addExpense(newExpense);
         expenseCommunicator.createExpense(newExpense);
-        mainCtrl.showOpenDebts(event);
+        mainCtrl.showOpenDebts();
     }
 
     public String getSummary(Debt debt) {

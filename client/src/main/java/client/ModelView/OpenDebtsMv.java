@@ -5,15 +5,20 @@ import client.scenes.MainCtrl;
 import client.utils.DebtsBuilder;
 import client.utils.communicators.implementations.EmailCommunicator;
 import client.utils.communicators.implementations.ExpenseCommunicator;
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import com.google.inject.Inject;
 import commons.Debt;
 import commons.Event;
+import commons.EventChange;
 import commons.Participant;
 import javafx.scene.control.TitledPane;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class OpenDebtsMv {
+
+    private final IEventUpdateProvider eventUpdateProvider;
 
     private final EmailCommunicator emailCommunicator;
 
@@ -27,13 +32,16 @@ public class OpenDebtsMv {
 
     @Inject
     public OpenDebtsMv(EmailCommunicator emailCommunicator,
-                       ExpenseCommunicator expenseCommunicator) {
+                       ExpenseCommunicator expenseCommunicator,
+                       IEventUpdateProvider eventUpdateProvider) {
         this.emailCommunicator = emailCommunicator;
         this.expenseCommunicator = expenseCommunicator;
+        this.eventUpdateProvider = eventUpdateProvider;
     }
 
-    public void loadInfo(Event event, Translator translator, MainCtrl mainCtrl) {
-        DebtsBuilder debtsBuilder = new DebtsBuilder(event, translator,
+    public void loadInfo(Translator translator, MainCtrl mainCtrl) {
+
+        DebtsBuilder debtsBuilder = new DebtsBuilder(eventUpdateProvider.event(), translator,
                 emailCommunicator, expenseCommunicator, mainCtrl);
         debtsBuilder.buildPanes();
         this.debts = debtsBuilder.getDebts();
@@ -42,6 +50,14 @@ public class OpenDebtsMv {
 //        this.positiveBalanceParticipants = debtsBuilder.getPositiveBalances();
         //this one to show all balances
         this.positiveBalanceParticipants = debtsBuilder.findBalanceChange();
+    }
+
+    public Event getEvent() {
+        return eventUpdateProvider.event();
+    }
+
+    public void onUpdate(Consumer<EventChange> handler) {
+        eventUpdateProvider.setUpdateHandler(handler);
     }
 
     public boolean checkVisibility() {

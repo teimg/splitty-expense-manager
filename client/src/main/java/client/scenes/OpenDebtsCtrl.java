@@ -5,8 +5,8 @@ import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
-import commons.Event;
 import commons.Participant;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -43,8 +43,6 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
 
     private final MainCtrl mainCtrl;
 
-    private Event event;
-
     private OpenDebtsMv openDebtsMv;
 
     @Inject
@@ -53,9 +51,11 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
         this.openDebtsMv = openDebtsMv;
     }
 
-    public void loadInfo(Event event){
-        this.event = event;
-        openDebtsMv.loadInfo(event, mainCtrl.getTranslator(), mainCtrl);
+    public void loadInfo(){
+        openDebtsMv.onUpdate(change -> {
+            Platform.runLater(this::loadInfo);
+        });
+        openDebtsMv.loadInfo(mainCtrl.getTranslator(), mainCtrl);
         noDebtMessage.setVisible(openDebtsMv.checkVisibility());
         accordionDebts.setVisible(!openDebtsMv.checkVisibility());
         scrollPlane.setVisible(!openDebtsMv.checkVisibility());
@@ -98,9 +98,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
 
 
     public void abortButtonPressed() {
-        Event res = this.event;
-        this.event = null;
-        mainCtrl.showEventOverview(res);
+        mainCtrl.showEventOverview(openDebtsMv.getEvent());
     }
 
     @Override
@@ -113,7 +111,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
             "OpenDebts.Abort-button"));
         titleLabel1.setText(mainCtrl.getTranslator().getTranslation(
                 "OpenDebts.PositiveBalanceTitle-label"));
-        loadInfo(event);
+        loadInfo();
     }
 
     @Override

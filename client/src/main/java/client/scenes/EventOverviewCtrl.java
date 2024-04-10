@@ -454,7 +454,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
     }
 
     public void handleOpenDebt() {
-        mainCtrl.showOpenDebts(eventOverviewMv.getEvent());
+        mainCtrl.showOpenDebts();
     }
 
     public void handleBack(ActionEvent actionEvent) {

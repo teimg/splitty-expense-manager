@@ -71,6 +71,8 @@ public class MyModule implements Module {
             throw new RuntimeException(e);
         }
 
+        binder.bind(OpenDebtsMv.class).in(Scopes.SINGLETON);
+
         binder.bind(StatisticsScreenMv.class).in(Scopes.SINGLETON);
 
         binder.bind(EventOverviewMv.class).in(Scopes.SINGLETON);

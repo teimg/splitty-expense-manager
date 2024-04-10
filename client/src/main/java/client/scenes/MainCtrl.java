@@ -219,9 +219,9 @@ public class MainCtrl {
         this.currentCtrl.getValue().setLanguage();
     }
 
-    public void showOpenDebts(Event event) {
+    public void showOpenDebts() {
         show("OpenDebts");
-        ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadInfo(event);
+        ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadInfo();
         this.currentCtrl.getValue().setLanguage();
     }
 
