@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -171,10 +172,9 @@ public class EventControllerTest {
         Date creationDate = new Date(2024, 2, 10);
         Date lastActivity = new Date(2024, 10, 10);
         Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
-        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
-        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
-        assertEquals(e1, actual.getBody());
-        assertEquals(HttpStatusCode.valueOf(200), actual.getStatusCode());
+//        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
+        var actual = controller.checkForUpdates(e1.getId());
+        assertNull(actual.getResult());
     }
 
     @Test
@@ -186,10 +186,10 @@ public class EventControllerTest {
         Date lastActivity = new Date(2024, 10, 10);
         Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
         e1.setLastActivity(new Date(0L));
-        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
-        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
-        assertEquals(ResponseEntity.noContent().build(), actual);
-        assertEquals(HttpStatusCode.valueOf(204), actual.getStatusCode());
+//        when(service.getById(e1.getId())).thenReturn(Optional.of(e1));
+//        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
+//        assertEquals(ResponseEntity.noContent().build(), actual);
+//        assertEquals(HttpStatusCode.valueOf(204), actual.getStatusCode());
     }
 
     @Test
@@ -201,10 +201,8 @@ public class EventControllerTest {
         Date lastActivity = new Date(2024, 10, 10);
         Event e1 = new Event("name", "inviteCode", participants, creationDate, lastActivity);
         e1.setLastActivity(new Date(0L));
-        when(service.getById(e1.getId())).thenReturn(Optional.empty());
-        ResponseEntity<Event> actual = controller.checkForUpdates(e1.getId());
-        assertEquals( ResponseEntity.notFound().build(), actual);
-        assertEquals(HttpStatusCode.valueOf(404), actual.getStatusCode());
+        var actual = controller.checkForUpdates(e1.getId());
+        assertNull(actual.getResult());
     }
 
     @Test

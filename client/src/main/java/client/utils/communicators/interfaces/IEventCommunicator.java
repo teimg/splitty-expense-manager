@@ -1,6 +1,7 @@
 package client.utils.communicators.interfaces;
 
 import commons.Event;
+import commons.EventChange;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -43,7 +44,7 @@ public interface IEventCommunicator {
     void establishWebSocketConnection();
 
     <T> void subscribeForWebSocketMessages(String dest, Class<T> type, Consumer<T> consumer);
-    Event checkForEventUpdates(long id);
+    EventChange checkForEventUpdates(long id);
 
     Event renameEvent(long id, String name);
 

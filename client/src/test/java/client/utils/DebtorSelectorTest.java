@@ -77,6 +77,7 @@ class DebtorSelectorTest {
         assertEquals(9, ds.getDebitors().size(), "Should have all participants as debtors when allSelected is true");
     }
 
+    @Test
     void testIsAllSelected() {
         ds.setAllSelected(true);
         assertTrue(ds.isAllSelected(), "isAllSelected should return true after being set to true");

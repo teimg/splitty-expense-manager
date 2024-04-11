@@ -20,6 +20,7 @@ import client.keyBoardCtrl.KeyBoardListeners;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
@@ -59,6 +60,8 @@ public class MainCtrlTest {
     private Exchanger exchanger;
     @Mock
     private KeyBoardListeners keyBoardListeners;
+    @Mock
+    private IEventUpdateProvider eventUpdateProvider;
 
     private MainCtrl mainCtrl;
 
@@ -131,9 +134,11 @@ public class MainCtrlTest {
         public DummyMainCtrl(ClientConfiguration config, Translator translator,
                              RecentEventTracker recentEventTracker,
                              SceneWrapperFactory sceneWrapperFactory, Exchanger exchanger,
-                             KeyBoardListeners keyBoardListeners) {
+                             KeyBoardListeners keyBoardListeners,
+                             IEventUpdateProvider eventUpdateProvider) {
             super(config, translator, recentEventTracker,
-                    sceneWrapperFactory, exchanger, keyBoardListeners);
+                    sceneWrapperFactory, exchanger, keyBoardListeners,
+                    eventUpdateProvider);
         }
 
         @Override
@@ -151,7 +156,7 @@ public class MainCtrlTest {
         when(clientConfiguration.getWindowWidth()).thenReturn(640.);
 
         mainCtrl = new DummyMainCtrl(clientConfiguration, translator, recentEventTracker,
-                this::mockedSceneWrapper, exchanger, keyBoardListeners);
+                this::mockedSceneWrapper, exchanger, keyBoardListeners, eventUpdateProvider);
 
         mainCtrl.initialize(primaryStage, sceneMap);
     }
@@ -248,9 +253,8 @@ public class MainCtrlTest {
 
     @Test
     public void showOpenDebts() {
-        Event ev = new Event();
-        mainCtrl.showOpenDebts(ev);
-        verify(openDebts).loadInfo(ev);
+        mainCtrl.showOpenDebts();
+        verify(openDebts).loadInfo();
         verify(openDebts).setLanguage();
     }
 

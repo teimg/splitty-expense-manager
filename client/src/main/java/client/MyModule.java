@@ -71,24 +71,11 @@ public class MyModule implements Module {
             throw new RuntimeException(e);
         }
 
-        try {
-            binder.bind(StatisticsScreenMv.class)
-                    .toConstructor(StatisticsScreenMv.class.getConstructor())
-                    .in(Scopes.SINGLETON);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        binder.bind(OpenDebtsMv.class).in(Scopes.SINGLETON);
 
-        try {
-            binder.bind(EventOverviewMv.class)
-                    .toConstructor(EventOverviewMv.class.getConstructor(
-                            IEventCommunicator.class, IParticipantCommunicator.class,
-                        IExpenseCommunicator.class
-                    ))
-                    .in(Scopes.SINGLETON);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        binder.bind(StatisticsScreenMv.class).in(Scopes.SINGLETON);
+
+        binder.bind(EventOverviewMv.class).in(Scopes.SINGLETON);
 
     }
 
@@ -124,6 +111,8 @@ public class MyModule implements Module {
             .to(AdminCommunicator.class).in(Scopes.SINGLETON);
         binder.bind(ICurrencyCommunicator.class)
                 .to(CurrencyCommunicator.class).in(Scopes.SINGLETON);
+        binder.bind(IEventUpdateProvider.class)
+                .to(LongPollingEventUpdateProvider.class).in(Scopes.SINGLETON);
     }
 
     private static void configureScenes(Binder binder) {

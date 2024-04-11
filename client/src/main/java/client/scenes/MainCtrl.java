@@ -22,6 +22,7 @@ import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.utils.ClientConfiguration;
 import client.utils.RecentEventTracker;
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import client.utils.scene.SceneController;
 import client.utils.scene.SceneWrapper;
 import client.utils.scene.SceneWrapperFactory;
@@ -65,12 +66,15 @@ public class MainCtrl {
 
     private final Exchanger exchanger;
 
+    private final IEventUpdateProvider eventUpdateProvider;
+
     @Inject
     public MainCtrl(ClientConfiguration config, Translator translator,
                     RecentEventTracker recentEventTracker,
                     SceneWrapperFactory sceneWrapperFactory,
                     Exchanger exchanger,
-                    KeyBoardListeners keyBoardListeners) {
+                    KeyBoardListeners keyBoardListeners,
+                    IEventUpdateProvider eventUpdateProvider) {
         this.config = config;
         this.translator = translator;
         this.exchanger = exchanger;
@@ -81,7 +85,7 @@ public class MainCtrl {
         }
         this.recentEventTracker = recentEventTracker;
         this.sceneWrapperFactory = sceneWrapperFactory;
-//        this.menuBarInjector = menuBarInjector;
+        this.eventUpdateProvider = eventUpdateProvider;
     }
 
     @SuppressWarnings("unchecked")
@@ -215,13 +219,14 @@ public class MainCtrl {
         this.currentCtrl.getValue().setLanguage();
     }
 
-    public void showOpenDebts(Event event) {
+    public void showOpenDebts() {
         show("OpenDebts");
-        ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadInfo(event);
+        ((OpenDebtsCtrl)(this.currentCtrl.getValue())).loadInfo();
         this.currentCtrl.getValue().setLanguage();
     }
 
     public void showStartScreen() {
+        eventUpdateProvider.stop();
         show("StartScreen");
         ((StartScreenCtrl)(this.currentCtrl.getValue())).loadInfo();
         this.currentCtrl.getValue().setLanguage();
@@ -256,11 +261,13 @@ public class MainCtrl {
     }
 
     public void showAdminLogIn() {
+        eventUpdateProvider.stop();
         show("AdminLogIn");
         this.currentCtrl.getValue().setLanguage();
     }
 
     public void showAdminScreen() {
+        eventUpdateProvider.stop();
         show("AdminScreen");
         ((AdminScreenCtrl)this.currentCtrl.getValue()).initializeScene();
         this.currentCtrl.getValue().setLanguage();
