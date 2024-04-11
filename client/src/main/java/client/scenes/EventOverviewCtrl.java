@@ -508,34 +508,24 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
             return;
         }
 
-
-        // Ensure UI updates are run on the JavaFX Application Thread
-        Platform.runLater(() -> {
-            // Update event title
-            eventTitle.setText(updatedEvent.getName());
+        // Update event title
+        eventTitle.setText(updatedEvent.getName());
 
 
-            // Update participants list
-            participantsList.setText(String.join(", ", updatedEvent.getParticipants()
-                    .stream().map(Participant::getName).toList()));
+        // Update participants list
+        participantsList.setText(String.join(", ", updatedEvent.getParticipants()
+                .stream().map(Participant::getName).toList()));
 
 
-            // Update expenses list
-            shownExpenses.clear();
-            shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
-            expensesList.setItems(shownExpenses);
+        // Update expenses list
+        shownExpenses.clear();
+        shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
+        expensesList.setItems(shownExpenses);
 
 
-            // Update other UI components as needed
-            inviteCode.setText(updatedEvent.getInviteCode());
+        // Update other UI components as needed
+        inviteCode.setText(updatedEvent.getInviteCode());
 
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.successfulEventUpdate"), Popup.TYPE.INFO).show();
-        });
+        System.out.println("event updated");
     }
-
-
-//    public void stop() {
-//        stopEventUpdatesLongPolling();
-//    }
 }
