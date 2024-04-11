@@ -18,7 +18,6 @@ import javafx.geometry.Insets;
 
 import commons.Participant;
 import commons.Tag;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
