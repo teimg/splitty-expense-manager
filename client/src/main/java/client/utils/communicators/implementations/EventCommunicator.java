@@ -91,8 +91,8 @@ public class EventCommunicator implements IEventCommunicator {
     @Override
     public Event getEventByInviteCode(String inviteCode) {
         return client.getClient()
-                    .target(origin).path("api/event/byInviteCode/{inviteCode}")
-                    .resolveTemplate("inviteCode", inviteCode)
+                    .target(origin).path("api/event/byInviteCode")
+                    .queryParam("inviteCode", inviteCode)
                     .request(APPLICATION_JSON).accept(APPLICATION_JSON)
                     .get(Event.class);
     }

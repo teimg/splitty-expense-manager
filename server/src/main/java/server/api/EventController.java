@@ -154,8 +154,8 @@ public class EventController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/byInviteCode/{inviteCode}")
-    public ResponseEntity<Event> getByInviteCode(@PathVariable String inviteCode) {
+    @GetMapping("/byInviteCode")
+    public ResponseEntity<Event> getByInviteCode(@RequestParam String inviteCode) {
         return eventService.getByInviteCode(inviteCode)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
