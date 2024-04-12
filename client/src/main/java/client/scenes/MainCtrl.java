@@ -153,6 +153,10 @@ public class MainCtrl {
 
     }
 
+    public void trackRecentEvent(Event event) {
+        recentEventTracker.registerEvent(event);
+    }
+
     /**
      * gets the title of the current scne
      * @param sceneName name of the scene you want to get the title for
@@ -254,7 +258,7 @@ public class MainCtrl {
 
     public void showEventOverview(Event event) {
         // Track for recent events
-        recentEventTracker.registerEvent(event);
+        trackRecentEvent(event);
         show("EventOverview");
         ((EventOverviewCtrl)(this.currentCtrl.getValue())).loadEvent(event);
         this.currentCtrl.getValue().setLanguage();

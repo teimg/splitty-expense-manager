@@ -316,6 +316,7 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
         updateProvider.stop();
         updateProvider.start(event.getId());
         updateProvider.setUpdateHandler(change -> {
+            mainCtrl.trackRecentEvent(change.getEvent());
             updateUI(change.getEvent());
         });
         updateProvider.setDeleteHandler(change -> {
