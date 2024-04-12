@@ -115,11 +115,11 @@ public class ContactInfoMv {
         Pattern regexPattern = Pattern.compile(pattern);
         Matcher matcher = regexPattern.matcher(email);
 
-        return matcher.matches();
+        return matcher.matches() || email.isEmpty();
     }
 
     public boolean validInput() {
-        return ((email.getValue().isEmpty() || isValidEmail(email.getValue()))
+        return ((isValidEmail(email.getValue()))
                 && !name.getValue().isEmpty()
                 && (bic.getValue().isEmpty() && iban.getValue().isEmpty()
                     ||!bic.getValue().isEmpty() && !iban.getValue().isEmpty()));
@@ -137,14 +137,12 @@ public class ContactInfoMv {
                     && !bicProperty().isEmpty().get())
                     ? new BankAccount(ibanProperty().get(),
                     bicProperty().get()) : null;
-            String em = emailProperty().get() == null ? null : emailProperty().get();
             createParticipant(currentEvent,
                     nameProperty().get(),
-                    em, bankAccount);
+                    emailProperty().get(), bankAccount);
         } else {
-            String em = emailProperty().get().isEmpty() ? null : emailProperty().get();
             participant.setName(nameProperty().get());
-            participant.setEmail(em);
+            participant.setEmail(emailProperty().get());
             BankAccount bankAccount = (!ibanProperty().isEmpty().get()
                     && !bicProperty().isEmpty().get())
                     ? new BankAccount(ibanProperty().get(),
