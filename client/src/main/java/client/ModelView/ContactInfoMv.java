@@ -115,11 +115,11 @@ public class ContactInfoMv {
         Pattern regexPattern = Pattern.compile(pattern);
         Matcher matcher = regexPattern.matcher(email);
 
-        return matcher.matches();
+        return matcher.matches() || email.isEmpty();
     }
 
     public boolean validInput() {
-        return (isValidEmail(email.getValue())
+        return ((isValidEmail(email.getValue()))
                 && !name.getValue().isEmpty()
                 && (bic.getValue().isEmpty() && iban.getValue().isEmpty()
                     ||!bic.getValue().isEmpty() && !iban.getValue().isEmpty()));
