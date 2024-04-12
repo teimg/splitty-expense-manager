@@ -10,7 +10,6 @@ import commons.Participant;
 import jakarta.ws.rs.client.Entity;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
