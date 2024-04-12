@@ -119,10 +119,15 @@ public class ContactInfoMv {
     }
 
     public boolean validInput() {
-        return (isValidEmail(email.getValue())
+        String e = email.getValue();
+        String ef2 = email.get();
+        String n = name.getValue();
+        String q = bic.getValue();
+        boolean a = ((email.getValue().isEmpty() || isValidEmail(email.getValue()))
                 && !name.getValue().isEmpty()
                 && (bic.getValue().isEmpty() && iban.getValue().isEmpty()
                     ||!bic.getValue().isEmpty() && !iban.getValue().isEmpty()));
+        return a;
     }
 
     public void addButtonPressed(ActionEvent event) {
@@ -137,12 +142,14 @@ public class ContactInfoMv {
                     && !bicProperty().isEmpty().get())
                     ? new BankAccount(ibanProperty().get(),
                     bicProperty().get()) : null;
+            String em = emailProperty().get() == null ? null : emailProperty().get();
             createParticipant(currentEvent,
                     nameProperty().get(),
-                    emailProperty().get(), bankAccount);
+                    em, bankAccount);
         } else {
+            String em = emailProperty().get().isEmpty() ? null : emailProperty().get();
             participant.setName(nameProperty().get());
-            participant.setEmail(emailProperty().get());
+            participant.setEmail(em);
             BankAccount bankAccount = (!ibanProperty().isEmpty().get()
                     && !bicProperty().isEmpty().get())
                     ? new BankAccount(ibanProperty().get(),
