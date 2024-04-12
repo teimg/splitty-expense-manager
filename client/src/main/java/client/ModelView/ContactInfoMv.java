@@ -119,15 +119,10 @@ public class ContactInfoMv {
     }
 
     public boolean validInput() {
-        String e = email.getValue();
-        String ef2 = email.get();
-        String n = name.getValue();
-        String q = bic.getValue();
-        boolean a = ((email.getValue().isEmpty() || isValidEmail(email.getValue()))
+        return ((email.getValue().isEmpty() || isValidEmail(email.getValue()))
                 && !name.getValue().isEmpty()
                 && (bic.getValue().isEmpty() && iban.getValue().isEmpty()
                     ||!bic.getValue().isEmpty() && !iban.getValue().isEmpty()));
-        return a;
     }
 
     public void addButtonPressed(ActionEvent event) {
