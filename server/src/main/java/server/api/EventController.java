@@ -3,8 +3,12 @@ package server.api;
 import commons.Event;
 import commons.Participant;
 import commons.Tag;
+import commons.EventChange;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
+import server.service.EventChangeService;
 import server.service.EventService;
 import server.service.ExpenseService;
 import server.service.ParticipantService;
@@ -19,23 +23,26 @@ public class EventController {
     private final ParticipantService participantService;
     private final ExpenseService expenseService;
     private final TagService tagService;
+    private final EventChangeService eventChangeService;
 
     /**
      * constructor for event controller
      *
      * @param eventService       event service
      * @param participantService -
-     * @param expenseService -
-     * @param tagService -
+     * @param expenseService     -
+     * @param tagService         -
+     * @param eventChangeService -
      */
     public EventController(EventService eventService,
                            ParticipantService participantService,
                            ExpenseService expenseService,
-                           TagService tagService) {
+                           TagService tagService, EventChangeService eventChangeService) {
         this.eventService = eventService;
         this.participantService = participantService;
         this.expenseService = expenseService;
         this.tagService = tagService;
+        this.eventChangeService = eventChangeService;
     }
 
     @PostMapping
@@ -99,27 +106,17 @@ public class EventController {
         return ResponseEntity.ok(restoredEvent);
     }
 
-    /**
-     * Checks for updates to an event by its ID.
-     * @param id The ID of the event.
-     * @return ResponseEntity with the updated event if there's an update, or an empty body if not.
-     */
     @GetMapping("/checkUpdates/{id}")
-    public ResponseEntity<Event> checkForUpdates(@PathVariable long id) {
-        Optional<Event> currentEvent = eventService.getById(id);
-        if (currentEvent.isPresent()) {
-            Event event = currentEvent.get();
-            // Example logic: return the event if it has been updated within the last 5 minutes.
-            long lastUpdateTime = event.getLastActivity().getTime();
-            long now = new Date().getTime();
-            if (now - lastUpdateTime < 300000) { // 5 minutes in milliseconds
-                return ResponseEntity.ok(event);
-            } else {
-                return ResponseEntity.noContent().build();
-            }
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public DeferredResult<ResponseEntity<EventChange>> checkForUpdates(@PathVariable long id) {
+        var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var res = new DeferredResult<ResponseEntity<EventChange>>(5000L, noContent);
+
+        eventChangeService.addLongPoll(id, res);
+        res.onCompletion(()->{
+            eventChangeService.removeLongPoll(id, res);
+        });
+
+        return res;
     }
 
     @PutMapping("/rename/{id}")

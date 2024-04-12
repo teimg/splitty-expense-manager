@@ -3,14 +3,15 @@ package server.api;
 import commons.PasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import server.service.AdminService;
 
-@RestController
+@Controller
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private AdminService adminService;
+    private final AdminService adminService;
 
     @Autowired
     public AdminController(AdminService adminService) {

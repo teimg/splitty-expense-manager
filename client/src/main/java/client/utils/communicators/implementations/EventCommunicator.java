@@ -6,6 +6,7 @@ import client.utils.communicators.ClientSupplier;
 import client.utils.communicators.interfaces.IEventCommunicator;
 import com.google.inject.Inject;
 import commons.Event;
+import commons.EventChange;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -36,11 +37,6 @@ public class EventCommunicator implements IEventCommunicator {
         this.origin = config.getServer();
         this.webSocketURL = config.getServerWS() + "/websocket";
         this.client = client;
-    }
-
-    @Override
-    public Event createEvent(String name) {
-        return null;
     }
 
     /**
@@ -96,7 +92,7 @@ public class EventCommunicator implements IEventCommunicator {
                     .get(Event.class);
     }
 
-    public Event checkForEventUpdates(long id) {
+    public EventChange checkForEventUpdates(long id) {
         try {
             Response response = client.getClient()
                     .target(origin).path("api/event/checkUpdates/{id}")
@@ -105,14 +101,14 @@ public class EventCommunicator implements IEventCommunicator {
                     .get();
 
             if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-                return response.readEntity(Event.class);
+                return response.readEntity(EventChange.class);
             } else {
                 // No updates or event not found, handle accordingly
                 return null;
             }
         } catch (Exception e) {
             System.err.println("Error checking for event updates: " + e.getMessage());
-            return null; // Return null in case of error to handle it gracefully
+            return null;
         }
     }
 
@@ -126,8 +122,13 @@ public class EventCommunicator implements IEventCommunicator {
     }
 
     @Override
-    public Event deleteEvent(long id) {
-        return null;
+    public void deleteEvent(long id) {
+        client.getClient()
+                .target(origin).path("api/event/{id}")
+                .resolveTemplate("id", id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
     }
 
     @Override

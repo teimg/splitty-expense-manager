@@ -300,14 +300,36 @@ public class AdminScreenCtrl extends SceneController
         ), Popup.TYPE.INFO).showAndWait();
     }
 
-    // TODO: Once web sockets are configured this is fairly elementary
-    //  must be sure to refresh page
     public void handleDelete(ActionEvent actionEvent) {
-        Event toBeDeleted = eventListView.getSelectionModel().getSelectedItem();
-        if (toBeDeleted != null) {
-            // TODO: Add Pop Up as well as actually delete item (using web sockets).
-            System.out.println(toBeDeleted.toString());
+        Event event = eventListView.getSelectionModel().getSelectedItem();
+
+        if (event == null) {
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.NoEventSelected"
+            ), Popup.TYPE.ERROR).showAndWait();
+            return;
         }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Delete event");
+        alert.setContentText(mainCtrl.getTranslator().getTranslation(
+                "Conf.DeleteEvent"
+        ) + event.getName() + "?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isEmpty() || result.get().equals(ButtonType.CANCEL)) {
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.EventDeletionCancelled"
+            ), Popup.TYPE.INFO).showAndWait();
+            return;
+        }
+
+        eventCommunicator.deleteEvent(event.getId());
+
+        new Popup(mainCtrl.getTranslator().getTranslation(
+                "Popup.EventDeleted"
+        ), Popup.TYPE.INFO).showAndWait();
     }
 
     public void handleBack(ActionEvent actionEvent) {

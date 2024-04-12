@@ -29,6 +29,10 @@ public class AdminLogInCtrl extends  SceneController
     private TextField passwordField;
 
     @FXML
+    private Button goBackBtn;
+
+
+    @FXML
     private Button enterButton;
 
     private final MainCtrl mainCtrl;
@@ -64,6 +68,11 @@ public class AdminLogInCtrl extends  SceneController
         }
     }
 
+    public void handleGoBackBtn() {
+        passwordField.textProperty().setValue("");
+        mainCtrl.showStartScreen();
+    }
+
     @Override
     public void setLanguage() {
         logInLabel.setText(mainCtrl.getTranslator().getTranslation(
@@ -72,6 +81,9 @@ public class AdminLogInCtrl extends  SceneController
             "AdminLogIn.Password-label"));
         enterButton.setText(mainCtrl.getTranslator().getTranslation(
             "AdminLogIn.Enter-Button"));
+        goBackBtn.setText(mainCtrl.getTranslator().getTranslation(
+            "AdminScreen.Back-Button"
+        ));
     }
 
     @Override

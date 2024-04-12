@@ -16,7 +16,6 @@ import javafx.collections.ObservableList;
 import javafx.util.Pair;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +41,6 @@ public class AddEditExpenseMv {
 
     private Event event;
 
-    // Only used when there is an edit going on
     private Expense expense;
 
     private final IExpenseCommunicator expenseCommunicator;
@@ -99,7 +97,7 @@ public class AddEditExpenseMv {
 
     }
 
-    public void setBuilder(){
+    private void setBuilder(){
         expenseBuilder = new ExpenseBuilder();
         expenseBuilder.setDebtors(expense.getDebtors());
         expenseBuilder.setTag(expense.getTag());
@@ -109,7 +107,7 @@ public class AddEditExpenseMv {
         expenseBuilder.setAmount((long)(expense.getAmount() * 100));
     }
 
-    public void setFields(){
+    private void setFields(){
         descriptionField.setValue(expense.getPurchase());
         whoPaidField.setValue(expense.getPayer());
         descriptionField.setValue(expense.getPurchase());
@@ -146,7 +144,7 @@ public class AddEditExpenseMv {
      *
      * @return the amount in euro cents right now
      */
-    private long getPriceFieldValue() {
+    public long getPriceFieldValue() {
         long res = 0;
         String value = priceField.getValue();
         String[] values = value.split(",|\\.");
@@ -174,13 +172,8 @@ public class AddEditExpenseMv {
      */
 
     public LocalDate getDateFieldValue(){
-        try{
-            return  dateField.getValue();
+        return  dateField.getValue() != null ? dateField.getValue() : LocalDate.now();
 
-        }
-        catch (DateTimeParseException e){
-            return LocalDate.now();
-        }
     }
 
     public  Participant getPayer(){
@@ -257,7 +250,7 @@ public class AddEditExpenseMv {
     /**
      * Creates expense
      * @return expense
-     */
+         */
     public Expense createExpense(){
         expenseBuilder.setPayer(getPayer());
         expenseBuilder.setPurchase(getPurchase());

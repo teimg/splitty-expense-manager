@@ -1,24 +1,33 @@
 package client.ModelView;
 
+import client.utils.communicators.interfaces.IEventUpdateProvider;
+import com.google.inject.Inject;
 import commons.Event;
+import commons.EventChange;
 import commons.Expense;
 import commons.Tag;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class StatisticsScreenMv {
 
-    private Event event;
+    private final IEventUpdateProvider eventUpdateProvider;
+
+    @Inject
+    public StatisticsScreenMv(IEventUpdateProvider eventUpdateProvider) {
+        this.eventUpdateProvider = eventUpdateProvider;
+    }
 
     private double totalPrice;
 
     public Event getEvent() {
-        return event;
+        return eventUpdateProvider.event();
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void onUpdate(Consumer<EventChange> handler) {
+        eventUpdateProvider.setUpdateHandler(handler);
     }
 
     public double getTotalPrice() {
@@ -32,7 +41,7 @@ public class StatisticsScreenMv {
     public Map<Tag, Double> fillEntries() {
         Map<Tag, Double> entries = new HashMap<>();
         this.totalPrice = 0;
-        for (Expense expense : event.getExpenses()) {
+        for (Expense expense : getEvent().getExpenses()) {
             Tag tag = expense.getTag();
             if (tag != null) {
                 totalPrice = totalPrice + expense.getAmount();

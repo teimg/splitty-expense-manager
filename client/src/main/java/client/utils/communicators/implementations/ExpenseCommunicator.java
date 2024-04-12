@@ -10,7 +10,6 @@ import commons.Participant;
 import jakarta.ws.rs.client.Entity;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -77,13 +76,4 @@ public class ExpenseCommunicator implements IExpenseCommunicator {
                 .request(APPLICATION_JSON).accept(APPLICATION_JSON)
                 .delete(Expense.class);
     }
-
-    // The necessary endpoint has not yet been implemented.
-    // TODO
-    @Override
-    public Collection<Expense> getAllExpensesForEvent(long eventId) {
-        return null;
-    }
-
-
 }

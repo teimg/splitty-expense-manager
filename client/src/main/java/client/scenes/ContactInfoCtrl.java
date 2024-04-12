@@ -56,6 +56,9 @@ public class ContactInfoCtrl extends SceneController
     @FXML
     private TextField ibanField;
 
+    @FXML
+    private Label explanationLabel;
+
     private final MainCtrl mainCtrl;
 
 
@@ -88,6 +91,8 @@ public class ContactInfoCtrl extends SceneController
                 "ContactInfo.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
                 "ContactInfo.Add-Button"));
+        explanationLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "ContactInfo.Explanation-label"));
     }
 
     public void loadInfo(Event event, Participant participant) {

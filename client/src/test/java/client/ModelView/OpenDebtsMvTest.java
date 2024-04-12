@@ -4,6 +4,7 @@ import client.language.Translator;
 import client.scenes.MainCtrl;
 import client.utils.communicators.implementations.EmailCommunicator;
 import client.utils.communicators.implementations.ExpenseCommunicator;
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import commons.Event;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class OpenDebtsMvTest {
@@ -36,34 +38,37 @@ public class OpenDebtsMvTest {
     @Mock
     private MainCtrl mainCtrl;
 
+    @Mock
+    private IEventUpdateProvider eventUpdateProvider;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        openDebtsMv = new OpenDebtsMv(emailCommunicator, expenseCommunicator);
+        openDebtsMv = new OpenDebtsMv(emailCommunicator, expenseCommunicator,
+                eventUpdateProvider);
+        when(eventUpdateProvider.event()).thenReturn(event);
+        openDebtsMv.loadInfo(translator, mainCtrl);
     }
 
     @Test
     public void testLoadInfo() {
-        openDebtsMv.loadInfo(event, translator, mainCtrl);
+
         assertNotNull(openDebtsMv.getDebts());
         assertNotNull(openDebtsMv.getPanes());
     }
 
     @Test
     public void testGetPanes() {
-        openDebtsMv.loadInfo(event, translator, mainCtrl);
         assertEquals(new ArrayList<>(), openDebtsMv.getPanes());
     }
 
     @Test
     public void testGetDebts() {
-        openDebtsMv.loadInfo(event, translator, mainCtrl);
         assertEquals(new ArrayList<>(), openDebtsMv.getPanes());
     }
 
     @Test
     public void testCheckVisibilityTrue() {
-        openDebtsMv.loadInfo(event, translator, mainCtrl);
         assertTrue(openDebtsMv.checkVisibility());
     }
 

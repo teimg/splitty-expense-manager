@@ -8,6 +8,7 @@ import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.language.Translator;
 import client.nodes.UIIcon;
+import client.utils.communicators.interfaces.IEventUpdateProvider;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
@@ -17,16 +18,13 @@ import javafx.geometry.Insets;
 
 import commons.Participant;
 import commons.Tag;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -36,7 +34,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -45,8 +42,6 @@ import java.util.ResourceBundle;
 public class EventOverviewCtrl extends SceneController
     implements Initializable, LanguageSwitch, ShortCuts{
 
-    private Task<Void> longPollingTask = null;
-    private Thread pollingThread = null;
     private EventOverviewMv eventOverviewMv;
     private Expense currentlySelectedExpense;
 
@@ -96,12 +91,10 @@ public class EventOverviewCtrl extends SceneController
             });
         }
 
-
         private void setLanguage(Translator translator) {
             editButton.setText(translator
                     .getTranslation("EventOverview.EditExpense-Button"));
         }
-
 
         @Override
         public void updateItem(Expense expense, boolean empty) {
@@ -133,9 +126,6 @@ public class EventOverviewCtrl extends SceneController
                         "Conf.DeleteExpense")
                 ).isConfirmed();
 
-                deleteButton.setDisable(true);
-                editButton.setDisable(true);
-
                 try {
                     if(isConfirm){
                         eventOverviewMv.deleteEvent(expense.getId());
@@ -146,13 +136,9 @@ public class EventOverviewCtrl extends SceneController
                     handleException(e);
                 }
 
-                deleteButton.setDisable(false);
-                editButton.setDisable(false);
-
             });
             setGraphic(container);
         }
-
 
         private String expenseDescription(Expense expense) {
             return expense.getDate().toString() +
@@ -178,82 +164,62 @@ public class EventOverviewCtrl extends SceneController
     @FXML
     private Text eventTitle;
 
-
     @FXML
     private Text participantsList;
-
 
     @FXML
     private RadioButton expenseSelectorAll;
 
-
     @FXML
     private RadioButton expenseSelectorFrom;
-
 
     @FXML
     private RadioButton expenseSelectorIncluding;
 
-
     @FXML
     private ListView<Expense> expensesList;
-
 
     @FXML
     private Text inviteCode;
 
-
     @FXML
     private Button inviteCodeCopyBtn;
-
 
     @FXML
     private Button sendInviteButton;
 
-
     @FXML
     private Label participantsLabel;
-
 
     @FXML
     private Button removeParticipantButton;
 
-
     @FXML
     private Button addParticipantButton;
-
 
     @FXML
     private Label expensesLabel;
 
-
     @FXML
     private Label forLabel;
-
 
     @FXML
     private Label inviteCodeLabel;
 
-
     @FXML
     private Button addExpense;
-
 
     @FXML
     private Button editParticipantButton;
 
-
     @FXML
     private ChoiceBox<String> participantDropDown;
-
 
     @FXML
     private Button openDebtBtn;
 
-
     @FXML
     private Button statisticsButton;
-
 
     @FXML
     private Button backButton;
@@ -264,9 +230,7 @@ public class EventOverviewCtrl extends SceneController
 
     private ObservableList<Expense> shownExpenses;
 
-
     private final MainCtrl mainCtrl;
-
 
     @Inject
     public EventOverviewCtrl(MainCtrl mainCtrl, EventOverviewMv eventOverviewMv) {
@@ -314,7 +278,6 @@ public class EventOverviewCtrl extends SceneController
         loadEvent(eventOverviewMv.getEvent());
     }
 
-
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -340,9 +303,19 @@ public class EventOverviewCtrl extends SceneController
         expensesList.setCellFactory(expensesList -> new ExpenseListCell());
     }
 
-
     public void loadEvent(Event event) {
-        eventOverviewMv.setEvent(event);
+        IEventUpdateProvider updateProvider = eventOverviewMv.getEventUpdateProvider();
+        updateProvider.stop();
+        updateProvider.start(event.getId());
+        updateProvider.setUpdateHandler(change -> {
+            updateUI(change.getEvent());
+        });
+        updateProvider.setDeleteHandler(change -> {
+            new Popup("event died :(",
+                    Popup.TYPE.ERROR).showAndWait();
+            mainCtrl.showStartScreen();
+        });
+
         eventTitle.setText(event.getName());
         participantsList.setText(String.join(", ", event.getParticipants()
                 .stream().map(Participant::getName).toList()));
@@ -355,8 +328,8 @@ public class EventOverviewCtrl extends SceneController
         shownExpenses = FXCollections.observableArrayList(event.getExpenses());
         expensesList.setItems(shownExpenses);
         inviteCode.setText(event.getInviteCode());
-        stopEventUpdatesLongPolling();
-        startEventUpdatesLongPolling(event.getId());
+//        stopEventUpdatesLongPolling();
+//        startEventUpdatesLongPolling(event.getId());
     }
 
     @Override
@@ -377,7 +350,6 @@ public class EventOverviewCtrl extends SceneController
     public void copyInviteCode() {
         eventOverviewMv.copyInviteCode();
     }
-
 
     /**
      * Changes the expenses shown in the ListView to match the selected toggle.
@@ -410,12 +382,10 @@ public class EventOverviewCtrl extends SceneController
         expensesList.setItems(shownExpenses);
     }
 
-
     // TODO: implement these methods with proper server communication
     public void handleSendInvites() {
         mainCtrl.showInvitation(eventOverviewMv.getEvent());
     }
-
 
     public void handleRemoveParticipant() {
         Optional<Participant> optionalParticipant = eventOverviewMv
@@ -446,11 +416,9 @@ public class EventOverviewCtrl extends SceneController
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
     }
 
-
     public void handleAddParticipant() {
         mainCtrl.showContactInfo(eventOverviewMv.getEvent(), null);
     }
-
 
     public void handleEditParticipant(ActionEvent actionEvent) {
         Optional<Participant> optionalParticipant = eventOverviewMv.getEvent()
@@ -467,16 +435,13 @@ public class EventOverviewCtrl extends SceneController
         if (optionalParticipant.isEmpty()) System.out.println("Error");
     }
 
-
     public void handleAddExpense() {
         mainCtrl.showAddEditExpense(eventOverviewMv.getEvent());
     }
 
-
     public void handleOpenDebt() {
-        mainCtrl.showOpenDebts(eventOverviewMv.getEvent());
+        mainCtrl.showOpenDebts();
     }
-
 
     public void handleBack(ActionEvent actionEvent) {
         mainCtrl.showStartScreen();
@@ -488,32 +453,6 @@ public class EventOverviewCtrl extends SceneController
     }
 
 
-    private void startEventUpdatesLongPolling(long eventId) {
-        longPollingTask = new Task<Void>() {
-            @Override
-            protected Void call() {
-                try {
-                    while (!isCancelled()) {
-                        Event updatedEvent = eventOverviewMv
-                                .eventCommunicatorCheckForUpdate(eventId);
-                        if (updatedEvent != null
-                                && !updatedEvent.equals(eventOverviewMv.getEvent())) {
-                            updateUI(updatedEvent);
-                        }
-                        Thread.sleep(5000); // 5 seconds
-                    }
-                } catch (Exception e) {
-                    handleException(e);
-                }
-                return null;
-            }
-        };
-
-
-        pollingThread = new Thread(longPollingTask);
-        pollingThread.setDaemon(true);
-        pollingThread.start();
-    }
 
 
     public void handleRenameEvent(ActionEvent actionEvent) {
@@ -549,15 +488,6 @@ public class EventOverviewCtrl extends SceneController
         });
     }
 
-
-    private void stopEventUpdatesLongPolling() {
-        if (longPollingTask != null) {
-            longPollingTask.cancel();
-            pollingThread.interrupt();
-        }
-    }
-
-
     /**
      * Updates the UI components with the data from the updated event.
      * This method is designed to be run on the JavaFX Application Thread.
@@ -571,38 +501,25 @@ public class EventOverviewCtrl extends SceneController
             return;
         }
 
-
-        // Ensure UI updates are run on the JavaFX Application Thread
-        Platform.runLater(() -> {
-            // Update event title
-            eventTitle.setText(updatedEvent.getName());
+        // Update event title
+        eventTitle.setText(updatedEvent.getName());
 
 
-            // Update participants list
-            participantsList.setText(String.join(", ", updatedEvent.getParticipants()
-                    .stream().map(Participant::getName).toList()));
+        // Update participants list
+        participantsList.setText(String.join(", ", updatedEvent.getParticipants()
+                .stream().map(Participant::getName).toList()));
 
 
-            // Update expenses list
-            shownExpenses.clear();
-            shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
-            expensesList.setItems(shownExpenses);
+        // Update expenses list
+        shownExpenses.clear();
+        shownExpenses.addAll(FXCollections.observableArrayList(updatedEvent.getExpenses()));
+        expensesList.setItems(shownExpenses);
 
 
-            // Update other UI components as needed
-            inviteCode.setText(updatedEvent.getInviteCode());
+        // Update other UI components as needed
+        inviteCode.setText(updatedEvent.getInviteCode());
 
+        System.out.println("event updated");
 
-            // Replace the local event object with the updated one
-            eventOverviewMv.setEvent(updatedEvent);
-
-
-        });
     }
-
-
-//    public void stop() {
-//        stopEventUpdatesLongPolling();
-//    }
 }
-

@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.ModelView.StartScreenMv;
+import client.dialog.Popup;
 import client.keyBoardCtrl.ShortCuts;
 import client.language.LanguageSwitch;
 import client.nodes.UIIcon;
@@ -8,6 +9,7 @@ import client.utils.*;
 import client.utils.scene.SceneController;
 import com.google.inject.Inject;
 import commons.Event;
+import jakarta.ws.rs.NotFoundException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -103,7 +105,10 @@ public class StartScreenCtrl extends SceneController
                 try {
                     Event event = startScreenMv.getRecentEvent(joinableEvent.inviteCode());
                     mainCtrl.showEventOverview(event);
-                }catch (Exception e){
+                } catch (NotFoundException e) {
+                    new Popup("Event was not found!", Popup.TYPE.ERROR).showAndWait();
+                    deleteButton.fire();
+                } catch (Exception e){
                     handleException(e);
                 }
             });

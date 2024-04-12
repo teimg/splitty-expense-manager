@@ -1,6 +1,7 @@
 package client.utils.communicators.interfaces;
 
 import commons.Event;
+import commons.EventChange;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -8,13 +9,6 @@ import java.util.function.Consumer;
 public interface IEventCommunicator {
 
     Event createEvent(Event event);
-
-    /**
-     * Creates a new event.
-     * @param name name of the event
-     * @return the created event
-     */
-    Event createEvent(String name);
 
     /**
      * Gets an existing event by id.
@@ -35,16 +29,15 @@ public interface IEventCommunicator {
     /**
      * Deletes an existing event.
      * @param id event id
-     * @return the deleted event
      */
-    Event deleteEvent(long id);
+    void deleteEvent(long id);
 
     List<Event> getAll();
 
     void establishWebSocketConnection();
 
     <T> void subscribeForWebSocketMessages(String dest, Class<T> type, Consumer<T> consumer);
-    Event checkForEventUpdates(long id);
+    EventChange checkForEventUpdates(long id);
 
     Event renameEvent(long id, String name);
 

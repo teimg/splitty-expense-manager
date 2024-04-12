@@ -49,10 +49,16 @@ public class StatisticsScreenCtrl extends SceneController implements LanguageSwi
         this.statisticsScreenMv = statisticsScreenMv;
     }
 
-    public void loadInfo(Event event) {
-        statisticsScreenMv.setEvent(event);
+    private void updateUI() {
         fillChart();
         toggleVisibility();
+    }
+
+    public void loadInfo(Event ignored) {
+        statisticsScreenMv.onUpdate(change -> {
+            updateUI();
+        });
+        updateUI();
     }
 
     private void toggleVisibility() {
@@ -115,7 +121,7 @@ public class StatisticsScreenCtrl extends SceneController implements LanguageSwi
                 "StatisticsScreen.Back-Button"));
         noExpensesLabel.setText(mainCtrl.getTranslator().getTranslation(
                 "StatisticsScreen.NoExpense-label"));
-        loadInfo(statisticsScreenMv.getEvent());
+        updateUI();
     }
 
     public void handleBack(ActionEvent actionEvent) {
