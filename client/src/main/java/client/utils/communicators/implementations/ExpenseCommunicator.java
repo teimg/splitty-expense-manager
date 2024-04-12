@@ -77,13 +77,4 @@ public class ExpenseCommunicator implements IExpenseCommunicator {
                 .request(APPLICATION_JSON).accept(APPLICATION_JSON)
                 .delete(Expense.class);
     }
-
-    // The necessary endpoint has not yet been implemented.
-    // TODO
-    @Override
-    public Collection<Expense> getAllExpensesForEvent(long eventId) {
-        return null;
-    }
-
-
 }

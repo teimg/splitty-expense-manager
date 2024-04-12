@@ -52,11 +52,4 @@ public interface IExpenseCommunicator {
      */
     Expense deleteExpense(long id);
 
-    /**
-     * Gets a list of all expenses in an event.
-     * @param eventId event id
-     * @return the expenses in that event
-     */
-    Collection<Expense> getAllExpensesForEvent(long eventId);
-
 }
