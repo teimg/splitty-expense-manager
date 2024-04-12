@@ -129,9 +129,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                         "Conf.DeleteExpense")
                 ).isConfirmed();
 
-                deleteButton.setDisable(true);
-                editButton.setDisable(true);
-
                 try {
                     if(isConfirm){
                         eventOverviewMv.deleteEvent(expense.getId());
@@ -141,9 +138,6 @@ public class EventOverviewCtrl implements Initializable, LanguageSwitch,
                     e.printStackTrace();
                     handleException(e, mainCtrl.getTranslator());
                 }
-
-                deleteButton.setDisable(false);
-                editButton.setDisable(false);
 
             });
             setGraphic(container);

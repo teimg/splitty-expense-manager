@@ -54,6 +54,9 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
     @FXML
     private TextField ibanField;
 
+    @FXML
+    private Label explanationLabel;
+
     private final MainCtrl mainCtrl;
 
 
@@ -85,6 +88,8 @@ public class ContactInfoCtrl implements LanguageSwitch, SceneController, Initial
                 "ContactInfo.Abort-Button"));
         addButton.setText(mainCtrl.getTranslator().getTranslation(
                 "ContactInfo.Add-Button"));
+        explanationLabel.setText(mainCtrl.getTranslator().getTranslation(
+                "ContactInfo.Explanation-label"));
     }
 
     public void loadInfo(Event event, Participant participant) {
