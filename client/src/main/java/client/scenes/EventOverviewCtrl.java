@@ -36,6 +36,7 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -157,8 +158,29 @@ public class EventOverviewCtrl extends SceneController
                             .getTranslation("EventOverview.ExpenseLabel-for") +
                     " " +
                     expense.getPurchase() +
-                    "\n";
+                    "\n" +
+                    debtorsStringify(expense.getDebtors());
         }
+
+    }
+
+    private String debtorsStringify(List<Participant> participantList){
+       StringBuilder res = new StringBuilder();
+       res.append(mainCtrl.getTranslator().getTranslation(
+           "EventOverview.Participants-label"
+       ));
+       res.append(": ");
+
+        if(participantList.isEmpty()) return "";
+
+       int count = participantList.size() -1;
+        for (int i = 0; i < count ; i++) {
+            res.append(participantList.get(i).getName())
+                .append(", ");
+        }
+
+        res.append(participantList.get(count).getName());
+        return res.toString();
     }
 
     @FXML
