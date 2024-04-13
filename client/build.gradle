@@ -42,3 +42,5 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket:3.2.2'
 
 }
+
+run.workingDir("..")
