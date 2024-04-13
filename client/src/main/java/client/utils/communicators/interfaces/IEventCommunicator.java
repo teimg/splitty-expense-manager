@@ -11,13 +11,6 @@ public interface IEventCommunicator {
     Event createEvent(Event event);
 
     /**
-     * Creates a new event.
-     * @param name name of the event
-     * @return the created event
-     */
-    Event createEvent(String name);
-
-    /**
      * Gets an existing event by id.
      * @param id event id
      * @return the event

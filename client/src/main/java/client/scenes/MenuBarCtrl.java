@@ -204,12 +204,12 @@ public class MenuBarCtrl implements LanguageSwitch, Initializable {
     }
 
     private void persistTemplate(File saveLocation, Path templateLocation){
-        // Could be moved to a ModelView class later
         try {
             Files.copy(templateLocation, saveLocation.toPath(),
                 StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            (new Popup("Could not save file", Popup.TYPE.ERROR)).show();
+        } catch (IOException | NullPointerException e) {
+            (new Popup(mainCtrl.getTranslator().
+                    getTranslation("CouldNotSaveFile"), Popup.TYPE.ERROR)).show();
         }
     }
 

@@ -39,11 +39,6 @@ public class EventCommunicator implements IEventCommunicator {
         this.client = client;
     }
 
-    @Override
-    public Event createEvent(String name) {
-        return null;
-    }
-
     /**
      * Gets an existing event by id.
      *

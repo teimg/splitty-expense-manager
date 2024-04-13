@@ -229,7 +229,7 @@ public class ContactInfoMvTest {
         Event event = new Event();
         Participant participant = new Participant();
         contactInfoMv.loadInfo(event, participant);
-
+        contactInfoMv.nameProperty().setValue("");
         contactInfoMv.emailProperty().setValue("");
         assertThrows(IllegalArgumentException.class, () -> contactInfoMv.addButtonPressed(null));
     }

@@ -60,6 +60,7 @@ public class DebtsBuilder {
 //        findPositiveBalances();
         //this one for showing all balances, both positive and negative
         findBalanceChange();
+        removeImprecision();
     }
 
     public ArrayList<Debt> getDebts() {
@@ -304,19 +305,27 @@ public class DebtsBuilder {
     }
 
     private void removeImprecision() {
-        debts.removeIf(debt -> debt.getAmount() < 0.05);
+        debts.removeIf(debt -> debt.getAmount() < 0.005);
     }
 
     public void handleEmailButtonClick(Debt debt) {
 
         (new Thread(new Runnable() {
+
+            public double rounder(double val) {
+                return Math.round(val * 100) / 100.0;
+            }
+
             @Override
             public void run() {
                 try {
                     EmailRequest emailRequest = new EmailRequest(debt.getDebtor().getEmail(),
                             "Debt Reminder", "This is a reminder for " +
                             "an open debt. " + "You owe " + debt.getCreditor().getName()
-                            + " " + debt.getAmount() + "$.");
+                            + " " + rounder(debt.getAmount()) + "$. (" +
+                            rounder(mainCtrl.getExchanger().getStandardConversion
+                                    (debt.getAmount(), LocalDate.now())) +
+                            " " + mainCtrl.getExchanger().getCurrentSymbol() + ")");
                     emailCommunicator.sendEmail(emailRequest);
                 }
                 catch (Exception e) {
