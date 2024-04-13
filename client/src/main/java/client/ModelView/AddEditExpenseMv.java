@@ -218,7 +218,7 @@ public class AddEditExpenseMv {
         Tag res = tagField.getValue();
 
         if(res == null){
-            throw new IllegalArgumentException("TagInvalid");
+            throw new IllegalArgumentException("TagFieldInvalid");
         }
 
         return res;
