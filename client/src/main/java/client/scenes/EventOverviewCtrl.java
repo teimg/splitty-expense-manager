@@ -76,7 +76,7 @@ public class EventOverviewCtrl extends SceneController
 
                 @Override
                 public void changed(ObservableValue<? extends Boolean>
-                                            observable, Boolean oldValue, Boolean newValue) {
+                                        observable, Boolean oldValue, Boolean newValue) {
                     if (newValue) {
                         Expense expenseToBeEdited = getItem();
                         if (expenseToBeEdited != null) {
@@ -94,7 +94,7 @@ public class EventOverviewCtrl extends SceneController
 
         private void setLanguage(Translator translator) {
             editButton.setText(translator
-                    .getTranslation("EventOverview.EditExpense-Button"));
+                .getTranslation("EventOverview.EditExpense-Button"));
         }
 
         @Override
@@ -143,37 +143,37 @@ public class EventOverviewCtrl extends SceneController
 
         private String expenseDescription(Expense expense) {
             return expense.getDate().toString() +
-                    "    " +
-                    expense.getPayer().getName() +
-                    " " +
-                    mainCtrl.getTranslator()
-                            .getTranslation("EventOverview.ExpenseLabel-paid") +
-                    "  " +
-                    Math.round(mainCtrl.getExchanger().getStandardConversion(
-                            expense.getAmount(), LocalDate.now()) * 100.0) / 100.0 +
-                    " " +
-                    mainCtrl.getExchanger().getCurrentSymbol() +
-                    " " +
-                    mainCtrl.getTranslator()
-                            .getTranslation("EventOverview.ExpenseLabel-for") +
-                    " " +
-                    expense.getPurchase() +
-                    "\n" +
-                    debtorsStringify(expense.getDebtors());
+                "    " +
+                expense.getPayer().getName() +
+                " " +
+                mainCtrl.getTranslator()
+                    .getTranslation("EventOverview.ExpenseLabel-paid") +
+                "  " +
+                Math.round(mainCtrl.getExchanger().getStandardConversion(
+                    expense.getAmount(), LocalDate.now()) * 100.0) / 100.0 +
+                " " +
+                mainCtrl.getExchanger().getCurrentSymbol() +
+                " " +
+                mainCtrl.getTranslator()
+                    .getTranslation("EventOverview.ExpenseLabel-for") +
+                " " +
+                expense.getPurchase() +
+                "\n" +
+                debtorsStringify(expense.getDebtors());
         }
 
     }
 
     private String debtorsStringify(List<Participant> participantList){
-       StringBuilder res = new StringBuilder();
-       res.append(mainCtrl.getTranslator().getTranslation(
-           "EventOverview.Participants-label"
-       ));
-       res.append(": ");
+        StringBuilder res = new StringBuilder();
+        res.append(mainCtrl.getTranslator().getTranslation(
+            "EventOverview.Participants-label"
+        ));
+        res.append(": ");
 
         if(participantList.isEmpty()) return "";
 
-       int count = participantList.size() -1;
+        int count = participantList.size() -1;
         for (int i = 0; i < count ; i++) {
             res.append(participantList.get(i).getName())
                 .append(", ");
@@ -264,39 +264,39 @@ public class EventOverviewCtrl extends SceneController
     @Override
     public void setLanguage() {
         inviteCodeLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.InviteCode-label"));
+            "EventOverview.InviteCode-label"));
         participantsLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.Participants-label"));
+            "EventOverview.Participants-label"));
         expensesLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.Expenses-label"));
+            "EventOverview.Expenses-label"));
         forLabel.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.For-label"));
+            "EventOverview.For-label"));
         sendInviteButton.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.SendInvite-Button"));
+            "EventOverview.SendInvite-Button"));
         inviteCodeCopyBtn.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.Copy-Button"));
+            "EventOverview.Copy-Button"));
         removeParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.Remove-Button"));
+            "EventOverview.Remove-Button"));
         addParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.AddParticipant-Button"));
+            "EventOverview.AddParticipant-Button"));
         addExpense.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.AddExpense-Button"));
+            "EventOverview.AddExpense-Button"));
         expenseSelectorAll.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.All-R-Button"));
+            "EventOverview.All-R-Button"));
         expenseSelectorFrom.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.From-R-Button"));
+            "EventOverview.From-R-Button"));
         expenseSelectorIncluding.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.Including-R-Button"));
+            "EventOverview.Including-R-Button"));
         editParticipantButton.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.EditParticipant-Button"));
+            "EventOverview.EditParticipant-Button"));
         openDebtBtn.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.OpenDebt-Button"));
+            "EventOverview.OpenDebt-Button"));
         statisticsButton.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.Statistics-Button"));
+            "EventOverview.Statistics-Button"));
         backButton.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.Back-Button"));
+            "EventOverview.Back-Button"));
         renameEventButton.setText(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.RenameEvent-Button"));
+            "EventOverview.RenameEvent-Button"));
         loadEvent(eventOverviewMv.getEvent());
     }
 
@@ -334,15 +334,15 @@ public class EventOverviewCtrl extends SceneController
         });
         updateProvider.setDeleteHandler(change -> {
             new Popup("event died :(",
-                    Popup.TYPE.ERROR).showAndWait();
+                Popup.TYPE.ERROR).showAndWait();
             mainCtrl.showStartScreen();
         });
 
         eventTitle.setText(event.getName());
         participantsList.setText(String.join(", ", event.getParticipants()
-                .stream().map(Participant::getName).toList()));
+            .stream().map(Participant::getName).toList()));
         participantDropDown.setItems(FXCollections.observableList(event.getParticipants().
-                stream().map(Participant::getName).toList()));
+            stream().map(Participant::getName).toList()));
         expenseSelectorAll.setSelected(true);
 //        expenseSelectorFrom.setText("From " + selectedPayer.getName());
 //        expenseSelectorIncluding.setText("Including " + selectedPayer.getName());
@@ -363,9 +363,9 @@ public class EventOverviewCtrl extends SceneController
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.P, this::handleAddParticipant);
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.I, this::handleSendInvites);
         mainCtrl.getKeyBoardListeners().addListener(
-                s, KeyCode.B, () -> handleBack(new ActionEvent()));
+            s, KeyCode.B, () -> handleBack(new ActionEvent()));
         mainCtrl.getKeyBoardListeners().addListener(s, KeyCode.E, () ->
-                mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), currentlySelectedExpense));
+            mainCtrl.showAddEditExpense(eventOverviewMv.getEvent(), currentlySelectedExpense));
     }
 
 
@@ -379,9 +379,9 @@ public class EventOverviewCtrl extends SceneController
      */
     public void handleExpenseVisibilityChange() {
         Optional<Participant> optionalParticipant = eventOverviewMv
-                .getEvent().getParticipants().stream()
-                .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
-                .findFirst();
+            .getEvent().getParticipants().stream()
+            .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
+            .findFirst();
         if (optionalParticipant.isPresent()) {
             eventOverviewMv.setSelectedPayer(optionalParticipant.get());
         }
@@ -392,14 +392,14 @@ public class EventOverviewCtrl extends SceneController
             shownExpenses.setAll(eventOverviewMv.getEvent().getExpenses());
         } else if (expenseSelectorFrom.isSelected()) {
             shownExpenses.setAll(eventOverviewMv.getEvent().getExpenses().stream()
-                    .filter(expense -> expense.getPayer()
-                            .equals(eventOverviewMv.getSelectedPayer())).toList());
+                .filter(expense -> expense.getPayer()
+                    .equals(eventOverviewMv.getSelectedPayer())).toList());
         } else if (expenseSelectorIncluding.isSelected()) {
             shownExpenses.setAll(eventOverviewMv.getEvent().getExpenses().stream()
-                    .filter(expense -> expense.getPayer()
-                            .equals(eventOverviewMv.getSelectedPayer())
-                            || expense.getDebtors()
-                            .contains(eventOverviewMv.getSelectedPayer())).toList());
+                .filter(expense -> expense.getPayer()
+                    .equals(eventOverviewMv.getSelectedPayer())
+                    || expense.getDebtors()
+                    .contains(eventOverviewMv.getSelectedPayer())).toList());
         }
         expensesList.setItems(shownExpenses);
     }
@@ -411,13 +411,13 @@ public class EventOverviewCtrl extends SceneController
 
     public void handleRemoveParticipant() {
         Optional<Participant> optionalParticipant = eventOverviewMv
-                .getEvent().getParticipants().stream()
-                .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
-                .findFirst();
+            .getEvent().getParticipants().stream()
+            .filter(participant -> participant.getName().equals(participantDropDown.getValue()))
+            .findFirst();
         boolean confirmed = ConfPopup.create
-                        (mainCtrl.getTranslator().getTranslation
-                                ("Popup.sureRemoveDatabase"))
-                .isConfirmed();
+                (mainCtrl.getTranslator().getTranslation
+                    ("Popup.sureRemoveDatabase"))
+            .isConfirmed();
         if (confirmed) {
             if (optionalParticipant.isPresent()) {
                 try {
@@ -425,14 +425,14 @@ public class EventOverviewCtrl extends SceneController
                 }
                 catch (jakarta.ws.rs.BadRequestException e) {
                     new Popup(mainCtrl.getTranslator().getTranslation(
-                            "Popup.ParticipantCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
+                        "Popup.ParticipantCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
                 }
             } else {
                 new Popup(mainCtrl.getTranslator().getTranslation
-                        ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
+                    ("Popup.NoParticipantIDSelected"), Popup.TYPE.ERROR).showAndWait();
             }
             loadEvent(eventOverviewMv.getEventCommunicator()
-                    .getEvent(eventOverviewMv.getEvent().getId()));
+                .getEvent(eventOverviewMv.getEvent().getId()));
         }
 
 //        loadEvent(eventOverviewMv.eventCommunicatorGetEvent());
@@ -444,15 +444,15 @@ public class EventOverviewCtrl extends SceneController
 
     public void handleEditParticipant(ActionEvent actionEvent) {
         Optional<Participant> optionalParticipant = eventOverviewMv.getEvent()
-                .getParticipants().stream()
-                .filter(participant
-                        -> participant.getName().equals(participantDropDown.getValue()))
-                .findFirst();
+            .getParticipants().stream()
+            .filter(participant
+                -> participant.getName().equals(participantDropDown.getValue()))
+            .findFirst();
         optionalParticipant.ifPresent(participant
-                -> mainCtrl.showContactInfo(eventOverviewMv.getEvent(), participant));
+            -> mainCtrl.showContactInfo(eventOverviewMv.getEvent(), participant));
         if (optionalParticipant.isEmpty()) {
             new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.NoparticipantSelected"), Popup.TYPE.ERROR).showAndWait();
+                ("Popup.NoparticipantSelected"), Popup.TYPE.ERROR).showAndWait();
         }
         if (optionalParticipant.isEmpty()) System.out.println("Error");
     }
@@ -480,11 +480,11 @@ public class EventOverviewCtrl extends SceneController
     public void handleRenameEvent(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog(eventOverviewMv.getEvent().getName());
         dialog.setTitle(mainCtrl.getTranslator().getTranslation(
-                "EventOverview.RenameEvent-Button"));
+            "EventOverview.RenameEvent-Button"));
         dialog.setHeaderText(mainCtrl.getTranslator().getTranslation(
-                "Popup.EnterName"));
+            "Popup.EnterName"));
         dialog.setContentText(mainCtrl.getTranslator().getTranslation(
-                "Popup.Name"));
+            "Popup.Name"));
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
@@ -493,18 +493,18 @@ public class EventOverviewCtrl extends SceneController
                 if (updatedEvent != null) {
                     loadEvent(updatedEvent);
                     new Popup(mainCtrl.getTranslator().getTranslation(
-                            "Popup.RenameSuccessful"
+                        "Popup.RenameSuccessful"
                     ), Popup.TYPE.INFO).showAndWait();
                 }
                 else {
                     new Popup(mainCtrl.getTranslator().getTranslation(
-                            "Popup.RenameFail"
+                        "Popup.RenameFail"
                     ), Popup.TYPE.ERROR).showAndWait();
                 }
             }
             else {
                 new Popup(mainCtrl.getTranslator().getTranslation(
-                        "Popup.RenameCannotBeEmpty"
+                    "Popup.RenameCannotBeEmpty"
                 ), Popup.TYPE.ERROR).showAndWait();
             }
         });
@@ -518,8 +518,8 @@ public class EventOverviewCtrl extends SceneController
     private void updateUI(Event updatedEvent) {
         if (updatedEvent == null) {
             new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.updateEventIsNull"),
-                    Popup.TYPE.ERROR).showAndWait();
+                ("Popup.updateEventIsNull"),
+                Popup.TYPE.ERROR).showAndWait();
             return;
         }
 
@@ -529,7 +529,7 @@ public class EventOverviewCtrl extends SceneController
 
         // Update participants list
         participantsList.setText(String.join(", ", updatedEvent.getParticipants()
-                .stream().map(Participant::getName).toList()));
+            .stream().map(Participant::getName).toList()));
 
 
         // Update expenses list
