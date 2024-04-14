@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import commons.Event;
 import commons.EventChange;
 
+import jakarta.ws.rs.ProcessingException;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
@@ -43,7 +44,13 @@ public class LongPollingEventUpdateProvider implements IEventUpdateProvider {
             protected Void call() {
                 while (!isCancelled()) {
                     // Poll for a change
-                    EventChange change = eventCommunicator.checkForEventUpdates(id);
+                    EventChange change;
+                    try {
+                        change = eventCommunicator.checkForEventUpdates(id);
+                    } catch (ProcessingException e) {
+                        stop();
+                        break;
+                    }
                     if (change == null) continue;
                     // Process the change
                     switch (change.getType()) {

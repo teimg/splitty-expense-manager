@@ -93,21 +93,16 @@ public class EventCommunicator implements IEventCommunicator {
     }
 
     public EventChange checkForEventUpdates(long id) {
-        try {
-            Response response = client.getClient()
-                    .target(origin).path("api/event/checkUpdates/{id}")
-                    .resolveTemplate("id", id)
-                    .request(APPLICATION_JSON).accept(APPLICATION_JSON)
-                    .get();
+        Response response = client.getClient()
+                .target(origin).path("api/event/checkUpdates/{id}")
+                .resolveTemplate("id", id)
+                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                .get();
 
-            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-                return response.readEntity(EventChange.class);
-            } else {
-                // No updates or event not found, handle accordingly
-                return null;
-            }
-        } catch (Exception e) {
-            System.err.println("Error checking for event updates: " + e.getMessage());
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            return response.readEntity(EventChange.class);
+        } else {
+            // No updates or event not found, handle accordingly
             return null;
         }
     }
