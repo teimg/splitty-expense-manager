@@ -6,6 +6,7 @@ import commons.Tag;
 import commons.EventChange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.service.EventChangeService;
@@ -172,6 +173,13 @@ public class EventController {
             eventService.delete(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @MessageMapping("/events")
+    public void webSocketsDelete(EventChange change) {
+        if (change.getType() == EventChange.Type.DELETION) {
+            eventService.delete(change.getEvent().getId());
+        }
     }
 
     /**

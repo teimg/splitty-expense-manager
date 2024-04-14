@@ -26,9 +26,9 @@ public class Expense {
 
     private String purchase;
     private double amount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Participant payer;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Participant> debtors;
     private LocalDate date;
     @JsonIgnoreProperties({"expenses"})
