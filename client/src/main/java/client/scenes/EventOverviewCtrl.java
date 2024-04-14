@@ -323,6 +323,8 @@ public class EventOverviewCtrl extends SceneController
         expenseSelectorAll.setSelected(true);
         // Populate expense list
         expensesList.setCellFactory(expensesList -> new ExpenseListCell());
+
+        participantDropDown.setOnAction(actionEvent -> handleExpenseVisibilityChange());
     }
 
     public void loadEvent(Event event) {
@@ -331,11 +333,13 @@ public class EventOverviewCtrl extends SceneController
             updateProvider.stop();
             updateProvider.start(event.getId());
             updateProvider.setUpdateHandler(change -> {
+                mainCtrl.trackRecentEvent(change.getEvent());
                 updateUI(change.getEvent());
             });
             updateProvider.setDeleteHandler(change -> {
-                new Popup("event died :(",
-                    Popup.TYPE.ERROR).showAndWait();
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.EventDeletedWhileActive"
+                ), Popup.TYPE.ERROR).showAndWait();
                 mainCtrl.showStartScreen();
             });
 

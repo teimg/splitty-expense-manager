@@ -2,6 +2,7 @@ package client.utils.scene;
 
 import client.dialog.Popup;
 import client.scenes.MainCtrl;
+import client.scenes.StartScreenCtrl;
 import jakarta.ws.rs.ProcessingException;
 
 public abstract class SceneController {
@@ -18,8 +19,9 @@ public abstract class SceneController {
             "Popup.ServerOffline"
         );
 
-        mainCtrl.showStartScreen();
         (new Popup(msg, type)).show();
+
+        if (!(this instanceof StartScreenCtrl)) mainCtrl.showStartScreen();
     }
     protected void handleException(Exception e){
         if (e instanceof ProcessingException){

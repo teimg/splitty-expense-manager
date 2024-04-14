@@ -86,28 +86,23 @@ public class EventCommunicator implements IEventCommunicator {
     @Override
     public Event getEventByInviteCode(String inviteCode) {
         return client.getClient()
-                    .target(origin).path("api/event/byInviteCode/{inviteCode}")
-                    .resolveTemplate("inviteCode", inviteCode)
+                    .target(origin).path("api/event/byInviteCode")
+                    .queryParam("inviteCode", inviteCode)
                     .request(APPLICATION_JSON).accept(APPLICATION_JSON)
                     .get(Event.class);
     }
 
     public EventChange checkForEventUpdates(long id) {
-        try {
-            Response response = client.getClient()
-                    .target(origin).path("api/event/checkUpdates/{id}")
-                    .resolveTemplate("id", id)
-                    .request(APPLICATION_JSON).accept(APPLICATION_JSON)
-                    .get();
+        Response response = client.getClient()
+                .target(origin).path("api/event/checkUpdates/{id}")
+                .resolveTemplate("id", id)
+                .request(APPLICATION_JSON).accept(APPLICATION_JSON)
+                .get();
 
-            if (response.getStatus() == Response.Status.OK.getStatusCode()) {
-                return response.readEntity(EventChange.class);
-            } else {
-                // No updates or event not found, handle accordingly
-                return null;
-            }
-        } catch (Exception e) {
-            System.err.println("Error checking for event updates: " + e.getMessage());
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            return response.readEntity(EventChange.class);
+        } else {
+            // No updates or event not found, handle accordingly
             return null;
         }
     }
@@ -129,6 +124,11 @@ public class EventCommunicator implements IEventCommunicator {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
+    }
+
+    @Override
+    public void sendWebSocketMessage(String dest, Object o) {
+        session.send(dest, o);
     }
 
     @Override

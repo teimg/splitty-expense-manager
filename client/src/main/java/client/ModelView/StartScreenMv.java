@@ -11,6 +11,9 @@ import jakarta.ws.rs.ProcessingException;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StartScreenMv {
 
     private final IEventCommunicator server;
@@ -74,8 +77,21 @@ public class StartScreenMv {
         }
     }
 
-    public void deleteEvent(JoinableEvent eventt){
-        tracker.deleteEvent(eventt);
+    public void updateRecents() throws ProcessingException {
+        List<JoinableEvent> oldEvents = new ArrayList<>(tracker.getEvents());
+
+        oldEvents.reversed().forEach(oldEvent -> {
+            try {
+                Event newEvent = getRecentEvent(oldEvent.inviteCode());
+                tracker.registerEvent(newEvent);
+            } catch (NotFoundException e) {
+                tracker.deleteEvent(oldEvent);
+            }
+        });
+    }
+
+    public void deleteEvent(JoinableEvent event){
+        tracker.deleteEvent(event);
     }
 
     public StringProperty newEventProperty() {

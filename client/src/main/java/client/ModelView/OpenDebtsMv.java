@@ -13,6 +13,7 @@ import commons.EventChange;
 import commons.Participant;
 import javafx.scene.control.TitledPane;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -50,6 +51,14 @@ public class OpenDebtsMv {
 //        this.positiveBalanceParticipants = debtsBuilder.getPositiveBalances();
         //this one to show all balances
         this.positiveBalanceParticipants = debtsBuilder.findBalanceChange();
+
+        Map<Participant, Double> simplified = new HashMap<>();
+        for (var p : positiveBalanceParticipants.entrySet()) {
+            if (Math.abs(p.getValue()) >= 0.005) {
+                simplified.put(p.getKey(), p.getValue());
+            }
+        }
+        positiveBalanceParticipants = simplified;
     }
 
     public Event getEvent() {

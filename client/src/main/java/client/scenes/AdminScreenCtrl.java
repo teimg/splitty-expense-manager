@@ -341,7 +341,8 @@ public class AdminScreenCtrl extends SceneController
             ), Popup.TYPE.INFO).showAndWait();
             return;
         }
-        eventCommunicator.deleteEvent(event.getId());
+        eventCommunicator.sendWebSocketMessage("/app/events",
+                new EventChange(EventChange.Type.DELETION, event));
 
         new Popup(mainCtrl.getTranslator().getTranslation(
                 "Popup.EventDeleted"

@@ -4,8 +4,10 @@ import commons.Event;
 import commons.Participant;
 import commons.Tag;
 import commons.EventChange;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.service.EventChangeService;
@@ -154,8 +156,8 @@ public class EventController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/byInviteCode/{inviteCode}")
-    public ResponseEntity<Event> getByInviteCode(@PathVariable String inviteCode) {
+    @GetMapping("/byInviteCode")
+    public ResponseEntity<Event> getByInviteCode(@RequestParam String inviteCode) {
         return eventService.getByInviteCode(inviteCode)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -172,6 +174,14 @@ public class EventController {
             eventService.delete(id);
             return ResponseEntity.ok().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @Transactional
+    @MessageMapping("/events")
+    public void webSocketsDelete(EventChange change) {
+        if (change.getType() == EventChange.Type.DELETION) {
+            eventService.delete(change.getEvent().getId());
+        }
     }
 
     /**

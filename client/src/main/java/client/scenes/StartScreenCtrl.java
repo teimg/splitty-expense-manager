@@ -183,6 +183,14 @@ public class StartScreenCtrl extends SceneController
     public void loadInfo() {
         newEventField.setText("");
         joinEventField.setText("");
+
+        try {
+            startScreenMv.updateRecents();
+        } catch (Exception e) {
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    "Popup.RecentEventNoUpdate"
+            ), Popup.TYPE.ERROR).showAndWait();
+        }
     }
 
     @Override

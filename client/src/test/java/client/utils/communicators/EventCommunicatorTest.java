@@ -96,7 +96,7 @@ public class EventCommunicatorTest {
         event.setInviteCode("1234");
         when(client.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(pathTarget);
-        when(pathTarget.resolveTemplate(eq("inviteCode"), any())).thenReturn(pathTarget);
+        when(pathTarget.queryParam(eq("inviteCode"), anyString())).thenReturn(pathTarget);
         when(pathTarget.request(APPLICATION_JSON)).thenReturn(builder);
         when(builder.accept(APPLICATION_JSON)).thenReturn(builder);
         when(builder.get(Event.class)).thenReturn(event);
