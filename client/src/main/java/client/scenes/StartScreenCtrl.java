@@ -183,6 +183,12 @@ public class StartScreenCtrl extends SceneController
     public void loadInfo() {
         newEventField.setText("");
         joinEventField.setText("");
+
+        try {
+            startScreenMv.updateRecents();
+        } catch (Exception e) {
+            handleException(e);
+        }
     }
 
     @Override
