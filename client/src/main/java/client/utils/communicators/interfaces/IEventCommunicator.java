@@ -43,7 +43,5 @@ public interface IEventCommunicator {
 
     Event restoreEvent(Event event);
 
-    void sendWebSocketMessage(String dest, Object o);
-
     void closeWebSocketConnection();
 }

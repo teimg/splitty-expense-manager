@@ -13,22 +13,13 @@ public class Event {
     private String name;
     private String inviteCode;
 
-    @OneToMany(mappedBy = "event",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants;
 
-    @OneToMany(mappedBy = "event",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses;
 
-    @OneToMany(mappedBy = "event",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tag> tags;
 
     private Date creationDate;

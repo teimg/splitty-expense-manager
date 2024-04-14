@@ -16,7 +16,7 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
     private BankAccount bankAccount;
 
     @JsonIgnore
