@@ -72,7 +72,7 @@ and an overview of the open debts in your event.
 
 To edit or remove a participant,
 you need to select the participant in the dropdown and then press the 'Edit' or 'Remove' button.
-To sort expenses by a participant,
+To filter expenses by a participant,
 you first need to select the participant in the dropdown
 and then press one of the sorting options 'All', 'From' or 'Including'.
 
