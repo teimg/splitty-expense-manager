@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
+import client.dialog.Popup;
 import client.scenes.*;
 import com.google.inject.Injector;
 
@@ -35,7 +36,18 @@ public class Main extends Application {
     private static MainCtrl mainCtrl;
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-        launch();
+        try {
+            launch();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            String msg = mainCtrl.getTranslator().getTranslation(
+                "Popup.ServerOffline"
+            );
+
+            mainCtrl.showStartScreen();
+            (new Popup(msg, Popup.TYPE.ERROR)).show();
+        }
     }
 
     @Override

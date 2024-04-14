@@ -257,7 +257,15 @@ public class AdminScreenCtrl extends SceneController
     }
 
     public void handleImport(ActionEvent actionEvent) {
+        try{
+            importEvent();
 
+        }catch (Exception e){
+            handleException(e);
+        }
+    }
+
+    private void importEvent() {
         // Get event from JSON
         Optional<Event> res = getEventFromFile();
         if (res.isEmpty()) return;
@@ -301,6 +309,15 @@ public class AdminScreenCtrl extends SceneController
     }
 
     public void handleDelete(ActionEvent actionEvent) {
+
+        try {
+            deleteEvent();
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    private void deleteEvent() {
         Event event = eventListView.getSelectionModel().getSelectedItem();
 
         if (event == null) {
@@ -324,7 +341,6 @@ public class AdminScreenCtrl extends SceneController
             ), Popup.TYPE.INFO).showAndWait();
             return;
         }
-
         eventCommunicator.deleteEvent(event.getId());
 
         new Popup(mainCtrl.getTranslator().getTranslation(
