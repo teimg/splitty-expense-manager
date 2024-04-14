@@ -17,7 +17,7 @@ The client can be configured in the file
 `client/src/main/resources/client/config/custom.properties`
 which is generated upon running the client app for the first time.
 
-The client email can be configured in the file
+The user's email credentials and a default address for testing can be configured in the file
 `client/src/main/resources/client/config/mail.properties`.
 
 ## Technology
@@ -65,16 +65,28 @@ or join an event using an invite code.
 All of these options lead to the `EventOverview`.
 From here, you can rename an event,
 send email invites to people you'd like to add,
-manage the event's participants by adding a new participant
-or selecting a participant to edit or remove in the selection dropdown,
+manage the event's participants
 and register, edit or delete an expense.
 You can also view your event's statistics
 and an overview of the open debts in your event.
+
+To edit or remove a participant,
+you need to select the participant in the dropdown and then press the 'Edit' or 'Remove' button.
+To sort expenses by a participant,
+you first need to select the participant in the dropdown
+and then press one of the sorting options 'All', 'From' or 'Including'.
 
 In the `OpenDebts` screen you can mark debts as paid,
 send a reminder email if the debtors have their email addresses configured,
 view the payer's bank details if they are configured,
 and see an overview of all open balances.
+
+The reminder email is sent from the email address you have configured in the email configuration file,
+and it is CC'd to the default testing address, also configured there.
+If you want to receive a copy of all emails sent from your address through the application,
+you can configure the default address to be your own address.
+You can send a default email to test whether your credentials are working from the settings screen.
+This email is sent to the configured default address, and CC'd to your own address.
 
 The client also features an administrative overview.
 The `AdminScreen` can be accessed through the settings menu.
@@ -83,6 +95,8 @@ This password is randomly generated and printed to the console when starting the
 Here you can find an overview of all registered events,
 delete events,
 and import and export a JSON dump of an event.
+Note that you can only import an event after you have deleted it,
+otherwise the event already exists.
 
 ## Appendix: Shortcut guide
 
