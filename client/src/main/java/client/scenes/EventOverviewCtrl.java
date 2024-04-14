@@ -326,32 +326,42 @@ public class EventOverviewCtrl extends SceneController
     }
 
     public void loadEvent(Event event) {
-        IEventUpdateProvider updateProvider = eventOverviewMv.getEventUpdateProvider();
-        updateProvider.stop();
-        updateProvider.start(event.getId());
-        updateProvider.setUpdateHandler(change -> {
-            updateUI(change.getEvent());
-        });
-        updateProvider.setDeleteHandler(change -> {
-            new Popup("event died :(",
-                Popup.TYPE.ERROR).showAndWait();
-            mainCtrl.showStartScreen();
-        });
+        try {
+            IEventUpdateProvider updateProvider = eventOverviewMv.getEventUpdateProvider();
+            updateProvider.stop();
+            updateProvider.start(event.getId());
+            updateProvider.setUpdateHandler(change -> {
+                updateUI(change.getEvent());
+            });
+            updateProvider.setDeleteHandler(change -> {
+                new Popup("event died :(",
+                    Popup.TYPE.ERROR).showAndWait();
+                mainCtrl.showStartScreen();
+            });
 
-        eventTitle.setText(event.getName());
-        participantsList.setText(String.join(", ", event.getParticipants()
-            .stream().map(Participant::getName).toList()));
-        participantDropDown.setItems(FXCollections.observableList(event.getParticipants().
-            stream().map(Participant::getName).toList()));
-        expenseSelectorAll.setSelected(true);
+            eventTitle.setText(event.getName());
+            participantsList.setText(String.join(", ", event.getParticipants()
+                .stream().map(Participant::getName).toList()));
+            participantDropDown.setItems(FXCollections.observableList(event.getParticipants().
+                stream().map(Participant::getName).toList()));
+            expenseSelectorAll.setSelected(true);
 //        expenseSelectorFrom.setText("From " + selectedPayer.getName());
 //        expenseSelectorIncluding.setText("Including " + selectedPayer.getName());
-        // Populate expense list
-        shownExpenses = FXCollections.observableArrayList(event.getExpenses());
-        expensesList.setItems(shownExpenses);
-        inviteCode.setText(event.getInviteCode());
+            // Populate expense list
+            shownExpenses = FXCollections.observableArrayList(event.getExpenses());
+            expensesList.setItems(shownExpenses);
+            inviteCode.setText(event.getInviteCode());
 //        stopEventUpdatesLongPolling();
 //        startEventUpdatesLongPolling(event.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            String msg = mainCtrl.getTranslator().getTranslation(
+                "Popup.ServerOffline"
+            );
+
+            mainCtrl.showStartScreen();
+            (new Popup(msg, Popup.TYPE.ERROR)).show();
+        }
     }
 
     @Override
