@@ -337,8 +337,9 @@ public class EventOverviewCtrl extends SceneController
                 updateUI(change.getEvent());
             });
             updateProvider.setDeleteHandler(change -> {
-                new Popup("event died :(",
-                    Popup.TYPE.ERROR).showAndWait();
+                new Popup(mainCtrl.getTranslator().getTranslation(
+                        "Popup.EventDeletedWhileActive"
+                ), Popup.TYPE.ERROR).showAndWait();
                 mainCtrl.showStartScreen();
             });
 
