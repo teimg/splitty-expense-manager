@@ -42,6 +42,7 @@ public class Popup extends Dialog<String> {
     private int width;
     private int height;
 
+
     /**
      * Init label of dialog
      */
@@ -50,12 +51,14 @@ public class Popup extends Dialog<String> {
 
         Image image = type.getImage();
 
+
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(imageSize);
         imageView.setFitHeight(imageSize);
 
         this.label = new Label();
         this.label.setText(msg);
+        this.label.setWrapText(true);
         this.label.setFont(new Font(this.fontSize));
 
         this.label.setGraphic(imageView);
@@ -109,7 +112,7 @@ public class Popup extends Dialog<String> {
     public Popup(String msg, Popup.TYPE type) {
         this.type = type;
         this.msg = msg;
-        this.width = 300;
+        this.width = 400;
         this.height = 100;
         initPopup();
         initLabel();

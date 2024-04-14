@@ -34,8 +34,8 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 
-public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
-        SceneController, ShortCuts {
+public class AddEditExpenseCtrl extends SceneController
+    implements Initializable, LanguageSwitch, ShortCuts{
 
     @FXML
     private Label titleLabel;
@@ -179,6 +179,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
 
     @Inject
     public AddEditExpenseCtrl (MainCtrl mainCtrl, AddEditExpenseMv addEditExpenseMv) {
+        super(mainCtrl);
         this.addEditExpenseMv = addEditExpenseMv;
         this.mainCtrl = mainCtrl;
 
@@ -441,7 +442,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
 
         }catch (Exception e){
             e.printStackTrace();
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
     }
 
@@ -460,13 +461,8 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
                 addEditExpenseMv.deleteTag();
                 initTag();
             }
-            catch (jakarta.ws.rs.BadRequestException e) {
-                new Popup(mainCtrl.getTranslator().getTranslation(
-                        "Popup.TagCannotBeDeleted"), Popup.TYPE.ERROR).showAndWait();
-            }
             catch (Exception o) {
-                new Popup(mainCtrl.getTranslator().getTranslation
-                        ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
+                handleException(o);
             }
         }
     }
@@ -475,8 +471,7 @@ public class AddEditExpenseCtrl  implements Initializable, LanguageSwitch,
         try{
             mainCtrl.showTagScreen(addEditExpenseMv.getEvent(), addEditExpenseMv.getTag());
         }catch (Exception e){
-            new Popup(mainCtrl.getTranslator().getTranslation
-                    ("Popup.NoTagIsSelected"), Popup.TYPE.ERROR).showAndWait();
+            handleException(e);
         }
     }
 

@@ -21,7 +21,10 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InvitationCtrl implements Initializable, LanguageSwitch, SceneController, ShortCuts {
+
+public class InvitationCtrl extends  SceneController
+    implements Initializable, LanguageSwitch, ShortCuts{
+
 
     @FXML
     private ListView<String> emailsField;
@@ -96,6 +99,7 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
 
     @Inject
     public InvitationCtrl(MainCtrl mainCtrl, InvitationMv invitationMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.invitationMv = invitationMv;
 
@@ -187,7 +191,7 @@ public class InvitationCtrl implements Initializable, LanguageSwitch, SceneContr
             invitationMv.emailAdd();
 
         }catch (Exception e){
-            handleException(e, mainCtrl.getTranslator());
+            handleException(e);
         }
 
     }
