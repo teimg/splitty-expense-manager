@@ -176,6 +176,11 @@ public class EventCommunicator implements IEventCommunicator {
     }
 
     @Override
+    public void sendWebSocketMessage(String dest, Object o) {
+        session.send(dest, o);
+    }
+
+    @Override
     public void closeWebSocketConnection() {
         session.disconnect();
         System.out.println("websockets: connection closed");
