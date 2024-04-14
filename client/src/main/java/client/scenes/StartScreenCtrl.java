@@ -187,7 +187,9 @@ public class StartScreenCtrl extends SceneController
         try {
             startScreenMv.updateRecents();
         } catch (Exception e) {
-            handleException(e);
+            new Popup(mainCtrl.getTranslator().getTranslation(
+                    ""
+            ), Popup.TYPE.ERROR).showAndWait();
         }
     }
 
