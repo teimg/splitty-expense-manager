@@ -323,6 +323,8 @@ public class EventOverviewCtrl extends SceneController
         expenseSelectorAll.setSelected(true);
         // Populate expense list
         expensesList.setCellFactory(expensesList -> new ExpenseListCell());
+
+        participantDropDown.setOnAction(actionEvent -> handleExpenseVisibilityChange());
     }
 
     public void loadEvent(Event event) {
