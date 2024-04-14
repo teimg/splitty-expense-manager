@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, ShortCuts {
+public class StatisticsScreenCtrl extends SceneController implements LanguageSwitch, ShortCuts {
 
     @FXML
     private Button backButton;
@@ -44,6 +44,7 @@ public class StatisticsScreenCtrl implements LanguageSwitch, SceneController, Sh
 
     @Inject
     public StatisticsScreenCtrl(MainCtrl mainCtrl, StatisticsScreenMv statisticsScreenMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.statisticsScreenMv = statisticsScreenMv;
     }

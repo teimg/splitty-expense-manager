@@ -207,6 +207,10 @@ public class AddEditExpenseMv {
             }
         }
 
+        if(res.isEmpty()){
+            throw  new IllegalArgumentException("NoSelectedDebtors");
+        }
+
         return res;
     }
 
@@ -214,7 +218,7 @@ public class AddEditExpenseMv {
         Tag res = tagField.getValue();
 
         if(res == null){
-            throw new IllegalArgumentException("TagInvalid");
+            throw new IllegalArgumentException("TagFieldInvalid");
         }
 
         return res;

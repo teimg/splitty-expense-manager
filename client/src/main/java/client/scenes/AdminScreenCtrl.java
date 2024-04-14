@@ -34,9 +34,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AdminScreenCtrl implements LanguageSwitch, SceneController,
-        Initializable, ShortCuts {
-
+public class AdminScreenCtrl extends SceneController
+    implements LanguageSwitch, Initializable, ShortCuts {
     @FXML
     private Label eventsLabel;
 
@@ -82,6 +81,7 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
     @Inject
     public AdminScreenCtrl(MainCtrl mainCtrl, EventCommunicator eventCommunicator,
                            RecentEventTracker recentEventTracker) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.eventCommunicator = eventCommunicator;
         this.recentEventTracker = recentEventTracker;
@@ -257,7 +257,15 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
     }
 
     public void handleImport(ActionEvent actionEvent) {
+        try{
+            importEvent();
 
+        }catch (Exception e){
+            handleException(e);
+        }
+    }
+
+    private void importEvent() {
         // Get event from JSON
         Optional<Event> res = getEventFromFile();
         if (res.isEmpty()) return;
@@ -301,6 +309,15 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
     }
 
     public void handleDelete(ActionEvent actionEvent) {
+
+        try {
+            deleteEvent();
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    private void deleteEvent() {
         Event event = eventListView.getSelectionModel().getSelectedItem();
 
         if (event == null) {
@@ -324,7 +341,6 @@ public class AdminScreenCtrl implements LanguageSwitch, SceneController,
             ), Popup.TYPE.INFO).showAndWait();
             return;
         }
-
         eventCommunicator.deleteEvent(event.getId());
 
         new Popup(mainCtrl.getTranslator().getTranslation(

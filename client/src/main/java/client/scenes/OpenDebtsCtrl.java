@@ -9,14 +9,13 @@ import commons.Participant;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
 import java.time.LocalDate;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts {
+public class OpenDebtsCtrl extends SceneController implements LanguageSwitch, ShortCuts {
 
     @FXML
     private Label titleLabel;
@@ -46,6 +45,7 @@ public class OpenDebtsCtrl implements LanguageSwitch, SceneController, ShortCuts
 
     @Inject
     public OpenDebtsCtrl(MainCtrl mainCtrl, OpenDebtsMv openDebtsMv) {
+        super(mainCtrl);
         this.mainCtrl = mainCtrl;
         this.openDebtsMv = openDebtsMv;
     }
