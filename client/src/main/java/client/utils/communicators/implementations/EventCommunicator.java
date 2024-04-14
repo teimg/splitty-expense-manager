@@ -127,6 +127,11 @@ public class EventCommunicator implements IEventCommunicator {
     }
 
     @Override
+    public void sendWebSocketMessage(String dest, Object o) {
+        session.send(dest, o);
+    }
+
+    @Override
     public List<Event> getAll() {
         return client.getClient()
                 .target(origin).path("api/event")

@@ -32,6 +32,8 @@ public interface IEventCommunicator {
      */
     void deleteEvent(long id);
 
+    void sendWebSocketMessage(String dest, Object o);
+
     List<Event> getAll();
 
     void establishWebSocketConnection();
