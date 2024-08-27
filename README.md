@@ -1,5 +1,7 @@
 # Splitty
 
+This project was contributed to equally by all 6 collaborators: ...
+
 ## Description
 
 _Splitty_ is an expense splitting calculator developed for the course CSE1105 of the Delft University of Technology.
