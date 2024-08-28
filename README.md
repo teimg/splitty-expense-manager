@@ -1,7 +1,7 @@
 # Splitty
 ## Description
 
-_Splitty_ is an expense splitting calculator to be used by groups of friends.
+_Splitty_ is an expense splitting calculator to be used by groups of friends. Developed by all 6 collaborators.
 
 **Product Demo Video**: https://drive.google.com/file/d/1v8WW1kmvlGN8wucCtA3rQiQ3hAuYWuU5/view?usp=sharing 
 
